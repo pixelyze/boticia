@@ -1,96 +1,75 @@
 <template>
-  <footer class="bg-black text-white py-16 relative overflow-hidden">
-    <div class="container mx-auto px-4">
-      <!-- Logo and description -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <div
-          class="md:col-span-8 md:col-start-1 flex flex-col md:flex-row items-center md:items-center gap-6"
-        >
-          <div class="shrink-0 flex items-center">
-            <NuxtLink v-if="!isHomePage" :to="localePath('/')" aria-label="Back to home">
-              <img
-                src="~/assets/img/logo-dark.svg"
-                alt="Logo"
-                class="h-16"
-              />
-            </NuxtLink>
-            <img
-              v-else
-              src="~/assets/img/logo-dark.svg"
-              alt="Logo"
-              class="h-16"
-            />
-          </div>
+  <footer class="bg-cream text-dark py-24">
+    <div class="container mx-auto px-6">
+      <div class="max-w-2xl mx-auto text-center">
+        <!-- Logo -->
+        <NuxtLink v-if="!isHomePage" :to="localePath('/')" aria-label="Back to home">
+          <img src="/logo-boticia.png" alt="Boticia" class="h-24 mx-auto mb-6" />
+        </NuxtLink>
+        <img v-else src="/logo-boticia.png" alt="Boticia" class="h-24 mx-auto mb-6" />
 
-          <p
-            class="text-gray-300 text-md md:text-lg font-light tracking-wide leading-relaxed border-l-2 border-gray-600 pl-4 max-w-md"
-          >
-            {{ $t("footer.description") }}
-          </p>
-        </div>
+        <span class="font-heading text-2xl text-dark">Boticia</span>
+
+        <!-- Description -->
+        <p class="text-dark/50 text-sm leading-relaxed max-w-sm mx-auto mt-4">
+          {{ $t("footer.description") }}
+        </p>
 
         <!-- Social links -->
-        <div
-          class="md:col-span-4 flex justify-center md:justify-end items-start mt-8 md:mt-0"
-        >
-          <div class="flex items-center space-x-3 group">
-            <a
-              href="https://twitter.com/yourhandle"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-gray-400 hover:text-white transition-all duration-300 font-medium tracking-wider uppercase text-sm flex items-center"
-            >
-              <span class="border-b border-gray-700 hover:border-white pb-1"
-                >Twitter</span
-              >
-              <span
-                class="ml-2 transform group-hover:translate-x-1 transition-transform duration-200"
-                >&rarr;</span
-              >
-            </a>
-          </div>
+        <div class="flex justify-center gap-8 mt-12">
+          <a
+            href="https://instagram.com/boticia_"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+          >Instagram</a>
+          <a
+            href="https://www.linkedin.com/in/la%C3%ABtitia-schaeffer-cr%C3%A9atrice-florale/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+          >LinkedIn</a>
+          <a
+            href="https://www.facebook.com/BoticiaParis/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+          >Facebook</a>
+          <a
+            href="https://fr.pinterest.com/Boticia_Paris/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+          >Pinterest</a>
         </div>
-      </div>
 
-      <!-- Copyright -->
-      <div
-        class="mt-8 md:mt-12 flex flex-col md:flex-row justify-between items-center"
-      >
-        <div class="hidden md:block w-1/3 h-px bg-gray-600"></div>
-        <p
-          class="text-gray-400 text-xs tracking-widest uppercase py-2 font-medium"
-        >
-          {{ $t("footer.copyright") }}
-        </p>
-        <div class="hidden md:block w-1/3 h-px bg-gray-600"></div>
-      </div>
-      <!-- Legal links -->
-      <div class="mt-8 md:mt-12 text-center">
-        <p class="text-gray-400 text-sm font-light max-w-2xl mx-auto">
-          {{ $t("footer.privacy") }}
-        </p>
-        <div class="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 mt-4">
-          <NuxtLink
-            v-if="!isLegalPage"
-            :to="localePath('/legal')"
-            class="text-gray-500 text-xs uppercase tracking-widest hover:text-white transition-colors duration-300"
-          >
-            {{ $t("footer.legal_link") }}
-          </NuxtLink>
-          <span v-else class="text-gray-300 text-xs uppercase tracking-widest">
-            {{ $t("footer.legal_link") }}
-          </span>
-          <span class="hidden md:inline text-gray-600">&bull;</span>
-          <NuxtLink
-            v-if="!isTermsPage"
-            :to="localePath('/terms')"
-            class="text-gray-500 text-xs uppercase tracking-widest hover:text-white transition-colors duration-300"
-          >
-            {{ $t("footer.terms_link") }}
-          </NuxtLink>
-          <span v-else class="text-gray-300 text-xs uppercase tracking-widest">
-            {{ $t("footer.terms_link") }}
-          </span>
+        <!-- Legal & Copyright -->
+        <div class="mt-16 space-y-2">
+          <div class="flex justify-center gap-6 text-sm">
+            <NuxtLink
+              v-if="!isLegalPage"
+              :to="localePath('/legal')"
+              class="text-dark/35 hover:text-dark transition-colors duration-300"
+            >
+              {{ $t("footer.legal_link") }}
+            </NuxtLink>
+            <span v-else class="text-dark/60">
+              {{ $t("footer.legal_link") }}
+            </span>
+            <NuxtLink
+              v-if="!isTermsPage"
+              :to="localePath('/terms')"
+              class="text-dark/35 hover:text-dark transition-colors duration-300"
+            >
+              {{ $t("footer.terms_link") }}
+            </NuxtLink>
+            <span v-else class="text-dark/60">
+              {{ $t("footer.terms_link") }}
+            </span>
+          </div>
+          <p class="text-dark/25 text-sm">
+            {{ $t("footer.copyright") }}
+          </p>
         </div>
       </div>
     </div>

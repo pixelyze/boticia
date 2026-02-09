@@ -10,8 +10,15 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        cream: "#FAF8F5",
+        sage: "#8B9D77",
+        terracotta: "#C4784B",
+        dark: "#2B2B2B",
+      },
       fontFamily: {
-        sans: ["Space Grotesk", "sans-serif"],
+        sans: ["Source Sans 3", "sans-serif"],
+        heading: ["Playfair Display", "serif"],
       },
     },
   },

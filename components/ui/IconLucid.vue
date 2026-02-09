@@ -89,6 +89,10 @@ import {
   Zap,
   Target,
   Layout,
+  Flower2,
+  Palette,
+  Leaf,
+  Minus,
 } from "lucide-vue-next";
 
 const icons = {
@@ -162,6 +166,10 @@ const icons = {
   Zap,
   Target,
   Layout,
+  Flower2,
+  Palette,
+  Leaf,
+  Minus,
 };
 
 const props = defineProps({

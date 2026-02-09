@@ -134,15 +134,15 @@ const buttonClasses = computed(() => [
   isFullWidth.value && props.rightIcon && !props.iconOnly && !props.loading ? "" : "gap-2",
   props.variant === "primary"
     ? props.disabled || props.loading
-      ? "bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed shadow-[2px_2px_0px_0px_rgba(107,114,128,0.3)] translate-x-[2px] translate-y-[2px]"
-      : "bg-black text-white hover:bg-gray-800 border-black shadow-[4px_4px_0px_0px_rgba(107,114,128,1)] hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
+      ? "bg-cream text-dark/30 border-cream cursor-not-allowed shadow-[2px_2px_0px_0px_rgba(43,43,43,0.1)] translate-x-[2px] translate-y-[2px]"
+      : "bg-dark text-white hover:bg-dark/80 border-dark shadow-[4px_4px_0px_0px_rgba(43,43,43,0.5)] hover:shadow-[2px_2px_0px_0px_rgba(43,43,43,0.5)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
     : props.variant === "ghost"
       ? props.disabled || props.loading
-        ? "text-gray-400 cursor-not-allowed border-transparent bg-transparent"
-        : "text-black bg-black/10 border-transparent hover:bg-black/20 shadow-none"
+        ? "text-dark/30 cursor-not-allowed border-transparent bg-transparent"
+        : "text-dark bg-dark/10 border-transparent hover:bg-dark/20 shadow-none"
       : props.disabled || props.loading
-        ? "bg-white text-gray-300 border-gray-200 cursor-not-allowed"
-        : "bg-white border-black",
+        ? "bg-white text-dark/30 border-dark/10 cursor-not-allowed"
+        : "bg-white text-dark border-dark",
   !props.disabled && !props.loading && props.variant === "primary"
     ? ""
     : !props.disabled && !props.loading && props.variant === "ghost"

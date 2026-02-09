@@ -1,13 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col">
+  <div class="min-h-screen bg-white flex flex-col">
     <!-- Header -->
     <header class="container mx-auto px-4 py-8">
       <div class="flex justify-center">
         <NuxtLink to="/" aria-label="Back to home">
           <img
-            src="~/assets/img/logo.svg"
+            src="/logo-boticia.png"
             alt="Logo"
-            class="w-48 md:w-64 transition-transform duration-200 hover:scale-[1.02]"
+            class="h-16 md:h-20 w-auto transition-transform duration-200 hover:scale-[1.02]"
           />
         </NuxtLink>
       </div>

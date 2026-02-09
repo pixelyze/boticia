@@ -1,29 +1,32 @@
 <template>
-  <div class="faq-container">
-    <div v-for="(item, index) in faqItems" :key="index" class="faq-item mb-6">
+  <div class="space-y-0">
+    <div
+      v-for="(item, index) in faqItems"
+      :key="index"
+      class="border-b border-dark/10"
+      :class="index === 0 ? 'border-t' : ''"
+    >
       <button
         @click="toggleItem(index)"
-        class="faq-question w-full text-left px-6 py-4 border-2 border-black bg-white flex justify-between items-center transition-all relative"
-        :class="[
-          activeIndex === index
-            ? 'shadow-none translate-x-[4px] translate-y-[4px]'
-            : 'shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]',
-        ]"
+        class="w-full text-left py-6 flex justify-between items-center group"
       >
-        <span class="font-bold text-lg pr-8">{{ item.question }}</span>
-        <div class="absolute right-6">
-          <IconLucid
-            :name="activeIndex === index ? 'ChevronUp' : 'ChevronDown'"
-            size="md"
-            :strokeWidth="2.5"
-          />
-        </div>
+        <span class="font-heading text-dark/80 text-base md:text-lg font-normal pr-8 group-hover:text-dark transition-colors duration-300">
+          {{ item.question }}
+        </span>
+        <IconLucid
+          :name="activeIndex === index ? 'Minus' : 'Plus'"
+          size="sm"
+          class="text-dark/30 group-hover:text-dark/60 transition-all duration-300 flex-shrink-0"
+          :strokeWidth="1.5"
+        />
       </button>
       <div
         v-show="activeIndex === index"
-        class="faq-answer text-lg px-6 py-4 mt-2 bg-gray-50"
+        class="pb-6"
       >
-        <p class="text-gray-700">{{ item.answer }}</p>
+        <p class="text-dark/55 text-sm md:text-base leading-relaxed max-w-3xl">
+          {{ item.answer }}
+        </p>
       </div>
     </div>
   </div>
@@ -51,13 +54,3 @@ const toggleItem = (index) => {
   }
 };
 </script>
-
-<style scoped>
-.faq-question {
-  transition: all 0.2s ease-in-out;
-}
-
-.faq-answer {
-  line-height: 1.6;
-}
-</style>

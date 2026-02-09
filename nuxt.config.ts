@@ -20,24 +20,24 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "fr",
       },
-      title: "My App",
+      title: "Boticia — Créatrice d'ambiance florale",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           key: "description",
           name: "description",
-          content: "My App - A modern SaaS application.",
+          content: "Boticia — Atelier de design floral par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
         },
-        { name: "author", content: "My App" },
+        { name: "author", content: "Boticia — Laëtitia Schaeffer" },
         { name: "robots", content: "index, follow" },
         {
           property: "og:title",
-          content: "My App",
+          content: "Boticia — Créatrice d'ambiance florale",
         },
         {
           property: "og:description",
-          content: "My App - A modern SaaS application.",
+          content: "Atelier de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
         },
         { property: "og:type", content: "website" },
         { property: "og:url", content: "https://yourdomain.com" },
@@ -48,11 +48,11 @@ export default defineNuxtConfig({
         { name: "twitter:card", content: "summary_large_image" },
         {
           name: "twitter:title",
-          content: "My App",
+          content: "Boticia — Créatrice d'ambiance florale",
         },
         {
           name: "twitter:description",
-          content: "My App - A modern SaaS application.",
+          content: "Atelier de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral.",
         },
         {
           name: "twitter:image",
@@ -126,7 +126,8 @@ export default defineNuxtConfig({
   // Google Fonts
   googleFonts: {
     families: {
-      "Space Grotesk": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      "Playfair Display": [400, 500, 600, 700, 800, 900],
+      "Source Sans 3": [300, 400, 500, 600, 700],
     },
     display: "swap",
     preload: true,
@@ -137,7 +138,6 @@ export default defineNuxtConfig({
 
   postcss: {
     plugins: {
-      tailwindcss: {},
       autoprefixer: {},
     },
   },

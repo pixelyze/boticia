@@ -1,5 +1,6 @@
 <template>
   <div class="min-h-screen bg-white selection:bg-fuchsia-300 selection:text-fuchsia-900 flex flex-col">
+    <Header />
     <main class="flex-1">
       <slot />
     </main>

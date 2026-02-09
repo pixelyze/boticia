@@ -3,8 +3,8 @@
     <!-- Hero -->
     <HeroSection />
 
-    <!-- Features -->
-    <FeaturesSection />
+    <!-- Pricing -->
+    <PricingSection />
 
     <!-- Block quote -->
     <BlockQuote
@@ -12,8 +12,11 @@
       :author="t('hero.quote_author')"
     />
 
-    <!-- Pricing -->
-    <PricingSection />
+    <!-- Features -->
+    <FeaturesSection />
+
+    <!-- Process -->
+    <ProcessSection />
 
     <!-- FAQ -->
     <FAQSection />
