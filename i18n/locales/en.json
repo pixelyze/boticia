@@ -1,0 +1,156 @@
+{
+  "app": {
+    "name": "My App",
+    "tagline": "The modern solution for your business"
+  },
+  "common": {
+    "home": "Home",
+    "my_space": "My Space",
+    "back_to_home": "Back to home",
+    "menu": "Menu",
+    "language": "Language",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading",
+    "error": "Error",
+    "success": "Success"
+  },
+  "hero": {
+    "tagline": "Modern SaaS Solution",
+    "title": "Build your next project in record time",
+    "subtitle": "A complete Nuxt 3 starter with authentication, payments, emails and more. Production-ready.",
+    "cta_primary": "Get Started",
+    "cta_secondary": "Learn More",
+    "quote": "Simplicity is the ultimate sophistication.",
+    "quote_author": "Leonardo da Vinci"
+  },
+  "features": {
+    "tagline": "Features",
+    "title": "Everything you need",
+    "feature_1_title": "Lightning Fast",
+    "feature_1_description": "Optimal performance powered by Nuxt 3 and hybrid SSR/SSG rendering.",
+    "feature_2_title": "Secure by Default",
+    "feature_2_description": "Supabase authentication, CSRF protection, and built-in security best practices.",
+    "feature_3_title": "Production-Ready",
+    "feature_3_description": "Stripe payments, transactional emails, i18n and Vercel deployment configured out of the box."
+  },
+  "pricing": {
+    "tagline": "Pricing",
+    "title": "Simple, transparent pricing",
+    "popular": "Popular",
+    "cta": "Get Started",
+    "plan_1_name": "Starter",
+    "plan_1_description": "Perfect to get started",
+    "plan_1_price": "9€",
+    "plan_1_period": "/month",
+    "plan_1_feature_1": "1 user",
+    "plan_1_feature_2": "1 GB storage",
+    "plan_1_feature_3": "Email support",
+    "plan_2_name": "Pro",
+    "plan_2_description": "For growing teams",
+    "plan_2_price": "29€",
+    "plan_2_period": "/month",
+    "plan_2_feature_1": "5 users",
+    "plan_2_feature_2": "10 GB storage",
+    "plan_2_feature_3": "Priority support",
+    "plan_2_feature_4": "Advanced integrations",
+    "plan_3_name": "Enterprise",
+    "plan_3_description": "For large organizations",
+    "plan_3_price": "99€",
+    "plan_3_period": "/month",
+    "plan_3_feature_1": "Unlimited users",
+    "plan_3_feature_2": "100 GB storage",
+    "plan_3_feature_3": "Dedicated 24/7 support",
+    "plan_3_feature_4": "Full API access",
+    "plan_3_feature_5": "Custom SLA"
+  },
+  "faq": {
+    "tagline": "FAQ",
+    "title": "Frequently Asked Questions",
+    "q1": "How does the free trial work?",
+    "a1": "You get a 14-day free trial with no commitment. No credit card required to get started.",
+    "q2": "Can I change plans at any time?",
+    "a2": "Yes, you can upgrade or downgrade your plan at any time. The change takes effect immediately.",
+    "q3": "What payment methods do you accept?",
+    "a3": "We accept credit cards (Visa, Mastercard, American Express) through Stripe, our secure payment processor.",
+    "q4": "How can I contact support?",
+    "a4": "Send us an email at support@yourdomain.com. We respond within 24 hours on business days."
+  },
+  "auth": {
+    "form_title": "Access my space",
+    "email_label": "Email address",
+    "email_placeholder": "your@email.com",
+    "email_hint": "Use the email address you signed up with.",
+    "email_required": "Please enter your email address",
+    "email_not_found": "No account found with this email.",
+    "send_magic_link": "Send me a login link",
+    "magic_link_sent_title": "Email sent!",
+    "magic_link_sent_message": "A login link has been sent to {email}.",
+    "magic_link_hint": "Check your inbox and spam folder. The link expires in 1 hour.",
+    "magic_link_error": "Error sending the link. Please try again.",
+    "callback_loading": "Signing in...",
+    "callback_loading_message": "Please wait while we verify your identity.",
+    "callback_error_title": "Sign-in error",
+    "callback_error_message": "The login link is invalid or has expired.",
+    "callback_page_title": "Sign In",
+    "try_again": "Try again"
+  },
+  "dashboard": {
+    "page_title": "My Space",
+    "breadcrumb": "My Space",
+    "settings": "Settings",
+    "settings_description": "Manage your account settings.",
+    "loading": "Loading",
+    "greeting_morning": "Good morning",
+    "greeting_afternoon": "Good afternoon",
+    "greeting_evening": "Good evening",
+    "empty_title": "Nothing here yet",
+    "empty_message": "Start by exploring our plans.",
+    "browse": "Browse plans",
+    "sign_out": "Sign out",
+    "date": "Date",
+    "amount": "Amount",
+    "status_pending": "Pending",
+    "status_active": "Active",
+    "status_completed": "Completed",
+    "status_cancelled": "Cancelled"
+  },
+  "success": {
+    "title": "Payment successful!",
+    "message": "Thank you for your order. You will receive a confirmation email shortly.",
+    "order_details": "Order details",
+    "amount": "Amount",
+    "email": "Email",
+    "next_steps": "Next steps",
+    "next_steps_description": "You will receive a confirmation email with all the details of your order."
+  },
+  "footer": {
+    "description": "The modern solution for building and deploying your SaaS projects.",
+    "copyright": "© 2025 My App. All rights reserved.",
+    "privacy": "We respect your privacy and protect your personal data.",
+    "legal_link": "Legal notice",
+    "terms_link": "Terms of service"
+  },
+  "language": {
+    "select_language": "Select language"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "subtitle": "Last updated: January 2025",
+    "article": "Article {n}"
+  },
+  "legal": {
+    "title": "Legal Notice",
+    "subtitle": "Mandatory legal information",
+    "article": "Article {n}"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "not_found": "Page not found",
+    "server": "Server error"
+  }
+}

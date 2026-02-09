@@ -1,0 +1,156 @@
+{
+  "app": {
+    "name": "My App",
+    "tagline": "ビジネスのためのモダンソリューション"
+  },
+  "common": {
+    "home": "ホーム",
+    "my_space": "マイページ",
+    "back_to_home": "ホームに戻る",
+    "menu": "メニュー",
+    "language": "言語",
+    "close": "閉じる",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "loading": "読み込み中",
+    "error": "エラー",
+    "success": "成功"
+  },
+  "hero": {
+    "tagline": "モダンSaaSソリューション",
+    "title": "次のプロジェクトを驚くほど素早く構築",
+    "subtitle": "認証、決済、メール送信など全てを備えたNuxt 3スターターキット。本番環境にすぐ対応。",
+    "cta_primary": "始める",
+    "cta_secondary": "詳しく見る",
+    "quote": "シンプルさは究極の洗練である。",
+    "quote_author": "レオナルド・ダ・ヴィンチ"
+  },
+  "features": {
+    "tagline": "機能",
+    "title": "必要なものがすべて揃っています",
+    "feature_1_title": "超高速パフォーマンス",
+    "feature_1_description": "Nuxt 3とSSR/SSGハイブリッドレンダリングによる最適なパフォーマンスを実現。",
+    "feature_2_title": "標準でセキュア",
+    "feature_2_description": "Supabase認証、CSRF保護、セキュリティのベストプラクティスを組み込み済み。",
+    "feature_3_title": "本番環境対応済み",
+    "feature_3_description": "Stripe決済、トランザクションメール、i18n、Vercelデプロイを設定済み。"
+  },
+  "pricing": {
+    "tagline": "料金プラン",
+    "title": "シンプルで分かりやすい料金体系",
+    "popular": "人気",
+    "cta": "始める",
+    "plan_1_name": "Starter",
+    "plan_1_description": "まずは始めてみたい方に",
+    "plan_1_price": "9€",
+    "plan_1_period": "/月",
+    "plan_1_feature_1": "ユーザー1名",
+    "plan_1_feature_2": "ストレージ1 GB",
+    "plan_1_feature_3": "メールサポート",
+    "plan_2_name": "Pro",
+    "plan_2_description": "成長するチームに最適",
+    "plan_2_price": "29€",
+    "plan_2_period": "/月",
+    "plan_2_feature_1": "ユーザー5名",
+    "plan_2_feature_2": "ストレージ10 GB",
+    "plan_2_feature_3": "優先サポート",
+    "plan_2_feature_4": "高度なインテグレーション",
+    "plan_3_name": "Enterprise",
+    "plan_3_description": "大規模組織向け",
+    "plan_3_price": "99€",
+    "plan_3_period": "/月",
+    "plan_3_feature_1": "ユーザー数無制限",
+    "plan_3_feature_2": "ストレージ100 GB",
+    "plan_3_feature_3": "24時間365日の専任サポート",
+    "plan_3_feature_4": "フルAPI対応",
+    "plan_3_feature_5": "カスタムSLA"
+  },
+  "faq": {
+    "tagline": "FAQ",
+    "title": "よくあるご質問",
+    "q1": "無料トライアルの仕組みは？",
+    "a1": "14日間の無料トライアルを契約不要でご利用いただけます。開始時にクレジットカードの登録は不要です。",
+    "q2": "いつでもプランを変更できますか？",
+    "a2": "はい、いつでもプランのアップグレードやダウングレードが可能です。変更は即時反映されます。",
+    "q3": "どの支払い方法に対応していますか？",
+    "a3": "安全な決済サービスStripeを通じて、クレジットカード（Visa、Mastercard、American Express）をご利用いただけます。",
+    "q4": "サポートへの問い合わせ方法は？",
+    "a4": "support@yourdomain.com までメールをお送りください。営業日は24時間以内にご返信いたします。"
+  },
+  "auth": {
+    "form_title": "マイページにアクセス",
+    "email_label": "メールアドレス",
+    "email_placeholder": "your@email.com",
+    "email_hint": "アカウント登録時のメールアドレスをご入力ください。",
+    "email_required": "メールアドレスを入力してください",
+    "email_not_found": "このメールアドレスに該当するアカウントが見つかりません。",
+    "send_magic_link": "ログインリンクを受け取る",
+    "magic_link_sent_title": "メールを送信しました！",
+    "magic_link_sent_message": "{email} にログインリンクを送信しました。",
+    "magic_link_hint": "受信トレイと迷惑メールフォルダをご確認ください。リンクの有効期限は1時間です。",
+    "magic_link_error": "リンクの送信中にエラーが発生しました。もう一度お試しください。",
+    "callback_loading": "ログイン中...",
+    "callback_loading_message": "認証を確認しています。しばらくお待ちください。",
+    "callback_error_title": "ログインエラー",
+    "callback_error_message": "ログインリンクが無効または期限切れです。",
+    "callback_page_title": "ログイン",
+    "try_again": "もう一度試す"
+  },
+  "dashboard": {
+    "page_title": "マイページ",
+    "breadcrumb": "マイページ",
+    "settings": "設定",
+    "settings_description": "アカウント設定を管理します。",
+    "loading": "読み込み中",
+    "greeting_morning": "おはようございます",
+    "greeting_afternoon": "こんにちは",
+    "greeting_evening": "こんばんは",
+    "empty_title": "まだ何もありません",
+    "empty_message": "まずはプランをご覧ください。",
+    "browse": "プランを見る",
+    "sign_out": "ログアウト",
+    "date": "日付",
+    "amount": "金額",
+    "status_pending": "処理中",
+    "status_active": "有効",
+    "status_completed": "完了",
+    "status_cancelled": "キャンセル済み"
+  },
+  "success": {
+    "title": "お支払いが完了しました！",
+    "message": "ご注文ありがとうございます。確認メールをお送りします。",
+    "order_details": "注文内容",
+    "amount": "金額",
+    "email": "メール",
+    "next_steps": "次のステップ",
+    "next_steps_description": "ご注文の詳細を記載した確認メールをお送りします。"
+  },
+  "footer": {
+    "description": "SaaSプロジェクトの構築とデプロイのためのモダンソリューション。",
+    "copyright": "© 2025 My App. All rights reserved.",
+    "privacy": "お客様のプライバシーを尊重し、個人情報を保護します。",
+    "legal_link": "特定商取引法に基づく表記",
+    "terms_link": "利用規約"
+  },
+  "language": {
+    "select_language": "言語を選択"
+  },
+  "terms": {
+    "title": "利用規約",
+    "subtitle": "最終更新日：2025年1月",
+    "article": "第{n}条"
+  },
+  "legal": {
+    "title": "特定商取引法に基づく表記",
+    "subtitle": "法的に必要な情報",
+    "article": "第{n}条"
+  },
+  "errors": {
+    "generic": "エラーが発生しました",
+    "not_found": "ページが見つかりません",
+    "server": "サーバーエラー"
+  }
+}

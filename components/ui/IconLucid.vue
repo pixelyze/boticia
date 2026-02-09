@@ -1,0 +1,198 @@
+<template>
+  <ClientOnly>
+    <component
+      v-if="icon"
+      :is="icon"
+      class="icon"
+      :class="[sizeClass, $attrs.class]"
+      :stroke-width="strokeWidth"
+      :stroke="color"
+      fill="none"
+    />
+  </ClientOnly>
+</template>
+
+<script setup>
+import { computed, useAttrs } from "vue";
+
+defineOptions({
+  inheritAttrs: false,
+});
+import {
+  AlertCircle,
+  AlertTriangle,
+  Aperture,
+  BadgeCheck,
+  User,
+  MoveRight,
+  Sparkles,
+  UserCheck,
+  LogOut,
+  Handshake,
+  HeartHandshake,
+  Send,
+  SendHorizontal,
+  Folder,
+  FolderPlus,
+  UserPlus,
+  Edit,
+  Trash,
+  Trash2,
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Undo2,
+  X,
+  Save,
+  Globe,
+  ChevronUp,
+  ChevronDown,
+  ChevronRight,
+  Flag,
+  Check,
+  Loader2,
+  CheckCircle,
+  CircleCheck,
+  XCircle,
+  BadgeEuro,
+  CreditCard,
+  Gift,
+  Calendar,
+  CalendarClock,
+  Camera,
+  Shield,
+  ShieldCheck,
+  Clock,
+  Clock3,
+  MessageCircle,
+  FlaskConical,
+  Image,
+  Images,
+  GalleryVerticalEnd,
+  ImagePlus,
+  Info,
+  Link,
+  ExternalLink,
+  Inbox,
+  Package,
+  Mail,
+  Menu,
+  RefreshCw,
+  Settings,
+  Ticket,
+  Upload,
+  Download,
+  PartyPopper,
+  Plus,
+  Star,
+  Zap,
+  Target,
+  Layout,
+} from "lucide-vue-next";
+
+const icons = {
+  AlertCircle,
+  AlertTriangle,
+  Aperture,
+  BadgeCheck,
+  User,
+  MoveRight,
+  UserCheck,
+  Sparkles,
+  LogOut,
+  Handshake,
+  HeartHandshake,
+  Send,
+  SendHorizontal,
+  Folder,
+  FolderPlus,
+  UserPlus,
+  Edit,
+  Trash,
+  Trash2,
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Undo2,
+  X,
+  Save,
+  Globe,
+  ChevronUp,
+  ChevronDown,
+  ChevronRight,
+  Flag,
+  Check,
+  Loader2,
+  CheckCircle,
+  CircleCheck,
+  XCircle,
+  BadgeEuro,
+  CreditCard,
+  Gift,
+  Calendar,
+  CalendarClock,
+  Camera,
+  Shield,
+  ShieldCheck,
+  Clock,
+  Clock3,
+  MessageCircle,
+  FlaskConical,
+  Image,
+  Images,
+  GalleryVerticalEnd,
+  ImagePlus,
+  Info,
+  Link,
+  ExternalLink,
+  Inbox,
+  Package,
+  Mail,
+  Menu,
+  RefreshCw,
+  Settings,
+  Ticket,
+  Upload,
+  Download,
+  PartyPopper,
+  Plus,
+  Star,
+  Zap,
+  Target,
+  Layout,
+};
+
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: String,
+    default: "md",
+    validator: (value) => ["xs", "sm", "md", "lg"].includes(value),
+  },
+  color: {
+    type: String,
+    default: "currentColor",
+  },
+  strokeWidth: {
+    type: Number,
+    default: 2.75,
+  },
+});
+
+const icon = computed(() => {
+  if (process.server) return null;
+  return icons[props.name];
+});
+
+const sizeClass = computed(() => ({
+  "h-4 w-4": props.size === "xs",
+  "h-5 w-5": props.size === "sm",
+  "h-6 w-6": props.size === "md",
+  "h-7 w-7": props.size === "lg",
+}));
+</script>

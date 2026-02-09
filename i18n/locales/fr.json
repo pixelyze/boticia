@@ -1,0 +1,156 @@
+{
+  "app": {
+    "name": "My App",
+    "tagline": "La solution moderne pour votre business"
+  },
+  "common": {
+    "home": "Accueil",
+    "my_space": "Mon espace",
+    "back_to_home": "Retour à l'accueil",
+    "menu": "Menu",
+    "language": "Langue",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "loading": "Chargement",
+    "error": "Erreur",
+    "success": "Succès"
+  },
+  "hero": {
+    "tagline": "Solution SaaS moderne",
+    "title": "Construisez votre prochain projet en un temps record",
+    "subtitle": "Un starter Nuxt 3 complet avec authentification, paiements, emails et plus encore. Prêt pour la production.",
+    "cta_primary": "Commencer",
+    "cta_secondary": "En savoir plus",
+    "quote": "La simplicité est la sophistication ultime.",
+    "quote_author": "Léonard de Vinci"
+  },
+  "features": {
+    "tagline": "Fonctionnalités",
+    "title": "Tout ce dont vous avez besoin",
+    "feature_1_title": "Rapide comme l'éclair",
+    "feature_1_description": "Performances optimales grâce à Nuxt 3 et au rendu hybride SSR/SSG.",
+    "feature_2_title": "Sécurisé par défaut",
+    "feature_2_description": "Authentification Supabase, protection CSRF, et bonnes pratiques de sécurité intégrées.",
+    "feature_3_title": "Prêt pour la production",
+    "feature_3_description": "Paiements Stripe, emails transactionnels, i18n et déploiement Vercel configurés."
+  },
+  "pricing": {
+    "tagline": "Tarifs",
+    "title": "Des prix simples et transparents",
+    "popular": "Populaire",
+    "cta": "Commencer",
+    "plan_1_name": "Starter",
+    "plan_1_description": "Parfait pour démarrer",
+    "plan_1_price": "9€",
+    "plan_1_period": "/mois",
+    "plan_1_feature_1": "1 utilisateur",
+    "plan_1_feature_2": "1 Go de stockage",
+    "plan_1_feature_3": "Support email",
+    "plan_2_name": "Pro",
+    "plan_2_description": "Pour les équipes en croissance",
+    "plan_2_price": "29€",
+    "plan_2_period": "/mois",
+    "plan_2_feature_1": "5 utilisateurs",
+    "plan_2_feature_2": "10 Go de stockage",
+    "plan_2_feature_3": "Support prioritaire",
+    "plan_2_feature_4": "Intégrations avancées",
+    "plan_3_name": "Enterprise",
+    "plan_3_description": "Pour les grandes organisations",
+    "plan_3_price": "99€",
+    "plan_3_period": "/mois",
+    "plan_3_feature_1": "Utilisateurs illimités",
+    "plan_3_feature_2": "100 Go de stockage",
+    "plan_3_feature_3": "Support dédié 24/7",
+    "plan_3_feature_4": "API complète",
+    "plan_3_feature_5": "SLA personnalisé"
+  },
+  "faq": {
+    "tagline": "FAQ",
+    "title": "Questions fréquentes",
+    "q1": "Comment fonctionne la période d'essai ?",
+    "a1": "Vous bénéficiez de 14 jours d'essai gratuit sans engagement. Aucune carte bancaire requise pour commencer.",
+    "q2": "Puis-je changer de plan à tout moment ?",
+    "a2": "Oui, vous pouvez upgrader ou downgrader votre plan à tout moment. Le changement prend effet immédiatement.",
+    "q3": "Quels moyens de paiement acceptez-vous ?",
+    "a3": "Nous acceptons les cartes bancaires (Visa, Mastercard, American Express) via Stripe, notre processeur de paiement sécurisé.",
+    "q4": "Comment contacter le support ?",
+    "a4": "Envoyez-nous un email à support@yourdomain.com. Nous répondons sous 24h en semaine."
+  },
+  "auth": {
+    "form_title": "Accéder à mon espace",
+    "email_label": "Adresse email",
+    "email_placeholder": "votre@email.com",
+    "email_hint": "Utilisez l'email avec lequel vous avez créé votre compte.",
+    "email_required": "Veuillez entrer votre adresse email",
+    "email_not_found": "Aucun compte trouvé avec cet email.",
+    "send_magic_link": "Recevoir un lien de connexion",
+    "magic_link_sent_title": "Email envoyé !",
+    "magic_link_sent_message": "Un lien de connexion a été envoyé à {email}.",
+    "magic_link_hint": "Vérifiez votre boîte de réception et vos spams. Le lien expire dans 1 heure.",
+    "magic_link_error": "Erreur lors de l'envoi du lien. Réessayez.",
+    "callback_loading": "Connexion en cours...",
+    "callback_loading_message": "Veuillez patienter pendant la vérification.",
+    "callback_error_title": "Erreur de connexion",
+    "callback_error_message": "Le lien de connexion est invalide ou expiré.",
+    "callback_page_title": "Connexion",
+    "try_again": "Réessayer"
+  },
+  "dashboard": {
+    "page_title": "Mon espace",
+    "breadcrumb": "Mon espace",
+    "settings": "Paramètres",
+    "settings_description": "Gérez les paramètres de votre compte.",
+    "loading": "Chargement",
+    "greeting_morning": "Bonjour",
+    "greeting_afternoon": "Bon après-midi",
+    "greeting_evening": "Bonsoir",
+    "empty_title": "Rien ici pour l'instant",
+    "empty_message": "Commencez par explorer nos offres.",
+    "browse": "Voir les offres",
+    "sign_out": "Se déconnecter",
+    "date": "Date",
+    "amount": "Montant",
+    "status_pending": "En attente",
+    "status_active": "Actif",
+    "status_completed": "Terminé",
+    "status_cancelled": "Annulé"
+  },
+  "success": {
+    "title": "Paiement réussi !",
+    "message": "Merci pour votre commande. Vous allez recevoir un email de confirmation.",
+    "order_details": "Détails de la commande",
+    "amount": "Montant",
+    "email": "Email",
+    "next_steps": "Prochaines étapes",
+    "next_steps_description": "Vous recevrez un email de confirmation avec tous les détails de votre commande."
+  },
+  "footer": {
+    "description": "La solution moderne pour construire et déployer vos projets SaaS.",
+    "copyright": "© 2025 My App. Tous droits réservés.",
+    "privacy": "Nous respectons votre vie privée et protégeons vos données personnelles.",
+    "legal_link": "Mentions légales",
+    "terms_link": "Conditions générales"
+  },
+  "language": {
+    "select_language": "Choisir la langue"
+  },
+  "terms": {
+    "title": "Conditions générales",
+    "subtitle": "Dernière mise à jour : janvier 2025",
+    "article": "Article {n}"
+  },
+  "legal": {
+    "title": "Mentions légales",
+    "subtitle": "Informations légales obligatoires",
+    "article": "Article {n}"
+  },
+  "errors": {
+    "generic": "Une erreur est survenue",
+    "not_found": "Page introuvable",
+    "server": "Erreur serveur"
+  }
+}

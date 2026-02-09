@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Space Grotesk", sans-serif;
+  }
+}
+
+/* ========================================
+   TYPOGRAPHY - Design System
+   ========================================
+
+   VISUAL HIERARCHY (Mobile -> Desktop)
+   ───────────────────────────────────────
+
+   H1 Hero Homepage     : 30px -> 48px  (text-3xl -> text-5xl)
+   H1 Internal pages    : 24px -> 48px  (.page-title)
+   H2 Homepage sections : 24px -> 36px  (.section-title-lg)
+   H2 Cards/Forms       : 20px -> 24px  (.section-title)
+   H3 Homepage items    : 20px -> 24px  (.item-title)
+   H3 Dashboard cards   : 20px -> 24px  (.card-title)
+
+   ======================================== */
+
+@layer components {
+  .page-title {
+    @apply text-2xl md:text-5xl font-bold text-black mb-3;
+  }
+
+  .page-subtitle {
+    @apply text-lg md:text-xl text-gray-600;
+  }
+
+  .section-title-lg {
+    @apply text-2xl md:text-4xl font-bold mt-4;
+  }
+
+  .section-title {
+    @apply text-xl md:text-2xl font-bold mb-4;
+  }
+
+  .body-text {
+    @apply text-gray-700 leading-relaxed;
+  }
+
+  .body-text-lg {
+    @apply text-lg leading-relaxed text-gray-700;
+  }
+
+  .form-title {
+    @apply text-3xl md:text-4xl font-bold mb-6;
+  }
+
+  .item-title {
+    @apply text-xl md:text-2xl font-semibold mt-2;
+  }
+
+  .card-title {
+    @apply font-bold text-xl md:text-2xl mt-6;
+  }
+}
+
+/* Gradient animation */
+.background-animate {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Page Transitions */
+.page-enter-active,
+.page-leave-active,
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 0.4s ease-in-out;
+}
+
+.page-enter-from,
+.page-leave-to,
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+}
