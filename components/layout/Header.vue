@@ -4,8 +4,8 @@
     <header class="transition-all duration-500" :class="scrolled ? 'bg-transparent' : 'bg-cream'">
       <div class="px-10 pt-4 transition-all duration-500" :class="scrolled ? 'pb-2' : 'pb-4'">
         <div
-          class="rounded-full border-2 border-dark/10 px-8 transition-all duration-500"
-          :class="scrolled ? 'py-2 bg-cream/90 backdrop-blur-md' : 'py-4'"
+          class="rounded-full transition-all duration-500"
+          :class="scrolled ? 'py-2 px-12 bg-cream/90 backdrop-blur-md border-2 border-dark/10' : 'py-4 px-8 border-2 border-transparent'"
         >
         <!-- Main nav -->
         <nav class="flex items-center justify-between md:grid md:grid-cols-3">
