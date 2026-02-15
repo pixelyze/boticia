@@ -1,55 +1,31 @@
 <template>
   <div class="sticky top-0 z-50">
-    <!-- Utility bar -->
-    <div class="hidden md:block bg-dark">
-      <div class="container mx-auto px-4 py-1.5 flex items-center justify-between">
-        <!-- Language selector -->
-        <div class="flex items-center gap-3 text-xs text-cream/50">
-          <button
-            v-for="loc in availableLocales"
-            :key="loc.code"
-            @click="switchLocale(loc.code)"
-            class="uppercase tracking-wider transition-colors duration-300"
-            :class="locale === loc.code ? 'text-cream font-semibold' : 'hover:text-cream'"
-          >
-            {{ loc.code }}
-          </button>
-        </div>
-
-        <!-- Mon Espace -->
-        <NuxtLink
-          :to="localePath(user ? '/dashboard' : '/login')"
-          class="text-xs font-semibold uppercase tracking-[0.15em] text-cream hover:text-cream/70 transition-colors"
-        >
-          {{ t("nav.login") }}
-        </NuxtLink>
-      </div>
-    </div>
-
     <!-- Main header -->
-    <header
-      class="bg-cream transition-all duration-500"
-      :class="scrolled ? 'bg-cream/90 backdrop-blur-md shadow-sm' : ''"
-    >
-      <div class="container mx-auto px-4 transition-all duration-500" :class="scrolled ? 'py-3' : 'py-6'">
+    <header class="transition-all duration-500" :class="scrolled ? 'bg-transparent' : 'bg-cream'">
+      <div class="container mx-auto px-4 transition-all duration-500" :class="scrolled ? 'py-2' : 'py-4'">
+        <div
+          class="rounded-full border-2 border-dark/10 px-8 transition-all duration-500"
+          :class="scrolled ? 'py-2 bg-cream/90 backdrop-blur-md' : 'py-4'"
+        >
+        <!-- Main nav -->
         <nav class="flex items-center justify-between md:grid md:grid-cols-3">
           <!-- Left nav -->
           <div class="hidden md:flex items-center gap-8">
             <NuxtLink
               :to="localePath('/pricing')"
-              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark transition-colors"
+              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.weddings") }}
             </NuxtLink>
             <NuxtLink
               :to="localePath('/events')"
-              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark transition-colors"
+              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.events") }}
             </NuxtLink>
             <NuxtLink
               :to="localePath('/workshops')"
-              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark transition-colors"
+              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.workshops") }}
             </NuxtLink>
@@ -60,7 +36,7 @@
             <NuxtLink :to="localePath('/')" class="text-center">
               <span
                 class="font-heading font-medium tracking-tight text-dark transition-all duration-500 block"
-                :class="scrolled ? 'text-2xl md:text-2xl' : 'text-3xl md:text-4xl'"
+                :class="scrolled ? 'text-2xl' : 'text-3xl md:text-4xl'"
               >
                 Boticia
               </span>
@@ -77,7 +53,7 @@
           <div class="hidden md:flex items-center justify-end gap-8">
             <NuxtLink
               :to="localePath('/contact')"
-              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark transition-colors"
+              class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.quote") }}
             </NuxtLink>
@@ -92,6 +68,28 @@
             <IconLucid name="Menu" size="sm" />
           </button>
         </nav>
+        </div>
+
+        <!-- Utility row under pill -->
+        <div class="hidden md:flex items-center justify-between px-8 mt-2">
+          <div class="flex items-center gap-3">
+            <button
+              v-for="loc in availableLocales"
+              :key="loc.code"
+              @click="switchLocale(loc.code)"
+              class="text-xs uppercase tracking-wider transition-colors duration-300"
+              :class="locale === loc.code ? 'text-dark/60 font-semibold' : 'text-dark/30 hover:text-dark/60'"
+            >
+              {{ loc.code }}
+            </button>
+          </div>
+          <NuxtLink
+            :to="localePath(user ? '/dashboard' : '/login')"
+            class="text-xs font-semibold uppercase tracking-[0.15em] text-dark/30 hover:text-dark/60 transition-colors"
+          >
+            {{ t("nav.login") }}
+          </NuxtLink>
+        </div>
       </div>
     </header>
 
