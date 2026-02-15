@@ -37,7 +37,7 @@
                 <img src="/logo-boticia.png" alt="Logo Boticia" class="max-w-full max-h-full object-contain" />
                 <span
                   v-if="selectedLogo === '/logo-boticia.png'"
-                  class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-dark flex items-center justify-center"
+                  class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-dark flex items-center justify-center"
                 >
                   <IconLucid name="Check" size="xs" class="text-cream" />
                 </span>
@@ -57,7 +57,7 @@
                   <img :src="logo.url" :alt="logo.path" class="max-w-full max-h-full object-contain" />
                   <span
                     v-if="selectedLogo === logo.url"
-                    class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-dark flex items-center justify-center"
+                    class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-dark flex items-center justify-center"
                   >
                     <IconLucid name="Check" size="xs" class="text-cream" />
                   </span>
@@ -104,6 +104,38 @@
             <p v-if="uploadSuccess" class="text-green-600 text-sm mt-3">{{ uploadSuccess }}</p>
           </div>
 
+          <!-- Theme color selector -->
+          <div class="mb-10">
+            <h2 class="font-heading text-lg text-dark mb-4">{{ t('dashboard.theme_title') }}</h2>
+            <div class="flex items-center gap-3 flex-wrap">
+              <button
+                v-for="color in themeColors"
+                :key="color.key"
+                @click="selectThemeColor(color)"
+                class="group flex flex-col items-center gap-2"
+              >
+                <div
+                  class="w-14 h-14 rounded-full border-2 transition-all relative"
+                  :style="{ backgroundColor: color.hex }"
+                  :class="selectedTheme?.key === color.key ? 'border-dark' : 'border-dark/15 hover:border-dark/30'"
+                >
+                  <span
+                    v-if="selectedTheme?.key === color.key"
+                    class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-dark flex items-center justify-center"
+                  >
+                    <IconLucid name="Check" size="xs" class="text-cream" />
+                  </span>
+                </div>
+                <span
+                  class="text-xs transition-colors"
+                  :class="selectedTheme?.key === color.key ? 'text-dark font-semibold' : 'text-dark/40 group-hover:text-dark/60'"
+                >
+                  {{ color.name }}
+                </span>
+              </button>
+            </div>
+          </div>
+
           <!-- Content management -->
           <div class="rounded-[2rem] border-2 border-dark/10 overflow-hidden">
             <NuxtLink
@@ -136,6 +168,7 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
+import type { ThemeColor } from "~/composables/useSiteTheme";
 
 definePageMeta({
   ssr: false,
@@ -174,6 +207,26 @@ const userDisplayName = computed(() => {
   const emailPart = user.value.email.split("@")[0];
   return emailPart.charAt(0).toUpperCase() + emailPart.slice(1);
 });
+
+// Theme management
+const { theme: siteTheme, colors: themeColors, setTheme: setSiteTheme } = useSiteTheme();
+const selectedTheme = computed(() => siteTheme.value);
+
+async function selectThemeColor(color: ThemeColor) {
+  setSiteTheme(color);
+  try {
+    await $fetch("/api/cms/config", {
+      method: "POST",
+      body: {
+        key: "site_theme",
+        category: "branding",
+        value: { key: color.key },
+      },
+    });
+  } catch (err) {
+    console.error("Error saving theme:", err);
+  }
+}
 
 // Logo management
 const { setLogo: setSiteLogoGlobal } = useSiteLogo();

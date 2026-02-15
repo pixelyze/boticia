@@ -7,3 +7,8 @@
     </NuxtLayout>
   </div>
 </template>
+
+<script setup>
+// Initialize site theme (loads from CMS config and applies CSS variable)
+useSiteTheme();
+</script>

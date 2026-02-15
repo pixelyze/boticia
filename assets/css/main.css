@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-cream: 250 248 245;
+  }
+
   html {
     font-family: "Source Sans 3", sans-serif;
     background-color: #ffffff;

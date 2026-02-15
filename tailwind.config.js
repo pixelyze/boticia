@@ -11,7 +11,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: "#FAF8F5",
+        cream: "rgb(var(--color-cream) / <alpha-value>)",
         sage: "#8B9D77",
         terracotta: "#C4784B",
         dark: "#2B2B2B",

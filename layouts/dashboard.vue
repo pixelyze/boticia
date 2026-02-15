@@ -2,16 +2,16 @@
   <div class="min-h-screen flex flex-col bg-white selection:bg-fuchsia-300 selection:text-fuchsia-900">
     <!-- Top bar pill -->
     <header class="bg-transparent pt-4 pb-4">
-      <div class="px-10">
-        <div class="rounded-full border-2 border-dark/10 bg-cream px-8 py-4 flex items-center justify-between">
+      <div class="px-4 md:px-10">
+        <div class="rounded-full border-2 border-dark/10 bg-cream px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
           <NuxtLink to="/" class="w-10 h-10 rounded-full border-2 border-dark/10 flex items-center justify-center text-dark/30 hover:text-dark/60 hover:border-dark/30 transition-all">
             <IconLucid name="ArrowLeft" size="sm" />
           </NuxtLink>
           <div class="text-center">
-            <span class="font-heading font-medium text-xl tracking-tight text-dark block">
+            <span class="font-heading font-medium text-base md:text-xl tracking-tight text-dark block">
               {{ $t('common.my_space') }}
             </span>
-            <span v-if="user?.email" class="text-sm text-dark/40">
+            <span v-if="user?.email" class="text-xs md:text-sm text-dark/40 truncate max-w-[140px] md:max-w-none block">
               {{ user.email }}
             </span>
           </div>
