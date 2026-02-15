@@ -5,15 +5,18 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --port 3008",
+    "start:dev": "bash scripts/start-dev.sh",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "emails:compile": "npx tsx server/emails/compile.ts"
   },
   "dependencies": {
+    "@nuxt/content": "^3.11.2",
     "@supabase/supabase-js": "^2.89.0",
     "@types/node": "^22.14.1",
+    "better-sqlite3": "^12.6.2",
     "focus-trap": "^7.6.4",
     "nuxt": "^3.16.2",
     "resend": "^4.3.0",
@@ -24,6 +27,7 @@
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/i18n": "^9.5.3",
+    "@nuxtjs/supabase": "^2.0.3",
     "@nuxtjs/tailwindcss": "^6.13.2",
     "@types/mjml": "^4.7.4",
     "@vueuse/nuxt": "^13.1.0",

@@ -13,6 +13,8 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "nuxt-lucide-icons",
     "@vueuse/nuxt",
+    "@nuxtjs/supabase",
+    "@nuxt/content",
   ],
 
   app: {
@@ -145,6 +147,26 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-04-12",
   devtools: { enabled: true },
 
+  // Supabase configuration
+  supabase: {
+    redirect: false,
+    redirectOptions: {
+      login: "/login",
+      callback: "/confirm",
+      exclude: [],
+    },
+    cookieOptions: {
+      maxAge: 60 * 60 * 24 * 365, // 1 an
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    },
+    clientOptions: {
+      auth: {
+        flowType: "implicit",
+      },
+    },
+  },
+
   // Runtime config for environment variables
   runtimeConfig: {
     // Private (server-side only)
@@ -152,12 +174,13 @@ export default defineNuxtConfig({
     stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     resendApiKey: process.env.RESEND_API_KEY,
     cronSecret: process.env.CRON_SECRET,
+    supabase: {
+      serviceKey: process.env.SUPABASE_SERVICE_KEY,
+    },
     // Public (accessible client-side)
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://yourdomain.com",
       stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
     },
   },
 });

@@ -24,12 +24,12 @@
         <!-- Center logo -->
         <div class="flex flex-col items-center">
           <NuxtLink :to="localePath('/')" class="text-center">
-            <h2
-              class="font-bold tracking-tight text-dark transition-all duration-500"
+            <span
+              class="font-heading font-medium tracking-tight text-dark transition-all duration-500 block"
               :class="scrolled ? 'text-2xl md:text-2xl' : 'text-3xl md:text-4xl'"
             >
               Boticia
-            </h2>
+            </span>
             <p
               class="text-dark/70 transition-all duration-500"
               :class="scrolled ? 'text-xs mt-0.5' : 'text-sm mt-1'"
@@ -66,6 +66,14 @@
               {{ loc.code }}
             </button>
           </div>
+
+          <!-- Mon Espace button -->
+          <NuxtLink
+            :to="localePath(user ? '/dashboard' : '/login')"
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark transition-colors border-2 border-dark px-4 py-2"
+          >
+            {{ t("nav.login") }}
+          </NuxtLink>
         </div>
 
         <!-- Mobile menu button -->
@@ -121,6 +129,15 @@
             {{ loc.code }}
           </button>
         </div>
+
+        <!-- Mon Espace button mobile -->
+        <NuxtLink
+          :to="localePath(user ? '/dashboard' : '/login')"
+          class="text-xs font-semibold uppercase tracking-[0.2em] text-dark border-2 border-dark px-6 py-2 mt-2"
+          @click="mobileMenuOpen = false"
+        >
+          {{ t("nav.login") }}
+        </NuxtLink>
       </div>
     </div>
   </header>
@@ -133,6 +150,7 @@ const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const switchLocalePath = useSwitchLocalePath();
 const router = useRouter();
+const user = useSupabaseUser();
 const mobileMenuOpen = ref(false);
 const scrolled = ref(false);
 

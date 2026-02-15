@@ -17,8 +17,8 @@ export const useSupabase = () => {
       return supabaseClient;
     }
 
-    const url = config.public.supabaseUrl;
-    const key = config.public.supabaseAnonKey;
+    const url = config.public.supabaseUrl || config.public.supabase?.url;
+    const key = config.public.supabaseKey || config.public.supabase?.key;
 
     if (!url || !key) {
       console.error('Variables Supabase manquantes');
