@@ -11,20 +11,21 @@
           />
         </div>
 
+        <!-- Tagline -->
+        <p class="hero-tagline mb-4">
+          {{ $t('hero.tagline') }}
+        </p>
+
         <!-- Title -->
-        <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-dark">
+        <h1 class="hero-title mb-6">
           {{ $t('hero.title') }}
         </h1>
 
         <!-- Subtitle -->
-        <p class="text-lg md:text-xl text-dark/60 max-w-2xl mx-auto">
+        <p class="hero-tagline max-w-2xl mx-auto">
           {{ $t('hero.subtitle') }}
         </p>
       </div>
     </div>
   </section>
 </template>
-
-<script setup>
-const localePath = useLocalePath();
-</script>

@@ -1,10 +1,10 @@
 <template>
-  <section class="py-20 md:py-28 bg-cream">
+  <section class="py-20 md:py-28 bg-white">
     <div class="container mx-auto px-6">
       <!-- Section header -->
       <div class="text-center mb-20">
-        <span class="text-sm uppercase tracking-[0.3em] text-dark/60">{{ $t('process.tagline') }}</span>
-        <h2 class="section-title-lg text-dark">{{ $t('process.title') }}</h2>
+        <span class="section-tagline">{{ $t('process.tagline') }}</span>
+        <h2 class="section-title-lg">{{ $t('process.title') }}</h2>
       </div>
 
       <!-- Steps -->
@@ -14,9 +14,9 @@
           :key="index"
           class="text-center"
         >
-          <span class="font-heading text-5xl md:text-6xl text-terracotta/20">{{ index + 1 }}</span>
-          <h3 class="font-heading text-xl md:text-2xl text-dark mt-4">{{ step.title }}</h3>
-          <p class="text-dark/50 text-sm leading-relaxed mt-4 max-w-xs mx-auto">{{ step.description }}</p>
+          <span class="step-number">{{ index + 1 }}</span>
+          <h3 class="step-title mt-4">{{ step.title }}</h3>
+          <p class="step-description mt-4 max-w-xs mx-auto">{{ step.description }}</p>
         </div>
       </div>
     </div>

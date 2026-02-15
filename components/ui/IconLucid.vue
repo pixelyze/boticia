@@ -93,6 +93,10 @@ import {
   Palette,
   Leaf,
   Minus,
+  Eye,
+  EyeOff,
+  GripVertical,
+  FileText,
 } from "lucide-vue-next";
 
 const icons = {
@@ -170,6 +174,10 @@ const icons = {
   Palette,
   Leaf,
   Minus,
+  Eye,
+  EyeOff,
+  GripVertical,
+  FileText,
 };
 
 const props = defineProps({

@@ -1,10 +1,10 @@
 <template>
-  <section class="py-20 md:py-28 bg-white">
+  <section class="py-20 md:py-28 bg-cream">
     <div class="container mx-auto px-6">
       <!-- Section header -->
       <div class="text-center mb-20">
-        <span class="text-sm uppercase tracking-[0.3em] text-dark/60">{{ $t('features.tagline') }}</span>
-        <h2 class="section-title-lg text-dark">{{ $t('features.title') }}</h2>
+        <span class="section-tagline">{{ $t('features.tagline') }}</span>
+        <h2 class="section-title-lg">{{ $t('features.title') }}</h2>
       </div>
 
       <!-- Features alternating -->
@@ -14,9 +14,9 @@
           :key="index"
           class="max-w-xl"
         >
-          <span class="text-xs uppercase tracking-[0.2em] text-terracotta block mb-3">0{{ index + 1 }}</span>
-          <h3 class="font-heading text-2xl md:text-3xl text-dark leading-snug">{{ feature.title }}</h3>
-          <p class="text-dark/50 text-base leading-relaxed mt-4">{{ feature.description }}</p>
+          <span class="feature-number block mb-3">0{{ index + 1 }}</span>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description mt-4">{{ feature.description }}</p>
         </div>
       </div>
     </div>

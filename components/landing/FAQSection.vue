@@ -3,8 +3,8 @@
     <div class="container mx-auto px-6">
       <!-- Section header -->
       <div class="text-center mb-16">
-        <span class="text-sm uppercase tracking-[0.3em] text-dark/60">{{ $t('faq.tagline') }}</span>
-        <h2 class="section-title-lg text-dark">{{ $t('faq.title') }}</h2>
+        <span class="section-tagline">{{ $t('faq.tagline') }}</span>
+        <h2 class="section-title-lg">{{ $t('faq.title') }}</h2>
       </div>
 
       <!-- FAQ -->

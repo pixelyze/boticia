@@ -17,45 +17,103 @@
    TYPOGRAPHY - Design System
    ========================================
 
-   VISUAL HIERARCHY (Mobile -> Desktop)
+   5 PALIERS DE TAILLE (Mobile -> Desktop)
    ───────────────────────────────────────
+   Display  : 30px -> 60px   (hero h1)
+   Title    : 24px -> 36px   (section h2, feature h3)
+   Subtitle : 18px -> 20px   (sous-titres, descriptions)
+   Body     : 16px -> 18px   (texte courant)
+   Label    : 14px -> 16px   (taglines, numéros)
 
-   H1 Hero Homepage     : 30px -> 48px  (text-3xl -> text-5xl)
-   H1 Internal pages    : 24px -> 48px  (.page-title)
-   H2 Homepage sections : 24px -> 36px  (.section-title-lg)
-   H2 Cards/Forms       : 20px -> 24px  (.section-title)
-   H3 Homepage items    : 20px -> 24px  (.item-title)
-   H3 Dashboard cards   : 20px -> 24px  (.card-title)
-
+   CONTRASTE MINIMUM : text-dark/60
    ======================================== */
 
 @layer components {
-  .page-title {
-    @apply text-2xl md:text-5xl font-bold text-dark mb-3;
+  /* --- Homepage: Hero --- */
+  .hero-tagline {
+    @apply text-sm md:text-base uppercase tracking-[0.3em] text-dark/70;
   }
 
-  .page-subtitle {
-    @apply text-lg md:text-xl text-dark/60;
+  .hero-title {
+    @apply text-3xl md:text-5xl lg:text-6xl font-medium leading-tight text-dark;
+  }
+
+  .hero-subtitle {
+    @apply text-base md:text-xl text-dark/70;
+  }
+
+  /* --- Homepage: Sections --- */
+  .section-tagline {
+    @apply text-sm md:text-base uppercase tracking-[0.3em] text-dark/60;
   }
 
   .section-title-lg {
-    @apply text-2xl md:text-4xl font-bold mt-4;
+    @apply text-2xl md:text-4xl font-medium mt-4 text-dark;
+  }
+
+  /* --- Homepage: Features --- */
+  .feature-number {
+    @apply text-sm uppercase tracking-[0.2em] text-terracotta;
+  }
+
+  .feature-title {
+    @apply font-heading text-2xl md:text-3xl text-dark leading-snug;
+  }
+
+  .feature-description {
+    @apply text-dark/60 text-base md:text-lg leading-relaxed;
+  }
+
+  /* --- Homepage: Process --- */
+  .step-number {
+    @apply font-heading text-5xl md:text-6xl text-terracotta/20;
+  }
+
+  .step-title {
+    @apply font-heading text-xl md:text-2xl text-dark;
+  }
+
+  .step-description {
+    @apply text-dark/60 text-base md:text-lg leading-relaxed;
+  }
+
+  /* --- Homepage: Pricing --- */
+  .plan-name {
+    @apply font-heading text-2xl text-dark;
+  }
+
+  .plan-description {
+    @apply text-dark/60 text-base;
+  }
+
+  .plan-price {
+    @apply font-heading text-xl text-dark;
+  }
+
+  /* --- Internal pages --- */
+  .page-title {
+    @apply text-2xl md:text-5xl font-sans text-dark mb-3;
+  }
+
+  .page-subtitle {
+    @apply text-base md:text-xl text-dark/70;
   }
 
   .section-title {
     @apply text-xl md:text-2xl font-bold mb-4;
   }
 
+  .form-title {
+    @apply text-3xl md:text-4xl font-bold mb-6;
+  }
+
+  /* --- Shared --- */
   .body-text {
     @apply text-dark/70 leading-relaxed;
   }
 
   .body-text-lg {
     @apply text-lg leading-relaxed text-dark/70;
-  }
-
-  .form-title {
-    @apply text-3xl md:text-4xl font-bold mb-6;
   }
 
   .item-title {

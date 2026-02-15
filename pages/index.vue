@@ -6,11 +6,8 @@
     <!-- Pricing -->
     <PricingSection />
 
-    <!-- Block quote -->
-    <BlockQuote
-      :quote="t('hero.quote')"
-      :author="t('hero.quote_author')"
-    />
+    <!-- Intro -->
+    <IntroSection />
 
     <!-- Features -->
     <FeaturesSection />
@@ -18,14 +15,18 @@
     <!-- Process -->
     <ProcessSection />
 
+    <!-- Block quote -->
+    <BlockQuote
+      :quote="$t('hero.quote')"
+      :author="$t('hero.quote_author')"
+    />
+
     <!-- FAQ -->
     <FAQSection />
   </div>
 </template>
 
-<script setup>
-import { useI18n } from 'vue-i18n';
-
+<script setup lang="ts">
 definePageMeta({
   layout: 'homepage',
 });
@@ -33,6 +34,6 @@ definePageMeta({
 const { t } = useI18n();
 
 useHead({
-  title: t('app.name'),
+  title: t('hero.title') + ' — Boticia',
 });
 </script>

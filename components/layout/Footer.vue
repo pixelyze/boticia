@@ -11,7 +11,7 @@
         <span class="font-heading text-2xl text-dark">Boticia</span>
 
         <!-- Description -->
-        <p class="text-dark/50 text-sm leading-relaxed max-w-sm mx-auto mt-4">
+        <p class="text-dark/60 text-base leading-relaxed max-w-sm mx-auto mt-4">
           {{ $t("footer.description") }}
         </p>
 
@@ -21,35 +21,35 @@
             href="https://instagram.com/boticia_"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
           >Instagram</a>
           <a
             href="https://www.linkedin.com/in/la%C3%ABtitia-schaeffer-cr%C3%A9atrice-florale/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
           >LinkedIn</a>
           <a
             href="https://www.facebook.com/BoticiaParis/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
           >Facebook</a>
           <a
             href="https://fr.pinterest.com/Boticia_Paris/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/45 hover:text-dark text-sm border-b border-dark/20 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
           >Pinterest</a>
         </div>
 
         <!-- Legal & Copyright -->
         <div class="mt-16 space-y-2">
-          <div class="flex justify-center gap-6 text-sm">
+          <div class="flex justify-center gap-6 text-base">
             <NuxtLink
               v-if="!isLegalPage"
               :to="localePath('/legal')"
-              class="text-dark/35 hover:text-dark transition-colors duration-300"
+              class="text-dark/50 hover:text-dark transition-colors duration-300"
             >
               {{ $t("footer.legal_link") }}
             </NuxtLink>
@@ -59,7 +59,7 @@
             <NuxtLink
               v-if="!isTermsPage"
               :to="localePath('/terms')"
-              class="text-dark/35 hover:text-dark transition-colors duration-300"
+              class="text-dark/50 hover:text-dark transition-colors duration-300"
             >
               {{ $t("footer.terms_link") }}
             </NuxtLink>
@@ -67,7 +67,7 @@
               {{ $t("footer.terms_link") }}
             </span>
           </div>
-          <p class="text-dark/25 text-sm">
+          <p class="text-dark/40 text-base">
             {{ $t("footer.copyright") }}
           </p>
         </div>
