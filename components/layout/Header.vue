@@ -2,7 +2,7 @@
   <div class="sticky top-0 z-50">
     <!-- Main header -->
     <header class="transition-all duration-500" :class="scrolled ? 'bg-transparent' : 'bg-cream'">
-      <div class="container mx-auto px-4 transition-all duration-500" :class="scrolled ? 'py-2' : 'py-4'">
+      <div class="px-10 pt-4 transition-all duration-500" :class="scrolled ? 'pb-2' : 'pb-4'">
         <div
           class="rounded-full border-2 border-dark/10 px-8 transition-all duration-500"
           :class="scrolled ? 'py-2 bg-cream/90 backdrop-blur-md' : 'py-4'"
@@ -41,8 +41,8 @@
                 Boticia
               </span>
               <p
-                class="text-dark/70 transition-all duration-500"
-                :class="scrolled ? 'text-xs mt-0.5' : 'text-sm mt-1'"
+                class="text-dark/60 transition-all duration-500"
+                :class="scrolled ? 'text-sm mt-0.5' : 'text-base mt-1'"
               >
                 {{ t("app.tagline") }}
               </p>
@@ -72,20 +72,23 @@
 
         <!-- Utility row under pill -->
         <div class="hidden md:flex items-center justify-between px-8 mt-2">
-          <div class="flex items-center gap-3">
+          <!-- Language toggle -->
+          <div class="inline-flex items-center rounded-full p-0.5">
             <button
               v-for="loc in availableLocales"
               :key="loc.code"
               @click="switchLocale(loc.code)"
-              class="text-xs uppercase tracking-wider transition-colors duration-300"
-              :class="locale === loc.code ? 'text-dark/60 font-semibold' : 'text-dark/30 hover:text-dark/60'"
+              class="px-3 py-1.5 text-xs uppercase tracking-wider rounded-full transition-all duration-300"
+              :class="locale === loc.code ? 'bg-dark/10 text-dark font-semibold' : 'text-dark/30 hover:text-dark/60'"
             >
               {{ loc.code }}
             </button>
           </div>
+
+          <!-- Mon Espace -->
           <NuxtLink
             :to="localePath(user ? '/dashboard' : '/login')"
-            class="text-xs font-semibold uppercase tracking-[0.15em] text-dark/30 hover:text-dark/60 transition-colors"
+            class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.15em] text-dark/30 hover:text-dark/60 hover:bg-dark/5 transition-all duration-300"
           >
             {{ t("nav.login") }}
           </NuxtLink>

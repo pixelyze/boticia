@@ -1,8 +1,8 @@
 <template>
-  <section class="relative w-full overflow-hidden">
+  <section class="relative w-full overflow-hidden px-10">
     <!-- Mobile: stacked layout -->
     <div class="md:hidden">
-      <div class="relative h-[70vh]">
+      <div class="relative h-[70vh] rounded-[2rem] overflow-hidden">
         <img
           src="/bouquet_mariee_boticia._1.webp"
           alt="Bouquet de mariée Boticia"
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Desktop: editorial split layout -->
-    <div class="hidden md:grid md:grid-cols-2 min-h-[85vh]">
+    <div class="hidden md:grid md:grid-cols-2 min-h-[85vh] rounded-[2rem] overflow-hidden border-2 border-dark/10">
       <!-- Image side -->
       <div class="relative overflow-hidden">
         <img

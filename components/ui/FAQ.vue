@@ -10,7 +10,7 @@
         @click="toggleItem(index)"
         class="w-full text-left py-6 flex justify-between items-center group"
       >
-        <span class="font-heading text-dark/80 text-base md:text-lg font-normal pr-8 group-hover:text-dark transition-colors duration-300">
+        <span class="font-heading text-dark/80 text-lg md:text-xl font-normal pr-8 group-hover:text-dark transition-colors duration-300">
           {{ item.question }}
         </span>
         <IconLucid
@@ -24,7 +24,7 @@
         v-show="activeIndex === index"
         class="pb-6"
       >
-        <p class="text-dark/55 text-sm md:text-base leading-relaxed max-w-3xl">
+        <p class="text-dark/55 text-base md:text-lg leading-relaxed max-w-3xl">
           {{ item.answer }}
         </p>
       </div>

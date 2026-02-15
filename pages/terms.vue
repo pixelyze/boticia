@@ -11,12 +11,6 @@
         </p>
       </section>
     </div>
-
-    <div class="mt-12">
-      <Button variant="ghost" icon="ArrowLeft" :to="localePath('/')">
-        {{ t("common.back_to_home") }}
-      </Button>
-    </div>
   </div>
 </template>
 
@@ -24,7 +18,10 @@
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-const localePath = useLocalePath();
+
+definePageMeta({
+  layout: 'minimal',
+});
 
 useHead({
   title: t('terms.title'),

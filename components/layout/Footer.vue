@@ -1,12 +1,13 @@
 <template>
-  <footer class="bg-cream text-dark py-24">
-    <div class="container mx-auto px-6">
+  <footer class="bg-white text-dark py-12">
+    <div class="px-10">
+      <div class="bg-cream rounded-[2rem] border-2 border-dark/10 py-20 px-6">
       <div class="max-w-2xl mx-auto text-center">
         <!-- Logo -->
         <NuxtLink v-if="!isHomePage" :to="localePath('/')" aria-label="Back to home">
-          <img src="/logo-boticia.png" alt="Boticia" class="h-24 mx-auto mb-6" />
+          <img :src="logo" alt="Boticia" class="h-24 mx-auto mb-6" />
         </NuxtLink>
-        <img v-else src="/logo-boticia.png" alt="Boticia" class="h-24 mx-auto mb-6" />
+        <img v-else :src="logo" alt="Boticia" class="h-24 mx-auto mb-6" />
 
         <span class="font-heading text-2xl text-dark">Boticia</span>
 
@@ -47,9 +48,19 @@
         <div class="mt-16 space-y-2">
           <div class="flex justify-center gap-6 text-base">
             <NuxtLink
+              v-if="!isAboutPage"
+              :to="localePath('/about')"
+              class="text-dark/60 hover:text-dark transition-colors duration-300"
+            >
+              {{ $t("footer.about_link") }}
+            </NuxtLink>
+            <span v-else class="text-dark/60">
+              {{ $t("footer.about_link") }}
+            </span>
+            <NuxtLink
               v-if="!isLegalPage"
               :to="localePath('/legal')"
-              class="text-dark/50 hover:text-dark transition-colors duration-300"
+              class="text-dark/60 hover:text-dark transition-colors duration-300"
             >
               {{ $t("footer.legal_link") }}
             </NuxtLink>
@@ -59,7 +70,7 @@
             <NuxtLink
               v-if="!isTermsPage"
               :to="localePath('/terms')"
-              class="text-dark/50 hover:text-dark transition-colors duration-300"
+              class="text-dark/60 hover:text-dark transition-colors duration-300"
             >
               {{ $t("footer.terms_link") }}
             </NuxtLink>
@@ -67,10 +78,11 @@
               {{ $t("footer.terms_link") }}
             </span>
           </div>
-          <p class="text-dark/40 text-base">
+          <p class="text-dark/60 text-base">
             {{ $t("footer.copyright") }}
           </p>
         </div>
+      </div>
       </div>
     </div>
   </footer>
@@ -82,8 +94,10 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const localePath = useLocalePath();
 const route = useRoute();
+const { logo } = useSiteLogo();
 
 const isHomePage = computed(() => route.path === '/' || route.path === localePath('/'));
+const isAboutPage = computed(() => route.path.includes('about'));
 const isLegalPage = computed(() => route.path.includes('legal'));
 const isTermsPage = computed(() => route.path.includes('terms'));
 </script>

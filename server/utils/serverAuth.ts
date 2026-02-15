@@ -1,14 +1,7 @@
 import { H3Event, getCookie, getHeader, createError } from 'h3';
-import { createClient, type User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import { isAdmin } from './adminAuth';
-
-function getServerSupabase() {
-  const config = useRuntimeConfig();
-  return createClient(
-    config.public.supabaseUrl as string,
-    config.public.supabaseAnonKey as string
-  );
-}
+import { getSupabase as getServiceSupabase } from './supabase';
 
 /**
  * Get authenticated user from JWT token
@@ -31,7 +24,7 @@ export async function getAuthenticatedUser(event: H3Event): Promise<User | null>
   }
 
   try {
-    const supabase = getServerSupabase();
+    const supabase = getServiceSupabase();
     const { data: { user }, error } = await supabase.auth.getUser(token);
 
     if (error || !user) {

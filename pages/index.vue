@@ -6,6 +6,9 @@
     <!-- Pricing -->
     <PricingSection />
 
+    <!-- Stories -->
+    <StoriesSection />
+
     <!-- Intro -->
     <IntroSection />
 

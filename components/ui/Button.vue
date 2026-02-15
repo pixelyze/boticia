@@ -129,28 +129,21 @@ const layoutClasses = computed(() => {
 });
 
 const buttonClasses = computed(() => [
-  "px-4 py-2 border-2 transition-all inline-flex items-center",
+  "rounded-full border-2 transition-all duration-300 inline-flex items-center",
   layoutClasses.value,
   isFullWidth.value && props.rightIcon && !props.iconOnly && !props.loading ? "" : "gap-2",
   props.variant === "primary"
     ? props.disabled || props.loading
-      ? "bg-cream text-dark/30 border-cream cursor-not-allowed shadow-[2px_2px_0px_0px_rgba(43,43,43,0.1)] translate-x-[2px] translate-y-[2px]"
-      : "bg-dark text-white hover:bg-dark/80 border-dark shadow-[4px_4px_0px_0px_rgba(43,43,43,0.5)] hover:shadow-[2px_2px_0px_0px_rgba(43,43,43,0.5)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
+      ? "bg-dark/30 text-cream border-dark/30 cursor-not-allowed"
+      : "bg-dark text-cream border-dark hover:bg-dark/80"
     : props.variant === "ghost"
       ? props.disabled || props.loading
         ? "text-dark/30 cursor-not-allowed border-transparent bg-transparent"
-        : "text-dark bg-dark/10 border-transparent hover:bg-dark/20 shadow-none"
+        : "text-dark border-transparent hover:bg-dark/5"
       : props.disabled || props.loading
         ? "bg-white text-dark/30 border-dark/10 cursor-not-allowed"
-        : "bg-white text-dark border-dark",
-  !props.disabled && !props.loading && props.variant === "primary"
-    ? ""
-    : !props.disabled && !props.loading && props.variant === "ghost"
-      ? ""
-      : !props.disabled && !props.loading
-        ? "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
-        : "",
-  props.iconOnly ? "p-2" : "px-6 py-3 font-medium",
+        : "bg-white text-dark border-dark/30 hover:border-dark",
+  props.iconOnly ? "p-2 rounded-full" : "px-8 py-3 font-medium",
   attrs.class,
 ]);
 

@@ -1,135 +1,135 @@
 <template>
-  <div class="flex-1 flex flex-col bg-gray-50">
-    <!-- Breadcrumb (hidden on login page) -->
-    <div v-if="isAuthenticated && currentUser" class="bg-gray-50 border-b border-gray-200">
-      <Breadcrumb :items="breadcrumbItems" />
-    </div>
-
+  <div class="flex-1 flex flex-col bg-white">
     <!-- Loading -->
-    <div v-if="isCheckingAuth" class="py-12 md:py-16">
-      <div class="container mx-auto px-6">
-        <div class="max-w-4xl mx-auto animate-pulse">
+    <div v-if="!user" class="py-12 md:py-16">
+      <div class="px-10">
+        <div class="animate-pulse">
           <div class="h-7 bg-gray-200 rounded w-48 mb-2"></div>
           <div class="h-4 bg-gray-100 rounded w-32 mb-8"></div>
           <div class="space-y-4">
-            <div class="h-32 bg-gray-200 rounded"></div>
-            <div class="h-32 bg-gray-200 rounded"></div>
+            <div class="h-32 bg-gray-200 rounded-[2rem]"></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Authenticated dashboard -->
-    <template v-else-if="isAuthenticated && currentUser">
+    <template v-else>
       <section class="py-12 md:py-16">
-        <div class="container mx-auto px-6">
-          <div class="max-w-2xl mx-auto">
-            <!-- Welcome -->
-            <div class="mb-8">
-              <h1 class="text-2xl md:text-3xl font-bold">
-                {{ greeting }}, {{ userDisplayName }}
-              </h1>
-              <p class="text-gray-600 mt-1">{{ currentUser.email }}</p>
-            </div>
+        <div class="px-10">
+          <!-- Welcome -->
+          <div class="mb-10">
+            <h1 class="text-2xl md:text-3xl font-bold">
+              {{ greeting }}, {{ userDisplayName }}
+            </h1>
+          </div>
 
-            <!-- Items list -->
-            <div v-if="isLoadingItems" class="text-center py-8">
-              <p class="text-gray-500">{{ t("dashboard.loading") }}...</p>
-            </div>
+          <!-- Logo selector -->
+          <div class="mb-10">
+            <h2 class="font-heading text-lg text-dark mb-4">{{ t('dashboard.logo_title') }}</h2>
+            <div class="flex items-center gap-4 flex-wrap">
+              <!-- Default logo -->
+              <button
+                @click="selectLogo('/logo-boticia.png')"
+                class="w-28 h-28 rounded-[1.5rem] border-2 bg-cream flex items-center justify-center p-3 relative transition-all"
+                :class="selectedLogo === '/logo-boticia.png' ? 'border-dark' : 'border-dark/15 hover:border-dark/30'"
+              >
+                <img src="/logo-boticia.png" alt="Logo Boticia" class="max-w-full max-h-full object-contain" />
+                <span
+                  v-if="selectedLogo === '/logo-boticia.png'"
+                  class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-dark flex items-center justify-center"
+                >
+                  <IconLucid name="Check" size="xs" class="text-cream" />
+                </span>
+              </button>
 
-            <div v-else-if="items.length === 0" class="text-center py-16">
-              <StatusIcon type="info" class="mx-auto mb-6" />
-              <h2 class="text-xl font-bold mb-2">{{ t("dashboard.empty_title") }}</h2>
-              <p class="text-gray-600 mb-8">{{ t("dashboard.empty_message") }}</p>
-              <Button variant="primary" :to="localePath('/')">
-                {{ t("dashboard.browse") }}
-              </Button>
-            </div>
+              <!-- Uploaded logos -->
+              <div
+                v-for="logo in uploadedLogos"
+                :key="logo.path"
+                class="relative group"
+              >
+                <button
+                  @click="selectLogo(logo.url)"
+                  class="w-28 h-28 rounded-[1.5rem] border-2 bg-cream flex items-center justify-center p-3 transition-all"
+                  :class="selectedLogo === logo.url ? 'border-dark' : 'border-dark/15 hover:border-dark/30'"
+                >
+                  <img :src="logo.url" :alt="logo.path" class="max-w-full max-h-full object-contain" />
+                  <span
+                    v-if="selectedLogo === logo.url"
+                    class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-dark flex items-center justify-center"
+                  >
+                    <IconLucid name="Check" size="xs" class="text-cream" />
+                  </span>
+                </button>
+                <!-- Delete button -->
+                <button
+                  @click="deleteLogo(logo.path)"
+                  class="absolute -top-2 -left-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <IconLucid name="X" size="xs" class="text-white" />
+                </button>
+              </div>
 
-            <div v-else class="space-y-6">
-              <ItemCard
-                v-for="item in items"
-                :key="item.id"
-                :title="item.title"
-                :status="item.status"
-                :status-label="t(`dashboard.status_${item.status}`)"
-                :amount="formatAmount(item.amount_cents)"
-                :date="formatDate(item.created_at)"
+              <!-- Upload slot -->
+              <button
+                v-if="uploadedLogos.length < 3"
+                @click="triggerUpload"
+                :disabled="uploading"
+                class="w-28 h-28 rounded-[1.5rem] border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all"
+                :class="uploading ? 'border-dark/30 bg-cream/50' : 'border-dark/15 text-dark/20 hover:border-dark/30 hover:text-dark/40'"
+              >
+                <template v-if="!uploading">
+                  <IconLucid name="Plus" size="sm" />
+                  <span class="text-xs">Upload</span>
+                </template>
+                <template v-else>
+                  <div class="w-6 h-6 border-2 border-dark/20 border-t-dark/60 rounded-full animate-spin"></div>
+                  <span class="text-xs text-dark/40">Envoi...</span>
+                </template>
+              </button>
+
+              <!-- Hidden file input -->
+              <input
+                ref="fileInput"
+                type="file"
+                accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                class="hidden"
+                @change="handleUpload"
               />
             </div>
 
-            <!-- Sign out & back -->
-            <div class="mt-12 flex items-center justify-between">
-              <Button variant="ghost" icon="ArrowLeft" :to="localePath('/')">
-                {{ t("common.back_to_home") }}
-              </Button>
-              <Button variant="ghost" icon="LogOut" @click="handleSignOut">
-                {{ t("dashboard.sign_out") }}
-              </Button>
-            </div>
+            <!-- Status message -->
+            <p v-if="uploadError" class="text-red-500 text-sm mt-3">{{ uploadError }}</p>
+            <p v-if="uploadSuccess" class="text-green-600 text-sm mt-3">{{ uploadSuccess }}</p>
+          </div>
+
+          <!-- Content management -->
+          <div class="rounded-[2rem] border-2 border-dark/10 overflow-hidden">
+            <NuxtLink
+              v-for="(page, i) in contentPages"
+              :key="page.key"
+              :to="localePath(page.to)"
+              class="flex items-center justify-between px-8 py-6 transition-colors hover:bg-cream/50 group"
+              :class="i < contentPages.length - 1 ? 'border-b-2 border-dark/10' : ''"
+            >
+              <div>
+                <span class="font-heading text-lg text-dark block">
+                  {{ t(page.key) }}
+                </span>
+                <span class="text-sm text-dark/40">
+                  {{ t(page.descKey) }}
+                </span>
+              </div>
+              <IconLucid
+                name="ChevronRight"
+                size="sm"
+                class="text-dark/20 group-hover:text-dark/50 transition-colors"
+              />
+            </NuxtLink>
           </div>
         </div>
       </section>
-    </template>
-
-    <!-- Login form -->
-    <template v-else>
-      <div class="flex-1 flex items-center justify-center px-6 py-12">
-        <div class="max-w-md w-full">
-          <!-- Magic link sent -->
-          <div v-if="magicLinkSent" class="text-center">
-            <StatusIcon type="success" class="mb-8" />
-            <h1 class="form-title mb-4">{{ t("auth.magic_link_sent_title") }}</h1>
-            <p class="text-lg md:text-xl text-gray-700 mb-8">
-              {{ t("auth.magic_link_sent_message", { email: submittedEmail }) }}
-            </p>
-            <div class="p-4 bg-gray-100 border-l-4 border-black text-left">
-              <p class="text-sm text-gray-700">
-                {{ t("auth.magic_link_hint") }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Email form -->
-          <div v-else>
-            <h1 class="form-title mb-8">{{ t("auth.form_title") }}</h1>
-
-            <form @submit.prevent="handleSubmit">
-              <Input
-                v-model="email"
-                type="email"
-                :label="t('auth.email_label')"
-                :placeholder="t('auth.email_placeholder')"
-                :error="error"
-                required
-                @input="error = ''"
-              />
-
-              <InfoNote class="mt-4 mb-6">
-                {{ t("auth.email_hint") }}
-              </InfoNote>
-
-              <Button
-                type="submit"
-                variant="primary"
-                :loading="isSubmitting"
-                rightIcon="MoveRight"
-                class="w-full"
-                :disabled="!email.trim()"
-              >
-                {{ t("auth.send_magic_link") }}
-              </Button>
-            </form>
-          </div>
-
-          <!-- Back -->
-          <div class="mt-8">
-            <Button variant="ghost" icon="ArrowLeft" :to="localePath('/')">
-              {{ t("common.back_to_home") }}
-            </Button>
-          </div>
-        </div>
-      </div>
     </template>
   </div>
 </template>
@@ -137,33 +137,29 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 
-interface AuthUser {
-  id: string;
-  email?: string;
-}
-
 definePageMeta({
   ssr: false,
   layout: 'dashboard'
 });
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const localePath = useLocalePath();
+const user = useSupabaseUser();
+const router = useRouter();
 
-const breadcrumbItems = computed(() => [
-  { label: t("common.home"), path: "/" },
-  { label: t("dashboard.breadcrumb"), path: "/dashboard" },
-]);
+const contentPages = [
+  { key: "dashboard.page_home", descKey: "dashboard.page_home_desc", to: "/dashboard" },
+  { key: "dashboard.page_weddings", descKey: "dashboard.page_weddings_desc", to: "/dashboard" },
+  { key: "dashboard.page_events", descKey: "dashboard.page_events_desc", to: "/dashboard" },
+  { key: "dashboard.page_workshops", descKey: "dashboard.page_workshops_desc", to: "/dashboard" },
+];
 
-// Auth state
-const isCheckingAuth = ref(true);
-const isAuthenticated = ref(false);
-const currentUser = ref<AuthUser | null>(null);
-const { getClient: getSupabase } = useSupabase();
-
-// Items
-const items = ref<any[]>([]);
-const isLoadingItems = ref(false);
+// Redirect to login if not authenticated
+watch(user, (val) => {
+  if (val === null) {
+    router.push(localePath('/login'));
+  }
+}, { immediate: true });
 
 // Greeting
 const greeting = computed(() => {
@@ -173,148 +169,122 @@ const greeting = computed(() => {
   return t("dashboard.greeting_evening");
 });
 
-const userFirstName = ref<string | null>(null);
-
 const userDisplayName = computed(() => {
-  if (userFirstName.value) return userFirstName.value;
-  if (!currentUser.value?.email) return "";
-  const emailPart = currentUser.value.email.split("@")[0];
+  if (!user.value?.email) return "";
+  const emailPart = user.value.email.split("@")[0];
   return emailPart.charAt(0).toUpperCase() + emailPart.slice(1);
 });
 
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString(undefined, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
-};
+// Logo management
+const { setLogo: setSiteLogoGlobal } = useSiteLogo();
+const fileInput = ref<HTMLInputElement | null>(null);
+const uploading = ref(false);
+const uploadError = ref("");
+const uploadSuccess = ref("");
+const selectedLogo = ref("/logo-boticia.png");
+const uploadedLogos = ref<{ path: string; url: string }[]>([]);
 
-const formatAmount = (cents: number): string => {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-  }).format(cents / 100);
-};
-
-// Load items
-const loadItems = async () => {
-  if (!currentUser.value?.email) return;
-
-  isLoadingItems.value = true;
-  try {
-    const response = await $fetch<{ items: any[] }>(
-      `/api/user/items?email=${encodeURIComponent(currentUser.value.email)}`
-    );
-    items.value = response.items || [];
-  } catch (err) {
-    console.error("Error loading items:", err);
-    items.value = [];
-  } finally {
-    isLoadingItems.value = false;
-  }
-};
-
-// Check auth on mount
+// Load logos and selected config on mount
 onMounted(async () => {
-  try {
-    const supabase = getSupabase();
-    if (!supabase) {
-      isCheckingAuth.value = false;
-      return;
-    }
-
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (session?.user) {
-      isAuthenticated.value = true;
-      currentUser.value = session.user;
-
-      try {
-        const roleResponse = await $fetch<{ isAdmin: boolean; fullName: string | null }>(
-          `/api/user/role?email=${encodeURIComponent(session.user.email || '')}`
-        );
-        if (roleResponse.fullName) {
-          userFirstName.value = roleResponse.fullName.split(' ')[0];
-        }
-      } catch (err) {
-        console.error("Error checking role:", err);
-      }
-
-      await loadItems();
-    }
-  } catch (err) {
-    console.error("Error checking auth:", err);
-  } finally {
-    isCheckingAuth.value = false;
-  }
+  await fetchLogos();
+  await fetchSelectedLogo();
 });
 
-// Login form state
-const email = ref("");
-const error = ref("");
-const isSubmitting = ref(false);
-const magicLinkSent = ref(false);
-const submittedEmail = ref("");
-
-const handleSubmit = async () => {
-  const emailValue = email.value.trim().toLowerCase();
-
-  if (!emailValue) {
-    error.value = t("auth.email_required");
-    return;
-  }
-
-  isSubmitting.value = true;
-  error.value = "";
-
+async function fetchLogos() {
   try {
-    const supabase = getSupabase();
-    if (!supabase) {
-      error.value = t("auth.magic_link_error");
-      return;
+    const { data } = await $fetch<{ data: { path: string; url: string }[] }>("/api/cms/logos");
+    uploadedLogos.value = data || [];
+  } catch {
+    // No logos yet
+  }
+}
+
+async function fetchSelectedLogo() {
+  try {
+    const { data } = await $fetch<{ data: { value: any } }>("/api/cms/config", {
+      params: { key: "site_logo" },
+    });
+    if (data?.value?.url) {
+      selectedLogo.value = data.value.url;
     }
+  } catch {
+    // Default logo
+  }
+}
 
-    const redirectUrl = `${window.location.origin}/${locale.value}/dashboard/callback`;
-
-    const { error: authError } = await supabase.auth.signInWithOtp({
-      email: emailValue,
-      options: {
-        emailRedirectTo: redirectUrl,
-        shouldCreateUser: false,
+async function selectLogo(url: string) {
+  selectedLogo.value = url;
+  setSiteLogoGlobal(url);
+  try {
+    await $fetch("/api/cms/config", {
+      method: "POST",
+      body: {
+        key: "site_logo",
+        category: "branding",
+        value: { url },
       },
     });
-
-    if (authError) {
-      if (authError.message.includes("Signups not allowed") || authError.status === 400) {
-        error.value = t("auth.email_not_found");
-      } else {
-        error.value = t("auth.magic_link_error");
-      }
-      return;
-    }
-
-    submittedEmail.value = emailValue;
-    magicLinkSent.value = true;
   } catch (err) {
-    console.error("Error:", err);
-    error.value = t("auth.magic_link_error");
-  } finally {
-    isSubmitting.value = false;
+    console.error("Error saving logo selection:", err);
   }
-};
+}
 
-// Sign out
-const handleSignOut = async () => {
-  const supabase = getSupabase();
-  if (!supabase) return;
+function triggerUpload() {
+  fileInput.value?.click();
+}
 
-  await supabase.auth.signOut();
-  isAuthenticated.value = false;
-  currentUser.value = null;
-  items.value = [];
-};
+async function handleUpload(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+
+  uploading.value = true;
+  uploadError.value = "";
+  uploadSuccess.value = "";
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const result = await $fetch<{ success: boolean; data: { path: string; url: string } }>("/api/cms/logos/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (result?.data) {
+      uploadedLogos.value.push(result.data);
+      await selectLogo(result.data.url);
+      uploadSuccess.value = "Logo uploadé avec succès";
+      setTimeout(() => { uploadSuccess.value = ""; }, 3000);
+    }
+  } catch (err: any) {
+    console.error("Error uploading logo:", err);
+    uploadError.value = err?.data?.message || err?.message || "Erreur lors de l'upload";
+    setTimeout(() => { uploadError.value = ""; }, 5000);
+  } finally {
+    uploading.value = false;
+    input.value = "";
+  }
+}
+
+async function deleteLogo(path: string) {
+  const logo = uploadedLogos.value.find((l) => l.path === path);
+
+  try {
+    await $fetch(`/api/cms/logos/${encodeURIComponent(path)}`, {
+      method: "DELETE",
+    });
+
+    uploadedLogos.value = uploadedLogos.value.filter((l) => l.path !== path);
+
+    // If deleted logo was selected, revert to default
+    if (logo && selectedLogo.value === logo.url) {
+      await selectLogo("/logo-boticia.png");
+    }
+  } catch (err) {
+    console.error("Error deleting logo:", err);
+  }
+}
 
 useHead({
   title: t("dashboard.page_title"),
