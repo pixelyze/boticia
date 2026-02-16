@@ -44,8 +44,8 @@
           >Pinterest</a>
         </div>
 
-        <!-- Legal & Copyright -->
-        <div class="mt-16 space-y-2">
+        <!-- Legal links -->
+        <div class="mt-16">
           <div class="flex justify-center gap-6 text-base">
             <NuxtLink
               v-if="!isAboutPage"
@@ -78,12 +78,14 @@
               {{ $t("footer.terms_link") }}
             </span>
           </div>
-          <p class="text-dark/60 text-base">
-            {{ $t("footer.copyright") }}
-          </p>
         </div>
       </div>
       </div>
+
+      <!-- Copyright outside colored block -->
+      <p class="text-dark/30 text-sm text-center mt-6">
+        {{ $t("footer.copyright") }}
+      </p>
     </div>
   </footer>
 </template>

@@ -3,7 +3,7 @@
  * Ajoute automatiquement le token JWT Supabase aux requêtes
  */
 export const useAdminFetch = () => {
-  const { getClient } = useSupabaseAuth();
+  const client = useSupabaseClient();
 
   /**
    * Fetch avec authentification admin
@@ -13,12 +13,6 @@ export const useAdminFetch = () => {
     url: string,
     options: Parameters<typeof $fetch>[1] = {}
   ): Promise<T> => {
-    const client = getClient();
-
-    if (!client) {
-      throw new Error('Client Supabase non disponible');
-    }
-
     // Récupérer la session et le token
     const { data: { session } } = await client.auth.getSession();
 

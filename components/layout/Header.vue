@@ -52,7 +52,7 @@
           <!-- Right nav -->
           <div class="hidden md:flex items-center justify-end gap-8">
             <NuxtLink
-              :to="localePath('/contact')"
+              :to="localePath('/devis')"
               class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.quote") }}
@@ -144,7 +144,7 @@
 
             <!-- CTA : Demander un devis -->
             <NuxtLink
-              :to="localePath('/contact')"
+              :to="localePath('/devis')"
               class="block w-full border-2 border-dark bg-dark px-6 py-5 text-base font-semibold uppercase tracking-[0.2em] text-cream text-center transition-all active:translate-x-1 active:translate-y-1 active:shadow-none mt-2"
               :class="mobileMenuVisible ? 'opacity-100 translate-y-0 shadow-[4px_4px_0px_0px_rgba(43,43,43,0.5)]' : 'opacity-0 translate-y-4'"
               :style="{ transitionDelay: `${navLinks.length * 50}ms` }"
