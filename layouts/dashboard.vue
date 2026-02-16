@@ -202,12 +202,12 @@ async function selectThemeColor(color: ThemeColor) {
 }
 
 // Logo management
-const { setLogo: setSiteLogoGlobal } = useSiteLogo();
+const { logo: siteLogoRef, setLogo: setSiteLogoGlobal } = useSiteLogo();
 const fileInput = ref<HTMLInputElement | null>(null);
 const uploading = ref(false);
 const uploadError = ref("");
 const uploadSuccess = ref("");
-const selectedLogo = ref("/logo-boticia.png");
+const selectedLogo = ref(siteLogoRef.value);
 const uploadedLogos = ref<{ path: string; url: string }[]>([]);
 
 onMounted(async () => {

@@ -26,13 +26,26 @@ function hexToRgb(hex: string): string {
   return `${r} ${g} ${b}`;
 }
 
-function applyTheme(color: ThemeColor) {
-  if (import.meta.client) {
-    document.documentElement.style.setProperty("--color-cream", hexToRgb(color.hex));
-  }
-}
-
 export const useSiteTheme = () => {
+  const cookie = useCookie("boticia_theme", {
+    default: () => DEFAULT_COLOR.key,
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  const found = THEME_COLORS.find((c) => c.key === cookie.value);
+  if (found && found.key !== siteTheme.value.key) {
+    siteTheme.value = found;
+  }
+
+  // Inject CSS variable via useHead — works on both SSR and client
+  useHead({
+    htmlAttrs: {
+      style: computed(
+        () => `--color-cream: ${hexToRgb(siteTheme.value.hex)};`
+      ),
+    },
+  });
+
   if (!fetched && import.meta.client) {
     fetched = true;
     $fetch<{ data: { value: { key: string } } }>("/api/cms/config", {
@@ -40,10 +53,12 @@ export const useSiteTheme = () => {
     })
       .then((res) => {
         if (res?.data?.value?.key) {
-          const found = THEME_COLORS.find((c) => c.key === res.data.value.key);
+          const found = THEME_COLORS.find(
+            (c) => c.key === res.data.value.key
+          );
           if (found) {
             siteTheme.value = found;
-            applyTheme(found);
+            cookie.value = found.key;
           }
         }
       })
@@ -54,7 +69,7 @@ export const useSiteTheme = () => {
 
   const setTheme = (color: ThemeColor) => {
     siteTheme.value = color;
-    applyTheme(color);
+    cookie.value = color.key;
   };
 
   return {

@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky top-0 z-50">
+  <div class="fixed top-0 left-0 right-0 z-50">
     <!-- Main header -->
     <header class="transition-all duration-500" :class="scrolled ? 'bg-transparent' : 'bg-cream'">
       <div class="px-4 md:px-10 pt-4 transition-all duration-500" :class="scrolled ? 'pb-2' : 'pb-4'">

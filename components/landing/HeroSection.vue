@@ -1,6 +1,6 @@
 <template>
-  <section class="bg-cream overflow-hidden min-h-screen flex items-start">
-    <div class="container mx-auto px-6 pt-4 md:pt-8">
+  <section class="bg-cream overflow-hidden h-screen max-h-[900px] flex items-center">
+    <div class="container mx-auto px-6">
       <div class="max-w-3xl mx-auto text-center">
         <!-- Logo -->
         <div class="flex justify-center mb-6 md:mb-10">
