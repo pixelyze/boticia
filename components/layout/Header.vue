@@ -1,7 +1,7 @@
 <template>
-  <div class="fixed top-0 left-0 right-0 z-50">
+  <div class="sticky top-0 z-50">
     <!-- Main header -->
-    <header class="transition-all duration-500" :class="scrolled ? 'bg-transparent' : 'bg-cream'">
+    <header class="transition-all duration-500" :class="scrolled ? 'bg-transparent' : 'bg-cream-light'">
       <div class="px-4 md:px-10 pt-4 transition-all duration-500" :class="scrolled ? 'pb-2' : 'pb-4'">
         <div
           class="rounded-full transition-all duration-500"
@@ -50,12 +50,18 @@
           </div>
 
           <!-- Right nav -->
-          <div class="hidden md:flex items-center justify-end gap-8">
+          <div class="hidden md:flex items-center justify-end gap-4">
             <NuxtLink
               :to="localePath('/devis')"
               class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.quote") }}
+            </NuxtLink>
+            <NuxtLink
+              :to="localePath(userSpaceRoute)"
+              class="px-5 py-2 rounded-full border-2 border-transparent bg-dark/10 text-xs font-semibold uppercase tracking-[0.15em] text-dark hover:bg-dark/15 transition-all"
+            >
+              {{ t("nav.login") }}
             </NuxtLink>
           </div>
 
@@ -85,13 +91,6 @@
             </button>
           </div>
 
-          <!-- Mon Espace -->
-          <NuxtLink
-            :to="localePath(user ? '/dashboard' : '/login')"
-            class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.15em] text-dark/30 hover:text-dark/60 hover:bg-dark/5 transition-all duration-300"
-          >
-            {{ t("nav.login") }}
-          </NuxtLink>
         </div>
       </div>
     </header>
@@ -158,7 +157,7 @@
           <div class="absolute bottom-0 left-0 right-0 px-6 pb-10">
             <!-- Mon Espace -->
             <NuxtLink
-              :to="localePath(user ? '/dashboard' : '/login')"
+              :to="localePath(userSpaceRoute)"
               class="block w-full border-2 border-dark/20 bg-cream px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-dark text-center transition-all"
               @click="closeMobileMenu"
             >
@@ -192,6 +191,34 @@ const localePath = useLocalePath();
 const switchLocalePath = useSwitchLocalePath();
 const router = useRouter();
 const user = useSupabaseUser();
+const userRole = ref("");
+
+watch(
+  user,
+  async (u) => {
+    if (u?.email) {
+      try {
+        const data = await $fetch("/api/user/role", {
+          params: { email: u.email },
+        });
+        userRole.value = data.role;
+      } catch {
+        userRole.value = "";
+      }
+    } else {
+      userRole.value = "";
+    }
+  },
+  { immediate: true }
+);
+
+const userSpaceRoute = computed(() => {
+  if (!user.value) return "/login";
+  if (userRole.value === "admin") return "/dashboard";
+  if (userRole.value === "client") return "/mon-projet";
+  return "/login";
+});
+
 const mobileMenuOpen = ref(false);
 const mobileMenuVisible = ref(false);
 const scrolled = ref(false);

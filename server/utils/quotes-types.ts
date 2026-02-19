@@ -11,7 +11,8 @@ export type QuoteRequestStatus =
   | "contacted"
   | "quote_sent"
   | "signed"
-  | "completed";
+  | "completed"
+  | "cancelled";
 
 export type BudgetRange =
   | "lt_2500"
@@ -46,8 +47,12 @@ export interface QuoteRequest {
   venue?: string;
   budget?: BudgetRange;
   floral_needs: FloralNeedKey[];
+  meeting_date?: string;
+  meeting_time?: string;
   status: QuoteRequestStatus;
   admin_notes?: string;
+  portal_enabled: boolean;
+  moodboard_note?: string;
   locale: string;
   created_at: string;
   updated_at: string;
@@ -62,10 +67,14 @@ export interface CreateQuoteRequestInput {
   venue?: string;
   budget?: BudgetRange;
   floral_needs: FloralNeedKey[];
+  meeting_date?: string;
+  meeting_time?: string;
   locale?: string;
 }
 
 export interface UpdateQuoteRequestInput {
   status?: QuoteRequestStatus;
   admin_notes?: string;
+  portal_enabled?: boolean;
+  moodboard_note?: string;
 }

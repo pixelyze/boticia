@@ -2,6 +2,8 @@ import { H3Event, getCookie, getHeader, createError } from 'h3';
 import type { User } from '@supabase/supabase-js';
 import { isAdmin } from './adminAuth';
 import { getSupabase as getServiceSupabase } from './supabase';
+import { getQuoteByClientEmail } from './client-portal';
+import type { QuoteRequest } from './quotes-types';
 
 /**
  * Get authenticated user from JWT token
@@ -70,6 +72,29 @@ export async function requireAdmin(event: H3Event): Promise<User> {
   }
 
   return user;
+}
+
+/**
+ * Middleware: Require client access
+ * Verifies the user has a quote_request with portal_enabled
+ */
+export async function requireClient(
+  event: H3Event
+): Promise<{ user: User; quoteRequest: QuoteRequest }> {
+  const user = await requireAuth(event);
+
+  const quoteRequest = await getQuoteByClientEmail(
+    user.email || ""
+  );
+
+  if (!quoteRequest) {
+    throw createError({
+      statusCode: 403,
+      message: "Client access required",
+    });
+  }
+
+  return { user, quoteRequest };
 }
 
 /**

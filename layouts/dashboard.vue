@@ -4,21 +4,24 @@
     <header class="bg-transparent pt-4 pb-4">
       <div class="px-4 md:px-10">
         <div class="rounded-full border-2 border-dark/10 bg-cream px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
-          <NuxtLink to="/" class="w-10 h-10 rounded-full border-2 border-dark/10 flex items-center justify-center text-dark/30 hover:text-dark/60 hover:border-dark/30 transition-all">
+          <button v-if="pageTitle" @click="router.back()" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
             <IconLucid name="ArrowLeft" size="sm" />
+          </button>
+          <NuxtLink v-else :to="localePath('/')" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
+            <IconLucid name="Home" size="sm" />
           </NuxtLink>
           <div class="text-center">
             <span class="font-heading font-medium text-base md:text-xl tracking-tight text-dark block">
-              {{ $t('common.my_space') }}
+              {{ pageTitle || $t('common.my_space') }}
             </span>
             <span v-if="user?.email" class="text-xs md:text-sm text-dark/40 truncate max-w-[140px] md:max-w-none block">
-              {{ user.email }}
+              {{ pageTitle ? $t('common.my_space') : user.email }}
             </span>
           </div>
           <!-- Settings button -->
           <button
             @click="menuOpen = true"
-            class="w-10 h-10 rounded-full border-2 border-dark/10 flex items-center justify-center text-dark/30 hover:text-dark/60 hover:border-dark/30 transition-all"
+            class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all"
           >
             <IconLucid name="Settings" size="sm" />
           </button>
@@ -29,7 +32,7 @@
     <main class="flex-1 flex flex-col">
       <slot />
     </main>
-    <Footer />
+    <Footer v-if="!route.params.id" />
 
     <!-- Settings modal -->
     <BaseModal
@@ -151,6 +154,9 @@
         </div>
       </div>
 
+      <!-- Availability -->
+      <AvailabilityManager />
+
       <!-- Sign out -->
       <button
         @click="handleSignOut"
@@ -170,7 +176,9 @@ const user = useSupabaseUser();
 const { getClient: getSupabase } = useSupabase();
 const localePath = useLocalePath();
 const router = useRouter();
+const route = useRoute();
 
+const pageTitle = useState<string | null>("dashboard-page-title", () => null);
 const menuOpen = ref(false);
 
 const handleSignOut = async () => {
@@ -200,6 +208,7 @@ async function selectThemeColor(color: ThemeColor) {
     console.error("Error saving theme:", err);
   }
 }
+
 
 // Logo management
 const { logo: siteLogoRef, setLogo: setSiteLogoGlobal } = useSiteLogo();

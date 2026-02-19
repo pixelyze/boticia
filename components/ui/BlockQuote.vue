@@ -41,7 +41,7 @@
 
       <!-- Quote side -->
       <div
-        class="relative flex items-center bg-cream"
+        class="relative flex items-center bg-cream-light"
       >
         <div class="px-12 lg:px-20 xl:px-28 py-16 max-w-xl">
           <blockquote>

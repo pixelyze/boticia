@@ -141,8 +141,8 @@ const buttonClasses = computed(() => [
         ? "text-dark/30 cursor-not-allowed border-transparent bg-transparent"
         : "text-dark border-transparent hover:bg-dark/5"
       : props.disabled || props.loading
-        ? "bg-white text-dark/30 border-dark/10 cursor-not-allowed"
-        : "bg-white text-dark border-dark/30 hover:border-dark",
+        ? "bg-cream text-dark/30 border-dark/5 cursor-not-allowed"
+        : "bg-cream text-dark/70 border-dark/5 hover:border-dark/15 hover:text-dark",
   props.iconOnly ? "p-2 rounded-full" : "px-8 py-3 font-medium",
   attrs.class,
 ]);

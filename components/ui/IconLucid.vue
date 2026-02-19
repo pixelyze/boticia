@@ -59,8 +59,10 @@ import {
   CreditCard,
   Gift,
   Calendar,
+  CalendarCheck,
   CalendarClock,
   Camera,
+  Phone,
   Shield,
   ShieldCheck,
   Clock,
@@ -97,6 +99,15 @@ import {
   EyeOff,
   GripVertical,
   FileText,
+  Heart,
+  CloudUpload,
+  FileCheck,
+  MessageSquare,
+  CircleDot,
+  Paperclip,
+  Home,
+  NotebookPen,
+  ChevronLeft,
 } from "lucide-vue-next";
 
 const icons = {
@@ -140,8 +151,10 @@ const icons = {
   CreditCard,
   Gift,
   Calendar,
+  CalendarCheck,
   CalendarClock,
   Camera,
+  Phone,
   Shield,
   ShieldCheck,
   Clock,
@@ -178,6 +191,15 @@ const icons = {
   EyeOff,
   GripVertical,
   FileText,
+  Heart,
+  CloudUpload,
+  FileCheck,
+  MessageSquare,
+  CircleDot,
+  Paperclip,
+  Home,
+  NotebookPen,
+  ChevronLeft,
 };
 
 const props = defineProps({

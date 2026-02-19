@@ -17,18 +17,66 @@
             {{ t("quote_form.success_message") }}
           </p>
 
+          <!-- Meeting confirmation -->
+          <div
+            class="mt-8 rounded-2xl border-2 px-6 py-5 text-left"
+            :class="
+              form.meeting_date
+                ? 'border-green-200 bg-green-50'
+                : 'border-dark/10 bg-cream/30'
+            "
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                :class="
+                  form.meeting_date
+                    ? 'bg-green-100'
+                    : 'bg-dark/5'
+                "
+              >
+                <IconLucid
+                  :name="form.meeting_date ? 'CalendarCheck' : 'Phone'"
+                  size="sm"
+                  :class="
+                    form.meeting_date
+                      ? 'text-green-600'
+                      : 'text-dark/40'
+                  "
+                />
+              </div>
+              <p
+                class="text-lg"
+                :class="
+                  form.meeting_date
+                    ? 'text-green-800'
+                    : 'text-dark/60'
+                "
+              >
+                {{
+                  form.meeting_date
+                    ? t("quote_form.success_with_meeting", {
+                        date: formatDisplayDate(form.meeting_date),
+                        time: form.meeting_time || "—",
+                      })
+                    : t("quote_form.success_without_meeting")
+                }}
+              </p>
+            </div>
+          </div>
+
           <!-- Process steps -->
           <div
-            class="mt-14 rounded-[2rem] border-2 border-dark/10 bg-cream/50 px-8 md:px-12 py-10 text-left"
+            class="mt-10 rounded-[2rem] border-2 border-dark/10 bg-cream/50 px-8 md:px-12 py-10 text-left"
           >
-            <div class="space-y-6">
+            <div class="space-y-8">
               <div
                 v-for="(step, i) in successSteps"
                 :key="i"
-                class="flex items-center gap-5"
+                class="flex gap-5"
               >
                 <span
-                  class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-heading shrink-0"
+                  class="w-11 h-11 rounded-full flex items-center justify-center text-base font-heading leading-none shrink-0"
                   :class="
                     i === 0
                       ? 'bg-terracotta/15 text-terracotta font-bold'
@@ -37,7 +85,14 @@
                 >
                   {{ i + 1 }}
                 </span>
-                <span class="text-dark/70 text-lg">{{ step }}</span>
+                <div>
+                  <span class="text-dark font-medium text-lg block">
+                    {{ step.title }}
+                  </span>
+                  <span class="text-fuchsia-500 text-base mt-1 block">
+                    {{ step.desc }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -53,34 +108,91 @@
 
     <!-- Form -->
     <template v-else>
-      <!-- Hero -->
-      <section class="pt-10 pb-12 bg-white">
-        <div class="container mx-auto px-6 text-center">
-          <span class="section-tagline">
-            {{ t("quote_form.tagline") }}
-          </span>
-          <h1 class="section-title-lg">
-            {{ t("quote_form.title") }}
-          </h1>
-          <p class="text-dark/60 text-lg md:text-xl mt-4 max-w-xl mx-auto">
-            {{ t("quote_form.subtitle") }}
-          </p>
-        </div>
-      </section>
+      <!-- Chat conversational form -->
+      <section class="pt-10 md:pt-16 pb-16 md:pb-20 bg-white">
+        <div class="container mx-auto px-6 md:pl-16 max-w-2xl">
+          <!-- Chat messages container -->
+          <div
+            ref="chatContainer"
+            class="space-y-6 mb-8"
+          >
+            <div
+              v-for="msg in chatMessages"
+              :key="msg.id"
+              :class="
+                msg.type === 'bot'
+                  ? 'flex gap-3 items-start'
+                  : 'flex justify-end'
+              "
+            >
+              <!-- Bot message -->
+              <template v-if="msg.type === 'bot'">
+                <div
+                  class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  <span
+                    class="font-heading text-lg font-bold text-fuchsia-500 leading-none"
+                  >B</span>
+                </div>
+                <div
+                  class="bg-cream/60 border-2 border-dark/5 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
+                >
+                  <p class="text-dark text-base leading-relaxed">
+                    {{ msg.text }}
+                  </p>
+                </div>
+              </template>
 
-      <form class="bg-white" @submit.prevent="handleSubmit">
-        <!-- Section 1: General info -->
-        <section class="py-16 md:py-20">
-          <div class="container mx-auto px-6">
-            <h2 class="font-heading text-2xl md:text-3xl text-dark mb-12">
-              {{ t("quote_form.section_info") }}
-            </h2>
+              <!-- User message -->
+              <template v-else>
+                <div
+                  class="bg-dark text-cream rounded-2xl rounded-tr-md px-5 py-4 max-w-md"
+                >
+                  <p class="text-base leading-relaxed">
+                    {{ msg.text }}
+                  </p>
+                </div>
+              </template>
+            </div>
 
-            <div class="space-y-8">
-              <!-- Partner names -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Typing indicator (bot is typing) -->
+            <div
+              v-if="isTyping"
+              class="flex gap-3 items-start"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center shrink-0 mt-0.5"
+              >
+                <span
+                  class="font-heading text-lg font-bold text-fuchsia-500 leading-none animate-pulse"
+                >B</span>
+              </div>
+              <div
+                class="bg-cream/60 border-2 border-dark/5 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
+              >
+                <p class="text-dark text-base leading-relaxed">
+                  <span>{{ displayedText }}</span>
+                  <span class="copilot-cursor">|</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Scroll anchor -->
+            <div ref="scrollAnchor"></div>
+          </div>
+
+          <!-- Input area (changes per step) -->
+          <div
+            v-if="!isTyping && currentStep <= 8"
+            class="ml-[52px] max-w-md"
+          >
+            <!-- Step 1: Partner names -->
+            <div v-if="currentStep === 1" class="space-y-4">
+              <div class="space-y-4">
                 <div>
-                  <label class="block text-sm uppercase tracking-[0.15em] text-dark/50 mb-3">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
                     {{ t("quote_form.partner1_label") }}
                   </label>
                   <input
@@ -91,8 +203,9 @@
                     :class="
                       errors.partner1_name
                         ? 'border-red-400'
-                        : 'border-dark/10 focus:border-dark/30'
+                        : 'border-dark/20 focus:border-dark/40'
                     "
+                    @keydown.enter="nextStep"
                   />
                   <p
                     v-if="errors.partner1_name"
@@ -102,7 +215,9 @@
                   </p>
                 </div>
                 <div>
-                  <label class="block text-sm uppercase tracking-[0.15em] text-dark/50 mb-3">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
                     {{ t("quote_form.partner2_label") }}
                   </label>
                   <input
@@ -113,8 +228,9 @@
                     :class="
                       errors.partner2_name
                         ? 'border-red-400'
-                        : 'border-dark/10 focus:border-dark/30'
+                        : 'border-dark/20 focus:border-dark/40'
                     "
+                    @keydown.enter="nextStep"
                   />
                   <p
                     v-if="errors.partner2_name"
@@ -124,11 +240,24 @@
                   </p>
                 </div>
               </div>
+              <div class="flex justify-center">
+                <Button
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+              </div>
+            </div>
 
-              <!-- Email + phone -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Step 2: Email + phone -->
+            <div v-if="currentStep === 2" class="space-y-4">
+              <div class="space-y-4">
                 <div>
-                  <label class="block text-sm uppercase tracking-[0.15em] text-dark/50 mb-3">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
                     {{ t("quote_form.email_label") }}
                   </label>
                   <input
@@ -139,8 +268,9 @@
                     :class="
                       errors.email
                         ? 'border-red-400'
-                        : 'border-dark/10 focus:border-dark/30'
+                        : 'border-dark/20 focus:border-dark/40'
                     "
+                    @keydown.enter="nextStep"
                   />
                   <p
                     v-if="errors.email"
@@ -150,165 +280,495 @@
                   </p>
                 </div>
                 <div>
-                  <label class="block text-sm uppercase tracking-[0.15em] text-dark/50 mb-3">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
                     {{ t("quote_form.phone_label") }}
+                    <span class="text-dark/30 normal-case tracking-normal">
+                      — {{ t("quote_form.chat_optional") }}
+                    </span>
                   </label>
                   <input
                     v-model="form.phone"
                     type="tel"
                     :placeholder="t('quote_form.phone_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/10 bg-cream/30 focus:bg-white focus:border-dark/30 focus:outline-none transition-all"
+                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    @keydown.enter="nextStep"
                   />
                 </div>
               </div>
+              <div class="flex justify-center">
+                <Button
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+              </div>
+            </div>
 
-              <!-- Date + venue -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Step 3: Date + venue -->
+            <div v-if="currentStep === 3" class="space-y-4">
+              <div class="space-y-4">
                 <div>
-                  <label class="block text-sm uppercase tracking-[0.15em] text-dark/50 mb-3">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
                     {{ t("quote_form.date_label") }}
+                    <span class="text-dark/30 normal-case tracking-normal">
+                      — {{ t("quote_form.chat_optional") }}
+                    </span>
                   </label>
                   <input
                     v-model="form.wedding_date"
                     type="date"
                     :min="minDate"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/10 bg-cream/30 focus:bg-white focus:border-dark/30 focus:outline-none transition-all"
+                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm uppercase tracking-[0.15em] text-dark/50 mb-3">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
                     {{ t("quote_form.venue_label") }}
+                    <span class="text-dark/30 normal-case tracking-normal">
+                      — {{ t("quote_form.chat_optional") }}
+                    </span>
                   </label>
                   <input
                     v-model="form.venue"
                     type="text"
                     :placeholder="t('quote_form.venue_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/10 bg-cream/30 focus:bg-white focus:border-dark/30 focus:outline-none transition-all"
+                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    @keydown.enter="nextStep"
                   />
                 </div>
               </div>
+              <div class="flex justify-center">
+                <Button
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+              </div>
+            </div>
 
-              <!-- Budget — radio cards -->
-              <div>
-                <label class="block text-sm uppercase tracking-[0.15em] text-dark/50 mb-4">
-                  {{ t("quote_form.budget_label") }}
-                </label>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <button
-                    v-for="opt in budgetOptions"
-                    :key="opt.value"
-                    type="button"
-                    class="h-14 px-6 rounded-2xl border-2 font-medium transition-all duration-200"
+            <!-- Step 4: Budget -->
+            <div v-if="currentStep === 4" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <button
+                  v-for="opt in budgetOptions"
+                  :key="opt.value"
+                  type="button"
+                  class="h-14 px-6 rounded-2xl border-2 font-medium transition-all duration-200"
+                  :class="
+                    form.budget === opt.value
+                      ? 'bg-dark text-cream border-dark'
+                      : 'bg-cream/30 text-dark/60 border-dark/10 hover:border-dark/30 hover:text-dark'
+                  "
+                  @click="
+                    form.budget =
+                      form.budget === opt.value ? '' : opt.value
+                  "
+                >
+                  {{ opt.label }}
+                </button>
+              </div>
+              <div class="flex justify-center">
+                <Button
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+              </div>
+            </div>
+
+            <!-- Step 5: Floral needs -->
+            <div v-if="currentStep === 5" class="space-y-4">
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+              >
+                <button
+                  v-for="need in floralNeeds"
+                  :key="need"
+                  type="button"
+                  class="group flex items-center gap-3 px-5 py-4 rounded-[1.25rem] border-2 text-left transition-all duration-200"
+                  :class="
+                    selectedNeeds.has(need)
+                      ? 'bg-dark border-dark'
+                      : 'bg-white border-dark/10 hover:border-dark/30'
+                  "
+                  @click="toggleNeed(need)"
+                >
+                  <span
+                    class="w-5 h-5 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
                     :class="
-                      form.budget === opt.value
-                        ? 'bg-dark text-cream border-dark'
-                        : 'bg-cream/30 text-dark/60 border-dark/10 hover:border-dark/30 hover:text-dark'
+                      selectedNeeds.has(need)
+                        ? 'bg-cream border-cream'
+                        : 'border-dark/20 group-hover:border-dark/40'
                     "
-                    @click="form.budget = form.budget === opt.value ? '' : opt.value"
                   >
-                    {{ opt.label }}
+                    <IconLucid
+                      v-if="selectedNeeds.has(need)"
+                      name="Check"
+                      size="xs"
+                      class="text-dark"
+                    />
+                  </span>
+                  <span
+                    class="font-medium text-sm transition-colors duration-200"
+                    :class="
+                      selectedNeeds.has(need)
+                        ? 'text-cream'
+                        : 'text-dark/70 group-hover:text-dark'
+                    "
+                  >
+                    {{ t(`quote_form.need_${need}`) }}
+                  </span>
+                </button>
+              </div>
+              <p
+                v-if="errors.floral_needs"
+                class="text-sm text-red-500"
+              >
+                {{ errors.floral_needs }}
+              </p>
+              <div class="flex justify-center">
+                <Button
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+              </div>
+            </div>
+
+            <!-- Step 6: Inspirations (optional) -->
+            <div v-if="currentStep === 6" class="space-y-4">
+              <!-- Drop zone -->
+              <div
+                v-if="inspirationFiles.length < MAX_INSPIRATION_FILES"
+                class="relative rounded-2xl border-2 border-dashed border-dark/20 hover:border-dark/40 bg-cream/30 hover:bg-cream/50 transition-all cursor-pointer p-6 text-center"
+                @click="($refs.inspirationInput as HTMLInputElement)?.click()"
+                @dragover.prevent="($event.currentTarget as HTMLElement).classList.add('border-dark/40', 'bg-cream/50')"
+                @dragleave.prevent="($event.currentTarget as HTMLElement).classList.remove('border-dark/40', 'bg-cream/50')"
+                @drop.prevent="handleInspirationDrop($event)"
+              >
+                <input
+                  ref="inspirationInput"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/heic"
+                  multiple
+                  class="hidden"
+                  @change="handleInspirationSelect"
+                />
+                <IconLucid
+                  name="ImagePlus"
+                  size="lg"
+                  class="mx-auto text-dark/30 mb-3"
+                />
+                <p class="text-dark/60 text-sm">
+                  {{ t("quote_form.chat_step6_drop") }}
+                </p>
+                <p class="text-dark/30 text-xs mt-1">
+                  {{ t("quote_form.chat_step6_upload_hint") }}
+                </p>
+              </div>
+
+              <!-- Previews grid -->
+              <div
+                v-if="inspirationPreviews.length > 0"
+                class="grid grid-cols-3 sm:grid-cols-5 gap-3"
+              >
+                <div
+                  v-for="(preview, idx) in inspirationPreviews"
+                  :key="idx"
+                  class="relative group aspect-square rounded-xl overflow-hidden border-2 border-dark/10"
+                >
+                  <img
+                    :src="preview"
+                    class="w-full h-full object-cover"
+                    alt=""
+                  />
+                  <button
+                    type="button"
+                    class="absolute top-1 right-1 w-6 h-6 rounded-full bg-dark/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    @click="removeInspirationFile(idx)"
+                  >
+                    <IconLucid name="X" size="xs" />
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        <!-- Separator -->
-        <div class="container mx-auto px-6">
-          <div class="h-px bg-dark/10"></div>
-        </div>
-
-        <!-- Section 2: Floral needs — checkbox cards -->
-        <section class="py-16 md:py-20">
-          <div class="container mx-auto px-6">
-            <h2 class="font-heading text-2xl md:text-3xl text-dark mb-12">
-              {{ t("quote_form.section_floral") }}
-            </h2>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <button
-                v-for="need in floralNeeds"
-                :key="need"
-                type="button"
-                class="group flex items-center gap-4 px-6 py-5 rounded-[1.25rem] border-2 text-left transition-all duration-200"
-                :class="
-                  selectedNeeds.has(need)
-                    ? 'bg-dark border-dark'
-                    : 'bg-white border-dark/10 hover:border-dark/30'
-                "
-                @click="toggleNeed(need)"
+              <!-- Counter -->
+              <p
+                v-if="inspirationFiles.length > 0"
+                class="text-sm text-dark/50 text-center"
               >
-                <!-- Checkbox indicator -->
-                <span
-                  class="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
-                  :class="
-                    selectedNeeds.has(need)
-                      ? 'bg-cream border-cream'
-                      : 'border-dark/20 group-hover:border-dark/40'
-                  "
-                >
-                  <IconLucid
-                    v-if="selectedNeeds.has(need)"
-                    name="Check"
-                    size="xs"
-                    class="text-dark"
-                  />
-                </span>
+                {{ inspirationFiles.length }}/{{ MAX_INSPIRATION_FILES }}
+                {{ t("quote_form.chat_step6_max", { max: MAX_INSPIRATION_FILES }) }}
+              </p>
 
-                <span
-                  class="font-medium transition-colors duration-200"
-                  :class="
-                    selectedNeeds.has(need)
-                      ? 'text-cream'
-                      : 'text-dark/70 group-hover:text-dark'
-                  "
+              <!-- Action buttons -->
+              <div class="flex justify-center gap-3">
+                <Button
+                  v-if="inspirationFiles.length > 0"
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
                 >
-                  {{ t(`quote_form.need_${need}`) }}
-                </span>
-              </button>
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+                <Button
+                  variant="ghost"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_step6_skip") }}
+                </Button>
+              </div>
             </div>
 
-            <p
-              v-if="errors.floral_needs"
-              class="mt-4 text-sm text-red-500"
-            >
-              {{ errors.floral_needs }}
-            </p>
-          </div>
-        </section>
+            <!-- Step 7: Meeting -->
+            <div v-if="currentStep === 7" class="space-y-4">
+              <!-- Selected slot display -->
+              <div
+                v-if="form.meeting_date"
+                class="rounded-2xl border-2 border-green-200 bg-green-50 px-6 py-5"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center shrink-0"
+                    >
+                      <IconLucid
+                        name="CalendarCheck"
+                        size="sm"
+                        class="text-green-600"
+                      />
+                    </div>
+                    <div>
+                      <p class="font-medium text-green-800">
+                        {{ formatDisplayDate(form.meeting_date) }}
+                      </p>
+                      <p
+                        v-if="form.meeting_time"
+                        class="text-sm text-green-600"
+                      >
+                        {{ form.meeting_time }}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    @click="scheduleModalOpen = true"
+                    class="px-4 py-2 rounded-full bg-green-700 text-white text-sm font-semibold transition-all hover:bg-green-800 flex items-center gap-2"
+                  >
+                    <IconLucid name="Edit" size="xs" />
+                    {{ t("quote_form.meeting_change") }}
+                  </button>
+                </div>
+              </div>
 
-        <!-- Submit -->
-        <section class="pb-20 md:pb-28">
-          <div class="container mx-auto px-6 text-center">
-            <p
-              v-if="errors.generic"
-              class="mb-6 text-sm text-red-500"
-            >
-              {{ errors.generic }}
-            </p>
-            <Button
-              variant="primary"
-              icon="Send"
-              :loading="loading"
-              @click="handleSubmit"
-            >
-              {{ t("quote_form.submit") }}
-            </Button>
+              <div
+                v-else
+                class="flex flex-col sm:flex-row gap-3"
+              >
+                <Button
+                  variant="primary"
+                  icon="CalendarClock"
+                  @click="scheduleModalOpen = true"
+                  class="flex-1"
+                >
+                  {{ t("quote_form.meeting_choose_slot") }}
+                </Button>
+                <Button
+                  variant="ghost"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_step7_skip") }}
+                </Button>
+              </div>
+
+              <div
+                v-if="form.meeting_date"
+                class="flex justify-end"
+              >
+                <Button
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+              </div>
+            </div>
+
+            <!-- Step 8: Recap + submit -->
+            <div v-if="currentStep === 8" class="space-y-4">
+              <div
+                class="rounded-2xl border-2 border-dark/10 bg-cream/30 px-6 py-5 space-y-3 text-sm"
+              >
+                <div class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.partner1_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ form.partner1_name }}
+                  </span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.partner2_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ form.partner2_name }}
+                  </span>
+                </div>
+                <div class="h-px bg-dark/5"></div>
+                <div class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.email_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ form.email }}
+                  </span>
+                </div>
+                <div v-if="form.phone" class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.phone_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ form.phone }}
+                  </span>
+                </div>
+                <div class="h-px bg-dark/5"></div>
+                <div
+                  v-if="form.wedding_date"
+                  class="flex justify-between"
+                >
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.date_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ formatDisplayDate(form.wedding_date) }}
+                  </span>
+                </div>
+                <div v-if="form.venue" class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.venue_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ form.venue }}
+                  </span>
+                </div>
+                <div v-if="form.budget" class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.budget_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ budgetLabel }}
+                  </span>
+                </div>
+                <div
+                  v-if="selectedNeeds.size > 0"
+                  class="pt-1"
+                >
+                  <span class="text-fuchsia-500 block mb-2">
+                    {{ t("quote_form.section_floral") }}
+                  </span>
+                  <div class="flex flex-wrap gap-2">
+                    <span
+                      v-for="need in selectedNeeds"
+                      :key="need"
+                      class="px-3 py-1 rounded-full bg-dark/5 text-dark/70 text-xs font-medium"
+                    >
+                      {{ t(`quote_form.need_${need}`) }}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  v-if="inspirationFiles.length > 0"
+                  class="pt-1"
+                >
+                  <div class="flex justify-between">
+                    <span class="text-fuchsia-500">
+                      Inspirations
+                    </span>
+                    <span class="font-medium text-dark">
+                      {{ inspirationFiles.length }} photo{{ inspirationFiles.length > 1 ? "s" : "" }}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  v-if="form.meeting_date"
+                  class="pt-1"
+                >
+                  <div class="flex justify-between">
+                    <span class="text-fuchsia-500">
+                      {{ t("quote_form.section_meeting") }}
+                    </span>
+                    <span class="font-medium text-dark">
+                      {{ formatDisplayDate(form.meeting_date) }}
+                      <span v-if="form.meeting_time">
+                        — {{ form.meeting_time }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <p
+                v-if="errors.generic"
+                class="text-sm text-red-500 text-center"
+              >
+                {{ errors.generic }}
+              </p>
+
+              <div class="flex justify-center">
+                <Button
+                  variant="primary"
+                  icon="Send"
+                  :loading="loading"
+                  @click="handleSubmit"
+                >
+                  {{ t("quote_form.chat_send") }}
+                </Button>
+              </div>
+            </div>
           </div>
-        </section>
-      </form>
+        </div>
+      </section>
     </template>
+
+    <!-- Schedule modal -->
+    <ScheduleModal
+      :isOpen="scheduleModalOpen"
+      @close="scheduleModalOpen = false"
+      @confirmed="handleSlotConfirmed"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import {
+  ref,
+  reactive,
+  computed,
+  nextTick,
+  onMounted,
+  onUnmounted,
+} from "vue";
 import { useI18n } from "vue-i18n";
 import type { FloralNeedKey } from "~/server/utils/quotes-types";
 
 definePageMeta({
-  layout: "default",
+  layout: "minimal",
 });
 
 const { t, locale } = useI18n();
@@ -318,7 +778,23 @@ useHead({
   title: t("quote_form.page_title") + " - Boticia",
 });
 
-// Form state
+// ── Chat state ──────────────────────────────────────
+interface ChatMessage {
+  type: "bot" | "user";
+  text: string;
+  id: number;
+}
+
+const currentStep = ref(0);
+const chatMessages = ref<ChatMessage[]>([]);
+const isTyping = ref(false);
+const displayedText = ref("");
+const chatContainer = ref<HTMLElement | null>(null);
+const scrollAnchor = ref<HTMLElement | null>(null);
+let msgCounter = 0;
+let typingInterval: ReturnType<typeof setInterval> | null = null;
+
+// ── Form state (unchanged) ──────────────────────────
 const form = reactive({
   partner1_name: "",
   partner2_name: "",
@@ -327,11 +803,20 @@ const form = reactive({
   wedding_date: "",
   venue: "",
   budget: "",
+  meeting_date: "",
+  meeting_time: "",
 });
 
 const selectedNeeds = ref<Set<FloralNeedKey>>(new Set());
 const loading = ref(false);
 const submitted = ref(false);
+const scheduleModalOpen = ref(false);
+
+// Inspiration files state
+const inspirationFiles = ref<File[]>([]);
+const inspirationPreviews = ref<string[]>([]);
+const inspirationUploading = ref(false);
+const MAX_INSPIRATION_FILES = 5;
 
 const errors = reactive({
   partner1_name: "",
@@ -353,6 +838,14 @@ const budgetOptions = computed(() => [
   { label: t("quote_form.budget_lt_4000"), value: "lt_4000" },
   { label: t("quote_form.budget_lt_10000"), value: "lt_10000" },
 ]);
+
+// Budget label for recap
+const budgetLabel = computed(() => {
+  const opt = budgetOptions.value.find(
+    (o) => o.value === form.budget
+  );
+  return opt?.label || "";
+});
 
 // Floral needs
 const floralNeeds: FloralNeedKey[] = [
@@ -380,57 +873,223 @@ const toggleNeed = (key: FloralNeedKey) => {
 };
 
 // Success steps
-const successSteps = computed(() => [
-  t("quote_form.success_step_1"),
-  t("quote_form.success_step_2"),
-  t("quote_form.success_step_3"),
-  t("quote_form.success_step_4"),
-  t("quote_form.success_step_5"),
-]);
+const successSteps = computed(() =>
+  [1, 2, 3, 4, 5].map((n) => ({
+    title: t(`quote_form.success_step_${n}_title`),
+    desc: t(`quote_form.success_step_${n}_desc`),
+  }))
+);
 
-// Validation
-const validate = (): boolean => {
-  let valid = true;
+// Format display date
+const formatDisplayDate = (dateStr: string) => {
+  const d = new Date(dateStr + "T00:00:00");
+  return d.toLocaleDateString(locale.value, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
 
+// ── Scroll to bottom ────────────────────────────────
+const scrollToBottom = () => {
+  nextTick(() => {
+    scrollAnchor.value?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  });
+};
+
+// ── Typewriter ──────────────────────────────────────
+const addBotMessage = (text: string): Promise<void> => {
+  return new Promise((resolve) => {
+    if (typingInterval) clearInterval(typingInterval);
+    displayedText.value = "";
+    isTyping.value = true;
+
+    nextTick(() => scrollToBottom());
+
+    let i = 0;
+    typingInterval = setInterval(() => {
+      displayedText.value = text.slice(0, ++i);
+      if (i >= text.length) {
+        clearInterval(typingInterval!);
+        typingInterval = null;
+        // Push the completed message then hide typing
+        chatMessages.value.push({
+          type: "bot",
+          text,
+          id: ++msgCounter,
+        });
+        displayedText.value = "";
+        isTyping.value = false;
+        nextTick(() => {
+          scrollToBottom();
+          resolve();
+        });
+      }
+    }, 12);
+  });
+};
+
+const addUserMessage = (text: string) => {
+  chatMessages.value.push({
+    type: "user",
+    text,
+    id: ++msgCounter,
+  });
+  nextTick(() => scrollToBottom());
+};
+
+// ── Step messages ───────────────────────────────────
+const getStepMessage = (step: number): string => {
+  switch (step) {
+    case 1:
+      return t("quote_form.chat_step1");
+    case 2:
+      return t("quote_form.chat_step2", {
+        partner1: form.partner1_name,
+        partner2: form.partner2_name,
+      });
+    case 3:
+      return t("quote_form.chat_step3");
+    case 4:
+      return t("quote_form.chat_step4");
+    case 5:
+      return t("quote_form.chat_step5");
+    case 6:
+      return t("quote_form.chat_step6_inspirations");
+    case 7:
+      return t("quote_form.chat_step7");
+    case 8:
+      return t("quote_form.chat_step8");
+    default:
+      return "";
+  }
+};
+
+// ── Step user summary ───────────────────────────────
+const getStepSummary = (step: number): string => {
+  switch (step) {
+    case 1:
+      return `${form.partner1_name} & ${form.partner2_name}`;
+    case 2: {
+      let summary = form.email;
+      if (form.phone) summary += ` • ${form.phone}`;
+      return summary;
+    }
+    case 3: {
+      const parts: string[] = [];
+      if (form.wedding_date)
+        parts.push(formatDisplayDate(form.wedding_date));
+      if (form.venue) parts.push(form.venue);
+      return parts.length > 0 ? parts.join(" • ") : "—";
+    }
+    case 4:
+      return budgetLabel.value || "—";
+    case 5:
+      return Array.from(selectedNeeds.value)
+        .map((k) => t(`quote_form.need_${k}`))
+        .join(", ");
+    case 6:
+      if (inspirationFiles.value.length > 0) {
+        return `${inspirationFiles.value.length} photo${inspirationFiles.value.length > 1 ? "s" : ""}`;
+      }
+      return t("quote_form.chat_step6_skip");
+    case 7:
+      if (form.meeting_date) {
+        let summary = formatDisplayDate(form.meeting_date);
+        if (form.meeting_time) summary += ` — ${form.meeting_time}`;
+        return summary;
+      }
+      return t("quote_form.chat_step7_skip");
+    default:
+      return "";
+  }
+};
+
+// ── Validation per step ─────────────────────────────
+const validateStep = (step: number): boolean => {
+  // Reset relevant errors
   errors.partner1_name = "";
   errors.partner2_name = "";
   errors.email = "";
   errors.floral_needs = "";
-  errors.generic = "";
 
-  if (!form.partner1_name.trim()) {
-    errors.partner1_name = t("quote_form.error_partner1");
-    valid = false;
+  switch (step) {
+    case 1:
+      let valid1 = true;
+      if (!form.partner1_name.trim()) {
+        errors.partner1_name = t("quote_form.error_partner1");
+        valid1 = false;
+      }
+      if (!form.partner2_name.trim()) {
+        errors.partner2_name = t("quote_form.error_partner2");
+        valid1 = false;
+      }
+      return valid1;
+    case 2: {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!form.email.trim() || !emailRegex.test(form.email)) {
+        errors.email = t("quote_form.error_email");
+        return false;
+      }
+      return true;
+    }
+    case 5:
+      if (selectedNeeds.value.size === 0) {
+        errors.floral_needs = t("quote_form.error_needs");
+        return false;
+      }
+      return true;
+    default:
+      return true;
   }
-
-  if (!form.partner2_name.trim()) {
-    errors.partner2_name = t("quote_form.error_partner2");
-    valid = false;
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!form.email.trim() || !emailRegex.test(form.email)) {
-    errors.email = t("quote_form.error_email");
-    valid = false;
-  }
-
-  if (selectedNeeds.value.size === 0) {
-    errors.floral_needs = t("quote_form.error_needs");
-    valid = false;
-  }
-
-  return valid;
 };
 
-// Submit
-const handleSubmit = async () => {
-  if (!validate()) return;
+// ── Next step ───────────────────────────────────────
+const nextStep = async () => {
+  if (isTyping.value) return;
 
+  // Validate current step
+  if (currentStep.value > 0 && !validateStep(currentStep.value)) {
+    return;
+  }
+
+  // Add user summary for completed step
+  if (currentStep.value > 0) {
+    addUserMessage(getStepSummary(currentStep.value));
+  }
+
+  // Advance
+  currentStep.value++;
+
+  if (currentStep.value <= 8) {
+    await addBotMessage(getStepMessage(currentStep.value));
+  }
+};
+
+// ── Handle slot confirmed ───────────────────────────
+const handleSlotConfirmed = (data: {
+  date: string;
+  time: string;
+  displayDate: string;
+}) => {
+  form.meeting_date = data.date;
+  form.meeting_time = data.time;
+  scheduleModalOpen.value = false;
+};
+
+// ── Submit ──────────────────────────────────────────
+const handleSubmit = async () => {
   loading.value = true;
   errors.generic = "";
 
   try {
-    await $fetch("/api/quotes", {
+    const result = await $fetch<{
+      success: boolean;
+      data: { id: string };
+    }>("/api/quotes", {
       method: "POST",
       body: {
         partner1_name: form.partner1_name.trim(),
@@ -441,9 +1100,29 @@ const handleSubmit = async () => {
         venue: form.venue.trim() || undefined,
         budget: form.budget || undefined,
         floral_needs: Array.from(selectedNeeds.value),
+        meeting_date: form.meeting_date || undefined,
+        meeting_time: form.meeting_time || undefined,
         locale: locale.value,
       },
     });
+
+    // Upload inspiration files (non-blocking)
+    if (inspirationFiles.value.length > 0 && result.data?.id) {
+      inspirationUploading.value = true;
+      for (const file of inspirationFiles.value) {
+        try {
+          const fd = new FormData();
+          fd.append("file", file);
+          await $fetch(
+            `/api/quotes/${result.data.id}/inspirations`,
+            { method: "POST", body: fd }
+          );
+        } catch (err) {
+          console.error("Failed to upload inspiration:", err);
+        }
+      }
+      inspirationUploading.value = false;
+    }
 
     submitted.value = true;
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -453,4 +1132,54 @@ const handleSubmit = async () => {
     loading.value = false;
   }
 };
+
+// ── Inspiration file handling ────────────────────────
+const addInspirationFiles = (files: FileList | File[]) => {
+  const allowed = [
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/heic",
+  ];
+  for (const file of Array.from(files)) {
+    if (inspirationFiles.value.length >= MAX_INSPIRATION_FILES) break;
+    if (!allowed.includes(file.type)) continue;
+    inspirationFiles.value.push(file);
+    inspirationPreviews.value.push(URL.createObjectURL(file));
+  }
+};
+
+const handleInspirationSelect = (e: Event) => {
+  const input = e.target as HTMLInputElement;
+  if (input.files) {
+    addInspirationFiles(input.files);
+    input.value = "";
+  }
+};
+
+const handleInspirationDrop = (e: DragEvent) => {
+  (e.currentTarget as HTMLElement).classList.remove(
+    "border-dark/40",
+    "bg-cream/50"
+  );
+  if (e.dataTransfer?.files) {
+    addInspirationFiles(e.dataTransfer.files);
+  }
+};
+
+const removeInspirationFile = (idx: number) => {
+  URL.revokeObjectURL(inspirationPreviews.value[idx]);
+  inspirationFiles.value.splice(idx, 1);
+  inspirationPreviews.value.splice(idx, 1);
+};
+
+// ── Start the conversation ──────────────────────────
+onMounted(async () => {
+  await addBotMessage(t("quote_form.chat_intro"));
+  nextStep();
+});
+
+onUnmounted(() => {
+  inspirationPreviews.value.forEach((url) => URL.revokeObjectURL(url));
+});
 </script>

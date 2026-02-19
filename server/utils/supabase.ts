@@ -80,6 +80,107 @@ export async function createOrGetAuthUser(email: string): Promise<{ userId: stri
   }
 }
 
+// --- Availability types ---
+
+export interface AvailabilityRuleRow {
+  id: string
+  day_of_week: number
+  start_time: string
+  end_time: string
+  slot_duration: number
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface AvailabilityExceptionRow {
+  id: string
+  exception_date: string
+  exception_type: 'block' | 'add'
+  start_time: string | null
+  end_time: string | null
+  reason: string | null
+  created_at: string
+  updated_at: string
+}
+
+// --- Availability functions ---
+
+export async function getActiveAvailabilityRules(): Promise<AvailabilityRuleRow[]> {
+  try {
+    const { data, error } = await getSupabase()
+      .from('availability_rules')
+      .select('*')
+      .eq('is_active', true)
+      .order('day_of_week')
+      .order('start_time')
+
+    if (error) {
+      console.error('Error getting availability rules:', error.message)
+      return []
+    }
+
+    return data || []
+  } catch (err) {
+    console.error('Error:', err)
+    return []
+  }
+}
+
+export async function getAvailabilityExceptions(
+  fromDate: string,
+  toDate: string
+): Promise<AvailabilityExceptionRow[]> {
+  try {
+    const { data, error } = await getSupabase()
+      .from('availability_exceptions')
+      .select('*')
+      .gte('exception_date', fromDate)
+      .lte('exception_date', toDate)
+      .order('exception_date')
+
+    if (error) {
+      console.error('Error getting availability exceptions:', error.message)
+      return []
+    }
+
+    return data || []
+  } catch (err) {
+    console.error('Error:', err)
+    return []
+  }
+}
+
+export async function getBookedSlots(
+  fromDate: string,
+  toDate: string
+): Promise<Set<string>> {
+  try {
+    const { data, error } = await getSupabase()
+      .from('quote_requests')
+      .select('meeting_date, meeting_time')
+      .not('meeting_date', 'is', null)
+      .not('meeting_time', 'is', null)
+      .gte('meeting_date', fromDate)
+      .lte('meeting_date', toDate)
+
+    if (error) {
+      console.error('Error getting booked slots:', error.message)
+      return new Set()
+    }
+
+    const bookedSet = new Set<string>()
+    data?.forEach((row: { meeting_date: string; meeting_time: string }) => {
+      bookedSet.add(`${row.meeting_date}_${row.meeting_time}`)
+    })
+
+    return bookedSet
+  } catch (err) {
+    console.error('Error:', err)
+    return new Set()
+  }
+}
+
 // --- Example types for your tables ---
 
 export type ItemStatus = 'pending' | 'active' | 'completed' | 'cancelled';

@@ -6,12 +6,12 @@ export interface ThemeColor {
 }
 
 export const THEME_COLORS: ThemeColor[] = [
-  { key: "cream", name: "Crème", hex: "#FAF8F5", description: "Chaud, classique" },
-  { key: "sable-rose", name: "Sable rosé", hex: "#F5EDE4", description: "Romantique, mariage" },
-  { key: "perle", name: "Perle", hex: "#F0EEF5", description: "Minimal, épuré" },
-  { key: "champagne", name: "Champagne", hex: "#F5F0E8", description: "Luxe, chaleureux" },
-  { key: "blush", name: "Blush", hex: "#F9F0ED", description: "Féminin, doux" },
-  { key: "sauge", name: "Sauge", hex: "#F0F2ED", description: "Nature, botanique" },
+  { key: "cream", name: "Crème", hex: "#E8E4DD", description: "Chaud, classique" },
+  { key: "sable-rose", name: "Sable rosé", hex: "#E4DCD3", description: "Romantique, mariage" },
+  { key: "perle", name: "Perle", hex: "#E0DEE5", description: "Minimal, épuré" },
+  { key: "champagne", name: "Champagne", hex: "#E5E0D8", description: "Luxe, chaleureux" },
+  { key: "blush", name: "Blush", hex: "#EDDAD4", description: "Féminin, doux" },
+  { key: "sauge", name: "Sauge", hex: "#E0E2DD", description: "Nature, botanique" },
 ];
 
 const DEFAULT_COLOR = THEME_COLORS[0];
@@ -23,6 +23,13 @@ function hexToRgb(hex: string): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
+  return `${r} ${g} ${b}`;
+}
+
+function hexToLightRgb(hex: string): string {
+  const r = Math.round((parseInt(hex.slice(1, 3), 16) + 255) / 2);
+  const g = Math.round((parseInt(hex.slice(3, 5), 16) + 255) / 2);
+  const b = Math.round((parseInt(hex.slice(5, 7), 16) + 255) / 2);
   return `${r} ${g} ${b}`;
 }
 
@@ -41,7 +48,8 @@ export const useSiteTheme = () => {
   useHead({
     htmlAttrs: {
       style: computed(
-        () => `--color-cream: ${hexToRgb(siteTheme.value.hex)};`
+        () =>
+          `--color-cream: ${hexToRgb(siteTheme.value.hex)}; --color-cream-light: ${hexToLightRgb(siteTheme.value.hex)};`
       ),
     },
   });

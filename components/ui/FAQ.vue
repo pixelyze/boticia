@@ -3,7 +3,7 @@
     <div
       v-for="(item, index) in faqItems"
       :key="index"
-      class="border-b border-dark/10"
+      class="border-b border-gray-200"
       :class="index === 0 ? 'border-t' : ''"
     >
       <button

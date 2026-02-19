@@ -1,4 +1,5 @@
 import { getSupabase } from '~/server/utils/supabase';
+import { getQuoteByClientEmail } from '~/server/utils/client-portal';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -14,26 +15,42 @@ export default defineEventHandler(async (event) => {
   const normalizedEmail = email.toLowerCase();
 
   try {
+    // Check admin profile first
     const { data, error } = await getSupabase()
       .from('profiles')
       .select('role, full_name')
       .eq('email', normalizedEmail)
       .single();
 
-    if (error || !data) {
+    if (!error && data && data.role === 'admin') {
       return {
         email,
-        role: 'user',
+        role: 'admin',
+        isAdmin: true,
+        fullName: data.full_name,
+      };
+    }
+
+    // Check client portal access
+    const quoteRequest = await getQuoteByClientEmail(
+      normalizedEmail
+    );
+
+    if (quoteRequest) {
+      return {
+        email,
+        role: 'client',
         isAdmin: false,
         fullName: null,
+        quoteId: quoteRequest.id,
       };
     }
 
     return {
       email,
-      role: data.role || 'user',
-      isAdmin: data.role === 'admin',
-      fullName: data.full_name,
+      role: 'user',
+      isAdmin: false,
+      fullName: null,
     };
   } catch (err) {
     console.error('Error getting profile:', err);

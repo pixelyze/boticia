@@ -25,33 +25,55 @@ const { locale } = useI18n();
 
 const error = ref("");
 
-onMounted(async () => {
+async function redirectByRole(email: string) {
   try {
-    // Écouter l'événement de connexion (gère le hash #access_token=...)
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        subscription.unsubscribe();
-        await router.replace(`/${locale.value}/dashboard`);
-      }
+    const roleData = await $fetch<{
+      role: string;
+      quoteId?: string;
+    }>("/api/user/role", {
+      params: { email },
     });
 
-    // Vérifier si déjà connecté (session existante)
+    if (roleData.role === "admin") {
+      await router.replace(`/${locale.value}/dashboard`);
+    } else if (roleData.role === "client") {
+      await router.replace(`/${locale.value}/mon-projet`);
+    } else {
+      error.value =
+        "Aucun projet trouvé pour cette adresse email.";
+    }
+  } catch {
+    await router.replace(`/${locale.value}/dashboard`);
+  }
+}
+
+onMounted(async () => {
+  try {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "SIGNED_IN" && session) {
+          subscription.unsubscribe();
+          await redirectByRole(session.user.email || "");
+        }
+      }
+    );
+
     const {
       data: { session },
     } = await supabase.auth.getSession();
 
     if (session?.user) {
       subscription.unsubscribe();
-      await router.replace(`/${locale.value}/dashboard`);
+      await redirectByRole(session.user.email || "");
       return;
     }
 
-    // Timeout après 5 secondes
     setTimeout(() => {
       if (!error.value) {
-        error.value = "Lien expiré ou invalide. Veuillez en demander un nouveau.";
+        error.value =
+          "Lien expiré ou invalide. Veuillez en demander un nouveau.";
       }
     }, 5000);
   } catch (err: any) {

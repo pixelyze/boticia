@@ -25,20 +25,20 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const tagClasses = computed(() => {
-  const base = 'inline-flex items-center gap-1.5 font-medium px-2 py-0.5 text-xs';
+  const base = 'inline-flex items-center gap-1.5 font-medium px-3 py-1 text-sm rounded-full';
 
   const variantClasses: Record<TagVariant, string> = {
-    default: 'bg-gray-100 text-gray-800 border-gray-300',
-    primary: 'bg-black text-white border-black',
-    success: 'bg-green-100 text-green-800 border-green-300',
-    warning: 'bg-yellow-100 text-yellow-800 border-yellow-300',
-    error: 'bg-red-100 text-red-800 border-red-300',
-    info: 'bg-blue-100 text-blue-800 border-blue-300',
-    violet: 'bg-purple-100 text-purple-800 border-purple-300',
-    selection: 'bg-amber-100 text-amber-800 border-amber-300',
-    completed: 'bg-green-200 text-green-900 border-green-400',
+    default: 'bg-gray-100 text-gray-700',
+    primary: 'bg-black text-white',
+    success: 'bg-green-100 text-green-800',
+    warning: 'bg-yellow-100 text-yellow-800',
+    error: 'bg-red-100 text-red-800',
+    info: 'bg-purple-100 text-purple-800',
+    violet: 'bg-purple-100 text-purple-800',
+    selection: 'bg-orange-100 text-orange-700',
+    completed: 'bg-green-100 text-green-800',
   };
 
-  return `${base} ${variantClasses[props.variant]} border`;
+  return `${base} ${variantClasses[props.variant]}`;
 });
 </script>

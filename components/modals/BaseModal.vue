@@ -9,7 +9,7 @@
         @click="onCancel"
       />
     </Transition>
-    <div class="absolute inset-x-0 top-[64px] bottom-0 overflow-hidden">
+    <div class="absolute inset-x-0 top-[32px] bottom-0 overflow-hidden">
       <Transition
         v-bind="contentTransition"
         @after-leave="onTransitionComplete"
@@ -32,7 +32,7 @@
           >
             <!-- Drag bar -->
             <div class="h-12 flex items-center justify-center touch-none">
-              <div class="w-12 h-1.5 rounded-full bg-gray-300" />
+              <div class="w-12 h-1.5 rounded-full bg-dark/10" />
             </div>
 
             <!-- Title -->
@@ -55,12 +55,12 @@
             </p>
 
             <!-- Separator -->
-            <div class="w-full h-[2px] bg-gray-200"></div>
+            <div class="w-full h-[1px] bg-dark/5"></div>
           </div>
 
           <!-- Scrollable content -->
           <div class="flex-grow overflow-y-auto scroll-area">
-            <div class="max-w-4xl mx-auto px-2 md:px-4 py-6 pb-24 space-y-6 text-gray-800">
+            <div class="max-w-6xl mx-auto px-4 md:px-8 py-6 pb-24 space-y-6 text-gray-800">
               <slot :close="onCancel" />
 
               <!-- Close button (optional) -->

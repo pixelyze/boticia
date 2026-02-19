@@ -14,7 +14,7 @@
           :key="index"
           class="px-10 py-14 text-center flex flex-col rounded-[2rem] border-2 border-dark/10"
           :class="[
-            plan.featured ? 'bg-cream' : 'bg-white'
+            plan.featured ? 'bg-cream-light' : 'bg-white'
           ]"
         >
           <!-- Badge or spacer for alignment -->

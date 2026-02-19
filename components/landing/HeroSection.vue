@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-cream overflow-hidden h-screen max-h-[900px] flex items-center">
+  <section class="bg-cream-light overflow-hidden h-screen max-h-[900px] flex items-center -mt-32">
     <div class="container mx-auto px-6">
       <div class="max-w-3xl mx-auto text-center">
         <!-- Logo -->
