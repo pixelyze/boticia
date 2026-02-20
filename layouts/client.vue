@@ -13,10 +13,9 @@
         >
           <NuxtLink
             to="/"
-            class="w-10 h-10 rounded-full border-2 border-dark/10
-              flex items-center justify-center text-dark/30
-              hover:text-dark/60 hover:border-dark/30
-              transition-all"
+            class="w-10 h-10 rounded-full bg-cream-dark
+              flex items-center justify-center text-dark/60
+              hover:text-dark/80 transition-all"
           >
             <IconLucid name="ArrowLeft" size="sm" />
           </NuxtLink>
@@ -28,22 +27,19 @@
               {{ coupleNames }}
             </span>
             <span
-              v-if="user?.email"
-              class="text-xs md:text-sm text-dark/40
-                truncate max-w-[140px] md:max-w-none block"
+              class="text-xs md:text-sm text-orange-500 block"
             >
-              {{ user.email }}
+              {{ $t("client.space_subtitle") }}
             </span>
           </div>
           <!-- Sign out button -->
           <button
             @click="handleSignOut"
-            class="w-10 h-10 rounded-full border-2 border-dark/10
-              flex items-center justify-center text-dark/30
-              hover:text-dark/60 hover:border-dark/30
-              transition-all"
+            class="w-10 h-10 rounded-full bg-cream-dark
+              flex items-center justify-center text-dark/60
+              hover:text-dark/80 transition-all"
           >
-            <IconLucid name="LogOut" size="sm" />
+            <IconLucid name="Settings" size="sm" />
           </button>
         </div>
       </div>
@@ -69,7 +65,7 @@
       </div>
     </nav>
 
-    <main class="flex-1 flex flex-col">
+    <main id="main-content" class="flex-1 flex flex-col">
       <slot />
     </main>
     <Footer />
@@ -83,6 +79,9 @@ const localePath = useLocalePath();
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
+
+// Inject dynamic theme CSS variables
+useSiteTheme();
 
 const coupleNames = ref("");
 

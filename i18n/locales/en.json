@@ -9,7 +9,9 @@
     "workshops": "Workshops",
     "shop": "Shop",
     "quote": "Request a quote",
-    "login": "My Space"
+    "login": "My Space",
+    "social_proof": "Over 50 weddings elevated",
+    "skip_to_content": "Skip to content"
   },
   "common": {
     "home": "Home",
@@ -434,6 +436,7 @@
   },
   "client": {
     "page_title": "My project",
+    "space_subtitle": "My Boticia space",
     "nav_project": "My Project",
     "nav_inspirations": "Inspirations",
     "nav_moodboard": "Moodboard",
@@ -550,6 +553,14 @@
     "day_thu": "Thursday",
     "day_fri": "Friday",
     "day_sat": "Saturday"
+  },
+  "seo": {
+    "home_description": "Boticia \u2014 Bespoke floral art by La\u00ebtitia Schaeffer. Wedding floral decoration, event scenography and floral art workshops. French flowers, locally sourced, from Paris to the French Riviera.",
+    "about_description": "Meet La\u00ebtitia Schaeffer, passionate floral designer and founder of Boticia. Bespoke compositions, locally sourced French flowers and caring guidance.",
+    "devis_description": "Request a personalised quote for your wedding floral decoration with Boticia. Bouquets, arches, centrepieces and complete scenography.",
+    "terms_description": "Terms of service for Boticia, floral design studio.",
+    "legal_description": "Legal notice for Boticia, floral design studio by La\u00ebtitia Schaeffer.",
+    "login_description": "Access your Boticia client space to follow your wedding floral project."
   },
   "errors": {
     "generic": "An error occurred",

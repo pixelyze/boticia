@@ -29,7 +29,7 @@ export default defineEventHandler(async () => {
 
       return {
         path: f.name,
-        url: urlData.publicUrl,
+        url: toProxyUrl(urlData.publicUrl),
         created_at: f.created_at,
       };
     });

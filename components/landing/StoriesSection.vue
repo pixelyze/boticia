@@ -7,7 +7,7 @@
 
     <!-- Grid -->
     <div
-      class="grid grid-cols-3 md:grid-cols-6 gap-4 px-10"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 px-5 sm:px-10"
     >
       <button
         v-for="(story, i) in stories"
@@ -35,8 +35,8 @@
           <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
 
           <!-- Label -->
-          <div class="absolute bottom-0 inset-x-0 p-5">
-            <span class="text-cream text-base font-semibold leading-tight">
+          <div class="absolute bottom-0 inset-x-0 p-3 sm:p-5">
+            <span class="text-cream text-sm sm:text-base font-semibold leading-tight">
               {{ story.label }}
             </span>
           </div>

@@ -79,7 +79,7 @@ definePageMeta({
 
 const supabase = useSupabaseClient();
 const route = useRoute();
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 // State
 const email = ref("");
@@ -117,5 +117,12 @@ const handleLogin = async () => {
 
 useHead({
   title: "Mon Espace - Boticia",
+  meta: [
+    {
+      key: "description",
+      name: "description",
+      content: t("seo.login_description"),
+    },
+  ],
 });
 </script>

@@ -19,6 +19,15 @@ export function getSupabase(): SupabaseClient {
 /**
  * Generate a Magic Link for a user
  */
+/**
+ * Convert a Supabase storage public URL to a relative proxy URL
+ * e.g. http://127.0.0.1:54321/storage/v1/object/public/bucket/file.jpg -> /api/storage/object/public/bucket/file.jpg
+ */
+export function toProxyUrl(supabasePublicUrl: string): string {
+  const supabaseUrl = process.env.SUPABASE_URL || "http://127.0.0.1:54321";
+  return supabasePublicUrl.replace(`${supabaseUrl}/storage/v1`, "/api/storage");
+}
+
 export async function generateMagicLink(email: string, redirectTo?: string): Promise<{ link: string | null; error: string | null }> {
   try {
     const supabase = getSupabase()

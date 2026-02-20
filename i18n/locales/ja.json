@@ -9,7 +9,9 @@
     "workshops": "アトリエ",
     "shop": "ブティック",
     "quote": "お見積もりを依頼",
-    "login": "マイスペース"
+    "login": "マイスペース",
+    "social_proof": "50組以上の結婚式を彩りました",
+    "skip_to_content": "コンテンツへスキップ"
   },
   "common": {
     "home": "ホーム",
@@ -434,6 +436,7 @@
   },
   "client": {
     "page_title": "マイプロジェクト",
+    "space_subtitle": "マイ Boticia スペース",
     "nav_project": "マイプロジェクト",
     "nav_inspirations": "インスピレーション",
     "nav_moodboard": "ムードボード",
@@ -550,6 +553,14 @@
     "day_thu": "木曜日",
     "day_fri": "金曜日",
     "day_sat": "土曜日"
+  },
+  "seo": {
+    "home_description": "Boticia \u2014 レティシア・シェファーによるオーダーメイドのフラワーアート。ウェディングフラワー装飾、イベント演出、フラワーアートアトリエ。フランス産の花、パリからコート・ダジュールまで。",
+    "about_description": "情熱的なフラワーデザイナー、レティシア・シェファーとBoticiaをご紹介。オーダーメイドのアレンジメント、フランス産の花、温かなサポート。",
+    "devis_description": "Boticiaでウェディングフラワー装飾のお見積もりを依頼。ブーケ、アーチ、テーブル装花、トータル演出。",
+    "terms_description": "Boticia フローラルデザインアトリエの利用規約。",
+    "legal_description": "レティシア・シェファーによるフローラルデザインアトリエ Boticia の特定商取引法に基づく表記。",
+    "login_description": "Boticiaクライアントスペースにアクセスして、ウェディングフラワープロジェクトをフォロー。"
   },
   "errors": {
     "generic": "エラーが発生しました",

@@ -14,7 +14,7 @@
             <span class="font-heading font-medium text-base md:text-xl tracking-tight text-dark block">
               {{ pageTitle || $t('common.my_space') }}
             </span>
-            <span v-if="user?.email" class="text-xs md:text-sm text-dark/40 truncate max-w-[140px] md:max-w-none block">
+            <span v-if="user?.email" class="text-xs md:text-sm text-orange-500 truncate max-w-[140px] md:max-w-none block">
               {{ pageTitle ? $t('common.my_space') : user.email }}
             </span>
           </div>
@@ -29,7 +29,7 @@
       </div>
     </header>
 
-    <main class="flex-1 flex flex-col">
+    <main id="main-content" class="flex-1 flex flex-col">
       <slot />
     </main>
     <Footer v-if="!route.params.id" />

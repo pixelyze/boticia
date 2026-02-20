@@ -1,7 +1,7 @@
 <template>
   <footer class="bg-white text-dark py-12">
-    <div class="px-10">
-      <div class="bg-cream rounded-[2rem] border-2 border-dark/10 py-20 px-6">
+    <div class="px-4 sm:px-10">
+      <div class="bg-cream rounded-[2rem] border-2 border-dark/10 py-12 sm:py-20 px-4 sm:px-6">
       <div class="max-w-2xl mx-auto text-center">
         <!-- Logo -->
         <NuxtLink v-if="!isHomePage" :to="localePath('/')" aria-label="Back to home">
@@ -17,7 +17,7 @@
         </p>
 
         <!-- Social links -->
-        <div class="flex justify-center gap-8 mt-12">
+        <nav aria-label="R\u00e9seaux sociaux" class="flex flex-wrap justify-center gap-4 sm:gap-8 mt-8 sm:mt-12">
           <a
             href="https://instagram.com/boticia_"
             target="_blank"
@@ -42,11 +42,11 @@
             rel="noopener noreferrer"
             class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
           >Pinterest</a>
-        </div>
+        </nav>
 
         <!-- Legal links -->
-        <div class="mt-16">
-          <div class="flex justify-center gap-6 text-base">
+        <nav aria-label="Liens l\u00e9gaux" class="mt-10 sm:mt-16">
+          <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm sm:text-base">
             <NuxtLink
               v-if="!isAboutPage"
               :to="localePath('/about')"
@@ -78,7 +78,7 @@
               {{ $t("footer.terms_link") }}
             </span>
           </div>
-        </div>
+        </nav>
       </div>
       </div>
 

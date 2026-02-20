@@ -776,6 +776,13 @@ const localePath = useLocalePath();
 
 useHead({
   title: t("quote_form.page_title") + " - Boticia",
+  meta: [
+    {
+      key: "description",
+      name: "description",
+      content: t("seo.devis_description"),
+    },
+  ],
 });
 
 // ── Chat state ──────────────────────────────────────

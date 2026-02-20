@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
     success: true,
     data: {
       path: data.path,
-      url: urlData.publicUrl,
+      url: toProxyUrl(urlData.publicUrl),
     },
   };
 });

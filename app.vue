@@ -2,6 +2,12 @@
   <div
     class="min-h-screen bg-white selection:bg-fuchsia-300 selection:text-fuchsia-900"
   >
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-dark focus:text-cream focus:rounded-lg focus:text-sm focus:font-semibold"
+    >
+      {{ $t("nav.skip_to_content") }}
+    </a>
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

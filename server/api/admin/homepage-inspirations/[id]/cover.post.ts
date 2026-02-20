@@ -101,7 +101,7 @@ export default defineEventHandler(async (event) => {
       cover_mime_type: compressed.mimeType,
       cover_file_size: compressed.data.length,
       cover_storage_path: filename,
-      cover_public_url: publicUrl,
+      cover_public_url: toProxyUrl(publicUrl),
     });
 
     if (!updated) {

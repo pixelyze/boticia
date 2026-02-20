@@ -88,7 +88,7 @@ export default defineEventHandler(async (event) => {
         mime_type: file.type || "application/pdf",
         file_size: file.data.length,
         storage_path: filename,
-        public_url: publicUrl,
+        public_url: toProxyUrl(publicUrl),
       };
     }
 

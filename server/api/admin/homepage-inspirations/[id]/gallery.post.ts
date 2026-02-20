@@ -99,7 +99,7 @@ export default defineEventHandler(async (event) => {
       mime_type: compressed.mimeType,
       file_size: compressed.data.length,
       storage_path: filename,
-      public_url: publicUrl,
+      public_url: toProxyUrl(publicUrl),
       caption: captionField?.data?.toString() || undefined,
     });
 

@@ -19,9 +19,6 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: {
-        lang: "fr",
-      },
       title: "Boticia — Créatrice d'ambiance florale",
       meta: [
         { charset: "utf-8" },
@@ -42,10 +39,13 @@ export default defineNuxtConfig({
           content: "Atelier de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
         },
         { property: "og:type", content: "website" },
-        { property: "og:url", content: "https://yourdomain.com" },
+        {
+          property: "og:url",
+          content: process.env.NUXT_PUBLIC_SITE_URL || "https://boticia.fr",
+        },
         {
           property: "og:image",
-          content: "https://yourdomain.com/og-image.png",
+          content: `${process.env.NUXT_PUBLIC_SITE_URL || "https://boticia.fr"}/og-image.png`,
         },
         { name: "twitter:card", content: "summary_large_image" },
         {
@@ -58,7 +58,7 @@ export default defineNuxtConfig({
         },
         {
           name: "twitter:image",
-          content: "https://yourdomain.com/og-image.png",
+          content: `${process.env.NUXT_PUBLIC_SITE_URL || "https://boticia.fr"}/og-image.png`,
         },
         // Theme colors
         { name: "theme-color", content: "#000000" },
@@ -79,10 +79,12 @@ export default defineNuxtConfig({
         { rel: "icon", sizes: "32x32", href: "/favicon-32x32.png" },
         { rel: "icon", sizes: "16x16", href: "/favicon-16x16.png" },
         { rel: "manifest", href: "/site.webmanifest" },
-        { rel: "canonical", href: "https://yourdomain.com" },
       ],
     },
-    pageTransition: { name: "page", mode: "out-in" },
+    pageTransition: {
+      name: "page",
+      mode: "out-in",
+    },
     layoutTransition: { name: "layout", mode: "out-in" },
   },
 
@@ -117,8 +119,8 @@ export default defineNuxtConfig({
       },
     ],
     defaultLocale: "fr",
-    baseUrl: "https://yourdomain.com",
-    skipSettingLocaleOnNavigate: false,
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://boticia.fr",
+    skipSettingLocaleOnNavigate: true,
     compilation: {
       strictMessage: true,
       escapeHtml: true,
@@ -179,7 +181,7 @@ export default defineNuxtConfig({
     },
     // Public (accessible client-side)
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://yourdomain.com",
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://boticia.fr",
       stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
     },
   },

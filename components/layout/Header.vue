@@ -67,9 +67,12 @@
 
           <!-- Mobile menu button -->
           <button
+            ref="hamburgerBtn"
             class="md:hidden p-2"
             @click="openMobileMenu"
             :aria-label="t('common.menu')"
+            :aria-expanded="mobileMenuOpen"
+            aria-controls="mobile-menu"
           >
             <IconLucid name="Menu" size="sm" />
           </button>
@@ -84,6 +87,8 @@
               v-for="loc in availableLocales"
               :key="loc.code"
               @click="switchLocale(loc.code)"
+              :lang="loc.code"
+              :aria-label="loc.label"
               class="px-3 py-1.5 text-xs uppercase tracking-wider rounded-full transition-all duration-300"
               :class="locale === loc.code ? 'bg-dark/10 text-dark font-semibold' : 'text-dark/30 hover:text-dark/60'"
             >
@@ -107,6 +112,10 @@
       >
         <div
           v-if="mobileMenuOpen"
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          :aria-label="t('common.menu')"
           class="fixed inset-0 z-[100] bg-cream md:hidden"
         >
           <!-- Modal header -->
@@ -119,6 +128,7 @@
               Boticia
             </NuxtLink>
             <button
+              ref="closeBtn"
               @click="closeMobileMenu"
               class="p-2 -mr-2"
               :aria-label="t('common.close')"
@@ -129,27 +139,38 @@
 
           <!-- Navigation links -->
           <div class="flex flex-col px-6 mt-4 gap-3">
+            <!-- CTA : Demander un devis (first for conversion) -->
+            <NuxtLink
+              ref="firstMenuLink"
+              :to="localePath('/devis')"
+              class="block w-full border-2 border-dark bg-dark px-6 py-5 text-base font-semibold uppercase tracking-[0.2em] text-cream text-center transition-all active:translate-x-1 active:translate-y-1 active:shadow-none"
+              :class="mobileMenuVisible ? 'opacity-100 translate-y-0 shadow-[4px_4px_0px_0px_rgba(43,43,43,0.5)]' : 'opacity-0 translate-y-4'"
+              :style="{ transitionDelay: '0ms' }"
+              @click="closeMobileMenu"
+            >
+              {{ t("nav.quote") }}
+            </NuxtLink>
+            <!-- Social proof -->
+            <p
+              class="text-center text-sm text-dark/50 italic -mt-1 mb-1 transition-all"
+              :class="mobileMenuVisible ? 'opacity-100' : 'opacity-0'"
+            >
+              {{ t("nav.social_proof") }}
+            </p>
+
             <NuxtLink
               v-for="(link, i) in navLinks"
               :key="link.key"
               :to="localePath(link.to)"
-              class="block w-full border-2 border-dark bg-white px-6 py-5 text-base font-semibold uppercase tracking-[0.2em] text-dark transition-all active:translate-x-1 active:translate-y-1 active:shadow-none"
-              :style="{ transitionDelay: `${i * 50}ms` }"
-              :class="mobileMenuVisible ? 'opacity-100 translate-y-0 shadow-[4px_4px_0px_0px_rgba(43,43,43,1)]' : 'opacity-0 translate-y-4'"
+              class="block w-full border-2 border-dark px-6 py-5 text-base font-semibold uppercase tracking-[0.2em] text-dark transition-all active:translate-x-1 active:translate-y-1 active:shadow-none"
+              :style="{ transitionDelay: `${(i + 1) * 50}ms` }"
+              :class="[
+                mobileMenuVisible ? 'opacity-100 translate-y-0 shadow-[4px_4px_0px_0px_rgba(43,43,43,1)]' : 'opacity-0 translate-y-4',
+                isActivePath(link.to) ? 'bg-cream-dark border-l-4 border-l-terracotta' : 'bg-white',
+              ]"
               @click="closeMobileMenu"
             >
               {{ t(link.key) }}
-            </NuxtLink>
-
-            <!-- CTA : Demander un devis -->
-            <NuxtLink
-              :to="localePath('/devis')"
-              class="block w-full border-2 border-dark bg-dark px-6 py-5 text-base font-semibold uppercase tracking-[0.2em] text-cream text-center transition-all active:translate-x-1 active:translate-y-1 active:shadow-none mt-2"
-              :class="mobileMenuVisible ? 'opacity-100 translate-y-0 shadow-[4px_4px_0px_0px_rgba(43,43,43,0.5)]' : 'opacity-0 translate-y-4'"
-              :style="{ transitionDelay: `${navLinks.length * 50}ms` }"
-              @click="closeMobileMenu"
-            >
-              {{ t("nav.quote") }}
             </NuxtLink>
           </div>
 
@@ -158,9 +179,10 @@
             <!-- Mon Espace -->
             <NuxtLink
               :to="localePath(userSpaceRoute)"
-              class="block w-full border-2 border-dark/20 bg-cream px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-dark text-center transition-all"
+              class="w-full border-2 border-dark/20 bg-cream px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-dark text-center transition-all flex items-center justify-center gap-2"
               @click="closeMobileMenu"
             >
+              <IconLucid name="User" size="xs" :strokeWidth="2" />
               {{ t("nav.login") }}
             </NuxtLink>
 
@@ -170,6 +192,8 @@
                 v-for="loc in availableLocales"
                 :key="loc.code"
                 @click="switchLocale(loc.code); closeMobileMenu()"
+                :lang="loc.code"
+                :aria-label="loc.label"
                 class="text-sm uppercase tracking-[0.15em] transition-colors duration-300"
                 :class="locale === loc.code ? 'text-dark font-semibold' : 'text-dark/40'"
               >
@@ -190,6 +214,7 @@ const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const switchLocalePath = useSwitchLocalePath();
 const router = useRouter();
+const route = useRoute();
 const user = useSupabaseUser();
 const userRole = ref("");
 
@@ -223,11 +248,24 @@ const mobileMenuOpen = ref(false);
 const mobileMenuVisible = ref(false);
 const scrolled = ref(false);
 
+// Template refs for focus management
+const hamburgerBtn = ref(null);
+const closeBtn = ref(null);
+const firstMenuLink = ref(null);
+
 const navLinks = [
   { key: "nav.weddings", to: "/pricing" },
   { key: "nav.events", to: "/events" },
   { key: "nav.workshops", to: "/workshops" },
 ];
+
+// Active path detection for mobile menu
+const isActivePath = (path) => {
+  const currentPath = route.path;
+  const resolvedPath = localePath(path);
+  return currentPath === resolvedPath
+    || currentPath.startsWith(resolvedPath + "/");
+};
 
 const openMobileMenu = () => {
   mobileMenuOpen.value = true;
@@ -235,6 +273,16 @@ const openMobileMenu = () => {
   nextTick(() => {
     requestAnimationFrame(() => {
       mobileMenuVisible.value = true;
+      // Focus the first interactive element (CTA link)
+      nextTick(() => {
+        const menu = document.getElementById("mobile-menu");
+        if (menu) {
+          const firstFocusable = menu.querySelector(
+            "a, button, [tabindex]"
+          );
+          if (firstFocusable) firstFocusable.focus();
+        }
+      });
     });
   });
 };
@@ -244,12 +292,39 @@ const closeMobileMenu = () => {
   document.body.style.overflow = "";
   setTimeout(() => {
     mobileMenuOpen.value = false;
+    // Return focus to hamburger button
+    nextTick(() => {
+      hamburgerBtn.value?.focus();
+    });
   }, 200);
 };
 
-const onEscape = (e) => {
+// Focus trap: keep Tab cycling within the mobile menu
+const onKeydown = (e) => {
   if (e.key === "Escape" && mobileMenuOpen.value) {
     closeMobileMenu();
+    return;
+  }
+  if (e.key === "Tab" && mobileMenuOpen.value) {
+    const menu = document.getElementById("mobile-menu");
+    if (!menu) return;
+    const focusables = menu.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   }
 };
 
@@ -257,18 +332,18 @@ onMounted(() => {
   window.addEventListener("scroll", () => {
     scrolled.value = window.scrollY > 50;
   });
-  window.addEventListener("keydown", onEscape);
+  window.addEventListener("keydown", onKeydown);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("keydown", onEscape);
+  window.removeEventListener("keydown", onKeydown);
   document.body.style.overflow = "";
 });
 
 const availableLocales = [
-  { code: "fr" },
-  { code: "en" },
-  { code: "ja" },
+  { code: "fr", label: "Passer en fran\u00e7ais" },
+  { code: "en", label: "Switch to English" },
+  { code: "ja", label: "\u65e5\u672c\u8a9e\u306b\u5207\u308a\u66ff\u3048" },
 ];
 
 const switchLocale = (code) => {

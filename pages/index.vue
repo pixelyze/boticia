@@ -156,8 +156,55 @@ definePageMeta({
 });
 
 const { t } = useI18n();
+const config = useRuntimeConfig();
+const siteUrl = config.public.siteUrl;
 
 useHead({
   title: t('hero.title') + ' — Boticia',
+  meta: [
+    {
+      key: 'description',
+      name: 'description',
+      content: t('seo.home_description'),
+    },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Boticia',
+        url: siteUrl,
+        logo: `${siteUrl}/logo-boticia.png`,
+        sameAs: [
+          'https://instagram.com/boticia_',
+          'https://www.linkedin.com/in/la%C3%ABtitia-schaeffer-cr%C3%A9atrice-florale/',
+          'https://www.facebook.com/BoticiaParis/',
+          'https://fr.pinterest.com/Boticia_Paris/',
+        ],
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Florist',
+        name: 'Boticia',
+        description: t('footer.description'),
+        url: siteUrl,
+        image: `${siteUrl}/logo-boticia.png`,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Paris',
+          addressCountry: 'FR',
+        },
+        areaServed: {
+          '@type': 'Country',
+          name: 'France',
+        },
+      }),
+    },
+  ],
 });
 </script>

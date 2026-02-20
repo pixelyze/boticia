@@ -24,6 +24,13 @@ definePageMeta({
 });
 
 useHead({
-  title: t('terms.title'),
+  title: t('terms.title') + ' - Boticia',
+  meta: [
+    {
+      key: 'description',
+      name: 'description',
+      content: t('seo.terms_description'),
+    },
+  ],
 });
 </script>
