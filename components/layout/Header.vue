@@ -248,6 +248,11 @@ const mobileMenuOpen = ref(false);
 const mobileMenuVisible = ref(false);
 const scrolled = ref(false);
 
+// Reset header to expanded state on route change
+watch(() => route.path, () => {
+  scrolled.value = false;
+});
+
 // Template refs for focus management
 const hamburgerBtn = ref(null);
 const closeBtn = ref(null);

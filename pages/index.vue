@@ -153,6 +153,7 @@
 // [PAGE-HOME] — Layout : homepage | Head : titre dynamique i18n
 definePageMeta({
   layout: 'homepage',
+  pageTransition: false,
 });
 
 const { t } = useI18n();

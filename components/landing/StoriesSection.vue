@@ -69,7 +69,7 @@ const FALLBACK_GRADIENTS = [
   'bg-gradient-to-br from-cream to-dark/20',
 ];
 
-const { data: apiData } = await useFetch(
+const { data: apiData } = useFetch(
   '/api/inspirations/homepage'
 );
 
