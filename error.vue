@@ -1,75 +1,62 @@
 <template>
-  <div class="min-h-screen bg-white flex flex-col">
+  <div
+    class="min-h-screen bg-cream-light selection:bg-fuchsia-300
+           selection:text-fuchsia-900 flex flex-col"
+  >
     <!-- Header -->
-    <header class="container mx-auto px-4 py-8">
-      <div class="flex justify-center">
-        <NuxtLink to="/" aria-label="Back to home">
-          <img
-            src="/logo-boticia.png"
-            alt="Logo"
-            class="h-16 md:h-20 w-auto transition-transform duration-200 hover:scale-[1.02]"
-          />
+    <header class="pt-8 pb-4">
+      <div class="text-center">
+        <NuxtLink
+          to="/"
+          class="font-heading font-medium text-3xl
+                 tracking-tight text-dark inline-block"
+        >
+          Boticia
         </NuxtLink>
       </div>
     </header>
 
-    <!-- Main content -->
-    <main class="flex-1 flex items-center justify-center px-4 py-16">
-      <div class="text-center max-w-2xl">
+    <!-- Main -->
+    <main class="flex-1 flex items-center justify-center px-6">
+      <div class="text-center max-w-lg">
         <!-- Error code -->
-        <div class="relative inline-block mb-8">
-          <div
-            class="text-[120px] md:text-[180px] font-bold leading-none tracking-tighter text-black select-none"
-          >
-            {{ error?.statusCode || 404 }}
-          </div>
-          <div
-            class="absolute inset-0 text-[120px] md:text-[180px] font-bold leading-none tracking-tighter text-gray-300 -z-10 translate-x-2 translate-y-2"
-          >
-            {{ error?.statusCode || 404 }}
-          </div>
-        </div>
+        <span class="section-tagline">
+          {{ t("errors.generic") }}
+        </span>
+        <p
+          class="font-heading text-[7rem] md:text-[9rem]
+                 leading-none text-terracotta/20 mt-2"
+        >
+          {{ error?.statusCode || 404 }}
+        </p>
 
-        <!-- Error message -->
-        <h1 class="text-2xl md:text-4xl font-bold mb-4 text-black">
+        <!-- Title -->
+        <h1 class="section-title-lg mt-4">
           {{ errorTitle }}
         </h1>
-        <p class="text-lg md:text-xl text-gray-700 mb-12 max-w-md mx-auto">
+
+        <!-- Description -->
+        <p class="feature-description mt-4 max-w-sm mx-auto">
           {{ errorMessage }}
         </p>
 
         <!-- CTA -->
-        <div
-          class="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <button
+        <div class="mt-10">
+          <Button
+            variant="primary"
+            icon="ArrowLeft"
             @click="handleError"
-            class="px-8 py-4 font-medium border-2 transition-all flex items-center gap-3 bg-black text-white hover:bg-gray-800 border-black shadow-[4px_4px_0px_0px_rgba(107,114,128,1)] hover:shadow-[2px_2px_0px_0px_rgba(107,114,128,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="m12 19-7-7 7-7" />
-              <path d="M19 12H5" />
-            </svg>
             {{ t("common.back_to_home") }}
-          </button>
+          </Button>
         </div>
       </div>
     </main>
 
     <!-- Footer -->
-    <footer class="container mx-auto px-4 py-8 text-center">
-      <p class="text-sm text-gray-500">
-        &copy; {{ new Date().getFullYear() }} My App
+    <footer class="py-8 text-center">
+      <p class="text-sm text-dark/40">
+        &copy; {{ new Date().getFullYear() }} Boticia
       </p>
     </footer>
   </div>
@@ -93,26 +80,26 @@ const props = defineProps<{
 const errorTitle = computed(() => {
   switch (props.error?.statusCode) {
     case 404:
-      return "Page not found";
+      return t("errors.not_found");
     case 500:
-      return "Server error";
+      return t("errors.server");
     case 403:
-      return "Access denied";
+      return t("errors.forbidden");
     default:
-      return "An error occurred";
+      return t("errors.generic");
   }
 });
 
 const errorMessage = computed(() => {
   switch (props.error?.statusCode) {
     case 404:
-      return "The page you're looking for doesn't exist.";
+      return t("errors.not_found_desc");
     case 500:
-      return "Our server is having a rough time. Please try again in a moment.";
+      return t("errors.server_desc");
     case 403:
-      return "You don't have permission to access this resource.";
+      return t("errors.forbidden_desc");
     default:
-      return props.error?.message || "Something went wrong.";
+      return t("errors.generic_desc");
   }
 });
 

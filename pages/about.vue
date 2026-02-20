@@ -60,7 +60,8 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 
 definePageMeta({
-  layout: 'minimal',
+  layout: 'homepage',
+  pageTransition: false,
 });
 
 useHead({

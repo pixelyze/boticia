@@ -40,7 +40,7 @@ export type FloralNeedKey =
 export interface QuoteRequest {
   id: string;
   partner1_name: string;
-  partner2_name: string;
+  partner2_name?: string;
   email: string;
   phone?: string;
   wedding_date?: string;
@@ -60,7 +60,7 @@ export interface QuoteRequest {
 
 export interface CreateQuoteRequestInput {
   partner1_name: string;
-  partner2_name: string;
+  partner2_name?: string;
   email: string;
   phone?: string;
   wedding_date?: string;

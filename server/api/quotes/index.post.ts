@@ -17,13 +17,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  if (!body.partner2_name?.trim()) {
-    throw createError({
-      statusCode: 400,
-      message: "partner2_name is required",
-    });
-  }
-
   if (!body.email?.trim()) {
     throw createError({
       statusCode: 400,

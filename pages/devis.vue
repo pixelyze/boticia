@@ -135,9 +135,9 @@
                   >B</span>
                 </div>
                 <div
-                  class="bg-cream/60 border-2 border-dark/5 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
+                  class="bg-cream/60 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
                 >
-                  <p class="text-dark text-base leading-relaxed">
+                  <p class="text-dark text-lg leading-relaxed">
                     {{ msg.text }}
                   </p>
                 </div>
@@ -148,7 +148,7 @@
                 <div
                   class="bg-dark text-cream rounded-2xl rounded-tr-md px-5 py-4 max-w-md"
                 >
-                  <p class="text-base leading-relaxed">
+                  <p class="text-lg leading-relaxed">
                     {{ msg.text }}
                   </p>
                 </div>
@@ -168,17 +168,15 @@
                 >B</span>
               </div>
               <div
-                class="bg-cream/60 border-2 border-dark/5 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
+                class="bg-cream/60 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
               >
-                <p class="text-dark text-base leading-relaxed">
+                <p class="text-dark text-lg leading-relaxed">
                   <span>{{ displayedText }}</span>
                   <span class="copilot-cursor">|</span>
                 </p>
               </div>
             </div>
 
-            <!-- Scroll anchor -->
-            <div ref="scrollAnchor"></div>
           </div>
 
           <!-- Input area (changes per step) -->
@@ -186,59 +184,32 @@
             v-if="!isTyping && currentStep <= 8"
             class="ml-[52px] max-w-md"
           >
-            <!-- Step 1: Partner names -->
+            <!-- Step 1: Name -->
             <div v-if="currentStep === 1" class="space-y-4">
-              <div class="space-y-4">
-                <div>
-                  <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
-                  >
-                    {{ t("quote_form.partner1_label") }}
-                  </label>
-                  <input
-                    v-model="form.partner1_name"
-                    type="text"
-                    :placeholder="t('quote_form.partner1_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 bg-cream/30 focus:bg-white focus:outline-none transition-all"
-                    :class="
-                      errors.partner1_name
-                        ? 'border-red-400'
-                        : 'border-dark/20 focus:border-dark/40'
-                    "
-                    @keydown.enter="nextStep"
-                  />
-                  <p
-                    v-if="errors.partner1_name"
-                    class="mt-2 text-sm text-red-500"
-                  >
-                    {{ errors.partner1_name }}
-                  </p>
-                </div>
-                <div>
-                  <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
-                  >
-                    {{ t("quote_form.partner2_label") }}
-                  </label>
-                  <input
-                    v-model="form.partner2_name"
-                    type="text"
-                    :placeholder="t('quote_form.partner2_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 bg-cream/30 focus:bg-white focus:outline-none transition-all"
-                    :class="
-                      errors.partner2_name
-                        ? 'border-red-400'
-                        : 'border-dark/20 focus:border-dark/40'
-                    "
-                    @keydown.enter="nextStep"
-                  />
-                  <p
-                    v-if="errors.partner2_name"
-                    class="mt-2 text-sm text-red-500"
-                  >
-                    {{ errors.partner2_name }}
-                  </p>
-                </div>
+              <div>
+                <label
+                  class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                >
+                  {{ t("quote_form.name_label") }}
+                </label>
+                <input
+                  v-model="form.name"
+                  type="text"
+                  :placeholder="t('quote_form.name_placeholder')"
+                  class="w-full h-14 px-5 rounded-2xl border-2 bg-cream/30 focus:bg-white focus:outline-none transition-all"
+                  :class="
+                    errors.name
+                      ? 'border-red-400'
+                      : 'border-dark/20 focus:border-dark/40'
+                  "
+                  @keydown.enter="nextStep"
+                />
+                <p
+                  v-if="errors.name"
+                  class="mt-2 text-sm text-red-500"
+                >
+                  {{ errors.name }}
+                </p>
               </div>
               <div class="flex justify-center">
                 <Button
@@ -390,47 +361,66 @@
 
             <!-- Step 5: Floral needs -->
             <div v-if="currentStep === 5" class="space-y-4">
-              <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
-              >
-                <button
-                  v-for="need in floralNeeds"
-                  :key="need"
-                  type="button"
-                  class="group flex items-center gap-3 px-5 py-4 rounded-[1.25rem] border-2 text-left transition-all duration-200"
-                  :class="
-                    selectedNeeds.has(need)
-                      ? 'bg-dark border-dark'
-                      : 'bg-white border-dark/10 hover:border-dark/30'
-                  "
-                  @click="toggleNeed(need)"
+              <div class="space-y-5">
+                <div
+                  v-for="group in floralNeedGroups"
+                  :key="group.label"
                 >
-                  <span
-                    class="w-5 h-5 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
-                    :class="
-                      selectedNeeds.has(need)
-                        ? 'bg-cream border-cream'
-                        : 'border-dark/20 group-hover:border-dark/40'
-                    "
+                  <div
+                    class="flex items-center gap-2 mb-2"
                   >
                     <IconLucid
-                      v-if="selectedNeeds.has(need)"
-                      name="Check"
+                      :name="group.icon"
                       size="xs"
-                      class="text-dark"
+                      class="text-terracotta"
                     />
-                  </span>
-                  <span
-                    class="font-medium text-sm transition-colors duration-200"
-                    :class="
-                      selectedNeeds.has(need)
-                        ? 'text-cream'
-                        : 'text-dark/70 group-hover:text-dark'
-                    "
-                  >
-                    {{ t(`quote_form.need_${need}`) }}
-                  </span>
-                </button>
+                    <span
+                      class="text-xs uppercase tracking-[0.15em] text-dark/40 font-medium"
+                    >
+                      {{ group.label }}
+                    </span>
+                  </div>
+                  <div class="space-y-2">
+                    <button
+                      v-for="need in group.needs"
+                      :key="need"
+                      type="button"
+                      class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
+                      :class="
+                        selectedNeeds.has(need)
+                          ? 'bg-dark border-dark'
+                          : 'bg-white border-dark/10 hover:border-dark/30'
+                      "
+                      @click="toggleNeed(need)"
+                    >
+                      <span
+                        class="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                        :class="
+                          selectedNeeds.has(need)
+                            ? 'bg-cream border-cream'
+                            : 'border-dark/20 group-hover:border-dark/40'
+                        "
+                      >
+                        <IconLucid
+                          v-if="selectedNeeds.has(need)"
+                          name="Check"
+                          size="xs"
+                          class="text-dark"
+                        />
+                      </span>
+                      <span
+                        class="font-medium text-base transition-colors duration-200"
+                        :class="
+                          selectedNeeds.has(need)
+                            ? 'text-cream'
+                            : 'text-dark/70 group-hover:text-dark'
+                        "
+                      >
+                        {{ t(`quote_form.need_${need}`) }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
               </div>
               <p
                 v-if="errors.floral_needs"
@@ -616,18 +606,10 @@
               >
                 <div class="flex justify-between">
                   <span class="text-fuchsia-500">
-                    {{ t("quote_form.partner1_label") }}
+                    {{ t("quote_form.name_label") }}
                   </span>
                   <span class="font-medium text-dark">
-                    {{ form.partner1_name }}
-                  </span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-fuchsia-500">
-                    {{ t("quote_form.partner2_label") }}
-                  </span>
-                  <span class="font-medium text-dark">
-                    {{ form.partner2_name }}
+                    {{ form.name }}
                   </span>
                 </div>
                 <div class="h-px bg-dark/5"></div>
@@ -742,6 +724,9 @@
               </div>
             </div>
           </div>
+
+          <!-- Scroll anchor (after input area) -->
+          <div ref="scrollAnchor" class="h-16"></div>
         </div>
       </section>
     </template>
@@ -803,8 +788,7 @@ let typingInterval: ReturnType<typeof setInterval> | null = null;
 
 // ── Form state (unchanged) ──────────────────────────
 const form = reactive({
-  partner1_name: "",
-  partner2_name: "",
+  name: "",
   email: "",
   phone: "",
   wedding_date: "",
@@ -826,8 +810,7 @@ const inspirationUploading = ref(false);
 const MAX_INSPIRATION_FILES = 5;
 
 const errors = reactive({
-  partner1_name: "",
-  partner2_name: "",
+  name: "",
   email: "",
   floral_needs: "",
   generic: "",
@@ -870,6 +853,40 @@ const floralNeeds: FloralNeedKey[] = [
   "venue_entrance",
 ];
 
+// Grouped floral needs for display
+const floralNeedGroups = computed(() => [
+  {
+    label: t("quote_form.need_group_personal"),
+    icon: "Heart",
+    needs: [
+      "bridal_bouquet",
+      "bridesmaid_bouquet",
+      "boutonnieres",
+      "hair_flowers",
+    ] as FloralNeedKey[],
+  },
+  {
+    label: t("quote_form.need_group_ceremony"),
+    icon: "Sparkles",
+    needs: [
+      "ceremony_arch",
+      "ceremony_aisle",
+      "welcome_sign",
+    ] as FloralNeedKey[],
+  },
+  {
+    label: t("quote_form.need_group_reception"),
+    icon: "Star",
+    needs: [
+      "table_centerpieces",
+      "table_runner",
+      "cocktail_decor",
+      "cake_flowers",
+      "venue_entrance",
+    ] as FloralNeedKey[],
+  },
+]);
+
 const toggleNeed = (key: FloralNeedKey) => {
   if (selectedNeeds.value.has(key)) {
     selectedNeeds.value.delete(key);
@@ -900,10 +917,12 @@ const formatDisplayDate = (dateStr: string) => {
 // ── Scroll to bottom ────────────────────────────────
 const scrollToBottom = () => {
   nextTick(() => {
-    scrollAnchor.value?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
+    setTimeout(() => {
+      scrollAnchor.value?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }, 50);
   });
 };
 
@@ -955,8 +974,7 @@ const getStepMessage = (step: number): string => {
       return t("quote_form.chat_step1");
     case 2:
       return t("quote_form.chat_step2", {
-        partner1: form.partner1_name,
-        partner2: form.partner2_name,
+        name: form.name,
       });
     case 3:
       return t("quote_form.chat_step3");
@@ -979,7 +997,7 @@ const getStepMessage = (step: number): string => {
 const getStepSummary = (step: number): string => {
   switch (step) {
     case 1:
-      return `${form.partner1_name} & ${form.partner2_name}`;
+      return form.name;
     case 2: {
       let summary = form.email;
       if (form.phone) summary += ` • ${form.phone}`;
@@ -1018,23 +1036,17 @@ const getStepSummary = (step: number): string => {
 // ── Validation per step ─────────────────────────────
 const validateStep = (step: number): boolean => {
   // Reset relevant errors
-  errors.partner1_name = "";
-  errors.partner2_name = "";
+  errors.name = "";
   errors.email = "";
   errors.floral_needs = "";
 
   switch (step) {
     case 1:
-      let valid1 = true;
-      if (!form.partner1_name.trim()) {
-        errors.partner1_name = t("quote_form.error_partner1");
-        valid1 = false;
+      if (!form.name.trim()) {
+        errors.name = t("quote_form.error_name");
+        return false;
       }
-      if (!form.partner2_name.trim()) {
-        errors.partner2_name = t("quote_form.error_partner2");
-        valid1 = false;
-      }
-      return valid1;
+      return true;
     case 2: {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!form.email.trim() || !emailRegex.test(form.email)) {
@@ -1099,8 +1111,7 @@ const handleSubmit = async () => {
     }>("/api/quotes", {
       method: "POST",
       body: {
-        partner1_name: form.partner1_name.trim(),
-        partner2_name: form.partner2_name.trim(),
+        partner1_name: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim() || undefined,
         wedding_date: form.wedding_date || undefined,
