@@ -1,15 +1,15 @@
 <template>
-  <div class="flex-1 flex flex-col bg-white">
-    <section class="py-6 md:py-8">
+  <div class="flex-1 flex flex-col">
+    <section class="pt-4 pb-6 md:pt-6 md:pb-8">
       <div class="px-4 md:px-10">
         <!-- Loading -->
         <div v-if="loading" class="py-16 text-center">
           <IconLucid
             name="Loader2"
             size="lg"
-            class="animate-spin mx-auto text-dark/30"
+            class="animate-spin mx-auto text-dark/50"
           />
-          <p class="text-dark/40 mt-4">{{ t("common.loading") }}</p>
+          <p class="text-dark/60 mt-4">{{ t("common.loading") }}</p>
         </div>
 
         <!-- Error -->
@@ -47,7 +47,10 @@
               </div>
 
               <!-- Urgent badge -->
-              <div v-if="isUrgent" class="mb-4 copilot-fade-in copilot-fade-in-2">
+              <div
+                v-if="isUrgent"
+                class="mb-4 copilot-fade-in copilot-fade-in-2"
+              >
                 <Tag variant="warning">Urgent</Tag>
               </div>
 
@@ -83,248 +86,258 @@
                   {{ t(`dashboard.quote_status_${quote.status}`) }}
                 </span>
                 <button
-                  @click="activeSection = 'section-status'"
+                  @click="activeSection = 'project'"
                   class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-dark text-cream text-sm font-semibold hover:bg-dark/80 transition-all"
                 >
                   <IconLucid name="NotebookPen" size="xs" />
-                  Espace projet
+                  {{ t("dashboard.project_view_title") }}
                 </button>
               </div>
 
+              <!-- Client inspirations preview -->
+              <div
+                v-if="
+                  !isTyping &&
+                  !isTypingLink &&
+                  clientInspirations.length > 0
+                "
+                class="mt-10 copilot-actions-reveal"
+              >
+                <p
+                  class="text-sm text-dark/50 uppercase tracking-wider mb-3"
+                >
+                  {{
+                    t("dashboard.client_inspirations_title")
+                  }}
+                </p>
+                <div
+                  class="flex flex-wrap justify-center gap-2"
+                >
+                  <button
+                    v-for="item in clientInspirations.slice(0, 6)"
+                    :key="item.id"
+                    @click="copilotGalleryOpen = true"
+                    class="w-16 h-16 rounded-xl overflow-hidden ring-1 ring-dark/5 hover:ring-fuchsia-300 transition-all hover:scale-105"
+                  >
+                    <img
+                      :src="item.public_url"
+                      :alt="
+                        item.caption ||
+                        item.original_filename
+                      "
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </button>
+                  <button
+                    v-if="clientInspirations.length > 6"
+                    @click="activeSection = 'project'"
+                    class="w-16 h-16 rounded-xl bg-cream flex items-center justify-center text-dark/60 text-xs font-semibold hover:bg-cream-dark transition-colors"
+                  >
+                    +{{
+                      clientInspirations.length - 6
+                    }}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Section content view -->
-          <div v-else class="flex gap-6">
-          <!-- Sidebar navigation -->
-          <nav class="hidden md:flex flex-col gap-4 sticky top-24 self-start w-24">
-            <!-- Back to copilot -->
-            <button
-              @click="activeSection = 'copilot'"
-              class="w-24 h-12 rounded-2xl border-2 flex items-center justify-center gap-1.5 transition-all bg-cream text-dark/40 border-dark/10 hover:border-dark/30 hover:text-dark/60"
-            >
-              <IconLucid name="Sparkles" size="sm" />
-            </button>
-            <button
-              v-for="nav in sectionNav"
-              :key="nav.id"
-              @click="activeSection = nav.id"
-              class="w-24 h-24 rounded-2xl border-2 flex flex-col items-center justify-center gap-1.5 transition-all"
-              :class="
-                activeSection === nav.id
-                  ? 'bg-dark text-cream border-dark'
-                  : 'bg-cream text-dark/40 border-dark/10 hover:border-dark/30 hover:text-dark/60'
-              "
-            >
-              <IconLucid :name="nav.icon" size="sm" :class="activeSection === nav.id ? '' : 'text-fuchsia-500'" />
-              <span class="text-[10px] font-semibold uppercase tracking-wider leading-none" :class="activeSection === nav.id ? '' : 'text-fuchsia-500'">
-                {{ nav.label }}
-              </span>
-            </button>
-          </nav>
-
-          <!-- Main content -->
-          <div class="flex-1 min-w-0">
-            <!-- Tab: Statut & Contact -->
-            <template v-if="activeSection === 'section-status'">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Gestion -->
-                <div
-                  class="rounded-[1.5rem] border-2 border-dark/10 p-5"
+          <!-- Project view: grid layout -->
+          <div
+            v-else
+            class="flex flex-col xl:flex-row gap-6"
+          >
+            <!-- MAIN CONTENT -->
+            <div class="flex-1 min-w-0 flex flex-col xl:flex-row gap-6">
+              <!-- Copilot button -->
+              <div class="hidden xl:block pt-2">
+                <button
+                  class="w-10 h-10 rounded-full bg-cream-dark
+                    flex items-center justify-center
+                    hover:bg-dark hover:text-cream
+                    transition-all text-dark/60"
+                  :aria-label="t('dashboard.copilot_title')"
+                  @click="activeSection = 'copilot'"
                 >
+                  <IconLucid name="Sparkles" size="xs" />
+                </button>
+              </div>
+              <!-- LEFT: White panel -->
+              <div class="flex-1 min-w-0">
+              <div
+                class="rounded-3xl bg-white p-6 border-2 border-dark/10"
+              >
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-2"
+              >
+                <!-- Statut + dates -->
+                <div>
                   <h2
-                    class="font-heading text-sm text-dark/50 uppercase tracking-wider mb-4"
+                    class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3"
                   >
                     {{ t("dashboard.quote_detail_status") }}
                   </h2>
-                  <div class="space-y-4">
+                  <div class="space-y-3">
                     <button
-                      class="flex items-center gap-3 px-4 py-3 rounded-xl border-2 border-dark/10 hover:border-dark/30 transition-all w-full text-left"
+                      class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
+                      :aria-label="t('dashboard.quote_detail_change_status')"
                       @click="statusModalOpen = true"
                     >
                       <div
-                        class="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
-                        :class="statusIconBg(quote.status)"
+                        class="w-7 h-7 rounded-full bg-cream-dark flex items-center justify-center shrink-0"
                       >
                         <IconLucid
                           :name="statusIcon(quote.status)"
-                          size="sm"
-                          class="text-white"
+                          size="xs"
+                          class="text-dark/60"
                         />
                       </div>
-                      <div class="flex-1">
-                        <span class="font-medium text-dark block">
-                          {{ t(`dashboard.quote_status_${quote.status}`) }}
-                        </span>
-                        <span class="text-xs text-dark/40">
+                      <div class="flex-1 min-w-0">
+                        <span class="text-xs text-dark/40 block">
                           {{ t("dashboard.quote_detail_change_status") }}
                         </span>
+                        <span class="font-medium text-dark text-sm block">
+                          {{ t(`dashboard.quote_status_${quote.status}`) }}
+                        </span>
                       </div>
-                      <IconLucid
-                        name="ChevronRight"
-                        size="sm"
-                        class="text-dark/20"
-                      />
                     </button>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 px-3">
                       <div
-                        class="w-9 h-9 rounded-full bg-cream flex items-center justify-center shrink-0"
+                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
                           name="Calendar"
-                          size="sm"
+                          size="xs"
                           class="text-dark/40"
                         />
                       </div>
-                      <span class="text-dark font-medium">
+                      <span class="text-sm text-dark">
                         {{
                           quote.wedding_date
                             ? formatDate(quote.wedding_date)
-                            : t(
-                                "dashboard.quote_detail_no_date"
-                              )
+                            : t("dashboard.quote_detail_no_date")
                         }}
                       </span>
                     </div>
                     <button
-                      class="flex items-center gap-3 px-4 py-3 rounded-xl border-2 border-dark/10 hover:border-dark/30 transition-all w-full text-left"
+                      class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
                       @click="scheduleModalOpen = true"
                     >
                       <div
-                        class="w-9 h-9 rounded-full bg-cream flex items-center justify-center shrink-0"
+                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
                           name="CalendarCheck"
-                          size="sm"
+                          size="xs"
                           class="text-dark/40"
                         />
                       </div>
-                      <div class="flex-1">
+                      <div class="flex-1 min-w-0">
+                        <span class="text-xs text-dark/40 block">
+                          {{ t("dashboard.quote_detail_change_meeting") }}
+                        </span>
                         <span
-                          class="text-dark block"
+                          class="text-sm block"
                           :class="
-                            !quote.meeting_date
-                              ? 'text-dark/40'
-                              : 'font-medium'
+                            quote.meeting_date
+                              ? 'text-dark font-medium'
+                              : 'text-dark/40'
                           "
                         >
                           {{
                             quote.meeting_date
-                              ? formatDate(
-                                  quote.meeting_date
-                                ) +
+                              ? formatDate(quote.meeting_date) +
                                 (quote.meeting_time
                                   ? ` — ${quote.meeting_time}`
                                   : "")
-                              : t(
-                                  "dashboard.quote_detail_no_meeting"
-                                )
+                              : t("dashboard.quote_detail_no_meeting")
                           }}
                         </span>
-                        <span class="text-xs text-dark/40">
-                          {{ t("dashboard.quote_detail_change_meeting") }}
-                        </span>
                       </div>
-                      <IconLucid
-                        name="ChevronRight"
-                        size="sm"
-                        class="text-dark/20"
-                      />
                     </button>
                   </div>
                 </div>
 
                 <!-- Coordonnees -->
-                <div
-                  class="rounded-[1.5rem] border-2 border-dark/10 p-5"
-                >
+                <div>
                   <h2
-                    class="font-heading text-sm text-dark/50 uppercase tracking-wider mb-4"
+                    class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3"
                   >
                     {{ t("dashboard.quote_detail_contact") }}
                   </h2>
-                  <div class="space-y-3">
-                    <div class="flex items-center gap-3">
+                  <div class="space-y-2.5">
+                    <div class="flex items-center gap-3 px-3">
                       <div
-                        class="w-9 h-9 rounded-full bg-cream flex items-center justify-center shrink-0"
+                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
                           name="Mail"
-                          size="sm"
+                          size="xs"
                           class="text-dark/40"
                         />
                       </div>
                       <a
                         :href="`mailto:${quote.email}`"
-                        class="text-dark underline truncate"
+                        class="text-sm text-dark underline truncate"
                       >
                         {{ quote.email }}
                       </a>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 px-3">
                       <div
-                        class="w-9 h-9 rounded-full bg-cream flex items-center justify-center shrink-0"
+                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
                           name="Phone"
-                          size="sm"
+                          size="xs"
                           class="text-dark/40"
                         />
                       </div>
                       <span v-if="quote.phone">
                         <a
                           :href="`tel:${quote.phone}`"
-                          class="text-dark underline"
+                          class="text-sm text-dark underline"
                         >
                           {{ quote.phone }}
                         </a>
                       </span>
-                      <span v-else class="text-dark/40">
-                        {{
-                          t(
-                            "dashboard.quote_detail_no_phone"
-                          )
-                        }}
+                      <span v-else class="text-sm text-dark/40">
+                        {{ t("dashboard.quote_detail_no_phone") }}
                       </span>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 px-3">
                       <div
-                        class="w-9 h-9 rounded-full bg-cream flex items-center justify-center shrink-0"
+                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
                           name="Target"
-                          size="sm"
+                          size="xs"
                           class="text-dark/40"
                         />
                       </div>
-                      <span class="text-dark">
+                      <span class="text-sm text-dark">
                         {{
                           quote.venue ||
-                          t(
-                            "dashboard.quote_detail_no_venue"
-                          )
+                          t("dashboard.quote_detail_no_venue")
                         }}
                       </span>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 px-3">
                       <div
-                        class="w-9 h-9 rounded-full bg-cream flex items-center justify-center shrink-0"
+                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
                           name="BadgeEuro"
-                          size="sm"
+                          size="xs"
                           class="text-dark/40"
                         />
                       </div>
-                      <span class="text-dark">
+                      <span class="text-sm text-dark">
                         {{
                           quote.budget
-                            ? t(
-                                `quote_form.budget_${quote.budget}`
-                              )
-                            : t(
-                                "dashboard.quote_detail_no_budget"
-                              )
+                            ? t(`quote_form.budget_${quote.budget}`)
+                            : t("dashboard.quote_detail_no_budget")
                         }}
                       </span>
                     </div>
@@ -332,157 +345,445 @@
                 </div>
               </div>
 
-              <!-- Metadata -->
+              <!-- Prestations + Inspirations -->
               <div
-                class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-dark/30 px-2 mt-4"
+                class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4"
               >
-                <span>
-                  {{ t("dashboard.quote_detail_created") }}:
-                  {{ formatDateTime(quote.created_at) }}
-                </span>
-                <span>
-                  {{ t("dashboard.quote_detail_updated") }}:
-                  {{ formatDateTime(quote.updated_at) }}
-                </span>
-                <span>
-                  {{ t("dashboard.quote_detail_locale") }}:
-                  {{ quote.locale }}
-                </span>
-              </div>
-            </template>
-
-            <!-- Tab: Prestations -->
-            <template
-              v-else-if="activeSection === 'section-needs'"
-            >
-              <div
-                v-if="quote.floral_needs?.length"
-                class="rounded-[1.5rem] border-2 border-dark/10 p-5"
-              >
-                <h2
-                  class="font-heading text-sm text-dark/50 uppercase tracking-wider mb-4"
-                >
-                  {{ t("dashboard.quote_detail_needs") }}
-                </h2>
-                <div class="flex flex-wrap gap-2">
-                  <Tag
-                    v-for="need in quote.floral_needs"
-                    :key="need"
-                    variant="info"
+                <!-- Prestations -->
+                <div>
+                  <h2
+                    class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3"
                   >
-                    {{ t(`quote_form.need_${need}`) }}
-                  </Tag>
+                    {{ t("dashboard.quote_detail_needs") }}
+                  </h2>
+                  <div v-if="quote.floral_needs?.length" class="space-y-1">
+                    <div
+                      v-for="need in quote.floral_needs"
+                      :key="need"
+                      class="flex items-center gap-2 text-sm text-dark/80"
+                    >
+                      <IconLucid
+                        name="Flower2"
+                        size="xs"
+                        class="text-dark/30 shrink-0"
+                      />
+                      {{ t(`quote_form.need_${need}`) }}
+                    </div>
+                  </div>
+                  <p v-else class="text-sm text-dark/40">
+                    {{ t("dashboard.quote_detail_no_needs") }}
+                  </p>
+                </div>
+
+                <!-- Inspirations du couple -->
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <h2
+                      class="font-heading text-sm text-dark/60 uppercase tracking-wider"
+                    >
+                      {{ t("dashboard.client_inspirations_title") }}
+                    </h2>
+                    <span
+                      v-if="clientInspirations.length > 0"
+                      class="w-6 h-6 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center"
+                    >
+                      {{ clientInspirations.length }}
+                    </span>
+                  </div>
+                  <div
+                    v-if="clientInspirations.length > 0"
+                    class="flex flex-wrap gap-2"
+                  >
+                    <button
+                      v-for="item in clientInspirations.slice(0, 4)"
+                      :key="item.id"
+                      @click="copilotGalleryOpen = true"
+                      class="w-14 h-14 rounded-xl overflow-hidden ring-1 ring-dark/5 hover:ring-fuchsia-300 transition-all hover:scale-105"
+                    >
+                      <img
+                        :src="item.public_url"
+                        :alt="item.caption || item.original_filename"
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </button>
+                    <button
+                      v-if="clientInspirations.length > 4"
+                      @click="copilotGalleryOpen = true"
+                      class="w-14 h-14 rounded-xl bg-cream flex items-center justify-center text-dark/60 text-xs font-semibold hover:bg-cream-dark transition-colors"
+                    >
+                      +{{ clientInspirations.length - 4 }}
+                    </button>
+                  </div>
+                  <p v-else class="text-sm text-dark/40">
+                    {{ t("dashboard.quote_detail_no_inspirations") }}
+                  </p>
                 </div>
               </div>
-              <div v-else class="py-12 text-center">
-                <IconLucid
-                  name="Flower2"
-                  size="lg"
-                  class="mx-auto text-dark/20 mb-4"
-                />
-                <p class="text-dark/40">
-                  {{ t("dashboard.quote_detail_no_needs") }}
-                </p>
-              </div>
-            </template>
 
-            <!-- Tab: Notes admin -->
-            <template
-              v-else-if="activeSection === 'section-notes'"
-            >
-              <div
-                class="rounded-[1.5rem] border-2 border-dark/10 p-5"
-              >
-                <h2
-                  class="font-heading text-sm text-dark/50 uppercase tracking-wider mb-4"
-                >
-                  {{ t("dashboard.quote_detail_notes") }}
-                </h2>
-                <textarea
-                  v-model="adminNotes"
-                  :placeholder="
-                    t(
-                      'dashboard.quote_detail_notes_placeholder'
-                    )
-                  "
-                  class="w-full h-28 px-4 py-3 rounded-xl border border-dark/5 bg-cream focus:outline-none focus:border-dark/20 transition-all resize-none"
-                />
-                <div class="mt-3">
-                  <Button
-                    icon="Save"
-                    :loading="savingNotes"
-                    @click="saveNotes"
-                  >
-                    {{
-                      t("dashboard.quote_detail_save_notes")
-                    }}
-                  </Button>
-                </div>
-              </div>
-            </template>
-
-            <!-- Tab: Espace client -->
-            <template
-              v-else-if="activeSection === 'section-portal'"
-            >
+              <!-- Portal toggle -->
               <PortalToggle
                 :enabled="portalEnabled"
                 :quoteEmail="quote.email"
-                :sending="sendingInvite"
-                :inviteSent="inviteSent"
                 @toggle="handlePortalToggle"
-                @invite="handleSendInvite"
+                class="mt-4"
               />
-            </template>
 
-            <!-- Tab: Moodboard & Inspirations -->
-            <template
-              v-else-if="activeSection === 'section-moodboard'"
-            >
+              <!-- Metadata footer -->
               <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-4"
+                class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-dark/45 px-2 mt-4"
               >
-                <MoodboardManager
-                  :items="moodboardItems"
-                  :moodboardNote="moodboardNote"
-                  :savingNote="savingMoodboardNote"
-                  :uploading="uploadingMoodboard"
-                  :addingLink="addingMoodboardLink"
-                  @upload="handleMoodboardUpload"
-                  @addLink="handleMoodboardAddLink"
-                  @deleteItem="handleMoodboardDelete"
-                  @saveNote="handleSaveMoodboardNote"
-                  @update:moodboardNote="
-                    moodboardNote = $event
-                  "
-                />
-
-                <ClientInspirationsViewer
-                  :inspirations="clientInspirations"
-                  :loading="loadingInspirations"
-                />
+                <span>
+                  {{
+                    t("dashboard.quote_detail_created")
+                  }}:
+                  {{ formatDateTime(quote.created_at) }}
+                </span>
+                <span>
+                  {{
+                    t("dashboard.quote_detail_updated")
+                  }}:
+                  {{ formatDateTime(quote.updated_at) }}
+                </span>
+                <span>
+                  {{
+                    t("dashboard.quote_detail_locale")
+                  }}:
+                  {{ quote.locale }}
+                </span>
               </div>
-            </template>
+              </div>
+              </div>
 
-            <!-- Tab: Proposition -->
-            <template
-              v-else-if="
-                activeSection === 'section-proposals'
-              "
-            >
-              <ProposalManager
-                :proposals="proposals"
-                :loading="loadingProposals"
-                :creating="creatingProposal"
-                @create="handleCreateProposal"
-                @delete="handleDeleteProposal"
-              />
-            </template>
+              <!-- RIGHT: Timeline -->
+              <div
+                class="w-full xl:w-80 shrink-0 flex flex-col"
+              >
+                <h2
+                  class="font-heading text-sm text-dark/80 uppercase tracking-wider mb-4"
+                >
+                  {{ t("dashboard.timeline_title") }}
+                </h2>
+
+                <!-- Loading -->
+                <div
+                  v-if="loadingActivity"
+                  class="py-8 text-center"
+                >
+                  <IconLucid
+                    name="Loader2"
+                    size="md"
+                    class="animate-spin mx-auto text-dark/50"
+                  />
+                </div>
+
+                <!-- Empty -->
+                <div
+                  v-else-if="activityLog.length === 0 && moodboardItems.length === 0"
+                  class="py-8 text-center flex-1"
+                >
+                  <IconLucid
+                    name="Clock"
+                    size="lg"
+                    class="mx-auto text-dark/30 mb-3"
+                  />
+                  <p class="text-dark/50 text-sm">
+                    {{ t("dashboard.timeline_empty") }}
+                  </p>
+                </div>
+
+                <!-- Feed -->
+                <div
+                  v-else
+                  ref="timelineScroll"
+                  class="flex-1 overflow-y-auto space-y-3 pr-1 xl:max-h-[calc(100vh-20rem)]"
+                >
+                  <!-- Moodboard items -->
+                  <div
+                    v-for="item in moodboardItems"
+                    :key="'mb-' + item.id"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border border-dark/10"
+                  >
+                    <div
+                      class="w-10 h-10 rounded-lg overflow-hidden bg-cream shrink-0"
+                    >
+                      <img
+                        v-if="item.type === 'image'"
+                        :src="item.public_url"
+                        :alt="item.original_filename"
+                        class="w-full h-full object-cover"
+                      />
+                      <div
+                        v-else
+                        class="w-full h-full flex items-center justify-center"
+                      >
+                        <IconLucid
+                          name="FileText"
+                          size="xs"
+                          class="text-dark/40"
+                        />
+                      </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm text-dark/80 truncate">
+                        {{ item.original_filename }}
+                      </p>
+                      <p class="text-[11px] text-dark/40">
+                        {{
+                          item.type === "pdf" ? "PDF" : "Image"
+                        }}
+                        <span v-if="item.file_size">
+                          &middot;
+                          {{
+                            (item.file_size / 1024 / 1024).toFixed(1)
+                          }}
+                          Mo
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      @click="handleMoodboardDelete(item.id)"
+                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0"
+                    >
+                      <IconLucid name="Trash2" size="xs" />
+                    </button>
+                  </div>
+
+                  <!-- Activity log entries -->
+                  <div
+                    v-for="entry in activityLog"
+                    :key="entry.id"
+                    class="px-3 py-2.5 rounded-xl border border-dark/10"
+                  >
+                    <!-- Note with menu -->
+                    <div
+                      v-if="entry.action === 'note_added'"
+                      class="relative"
+                    >
+                      <div class="flex items-start gap-2.5 pr-8">
+                        <div
+                          class="w-6 h-6 rounded-lg bg-cream flex items-center justify-center shrink-0 mt-0.5"
+                        >
+                          <IconLucid
+                            name="NotebookPen"
+                            size="xs"
+                            class="text-dark/60"
+                          />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <!-- Edit mode -->
+                          <div v-if="editingNoteId === entry.id">
+                            <textarea
+                              v-model="editingNoteText"
+                              class="w-full text-sm text-dark/80 bg-cream rounded-lg px-3 py-2 border border-dark/10 focus:outline-none focus:border-dark/30 resize-none"
+                              rows="3"
+                            />
+                            <div class="flex gap-2 mt-2">
+                              <button
+                                @click="saveEditNote(entry.id)"
+                                class="text-xs text-green-600 font-medium"
+                              >
+                                {{ t("common.save") }}
+                              </button>
+                              <button
+                                @click="editingNoteId = null"
+                                class="text-xs text-dark/40"
+                              >
+                                {{ t("common.cancel") }}
+                              </button>
+                            </div>
+                          </div>
+                          <!-- Display mode -->
+                          <div v-else>
+                            <p class="text-sm text-dark/80 leading-snug">
+                              {{ entry.details?.text }}
+                            </p>
+                            <p class="text-[11px] text-dark/40 mt-1">
+                              {{ formatRelativeDate(entry.created_at) }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Menu button -->
+                      <div class="absolute top-0 right-0">
+                        <button
+                          @click="
+                            noteMenuOpen === entry.id
+                              ? (noteMenuOpen = null)
+                              : (noteMenuOpen = entry.id)
+                          "
+                          class="w-7 h-7 rounded-full flex items-center justify-center text-dark/30 hover:text-dark/60 hover:bg-cream transition-all"
+                        >
+                          <IconLucid
+                            name="MoreHorizontal"
+                            size="xs"
+                          />
+                        </button>
+                        <!-- Dropdown -->
+                        <div
+                          v-if="noteMenuOpen === entry.id"
+                          class="absolute right-0 top-8 bg-white rounded-xl shadow-lg border border-dark/10 py-1 z-10 min-w-[120px]"
+                        >
+                          <button
+                            @click="startEditNote(entry)"
+                            class="w-full text-left px-4 py-2 text-sm text-dark/70 hover:bg-cream transition-colors"
+                          >
+                            {{ t("common.edit") }}
+                          </button>
+                          <button
+                            @click="deleteActivity(entry.id)"
+                            class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-cream transition-colors"
+                          >
+                            {{ t("common.delete") }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Other activity types -->
+                    <div
+                      v-else
+                      class="flex items-start gap-2.5"
+                    >
+                      <div
+                        class="w-6 h-6 rounded-lg bg-cream flex items-center justify-center shrink-0 mt-0.5"
+                      >
+                        <IconLucid
+                          :name="activityIcon(entry.action)"
+                          size="xs"
+                          class="text-dark/60"
+                        />
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm text-dark/80 leading-tight">
+                          {{ activityLabel(entry) }}
+                        </p>
+                        <p class="text-[11px] text-dark/40 mt-0.5">
+                          {{ formatRelativeDate(entry.created_at) }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Compose bar -->
+                  <div class="rounded-2xl bg-cream-light p-3 grid grid-cols-2 gap-2">
+                    <!-- Moodboard upload -->
+                    <button
+                      @click="triggerMoodboardUpload"
+                      :disabled="uploadingMoodboard"
+                      class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white text-left hover:bg-cream active:bg-cream-dark transition-all disabled:opacity-50"
+                    >
+                      <div
+                        class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-green-100 text-green-600"
+                      >
+                        <IconLucid
+                          :name="uploadingMoodboard ? 'Loader2' : 'ImagePlus'"
+                          size="xs"
+                          :class="uploadingMoodboard ? 'animate-spin' : ''"
+                        />
+                      </div>
+                      <span class="flex-1 min-w-0">
+                        <span class="text-sm text-dark/60 block">
+                          {{
+                            uploadingMoodboard
+                              ? $t("common.loading")
+                              : $t("dashboard.moodboard_add_file")
+                          }}
+                        </span>
+                        <span class="text-[10px] text-dark/30 block">
+                          {{ $t("dashboard.moodboard_max_size") }}
+                        </span>
+                      </span>
+                    </button>
+                    <input
+                      ref="moodboardFileInput"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,application/pdf"
+                      class="hidden"
+                      @change="handleMoodboardFileChange"
+                    />
+                    <!-- Add note button -->
+                    <button
+                      @click="showNotePanel = true"
+                      class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white text-left hover:bg-cream active:bg-cream-dark transition-all"
+                    >
+                      <div
+                        class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-green-100 text-green-600"
+                      >
+                        <IconLucid name="NotebookPen" size="xs" />
+                      </div>
+                      <span class="text-sm text-dark/60">
+                        {{ $t("dashboard.timeline_note_label") }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
         </template>
       </div>
     </section>
+
+    <!-- Copilot inspiration gallery (masonry) -->
+    <BaseModal
+      :isOpen="copilotGalleryOpen"
+      :title="t('dashboard.client_inspirations_title')"
+      :showCloseButton="true"
+      :closeButtonText="t('common.close')"
+      @close="copilotGalleryOpen = false"
+    >
+      <div
+        v-if="clientInspirations.length > 0"
+        class="columns-2 gap-3"
+      >
+        <div
+          v-for="item in clientInspirations"
+          :key="item.id"
+          class="mb-3 break-inside-avoid"
+        >
+          <img
+            :src="item.public_url"
+            :alt="item.caption || item.original_filename"
+            class="w-full rounded-xl"
+            loading="lazy"
+          />
+          <p
+            v-if="item.caption"
+            class="text-xs text-dark/50 mt-1 px-1"
+          >
+            {{ item.caption }}
+          </p>
+        </div>
+      </div>
+    </BaseModal>
+
+    <!-- Note panel modal -->
+    <BaseModal
+      :isOpen="showNotePanel"
+      :title="t('dashboard.timeline_note_label')"
+      :showCloseButton="true"
+      :closeButtonText="t('common.close')"
+      @close="showNotePanel = false"
+    >
+      <div>
+        <textarea
+          v-model="newNoteText"
+          :placeholder="t('dashboard.timeline_note_placeholder')"
+          class="w-full h-28 px-4 py-3 rounded-xl border border-dark/10 bg-cream focus:outline-none focus:border-dark/20 transition-all resize-none"
+        />
+        <div class="mt-3">
+          <Button
+            icon="Send"
+            :loading="sendingNote"
+            :disabled="!newNoteText.trim()"
+            @click="sendNote"
+          >
+            {{ t("dashboard.timeline_note_send") }}
+          </Button>
+        </div>
+      </div>
+    </BaseModal>
 
     <!-- Status modal -->
     <BaseModal
@@ -556,6 +857,7 @@ import { useI18n } from "vue-i18n";
 import type {
   QuoteRequest,
   QuoteRequestStatus,
+  QuoteActivityLog,
 } from "~/server/utils/quotes-types";
 import type {
   ClientInspiration,
@@ -599,18 +901,22 @@ const proposals = ref<ProjectProposal[]>([]);
 const loadingProposals = ref(false);
 const creatingProposal = ref(false);
 
-// Section navigation
-const sectionNav = [
-  { id: "section-status", icon: "Flag", label: "Statut" },
-  { id: "section-needs", icon: "Leaf", label: "Prestations" },
-  { id: "section-notes", icon: "MessageSquare", label: "Notes" },
-  { id: "section-moodboard", icon: "Images", label: "Moodboard" },
-  {
-    id: "section-proposals",
-    icon: "FileText",
-    label: "Proposition",
-  },
-];
+// Activity log
+const activityLog = ref<QuoteActivityLog[]>([]);
+const loadingActivity = ref(false);
+
+// Timeline compose
+const moodboardFileInput = ref<HTMLInputElement | null>(null);
+const showNotePanel = ref(false);
+const newNoteText = ref("");
+const sendingNote = ref(false);
+const noteMenuOpen = ref<string | null>(null);
+const editingNoteId = ref<string | null>(null);
+const editingNoteText = ref("");
+const timelineScroll = ref<HTMLElement | null>(null);
+
+// Gallery
+const copilotGalleryOpen = ref(false);
 
 const activeSection = ref("copilot");
 const statusModalOpen = ref(false);
@@ -697,12 +1003,12 @@ const copilotInsight = computed(() => {
         actions: [
           {
             label: t("dashboard.copilot_action_status"),
-            section: "section-status",
+            section: "project",
             icon: "Flag",
           },
           {
             label: t("dashboard.copilot_action_moodboard"),
-            section: "section-moodboard",
+            section: "project",
             icon: "Images",
           },
         ],
@@ -718,7 +1024,7 @@ const copilotInsight = computed(() => {
         },
         {
           label: t("dashboard.copilot_action_status"),
-          section: "section-status",
+          section: "project",
           icon: "Flag",
         },
       ],
@@ -748,7 +1054,7 @@ const copilotInsight = computed(() => {
         actions: [
           {
             label: t("dashboard.copilot_action_moodboard"),
-            section: "section-moodboard",
+            section: "project",
             icon: "Images",
           },
         ],
@@ -759,7 +1065,7 @@ const copilotInsight = computed(() => {
       actions: [
         {
           label: t("dashboard.copilot_action_status"),
-          section: "section-status",
+          section: "project",
           icon: "Flag",
         },
       ],
@@ -776,7 +1082,7 @@ const copilotInsight = computed(() => {
         actions: [
           {
             label: t("dashboard.copilot_action_status"),
-            section: "section-status",
+            section: "project",
             icon: "Flag",
           },
         ],
@@ -795,7 +1101,7 @@ const copilotInsight = computed(() => {
         actions: [
           {
             label: t("dashboard.copilot_action_portal"),
-            section: "section-portal",
+            section: "project",
             icon: "Shield",
           },
         ],
@@ -807,7 +1113,7 @@ const copilotInsight = computed(() => {
         actions: [
           {
             label: t("dashboard.copilot_action_moodboard"),
-            section: "section-moodboard",
+            section: "project",
             icon: "Images",
           },
         ],
@@ -819,7 +1125,7 @@ const copilotInsight = computed(() => {
         actions: [
           {
             label: t("dashboard.copilot_action_proposal"),
-            section: "section-proposals",
+            section: "project",
             icon: "FileText",
           },
         ],
@@ -859,7 +1165,7 @@ const displayedText = ref("");
 const displayedLinkText = ref("");
 const isTyping = ref(true);
 const isTypingLink = ref(false);
-const LINK_TEXT = " Ajoute-le dans ton agenda →";
+const LINK_TEXT = " Ajoute-le dans ton agenda \u2192";
 let typingInterval: ReturnType<typeof setInterval> | null = null;
 let linkTypingInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -954,6 +1260,148 @@ const statusOptions = computed(() => [
   },
 ]);
 
+// Activity log helpers
+const activityIcon = (action: string) => {
+  const map: Record<string, string> = {
+    status_changed: "Flag",
+    note_added: "NotebookPen",
+    note_updated: "NotebookPen",
+    meeting_scheduled: "CalendarCheck",
+    portal_toggled: "UserCheck",
+    moodboard_added: "ImagePlus",
+    proposal_created: "FileText",
+  };
+  return map[action] || "Clock";
+};
+
+const activityLabel = (entry: QuoteActivityLog) => {
+  const d = entry.details || {};
+  switch (entry.action) {
+    case "status_changed":
+      return d.to
+        ? t(`dashboard.quote_status_${d.to}`)
+        : t("dashboard.activity_status_changed");
+    case "meeting_scheduled":
+      return d.date
+        ? `${t("dashboard.quote_detail_change_meeting")} ${formatDate(d.date)}`
+        : t("dashboard.quote_detail_change_meeting");
+    case "portal_toggled":
+      return d.enabled
+        ? t("dashboard.portal_active")
+        : t("dashboard.portal_desc_off");
+    case "moodboard_added":
+      return t("dashboard.moodboard_add_file");
+    case "proposal_created":
+      return d.title || t("dashboard.proposal_created");
+    case "note_added":
+      return d.text || "";
+    default:
+      return entry.action;
+  }
+};
+
+const formatRelativeDate = (dateStr: string) => {
+  const now = new Date();
+  const d = new Date(dateStr);
+  const diff = now.getTime() - d.getTime();
+  const mins = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (mins < 1) return "Il y a un instant";
+  if (mins < 60) return `Il y a ${mins}min`;
+  if (hours < 24) return `Il y a ${hours}h`;
+  if (days < 7) return `Il y a ${days}j`;
+  return formatDate(dateStr);
+};
+
+// Fetch activity log
+const fetchActivityLog = async () => {
+  loadingActivity.value = true;
+  try {
+    const res = await adminFetch<{
+      success: boolean;
+      data: QuoteActivityLog[];
+    }>(`/api/quotes/${quoteId}/activity`);
+    activityLog.value = res.data || [];
+  } catch (err) {
+    console.error("Error fetching activity log:", err);
+  } finally {
+    loadingActivity.value = false;
+  }
+};
+
+// Send note
+const sendNote = async () => {
+  if (!newNoteText.value.trim()) return;
+  sendingNote.value = true;
+  try {
+    await adminFetch(`/api/quotes/${quoteId}/notes`, {
+      method: "POST",
+      body: { text: newNoteText.value.trim() },
+    });
+    newNoteText.value = "";
+    showNotePanel.value = false;
+    await fetchActivityLog();
+  } catch (err) {
+    console.error("Error sending note:", err);
+  } finally {
+    sendingNote.value = false;
+  }
+};
+
+// Edit note
+const startEditNote = (entry: QuoteActivityLog) => {
+  editingNoteId.value = entry.id;
+  editingNoteText.value = entry.details?.text || "";
+  noteMenuOpen.value = null;
+};
+
+const saveEditNote = async (id: string) => {
+  try {
+    await adminFetch(
+      `/api/quotes/${quoteId}/activity/${id}`,
+      {
+        method: "PATCH",
+        body: { text: editingNoteText.value.trim() },
+      }
+    );
+    editingNoteId.value = null;
+    await fetchActivityLog();
+  } catch (err) {
+    console.error("Error editing note:", err);
+  }
+};
+
+// Delete activity
+const deleteActivity = async (id: string) => {
+  noteMenuOpen.value = null;
+  try {
+    await adminFetch(
+      `/api/quotes/${quoteId}/activity/${id}`,
+      { method: "DELETE" }
+    );
+    activityLog.value = activityLog.value.filter(
+      (a) => a.id !== id
+    );
+  } catch (err) {
+    console.error("Error deleting activity:", err);
+  }
+};
+
+// Moodboard file upload from compose bar
+const triggerMoodboardUpload = () => {
+  moodboardFileInput.value?.click();
+};
+
+const handleMoodboardFileChange = async (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+  await handleMoodboardUpload(file);
+  input.value = "";
+};
+
 // Fetch quote by ID
 const fetchQuote = async () => {
   loading.value = true;
@@ -969,6 +1417,7 @@ const fetchQuote = async () => {
     portalEnabled.value = res.data.portal_enabled || false;
     moodboardNote.value = res.data.moodboard_note || "";
     fetchPortalData();
+    fetchActivityLog();
   } catch (err) {
     console.error("Error fetching quote:", err);
     fetchError.value = true;

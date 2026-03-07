@@ -1,8 +1,8 @@
 <template>
-  <div class="rounded-[1.5rem] bg-white p-5">
+  <div class="rounded-xl bg-white p-4">
     <div class="flex items-center justify-between mb-4">
       <h2
-        class="font-heading text-sm text-dark/50
+        class="font-heading text-sm text-dark/60
           uppercase tracking-wider"
       >
         {{ $t("dashboard.proposal_section_title") }}
@@ -30,7 +30,7 @@
       <IconLucid
         name="Loader2"
         size="sm"
-        class="animate-spin mx-auto text-dark/30"
+        class="animate-spin mx-auto text-dark/50"
       />
     </div>
 
@@ -70,7 +70,7 @@
             </Tag>
             <button
               @click="$emit('delete', proposal.id)"
-              class="text-dark/30 hover:text-red-500
+              class="text-dark/50 hover:text-red-500
                 transition-colors"
             >
               <IconLucid
@@ -90,7 +90,7 @@
           "
           class="rounded-lg bg-cream/50 px-3 py-2 mt-2"
         >
-          <p class="text-xs text-dark/40 mb-1">
+          <p class="text-xs text-dark/60 mb-1">
             {{ $t("dashboard.proposal_client_comment") }}
           </p>
           <p class="text-sm text-dark">
@@ -103,7 +103,7 @@
     <!-- Empty -->
     <p
       v-else-if="!loading && !showForm"
-      class="text-dark/30 text-sm text-center py-4"
+      class="text-dark/50 text-sm text-center py-4"
     >
       {{ $t("dashboard.proposal_empty") }}
     </p>

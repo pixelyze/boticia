@@ -30,7 +30,7 @@
    Body     : 18px -> 20px   (texte courant)
    Label    : 16px -> 18px   (taglines, numéros)
 
-   CONTRASTE MINIMUM : text-dark/60
+   CONTRASTE MINIMUM : text-dark/70
    ======================================== */
 
 @layer components {
@@ -40,20 +40,20 @@
   }
 
   .hero-title {
-    @apply text-3xl md:text-5xl lg:text-6xl font-medium leading-tight text-dark;
+    @apply text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-dark;
   }
 
   .hero-subtitle {
-    @apply text-base md:text-xl text-dark/70;
+    @apply text-lg md:text-xl text-dark/70;
   }
 
   /* --- Homepage: Sections --- */
   .section-tagline {
-    @apply text-base md:text-lg uppercase tracking-[0.3em] text-dark/60;
+    @apply text-base md:text-lg uppercase tracking-[0.3em] text-dark/70;
   }
 
   .section-title-lg {
-    @apply text-3xl md:text-[2.5rem] font-medium mt-4 text-dark;
+    @apply text-3xl md:text-[2.75rem] font-medium mt-4 text-dark leading-tight;
   }
 
   /* --- Homepage: Features --- */
@@ -66,7 +66,7 @@
   }
 
   .feature-description {
-    @apply text-dark/60 text-lg md:text-xl leading-relaxed;
+    @apply text-dark/70 text-lg md:text-xl leading-relaxed;
   }
 
   /* --- Homepage: Process --- */
@@ -79,7 +79,7 @@
   }
 
   .step-description {
-    @apply text-dark/60 text-lg md:text-xl leading-relaxed;
+    @apply text-dark/70 text-lg md:text-xl leading-relaxed;
   }
 
   /* --- Homepage: Pricing --- */
@@ -88,7 +88,7 @@
   }
 
   .plan-description {
-    @apply text-dark/60 text-lg;
+    @apply text-dark/70 text-lg;
   }
 
   .plan-price {
@@ -97,11 +97,11 @@
 
   /* --- Internal pages --- */
   .page-title {
-    @apply text-2xl md:text-5xl font-sans text-dark mb-3;
+    @apply text-3xl md:text-5xl font-sans text-dark mb-3;
   }
 
   .page-subtitle {
-    @apply text-base md:text-xl text-dark/70;
+    @apply text-lg md:text-xl text-dark/70;
   }
 
   .section-title {
@@ -114,11 +114,11 @@
 
   /* --- Shared --- */
   .body-text {
-    @apply text-dark/70 leading-relaxed;
+    @apply text-dark/80 leading-relaxed;
   }
 
   .body-text-lg {
-    @apply text-lg leading-relaxed text-dark/70;
+    @apply text-lg leading-relaxed text-dark/80;
   }
 
   .item-title {
@@ -144,11 +144,14 @@
   box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.12);
 }
 
-/* Hide decorative borders globally */
-.border-dark\/10 {
-  border-color: transparent !important;
+/* Stronger darkened cream — for icon buttons / sidenav */
+.bg-cream-darker {
+  background-color: rgb(var(--color-cream));
+  box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.15);
 }
-
+.bg-cream-darker:hover {
+  box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.22);
+}
 
 /* Gradient animation */
 .background-animate {

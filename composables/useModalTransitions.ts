@@ -17,18 +17,16 @@ export const useModalTransitions = () => {
   // Transition pour le contenu de la modale (slide up/down)
   const contentTransition = {
     appear: true,
-    enterActiveClass: "transition-transform duration-140 ease-out",
+    enterActiveClass: "modal-slide-enter",
     enterFromClass: "translate-y-full",
     enterToClass: "translate-y-0",
-    leaveActiveClass: "transition-transform duration-120 ease-in",
+    leaveActiveClass: "modal-slide-leave",
     leaveFromClass: "translate-y-0",
     leaveToClass: "translate-y-full",
   };
 
-  // Classes CSS pour l'animation initiale (utilisée avec v-bind)
-  const initialAnimationClass = {
-    "animate-slide-up": true,
-  };
+  // Classes CSS pour l'animation initiale (plus utilisé, la Transition Vue suffit)
+  const initialAnimationClass = {};
 
   return {
     overlayTransition,

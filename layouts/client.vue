@@ -127,14 +127,14 @@ onMounted(async () => {
       data: {
         quote: {
           partner1_name: string;
-          partner2_name: string;
+          partner2_name?: string;
         };
       };
     }>("/api/client/project");
     if (res.data?.quote) {
-      coupleNames.value =
-        `${res.data.quote.partner1_name}` +
-        ` & ${res.data.quote.partner2_name}`;
+      coupleNames.value = res.data.quote.partner2_name
+        ? `${res.data.quote.partner1_name} & ${res.data.quote.partner2_name}`
+        : res.data.quote.partner1_name;
     }
   } catch {
     coupleNames.value = t("client.nav_project");

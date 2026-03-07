@@ -219,6 +219,7 @@ definePageMeta({
   ssr: false,
   layout: "dashboard",
   middleware: ["auth-admin"],
+  pageTransition: false,
 });
 
 const { t } = useI18n();

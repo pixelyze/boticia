@@ -3,7 +3,7 @@
     <!-- Top bar pill -->
     <header class="bg-transparent pt-4 pb-4 sticky top-0 z-50">
       <div class="px-10">
-        <div class="rounded-full border-2 border-dark/10 bg-cream px-8 py-4 flex items-center justify-between">
+        <div class="rounded-full bg-cream-light px-8 py-4 flex items-center justify-between">
           <NuxtLink :to="localePath('/')" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
             <IconLucid name="ArrowLeft" size="sm" />
           </NuxtLink>

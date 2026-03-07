@@ -268,7 +268,7 @@ INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 VALUES
   ('client-inspirations', 'client-inspirations', true, 10485760,
    ARRAY['image/png', 'image/jpeg', 'image/webp', 'image/heic']),
-  ('project-moodboard', 'project-moodboard', true, 20971520,
+  ('project-moodboard', 'project-moodboard', true, 52428800,
    ARRAY['image/png', 'image/jpeg', 'image/webp', 'application/pdf']),
   ('project-proposals', 'project-proposals', true, 20971520,
    ARRAY['application/pdf', 'image/png', 'image/jpeg'])

@@ -1,126 +1,59 @@
 <template>
-  <div class="rounded-[1.5rem] bg-white p-5">
+  <div>
     <h2
-      class="font-heading text-sm text-dark/50
+      class="font-heading text-sm text-dark/80
         uppercase tracking-wider mb-4"
     >
       {{ $t("dashboard.moodboard_title") }}
     </h2>
 
-    <!-- Florist note -->
+    <!-- Note for the couple -->
     <div class="mb-4">
-      <textarea
-        :value="moodboardNote"
-        @input="
-          $emit(
-            'update:moodboardNote',
-            ($event.target as HTMLTextAreaElement).value
-          )
-        "
-        :placeholder="
-          $t('dashboard.moodboard_note_placeholder')
-        "
-        class="w-full h-20 px-4 py-3 rounded-xl border-2
-          border-dark/5 bg-cream focus:outline-none
-          focus:border-dark/30 transition-all resize-none
-          text-sm"
-      />
-      <div class="mt-2">
-        <Button
-          icon="Save"
-          :loading="savingNote"
+      <label
+        class="text-xs font-medium text-dark/60 mb-1.5 block"
+      >
+        {{ $t("dashboard.moodboard_note_label") }}
+      </label>
+      <div class="flex items-end gap-2">
+        <textarea
+          :value="note"
+          @input="$emit('update:note', ($event.target as HTMLTextAreaElement).value)"
+          :placeholder="$t('dashboard.moodboard_note_placeholder')"
+          rows="2"
+          class="flex-1 min-w-0 px-4 py-3 rounded-xl border-2
+            border-dark/5 bg-cream text-sm resize-none
+            focus:outline-none focus:border-dark/30
+            transition-all"
+        />
+        <button
           @click="$emit('saveNote')"
+          :disabled="savingNote"
+          class="w-10 h-10 rounded-xl bg-dark text-cream
+            flex items-center justify-center shrink-0
+            hover:bg-dark/80 active:bg-dark/70
+            transition-all disabled:opacity-30"
         >
-          {{ $t("common.save") }}
-        </Button>
+          <IconLucid
+            :name="savingNote ? 'Loader2' : 'Check'"
+            size="xs"
+            :class="savingNote ? 'animate-spin' : ''"
+          />
+        </button>
       </div>
     </div>
 
-    <!-- Upload zone -->
-    <div class="mb-4">
-      <div
-        class="rounded-xl border-2 border-dashed
-          border-dark/15 p-4 text-center cursor-pointer
-          hover:border-dark/30 transition-all"
-        @click="triggerUpload"
-      >
-        <div v-if="!uploading">
-          <IconLucid
-            name="Upload"
-            size="sm"
-            class="mx-auto text-dark/30 mb-1"
-          />
-          <p class="text-xs text-dark/40">
-            {{ $t("dashboard.moodboard_upload") }}
-          </p>
-        </div>
-        <div v-else>
-          <IconLucid
-            name="Loader2"
-            size="sm"
-            class="mx-auto text-dark/40 animate-spin"
-          />
-        </div>
-      </div>
-      <input
-        ref="fileInput"
-        type="file"
-        accept="image/png,image/jpeg,image/webp,application/pdf"
-        class="hidden"
-        @change="handleUpload"
-      />
-    </div>
-
-    <!-- Add link -->
-    <div class="mb-4">
-      <div
-        v-if="showLinkForm"
-        class="space-y-2"
-      >
-        <input
-          v-model="linkUrl"
-          type="url"
-          placeholder="https://..."
-          class="w-full px-4 py-2 rounded-xl border-2
-            border-dark/5 bg-cream focus:outline-none
-            focus:border-dark/30 transition-all text-sm"
-        />
-        <input
-          v-model="linkTitle"
-          type="text"
-          :placeholder="
-            $t('dashboard.moodboard_link_title')
-          "
-          class="w-full px-4 py-2 rounded-xl border-2
-            border-dark/5 bg-cream focus:outline-none
-            focus:border-dark/30 transition-all text-sm"
-        />
-        <div class="flex gap-2">
-          <Button
-            icon="Plus"
-            :loading="addingLink"
-            @click="handleAddLink"
-          >
-            {{ $t("common.confirm") }}
-          </Button>
-          <Button @click="showLinkForm = false">
-            {{ $t("common.cancel") }}
-          </Button>
-        </div>
-      </div>
-      <Button
-        v-else
-        icon="Link"
-        @click="showLinkForm = true"
-      >
-        {{ $t("dashboard.moodboard_add_link") }}
-      </Button>
-    </div>
+    <!-- Error message -->
+    <p
+      v-if="errorMsg"
+      class="text-red-600 text-xs mb-2 px-1"
+    >
+      {{ errorMsg }}
+    </p>
 
     <!-- Items list -->
     <div
       v-if="items.length > 0"
-      class="space-y-2"
+      class="space-y-2 mb-3"
     >
       <MoodboardItemRow
         v-for="item in items"
@@ -131,55 +64,91 @@
     </div>
     <p
       v-else
-      class="text-dark/30 text-sm text-center py-4"
+      class="text-dark/60 text-sm text-center py-3"
     >
       {{ $t("dashboard.moodboard_empty") }}
     </p>
+
+    <!-- Upload button -->
+    <button
+      class="w-full flex items-center justify-center gap-2
+        py-3 rounded-xl border-2 border-dashed
+        border-gray-200 text-dark/60
+        hover:border-dark/30 hover:text-dark/80
+        active:bg-cream transition-all"
+      :class="uploading ? 'pointer-events-none opacity-60' : ''"
+      @click="triggerUpload"
+    >
+      <IconLucid
+        :name="uploading ? 'Loader2' : 'Plus'"
+        size="xs"
+        :class="uploading ? 'animate-spin' : ''"
+      />
+      <span class="text-sm">
+        {{
+          uploading
+            ? $t("common.loading")
+            : $t("dashboard.moodboard_add_file")
+        }}
+      </span>
+    </button>
+    <p class="text-[10px] text-dark/40 text-center mt-1.5">
+      {{ $t("dashboard.moodboard_max_size") }}
+    </p>
+
+    <input
+      ref="fileInput"
+      type="file"
+      accept="image/png,image/jpeg,image/webp,application/pdf"
+      class="hidden"
+      @change="handleUpload"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { MoodboardItem } from "~/server/utils/client-portal-types";
 
+const { t } = useI18n();
+
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 Mo
+
 defineProps<{
   items: MoodboardItem[];
-  moodboardNote: string;
-  savingNote: boolean;
   uploading: boolean;
-  addingLink: boolean;
+  note: string;
+  savingNote: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: "upload", file: File): void;
-  (e: "addLink", url: string, title: string): void;
   (e: "deleteItem", id: string): void;
+  (e: "update:note", value: string): void;
   (e: "saveNote"): void;
-  (e: "update:moodboardNote", value: string): void;
 }>();
 
 const fileInput = ref<HTMLInputElement | null>(null);
-const showLinkForm = ref(false);
-const linkUrl = ref("");
-const linkTitle = ref("");
+const errorMsg = ref("");
 
 const triggerUpload = () => {
   fileInput.value?.click();
+};
+
+const validateAndEmit = (file: File) => {
+  errorMsg.value = "";
+  if (file.size > MAX_FILE_SIZE) {
+    errorMsg.value = t("dashboard.moodboard_file_too_large");
+    return;
+  }
+  emit("upload", file);
 };
 
 const handleUpload = (event: Event) => {
   const input = event.target as HTMLInputElement;
   const file = input.files?.[0];
   if (file) {
-    emit("upload", file);
+    validateAndEmit(file);
     input.value = "";
   }
-};
-
-const handleAddLink = () => {
-  if (!linkUrl.value) return;
-  emit("addLink", linkUrl.value, linkTitle.value);
-  linkUrl.value = "";
-  linkTitle.value = "";
-  showLinkForm.value = false;
 };
 </script>

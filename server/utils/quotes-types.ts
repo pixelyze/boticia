@@ -42,7 +42,7 @@ export interface QuoteRequest {
   partner1_name: string;
   partner2_name?: string;
   email: string;
-  phone?: string;
+  phone: string;
   wedding_date?: string;
   venue?: string;
   budget?: BudgetRange;
@@ -54,6 +54,7 @@ export interface QuoteRequest {
   portal_enabled: boolean;
   moodboard_note?: string;
   locale: string;
+  kanban_position: number;
   created_at: string;
   updated_at: string;
 }
@@ -62,13 +63,13 @@ export interface CreateQuoteRequestInput {
   partner1_name: string;
   partner2_name?: string;
   email: string;
-  phone?: string;
+  phone: string;
   wedding_date?: string;
   venue?: string;
   budget?: BudgetRange;
   floral_needs: FloralNeedKey[];
-  meeting_date?: string;
-  meeting_time?: string;
+  meeting_date: string;
+  meeting_time: string;
   locale?: string;
 }
 
@@ -77,4 +78,28 @@ export interface UpdateQuoteRequestInput {
   admin_notes?: string;
   portal_enabled?: boolean;
   moodboard_note?: string;
+  meeting_date?: string;
+  meeting_time?: string;
+  kanban_position?: number;
+}
+
+// ========================================
+// ACTIVITY LOG
+// ========================================
+
+export type QuoteActivityAction =
+  | "status_changed"
+  | "note_updated"
+  | "meeting_scheduled"
+  | "portal_toggled"
+  | "moodboard_added"
+  | "proposal_created"
+  | "note_added";
+
+export interface QuoteActivityLog {
+  id: string;
+  quote_id: string;
+  action: QuoteActivityAction;
+  details: Record<string, any>;
+  created_at: string;
 }

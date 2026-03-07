@@ -115,12 +115,8 @@ const {
 
 const modalRef = ref<HTMLElement | null>(null);
 const dragHandleRef = ref<HTMLElement | null>(null);
-const initialAnimation = ref(false);
 
-const modalClasses = computed(() => ({
-  ...initialAnimationClass,
-  "animate-slide-up": initialAnimation.value,
-}));
+const modalClasses = computed(() => ({}));
 
 const handleCloseModal = () => {
   close();
@@ -137,14 +133,6 @@ watch(
   (newValue) => {
     if (newValue) {
       open();
-      nextTick(() => {
-        if (modalRef.value) {
-          initialAnimation.value = true;
-          setTimeout(() => {
-            initialAnimation.value = false;
-          }, 300);
-        }
-      });
     } else {
       close();
     }
@@ -166,20 +154,17 @@ useEventListener(window, "keydown", (e: KeyboardEvent) => {
 onClickOutside(modalRef, onCancel, { ignore: [] });
 </script>
 
+<style>
+.modal-slide-enter {
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.modal-slide-leave {
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+</style>
+
 <style scoped>
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out forwards;
-}
-
-@keyframes slide-up {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
 .scroll-area {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;

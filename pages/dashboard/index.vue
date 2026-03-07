@@ -68,35 +68,57 @@
               </p>
             </div>
 
-            <!-- List -->
-            <div v-else class="space-y-3">
+            <!-- Grid -->
+            <div
+              v-else
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            >
               <button
                 v-for="quote in newQuotes"
                 :key="quote.id"
-                class="w-full flex items-center justify-between px-6 py-5 rounded-[1.5rem] bg-cream-dark transition-all hover:bg-cream group text-left"
+                class="flex flex-col p-5 rounded-[1.5rem] bg-cream-dark transition-all hover:bg-cream group text-left"
                 @click="navigateTo(localePath('/dashboard/quotes/' + quote.id))"
               >
-                <div class="flex-1 min-w-0">
-                  <span class="font-heading text-lg text-dark block truncate">
-                    {{ quote.partner1_name }} & {{ quote.partner2_name }}
-                  </span>
-                  <div class="flex items-center gap-3 mt-1">
-                    <Tag variant="warning">
-                      {{ t("dashboard.quote_status_new") }}
-                    </Tag>
-                    <span class="text-base text-fuchsia-600 truncate">
-                      {{ quote.email }}
-                    </span>
-                    <span class="text-base text-fuchsia-600 hidden md:inline">
-                      {{ formatDate(quote.created_at) }}
-                    </span>
-                  </div>
+                <div class="flex items-start justify-between mb-3">
+                  <Tag variant="warning">
+                    {{ t("dashboard.quote_status_new") }}
+                  </Tag>
+                  <IconLucid
+                    name="ArrowRight"
+                    size="sm"
+                    class="text-stone-400 group-hover:text-orange-500 transition-colors shrink-0"
+                  />
                 </div>
-                <IconLucid
-                  name="ArrowRight"
-                  size="sm"
-                  class="text-stone-400 group-hover:text-orange-500 transition-colors shrink-0 ml-4"
-                />
+                <span class="font-heading text-lg text-dark block truncate">
+                  {{ quote.partner1_name }}
+                  <template v-if="quote.partner2_name">
+                    &amp; {{ quote.partner2_name }}
+                  </template>
+                </span>
+                <span class="text-sm text-fuchsia-600 truncate mt-1">
+                  {{ quote.email }}
+                </span>
+                <div
+                  class="flex items-center gap-3 mt-3 text-sm text-dark/50"
+                >
+                  <span
+                    v-if="quote.wedding_date"
+                    class="flex items-center gap-1"
+                  >
+                    <IconLucid name="Calendar" size="xs" />
+                    {{ formatDate(quote.wedding_date) }}
+                  </span>
+                  <span
+                    v-if="quote.venue"
+                    class="flex items-center gap-1 truncate"
+                  >
+                    <IconLucid name="MapPin" size="xs" />
+                    {{ quote.venue }}
+                  </span>
+                </div>
+                <span class="text-xs text-dark/30 mt-2">
+                  {{ formatDate(quote.created_at) }}
+                </span>
               </button>
             </div>
           </div>
@@ -168,6 +190,7 @@ definePageMeta({
   ssr: false,
   layout: 'dashboard',
   middleware: ['auth-admin'],
+  pageTransition: false,
 });
 
 const { t } = useI18n();

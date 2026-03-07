@@ -24,6 +24,27 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (!body.phone?.trim()) {
+    throw createError({
+      statusCode: 400,
+      message: "phone is required",
+    });
+  }
+
+  if (!body.meeting_date?.trim()) {
+    throw createError({
+      statusCode: 400,
+      message: "meeting_date is required",
+    });
+  }
+
+  if (!body.meeting_time?.trim()) {
+    throw createError({
+      statusCode: 400,
+      message: "meeting_time is required",
+    });
+  }
+
   // Validate email format
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(body.email)) {

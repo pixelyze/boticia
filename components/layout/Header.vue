@@ -5,26 +5,26 @@
       <div class="px-4 md:px-10 pt-4 transition-all duration-500" :class="scrolled ? 'pb-2' : 'pb-4'">
         <div
           class="rounded-full transition-all duration-500"
-          :class="scrolled ? 'py-2 px-5 md:px-12 bg-cream/90 backdrop-blur-md border-2 border-dark/10' : 'py-4 px-4 md:px-8 border-2 border-transparent'"
+          :class="scrolled ? 'py-2 px-5 md:px-12 bg-cream-light/90 backdrop-blur-md border-2 border-transparent' : 'py-4 px-4 md:px-8 border-2 border-transparent'"
         >
         <!-- Main nav -->
         <nav class="flex items-center justify-between md:grid md:grid-cols-3">
           <!-- Left nav -->
           <div class="hidden md:flex items-center gap-8">
             <NuxtLink
-              :to="localePath('/pricing')"
+              :to="localePath('/mariages')"
               class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.weddings") }}
             </NuxtLink>
             <NuxtLink
-              :to="localePath('/events')"
+              :to="localePath('/evenements')"
               class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.events") }}
             </NuxtLink>
             <NuxtLink
-              :to="localePath('/workshops')"
+              :to="localePath('/ateliers')"
               class="text-xs font-semibold uppercase tracking-[0.2em] text-dark hover:text-dark/60 transition-colors"
             >
               {{ t("nav.workshops") }}
@@ -259,9 +259,9 @@ const closeBtn = ref(null);
 const firstMenuLink = ref(null);
 
 const navLinks = [
-  { key: "nav.weddings", to: "/pricing" },
-  { key: "nav.events", to: "/events" },
-  { key: "nav.workshops", to: "/workshops" },
+  { key: "nav.weddings", to: "/mariages" },
+  { key: "nav.events", to: "/evenements" },
+  { key: "nav.workshops", to: "/ateliers" },
 ];
 
 // Active path detection for mobile menu

@@ -5,6 +5,7 @@
 
 import { requireAdmin } from "~/server/utils/serverAuth";
 import { updateQuotePortal } from "~/server/utils/client-portal";
+import { addQuoteActivity } from "~/server/utils/quotes";
 
 export default defineEventHandler(async (event) => {
   await requireAdmin(event);
@@ -33,6 +34,12 @@ export default defineEventHandler(async (event) => {
       throw createError({
         statusCode: 500,
         message: "Failed to update portal settings",
+      });
+    }
+
+    if (portal_enabled !== undefined) {
+      await addQuoteActivity(quoteId, "portal_toggled", {
+        action: portal_enabled ? "activated" : "deactivated",
       });
     }
 

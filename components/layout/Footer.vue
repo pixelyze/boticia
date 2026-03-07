@@ -1,7 +1,7 @@
 <template>
   <footer class="bg-white text-dark py-12">
     <div class="px-4 sm:px-10">
-      <div class="bg-cream rounded-[2rem] border-2 border-dark/10 py-12 sm:py-20 px-4 sm:px-6">
+      <div class="bg-cream-light rounded-[2rem] py-12 sm:py-20 px-4 sm:px-6">
       <div class="max-w-2xl mx-auto text-center">
         <!-- Logo -->
         <NuxtLink v-if="!isHomePage" :to="localePath('/')" aria-label="Back to home">
@@ -12,7 +12,7 @@
         <span class="font-heading text-2xl text-dark">Boticia</span>
 
         <!-- Description -->
-        <p class="text-dark/60 text-base leading-relaxed max-w-sm mx-auto mt-4">
+        <p class="text-dark/80 text-base leading-relaxed max-w-sm mx-auto mt-4">
           {{ $t("footer.description") }}
         </p>
 
@@ -22,25 +22,25 @@
             href="https://instagram.com/boticia_"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
           >Instagram</a>
           <a
             href="https://www.linkedin.com/in/la%C3%ABtitia-schaeffer-cr%C3%A9atrice-florale/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
           >LinkedIn</a>
           <a
             href="https://www.facebook.com/BoticiaParis/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
           >Facebook</a>
           <a
             href="https://fr.pinterest.com/Boticia_Paris/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-dark/60 hover:text-dark text-base border-b border-dark/30 hover:border-dark/50 pb-0.5 transition-all duration-300"
+            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
           >Pinterest</a>
         </nav>
 
@@ -50,31 +50,31 @@
             <NuxtLink
               v-if="!isAboutPage"
               :to="localePath('/about')"
-              class="text-dark/60 hover:text-dark transition-colors duration-300"
+              class="text-dark/70 hover:text-dark transition-colors duration-300"
             >
               {{ $t("footer.about_link") }}
             </NuxtLink>
-            <span v-else class="text-dark/60">
+            <span v-else class="text-dark/70">
               {{ $t("footer.about_link") }}
             </span>
             <NuxtLink
               v-if="!isLegalPage"
               :to="localePath('/legal')"
-              class="text-dark/60 hover:text-dark transition-colors duration-300"
+              class="text-dark/70 hover:text-dark transition-colors duration-300"
             >
               {{ $t("footer.legal_link") }}
             </NuxtLink>
-            <span v-else class="text-dark/60">
+            <span v-else class="text-dark/70">
               {{ $t("footer.legal_link") }}
             </span>
             <NuxtLink
               v-if="!isTermsPage"
               :to="localePath('/terms')"
-              class="text-dark/60 hover:text-dark transition-colors duration-300"
+              class="text-dark/70 hover:text-dark transition-colors duration-300"
             >
               {{ $t("footer.terms_link") }}
             </NuxtLink>
-            <span v-else class="text-dark/60">
+            <span v-else class="text-dark/70">
               {{ $t("footer.terms_link") }}
             </span>
           </div>
@@ -83,7 +83,7 @@
       </div>
 
       <!-- Copyright outside colored block -->
-      <p class="text-dark/30 text-sm text-center mt-6">
+      <p class="text-dark/50 text-sm text-center mt-6">
         {{ $t("footer.copyright") }}
       </p>
     </div>

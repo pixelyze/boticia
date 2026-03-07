@@ -79,6 +79,7 @@ import {
   Inbox,
   Package,
   Mail,
+  MapPin,
   Menu,
   RefreshCw,
   Settings,
@@ -108,6 +109,7 @@ import {
   Home,
   NotebookPen,
   ChevronLeft,
+  MoreHorizontal,
 } from "lucide-vue-next";
 
 const icons = {
@@ -171,6 +173,7 @@ const icons = {
   Inbox,
   Package,
   Mail,
+  MapPin,
   Menu,
   RefreshCw,
   Settings,
@@ -200,6 +203,7 @@ const icons = {
   Home,
   NotebookPen,
   ChevronLeft,
+  MoreHorizontal,
 };
 
 const props = defineProps({

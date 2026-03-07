@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, nextTick, onMounted, onUnmounted } from "vue";
 
 /**
  * Composable pour gérer l'état et les actions d'une fenêtre modale
@@ -31,11 +31,14 @@ export const useModal = () => {
 
   /**
    * Méthode pour ouvrir la modale
+   * isOpen rend le conteneur, showModal déclenche la Transition
    */
   const open = () => {
     preventBodyScroll();
     isOpen.value = true;
-    showModal.value = true;
+    nextTick(() => {
+      showModal.value = true;
+    });
   };
 
   /**

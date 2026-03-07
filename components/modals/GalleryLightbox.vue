@@ -35,7 +35,7 @@
 
             <!-- Category label -->
             <span class="text-white font-semibold text-base truncate mx-4">
-              {{ $t("stories." + categorySlug) }}
+              {{ props.title || (props.categorySlug ? $t("stories." + categorySlug) : '') }}
             </span>
 
             <!-- Counter -->
@@ -124,8 +124,11 @@ const contentTransition = {
 
 const props = defineProps<{
   isOpen: boolean;
-  categorySlug: string;
-  categoryId: string;
+  categorySlug?: string;
+  categoryId?: string;
+  items?: { public_url: string; caption?: string; id?: string }[];
+  title?: string;
+  startIndex?: number;
 }>();
 
 const emit = defineEmits<{ (e: "close"): void }>();
@@ -154,7 +157,84 @@ const computeScrollHeight = () => {
     typeof window !== "undefined" ? window.innerHeight - 56 : 600;
 };
 
-const fetchImages = async () => {
+const FALLBACK_GALLERY: Record<string, { url: string; caption: string }[]> = {
+  story_1: [
+    { url: 'https://images.unsplash.com/photo-1550005809-91ad75fb315f?w=1200&fit=crop', caption: 'Bouquet champêtre' },
+    { url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=1200&fit=crop', caption: 'Roses pastel' },
+    { url: 'https://images.unsplash.com/photo-1533616688419-b7a585564566?w=1200&fit=crop', caption: 'Bouquet romantique' },
+    { url: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=1200&fit=crop', caption: 'Pivoines et renoncules' },
+  ],
+  story_2: [
+    { url: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=1200&fit=crop', caption: 'Centre de table fleuri' },
+    { url: 'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=1200&fit=crop', caption: 'Arrangement élégant' },
+    { url: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=1200&fit=crop', caption: 'Table de réception' },
+    { url: 'https://images.unsplash.com/photo-1595437193398-f24279553f4f?w=1200&fit=crop', caption: 'Composition florale' },
+  ],
+  story_3: [
+    { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&fit=crop', caption: 'Arche de cérémonie' },
+    { url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1200&fit=crop', caption: 'Décoration de cérémonie' },
+    { url: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=1200&fit=crop', caption: 'Arche en plein air' },
+    { url: 'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=1200&fit=crop', caption: 'Cérémonie champêtre' },
+  ],
+  story_4: [
+    { url: 'https://images.unsplash.com/photo-1464699908537-0954e50791ee?w=1200&fit=crop', caption: 'Atelier floral' },
+    { url: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1200&fit=crop', caption: 'Création en cours' },
+    { url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=1200&fit=crop', caption: 'Sélection de fleurs' },
+    { url: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=1200&fit=crop', caption: 'Composition artisanale' },
+  ],
+  story_5: [
+    { url: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=1200&fit=crop', caption: 'Décor événementiel' },
+    { url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1200&fit=crop', caption: 'Réception privée' },
+    { url: 'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=1200&fit=crop', caption: 'Ambiance florale' },
+    { url: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=1200&fit=crop', caption: 'Mise en scène' },
+  ],
+  story_6: [
+    { url: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=1200&fit=crop', caption: 'Scénographie florale' },
+    { url: 'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=1200&fit=crop', caption: 'Installation artistique' },
+    { url: 'https://images.unsplash.com/photo-1595437193398-f24279553f4f?w=1200&fit=crop', caption: 'Décor immersif' },
+    { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&fit=crop', caption: 'Mise en espace' },
+  ],
+};
+
+const buildFallbackImages = (slug: string): HomepageInspirationImage[] => {
+  const items = FALLBACK_GALLERY[slug] || [];
+  return items.map((item, i) => ({
+    id: `fallback-${slug}-${i}`,
+    category_id: '',
+    filename: '',
+    original_filename: '',
+    mime_type: 'image/jpeg',
+    file_size: 0,
+    storage_path: '',
+    public_url: item.url,
+    caption: item.caption,
+    sort_order: i,
+    created_at: '',
+    updated_at: '',
+  }));
+};
+
+const loadImages = async () => {
+  // Mode 1: items passed directly via props
+  if (props.items && props.items.length > 0) {
+    images.value = props.items.map((item, i) => ({
+      id: item.id || `item-${i}`,
+      category_id: '',
+      filename: '',
+      original_filename: '',
+      mime_type: 'image/jpeg',
+      file_size: 0,
+      storage_path: '',
+      public_url: item.public_url,
+      caption: item.caption,
+      sort_order: i,
+      created_at: '',
+      updated_at: '',
+    }));
+    return;
+  }
+
+  // Mode 2: fetch from API by categoryId
   if (!props.categoryId) return;
   loading.value = true;
   try {
@@ -169,7 +249,12 @@ const fetchImages = async () => {
     loading.value = false;
   }
 
-  // Auto-close if empty
+  // Use fallback Unsplash images if gallery is empty
+  if (images.value.length === 0 && props.categorySlug) {
+    images.value = buildFallbackImages(props.categorySlug);
+  }
+
+  // Auto-close if still empty after fallback
   if (images.value.length === 0) {
     setTimeout(() => {
       handleClose();
@@ -232,11 +317,16 @@ watch(
   async (newVal) => {
     if (newVal) {
       computeScrollHeight();
-      currentIndex.value = 0;
+      currentIndex.value = props.startIndex || 0;
       images.value = [];
       open();
       await nextTick();
-      await fetchImages();
+      await loadImages();
+      // Scroll to startIndex after images are loaded
+      if (props.startIndex && props.startIndex > 0) {
+        await nextTick();
+        scrollToIndex(props.startIndex);
+      }
     } else {
       close();
     }

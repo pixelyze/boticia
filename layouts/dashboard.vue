@@ -1,9 +1,13 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-white selection:bg-fuchsia-300 selection:text-fuchsia-900">
+  <div
+    class="min-h-screen flex flex-col bg-white selection:bg-fuchsia-300 selection:text-fuchsia-900"
+  >
     <!-- Top bar pill -->
     <header class="bg-transparent pt-4 pb-4">
       <div class="px-4 md:px-10">
-        <div class="rounded-full border-2 border-dark/10 bg-cream px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
+        <div
+          class="rounded-full bg-cream-light px-4 md:px-8 py-3 md:py-4 flex items-center justify-between"
+        >
           <button v-if="pageTitle" @click="router.back()" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
             <IconLucid name="ArrowLeft" size="sm" />
           </button>
@@ -177,6 +181,8 @@ const { getClient: getSupabase } = useSupabase();
 const localePath = useLocalePath();
 const router = useRouter();
 const route = useRoute();
+
+const isDetailPage = computed(() => !!route.params.id);
 
 const pageTitle = useState<string | null>("dashboard-page-title", () => null);
 const menuOpen = ref(false);

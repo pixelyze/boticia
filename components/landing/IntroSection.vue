@@ -8,7 +8,7 @@
           {{ $t('intro.description') }}
         </p>
         <div class="mt-10">
-          <Button variant="ghost" rightIcon="MoveRight" :to="localePath('/pricing')">
+          <Button variant="ghost" rightIcon="MoveRight" :to="localePath('/creations')">
             {{ $t('intro.cta') }}
           </Button>
         </div>

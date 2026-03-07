@@ -8,6 +8,8 @@ import type {
   QuoteRequest,
   CreateQuoteRequestInput,
   UpdateQuoteRequestInput,
+  QuoteActivityAction,
+  QuoteActivityLog,
 } from "./quotes-types";
 
 /**
@@ -116,4 +118,91 @@ export async function updateQuoteRequest(
     console.error("Error:", err);
     return null;
   }
+}
+
+/**
+ * Add an entry to the quote activity log
+ */
+export async function addQuoteActivity(
+  quoteId: string,
+  action: QuoteActivityAction,
+  details: Record<string, any> = {}
+): Promise<void> {
+  try {
+    const { error } = await getSupabase()
+      .from("quote_activity_log")
+      .insert({ quote_id: quoteId, action, details });
+
+    if (error) {
+      console.error("Error adding activity log:", error.message);
+    }
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}
+
+/**
+ * Get the activity log for a quote
+ */
+export async function getQuoteActivityLog(
+  quoteId: string
+): Promise<QuoteActivityLog[]> {
+  try {
+    const { data, error } = await getSupabase()
+      .from("quote_activity_log")
+      .select("*")
+      .eq("quote_id", quoteId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error getting activity log:", error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error("Error:", err);
+    return [];
+  }
+}
+
+/**
+ * Delete an activity log entry (notes only)
+ */
+export async function deleteQuoteActivity(
+  activityId: string
+): Promise<void> {
+  const { error } = await getSupabase()
+    .from("quote_activity_log")
+    .delete()
+    .eq("id", activityId)
+    .eq("action", "note_added");
+
+  if (error) {
+    console.error("Error deleting activity:", error.message);
+    throw createError({ statusCode: 500, message: error.message });
+  }
+}
+
+/**
+ * Update a note's text in the activity log
+ */
+export async function updateQuoteActivity(
+  activityId: string,
+  text: string
+): Promise<QuoteActivityLog> {
+  const { data, error } = await getSupabase()
+    .from("quote_activity_log")
+    .update({ details: { text } })
+    .eq("id", activityId)
+    .eq("action", "note_added")
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating activity:", error.message);
+    throw createError({ statusCode: 500, message: error.message });
+  }
+
+  return data;
 }

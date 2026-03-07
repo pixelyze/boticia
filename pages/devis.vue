@@ -19,47 +19,24 @@
 
           <!-- Meeting confirmation -->
           <div
-            class="mt-8 rounded-2xl border-2 px-6 py-5 text-left"
-            :class="
-              form.meeting_date
-                ? 'border-green-200 bg-green-50'
-                : 'border-dark/10 bg-cream/30'
-            "
+            class="mt-8 rounded-2xl border-2 border-green-200 bg-green-50 px-6 py-5 text-left"
           >
             <div class="flex items-center gap-4">
               <div
-                class="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                :class="
-                  form.meeting_date
-                    ? 'bg-green-100'
-                    : 'bg-dark/5'
-                "
+                class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center shrink-0"
               >
                 <IconLucid
-                  :name="form.meeting_date ? 'CalendarCheck' : 'Phone'"
+                  name="CalendarCheck"
                   size="sm"
-                  :class="
-                    form.meeting_date
-                      ? 'text-green-600'
-                      : 'text-dark/40'
-                  "
+                  class="text-green-600"
                 />
               </div>
-              <p
-                class="text-lg"
-                :class="
-                  form.meeting_date
-                    ? 'text-green-800'
-                    : 'text-dark/60'
-                "
-              >
+              <p class="text-lg text-green-800">
                 {{
-                  form.meeting_date
-                    ? t("quote_form.success_with_meeting", {
-                        date: formatDisplayDate(form.meeting_date),
-                        time: form.meeting_time || "—",
-                      })
-                    : t("quote_form.success_without_meeting")
+                  t("quote_form.success_with_meeting", {
+                    date: formatDisplayDate(form.meeting_date),
+                    time: form.meeting_time || "—",
+                  })
                 }}
               </p>
             </div>
@@ -255,17 +232,22 @@
                     class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
                   >
                     {{ t("quote_form.phone_label") }}
-                    <span class="text-dark/30 normal-case tracking-normal">
-                      — {{ t("quote_form.chat_optional") }}
-                    </span>
                   </label>
-                  <input
+                  <PhoneInput
                     v-model="form.phone"
-                    type="tel"
                     :placeholder="t('quote_form.phone_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
-                    @keydown.enter="nextStep"
+                    :searchPlaceholder="t('quote_form.phone_search_country')"
+                    :defaultCountry="phoneDefaultCountry"
+                    :hasError="!!errors.phone"
+                    @validate="(v: boolean) => phoneValid = v"
+                    @enter="nextStep"
                   />
+                  <p
+                    v-if="errors.phone"
+                    class="mt-2 text-sm text-red-500"
+                  >
+                    {{ errors.phone }}
+                  </p>
                 </div>
               </div>
               <div class="flex justify-center">
@@ -565,24 +547,21 @@
                 </div>
               </div>
 
-              <div
-                v-else
-                class="flex flex-col sm:flex-row gap-3"
-              >
+              <div v-else class="space-y-3">
                 <Button
                   variant="primary"
                   icon="CalendarClock"
                   @click="scheduleModalOpen = true"
-                  class="flex-1"
+                  class="w-full"
                 >
                   {{ t("quote_form.meeting_choose_slot") }}
                 </Button>
-                <Button
-                  variant="ghost"
-                  @click="nextStep"
+                <p
+                  v-if="errors.meeting"
+                  class="text-sm text-red-500 text-center"
                 >
-                  {{ t("quote_form.chat_step7_skip") }}
-                </Button>
+                  {{ errors.meeting }}
+                </p>
               </div>
 
               <div
@@ -687,10 +666,7 @@
                     </span>
                   </div>
                 </div>
-                <div
-                  v-if="form.meeting_date"
-                  class="pt-1"
-                >
+                <div class="pt-1">
                   <div class="flex justify-between">
                     <span class="text-fuchsia-500">
                       {{ t("quote_form.section_meeting") }}
@@ -803,6 +779,17 @@ const loading = ref(false);
 const submitted = ref(false);
 const scheduleModalOpen = ref(false);
 
+// Phone input state
+const phoneValid = ref(false);
+const phoneDefaultCountry = computed(() => {
+  const map: Record<string, string> = {
+    fr: "FR",
+    en: "US",
+    ja: "JP",
+  };
+  return map[locale.value] || "FR";
+});
+
 // Inspiration files state
 const inspirationFiles = ref<File[]>([]);
 const inspirationPreviews = ref<string[]>([]);
@@ -812,7 +799,9 @@ const MAX_INSPIRATION_FILES = 5;
 const errors = reactive({
   name: "",
   email: "",
+  phone: "",
   floral_needs: "",
+  meeting: "",
   generic: "",
 });
 
@@ -1021,13 +1010,11 @@ const getStepSummary = (step: number): string => {
         return `${inspirationFiles.value.length} photo${inspirationFiles.value.length > 1 ? "s" : ""}`;
       }
       return t("quote_form.chat_step6_skip");
-    case 7:
-      if (form.meeting_date) {
-        let summary = formatDisplayDate(form.meeting_date);
-        if (form.meeting_time) summary += ` — ${form.meeting_time}`;
-        return summary;
-      }
-      return t("quote_form.chat_step7_skip");
+    case 7: {
+      let summary = formatDisplayDate(form.meeting_date);
+      if (form.meeting_time) summary += ` — ${form.meeting_time}`;
+      return summary;
+    }
     default:
       return "";
   }
@@ -1038,7 +1025,9 @@ const validateStep = (step: number): boolean => {
   // Reset relevant errors
   errors.name = "";
   errors.email = "";
+  errors.phone = "";
   errors.floral_needs = "";
+  errors.meeting = "";
 
   switch (step) {
     case 1:
@@ -1048,16 +1037,27 @@ const validateStep = (step: number): boolean => {
       }
       return true;
     case 2: {
+      let valid = true;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!form.email.trim() || !emailRegex.test(form.email)) {
         errors.email = t("quote_form.error_email");
-        return false;
+        valid = false;
       }
-      return true;
+      if (!form.phone.trim() || !phoneValid.value) {
+        errors.phone = t("quote_form.error_phone");
+        valid = false;
+      }
+      return valid;
     }
     case 5:
       if (selectedNeeds.value.size === 0) {
         errors.floral_needs = t("quote_form.error_needs");
+        return false;
+      }
+      return true;
+    case 7:
+      if (!form.meeting_date) {
+        errors.meeting = t("quote_form.error_meeting");
         return false;
       }
       return true;
@@ -1096,7 +1096,10 @@ const handleSlotConfirmed = (data: {
 }) => {
   form.meeting_date = data.date;
   form.meeting_time = data.time;
+  errors.meeting = "";
   scheduleModalOpen.value = false;
+  // Auto-advance to recap after slot selection
+  nextTick(() => nextStep());
 };
 
 // ── Submit ──────────────────────────────────────────
@@ -1113,13 +1116,13 @@ const handleSubmit = async () => {
       body: {
         partner1_name: form.name.trim(),
         email: form.email.trim(),
-        phone: form.phone.trim() || undefined,
+        phone: form.phone.trim(),
         wedding_date: form.wedding_date || undefined,
         venue: form.venue.trim() || undefined,
         budget: form.budget || undefined,
         floral_needs: Array.from(selectedNeeds.value),
-        meeting_date: form.meeting_date || undefined,
-        meeting_time: form.meeting_time || undefined,
+        meeting_date: form.meeting_date,
+        meeting_time: form.meeting_time,
         locale: locale.value,
       },
     });

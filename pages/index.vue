@@ -31,24 +31,11 @@
     <HeroSection />
 
     <!-- ==========================================
-         [SECTION-PRICING] — Grille tarifaire 2 colonnes
+         [SECTION-ALACARTE] — Offre à la carte 3 colonnes
          Padding : py-20 md:py-28 | Background : bg-white
-         Composant : components/landing/PricingSection.vue
+         Composant : components/landing/AlaCarteSection.vue
          ========================================== -->
-    <!-- [COMP-PRICING] — Section tarifs
-         [EL-PRICING-TAGLINE] — Tagline | .section-tagline | i18n : pricing.tagline
-         [EL-PRICING-TITLE] — Titre H2 | .section-title-lg | i18n : pricing.title
-         [EL-PRICING-CARD] — Carte plan x2 | rounded-[2rem] border-2 border-dark/10 | px-10 py-14
-           - Plan featured : bg-cream + badge .feature-number (i18n : pricing.popular)
-           - Plan standard : bg-white
-           [EL-PRICING-NAME] — Nom du plan | .plan-name
-           [EL-PRICING-PRICE] — Prix | .plan-price | Préfixe optionnel "À partir de"
-           [EL-PRICING-SUMMARY] — Description | .feature-description
-           [EL-PRICING-CTA] — Lien CTA | rounded-full border-2 uppercase tracking-[0.15em]
-             [STATE-PRICING-CTA-HOVER] — hover:text-dark hover:border-dark + flèche translate-x-1
-         Data : 2 plans computed depuis i18n (plan_2 featured, plan_3 standard)
-         Responsive : grid-cols-1 md:grid-cols-2 | max-w-4xl centré -->
-    <PricingSection />
+    <AlaCarteSection />
 
     <!-- ==========================================
          [SECTION-STORIES] — Grille d'histoires / réalisations

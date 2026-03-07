@@ -114,6 +114,8 @@ const redirectUrl = `${window.location.origin}/${locale.value}/dashboard/callbac
 
 If missing, add it to both the import statement AND the `icons` object.
 
+**NEVER use opacity on icon colors** (e.g. `text-dark/40`). Icons must always use solid colors (`text-dark`, `text-gray-500`, etc.) to avoid visual transparency artifacts.
+
 ## i18n (IMPORTANT)
 
 **ALWAYS update ALL translation files simultaneously.**
