@@ -205,21 +205,32 @@
                     <h2 class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3">
                       {{ t("dashboard.quote_detail_needs") }}
                     </h2>
-                    <div v-if="quote.floral_needs?.length">
-                      <div class="flex items-center gap-2 mb-2">
-                        <IconLucid name="Heart" size="xs" class="text-dark/40" />
-                        <span class="font-heading text-xs text-dark/50 uppercase tracking-wider">
-                          {{ t("dashboard.quote_detail_personal_flowers") }}
-                        </span>
+                    <!-- Atelier: workshop type -->
+                    <template v-if="quote.service_type === 'atelier'">
+                      <div v-if="quote.workshop_type" class="flex items-center gap-2">
+                        <IconLucid name="Palette" size="xs" class="text-dark/40" />
+                        <span class="text-sm text-dark/80">{{ t(`quote_form.workshop_${quote.workshop_type}`) }}</span>
                       </div>
-                      <ul class="space-y-1 pl-1">
-                        <li v-for="need in quote.floral_needs" :key="need" class="flex items-center gap-2 text-sm text-dark/80">
-                          <span class="w-1.5 h-1.5 rounded-full bg-dark/30 shrink-0"></span>
-                          {{ t(`quote_form.need_${need}`) }}
-                        </li>
-                      </ul>
-                    </div>
-                    <p v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_needs") }}</p>
+                      <p v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_needs") }}</p>
+                    </template>
+                    <!-- Mariage / Evenement: floral/event needs -->
+                    <template v-else>
+                      <div v-if="quote.floral_needs?.length">
+                        <div v-if="quote.service_type === 'mariage'" class="flex items-center gap-2 mb-2">
+                          <IconLucid name="Heart" size="xs" class="text-dark/40" />
+                          <span class="font-heading text-xs text-dark/50 uppercase tracking-wider">
+                            {{ t("dashboard.quote_detail_personal_flowers") }}
+                          </span>
+                        </div>
+                        <ul class="space-y-1 pl-1">
+                          <li v-for="need in quote.floral_needs" :key="need" class="flex items-center gap-2 text-sm text-dark/80">
+                            <span class="w-1.5 h-1.5 rounded-full bg-dark/30 shrink-0"></span>
+                            {{ t(`quote_form.need_${need}`) }}
+                          </li>
+                        </ul>
+                      </div>
+                      <p v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_needs") }}</p>
+                    </template>
                   </div>
                 </div>
                 <!-- Right column: Coordonnées + Inspirations -->
@@ -245,19 +256,36 @@
                         </span>
                         <span v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_phone") }}</span>
                       </div>
+                      <!-- Date -->
                       <div class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="Heart" size="xs" class="text-dark/40" />
+                          <IconLucid :name="quote.service_type === 'mariage' ? 'Heart' : 'Calendar'" size="xs" class="text-dark/40" />
                         </div>
                         <span class="text-sm text-dark">{{ quote.wedding_date ? formatDate(quote.wedding_date) : t("dashboard.quote_detail_no_date") }}</span>
                       </div>
-                      <div class="flex items-center gap-3 px-3">
+                      <!-- Venue (mariage/evenement) -->
+                      <div v-if="quote.service_type !== 'atelier'" class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
                           <IconLucid name="MapPin" size="xs" class="text-dark/40" />
                         </div>
                         <span class="text-sm text-dark">{{ quote.venue || t("dashboard.quote_detail_no_venue") }}</span>
                       </div>
-                      <div class="flex items-center gap-3 px-3">
+                      <!-- Event type (evenement) -->
+                      <div v-if="quote.service_type === 'evenement' && quote.event_type" class="flex items-center gap-3 px-3">
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="Sparkles" size="xs" class="text-dark/40" />
+                        </div>
+                        <span class="text-sm text-dark">{{ quote.event_type }}</span>
+                      </div>
+                      <!-- Guest count (atelier) -->
+                      <div v-if="quote.service_type === 'atelier' && quote.guest_count" class="flex items-center gap-3 px-3">
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="Users" size="xs" class="text-dark/40" />
+                        </div>
+                        <span class="text-sm text-dark">{{ quote.guest_count }} {{ t("dashboard.quote_detail_guest_count").toLowerCase() }}</span>
+                      </div>
+                      <!-- Budget (mariage only) -->
+                      <div v-if="quote.service_type === 'mariage'" class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
                           <IconLucid name="BadgeEuro" size="xs" class="text-dark/40" />
                         </div>
@@ -269,7 +297,7 @@
                   <div>
                     <div class="flex items-center justify-between mb-3">
                       <h2 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
-                        {{ t("dashboard.client_inspirations_title") }}
+                        {{ t(quote.service_type === 'mariage' ? "dashboard.client_inspirations_title" : "dashboard.client_inspirations_title_generic") }}
                       </h2>
                       <span v-if="clientInspirations.length > 0" class="w-6 h-6 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center">
                         {{ clientInspirations.length }}
@@ -674,42 +702,42 @@
       :closeButtonText="t('common.close')"
       @close="statusModalOpen = false"
     >
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-2">
         <button
           v-for="opt in statusOptions"
           :key="opt.value"
-          class="flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all text-left"
+          class="flex items-center gap-4 w-full px-4 py-3.5 rounded-2xl border-2 transition-all text-left"
           :class="
             quote?.status === opt.value
               ? 'bg-dark text-cream border-dark'
-              : 'bg-cream text-dark border-dark/10 hover:border-dark/30'
+              : 'bg-white border-dark/10 hover:border-dark/30'
           "
           @click="selectStatus(opt.value)"
         >
           <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+            class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
             :class="
               quote?.status === opt.value
                 ? 'bg-cream/20'
-                : statusIconBg(opt.value)
+                : 'bg-cream'
             "
           >
             <IconLucid
               :name="statusIcon(opt.value)"
-              size="md"
+              size="xs"
               :class="
                 quote?.status === opt.value
                   ? 'text-cream'
-                  : 'text-white'
+                  : 'text-dark/50'
               "
             />
           </div>
-          <div>
-            <span class="font-heading text-lg block">
+          <div class="flex-1 min-w-0">
+            <span class="font-medium text-sm block">
               {{ opt.label }}
             </span>
             <span
-              class="text-sm"
+              class="text-xs"
               :class="
                 quote?.status === opt.value
                   ? 'text-cream/60'
@@ -719,6 +747,12 @@
               {{ t(`dashboard.quote_status_desc_${opt.value}`) }}
             </span>
           </div>
+          <IconLucid
+            v-if="quote?.status === opt.value"
+            name="Check"
+            size="xs"
+            class="text-cream shrink-0"
+          />
         </button>
       </div>
     </BaseModal>
@@ -830,7 +864,7 @@ const calendarUrl = computed(() => {
   ).padStart(2, "0");
   const endTime = `${endHH}${mm}00`;
   const title = encodeURIComponent(
-    `RDV ${q.partner1_name} & ${q.partner2_name} — Boticia`
+    `RDV ${q.service_type === "mariage" && q.partner2_name ? `${q.partner1_name} & ${q.partner2_name}` : q.partner1_name} — Boticia`
   );
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${date}T${startTime}/${date}T${endTime}`;
 });
@@ -1293,7 +1327,9 @@ const fetchQuote = async () => {
       data: QuoteRequest;
     }>(`/api/quotes/${quoteId}`);
     quote.value = res.data;
-    pageTitle.value = `${res.data.partner1_name} & ${res.data.partner2_name}`;
+    pageTitle.value = res.data.service_type === "mariage" && res.data.partner2_name
+      ? `${res.data.partner1_name} & ${res.data.partner2_name}`
+      : res.data.partner1_name;
     adminNotes.value = res.data.admin_notes || "";
     portalEnabled.value = res.data.portal_enabled || false;
     moodboardNote.value = res.data.moodboard_note || "";
@@ -1602,7 +1638,7 @@ onUnmounted(() => {
 useHead({
   title: computed(() =>
     quote.value
-      ? `${quote.value.partner1_name} & ${quote.value.partner2_name} - Boticia`
+      ? `${quote.value.service_type === "mariage" && quote.value.partner2_name ? `${quote.value.partner1_name} & ${quote.value.partner2_name}` : quote.value.partner1_name} - Boticia`
       : t("dashboard.quotes_title") + " - Boticia"
   ),
 });

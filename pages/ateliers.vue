@@ -41,7 +41,7 @@
                 <h3 class="font-heading text-lg text-dark mb-1">
                   {{ workshop.title }}
                 </h3>
-                <p class="text-dark/70 leading-relaxed text-sm">
+                <p class="text-dark/70 leading-relaxed text-base">
                   {{ workshop.desc }}
                 </p>
               </div>

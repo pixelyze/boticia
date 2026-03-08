@@ -198,6 +198,8 @@
   "faq": {
     "tagline": "FAQ",
     "title": "Frequently Asked Questions",
+    "page_title": "FAQ",
+    "subtitle": "Everything you need to know about our floral services.",
     "q1": "How far in advance should I book?",
     "a1": "We recommend reaching out 6 to 12 months before your event, especially for weddings during peak season (May to September).",
     "q2": "Do you only use French flowers?",
@@ -205,7 +207,25 @@
     "q3": "Do you work throughout France?",
     "a3": "Yes, we travel across all of France for your events. Travel fees may apply depending on the distance.",
     "q4": "How does a first consultation work?",
-    "a4": "Get in touch by email or phone. We discuss your project, your wishes and your budget during a free, no-obligation first meeting."
+    "a4": "Get in touch by email or phone. We discuss your project, your wishes and your budget during a free, no-obligation first meeting.",
+    "q5": "Where and how are the creations made?",
+    "a5": "All compositions are assembled to order in our workshop near Paris, with the utmost care.",
+    "q6": "How long do dried flower bouquets last?",
+    "a6": "Dried flowers stay intact for several months, even years, as long as they are kept away from direct sunlight and moisture.",
+    "q7": "Do you offer wedding services?",
+    "a7": "Yes, Boticia supports you throughout your wedding with bespoke floral creations: bouquets, arches, centrepieces and much more.",
+    "q8": "Can you create custom floral decorations for events?",
+    "a8": "Every event is a bespoke service tailored to your needs: floral scenography, flower corners, suspended installations.",
+    "q9": "How should I care for dried flower arrangements?",
+    "a9": "Keep your bouquets away from direct sunlight and avoid humidity, draughts and heat sources to preserve their beauty.",
+    "q10": "What types of workshops do you offer?",
+    "a10": "We offer bouquet composition, flower wreath, terrarium and seasonal creation workshops, for all levels and occasions.",
+    "more_tagline": "Learn more",
+    "more_title": "Our services in detail",
+    "cta_title": "Have a question not listed here?",
+    "cta_desc": "Get in touch directly, we'd love to help.",
+    "cta_button": "Request a quote",
+    "cta_button_all": "See all questions"
   },
   "stories": {
     "tagline": "Our creations",
@@ -252,16 +272,11 @@
     "copyright": "© 2026 Boticia. All rights reserved.",
     "privacy": "We respect your privacy and protect your personal data.",
     "about_link": "About me",
-    "legal_link": "Legal notice",
-    "terms_link": "Terms of service"
+    "faq_link": "FAQ",
+    "legal_link": "Legal notice"
   },
   "language": {
     "select_language": "Select language"
-  },
-  "terms": {
-    "title": "Terms of Service",
-    "subtitle": "Last updated: January 2025",
-    "article": "Article {n}"
   },
   "legal": {
     "title": "Legal Notice",
@@ -389,7 +404,8 @@
     "chat_step3_mariage": "When is the big day planned? And where will it take place?",
     "chat_step3_evenement": "When is your event? And where will it be held?",
     "chat_step3_atelier": "What date would you like for the workshop? How many participants do you expect?",
-    "chat_step4": "What budget do you have in mind for the floral decoration?",
+    "chat_step4_mariage": "What budget do you have in mind for the floral decoration?",
+    "chat_step4_evenement": "What budget do you have in mind for the floral scenography?",
     "chat_step5_mariage": "Which floral services catch your eye? Select the ones that interest you.",
     "chat_step5_evenement": "Which services would you like for your event?",
     "chat_step5_atelier": "What type of workshop interests you?",
@@ -495,8 +511,12 @@
     "quote_detail_no_venue": "Not provided",
     "quote_detail_personal_flowers": "Personal flowers",
     "quote_detail_no_needs": "No services specified.",
+    "quote_detail_no_inspirations": "No inspirations shared.",
     "quote_detail_no_date": "Not provided",
     "quote_detail_no_budget": "Not provided",
+    "quote_detail_workshop_type": "Workshop type",
+    "quote_detail_event_type": "Event type",
+    "quote_detail_guest_count": "Participants",
     "quote_detail_meeting": "Call slot",
     "quote_detail_no_meeting": "Not set",
     "quotes_empty": "No quote requests",
@@ -519,6 +539,7 @@
     "moodboard_file_too_large": "File exceeds the 50 MB size limit.",
     "moodboard_empty": "No moodboard items yet",
     "client_inspirations_title": "Couple's inspirations",
+    "client_inspirations_title_generic": "Client's inspirations",
     "client_inspirations_empty": "No inspiration photos",
     "proposal_section_title": "Proposal",
     "proposal_create": "Create a proposal",
@@ -723,7 +744,6 @@
     "home_description": "Boticia \u2014 Bespoke floral art by La\u00ebtitia Schaeffer. Wedding floral decoration, event scenography and floral art workshops. French flowers, locally sourced, from Paris to the French Riviera.",
     "about_description": "Meet La\u00ebtitia Schaeffer, passionate floral designer and founder of Boticia. Bespoke compositions, locally sourced French flowers and caring guidance.",
     "devis_description": "Request a personalised quote for your wedding floral decoration with Boticia. Bouquets, arches, centrepieces and complete scenography.",
-    "terms_description": "Terms of service for Boticia, floral design studio.",
     "legal_description": "Legal notice for Boticia, floral design studio by La\u00ebtitia Schaeffer.",
     "login_description": "Access your Boticia client space to follow your wedding floral project."
   },

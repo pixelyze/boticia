@@ -11,6 +11,13 @@
       <div class="max-w-5xl mx-auto">
         <FAQ :items="faqItems" />
       </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-12">
+        <Button variant="ghost" rightIcon="MoveRight" :to="localePath('/faq')">
+          {{ $t('faq.cta_button_all') }}
+        </Button>
+      </div>
     </div>
   </section>
 </template>
@@ -19,6 +26,7 @@
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
+const localePath = useLocalePath();
 
 const faqItems = computed(() => [
   { question: t('faq.q1'), answer: t('faq.a1') },

@@ -58,6 +58,16 @@
               {{ $t("footer.about_link") }}
             </span>
             <NuxtLink
+              v-if="!isFaqPage"
+              :to="localePath('/faq')"
+              class="text-dark/70 hover:text-dark transition-colors duration-300"
+            >
+              {{ $t("footer.faq_link") }}
+            </NuxtLink>
+            <span v-else class="text-dark/70">
+              {{ $t("footer.faq_link") }}
+            </span>
+            <NuxtLink
               v-if="!isLegalPage"
               :to="localePath('/legal')"
               class="text-dark/70 hover:text-dark transition-colors duration-300"
@@ -66,16 +76,6 @@
             </NuxtLink>
             <span v-else class="text-dark/70">
               {{ $t("footer.legal_link") }}
-            </span>
-            <NuxtLink
-              v-if="!isTermsPage"
-              :to="localePath('/terms')"
-              class="text-dark/70 hover:text-dark transition-colors duration-300"
-            >
-              {{ $t("footer.terms_link") }}
-            </NuxtLink>
-            <span v-else class="text-dark/70">
-              {{ $t("footer.terms_link") }}
             </span>
           </div>
         </nav>
@@ -100,6 +100,6 @@ const { logo } = useSiteLogo();
 
 const isHomePage = computed(() => route.path === '/' || route.path === localePath('/'));
 const isAboutPage = computed(() => route.path.includes('about'));
+const isFaqPage = computed(() => route.path.includes('faq'));
 const isLegalPage = computed(() => route.path.includes('legal'));
-const isTermsPage = computed(() => route.path.includes('terms'));
 </script>

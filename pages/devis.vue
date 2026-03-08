@@ -1269,7 +1269,7 @@ const getStepMessage = (step: number): string => {
       return t(key);
     }
     case 5:
-      return t("quote_form.chat_step4");
+      return t(`quote_form.chat_step4_${form.service_type}`);
     case 6: {
       const key = `quote_form.chat_step5_${form.service_type}`;
       return t(key);
@@ -1400,6 +1400,11 @@ const nextStep = async () => {
   }
 
   currentStep.value++;
+
+  // Skip budget step for non-mariage
+  if (currentStep.value === 5 && form.service_type !== "mariage") {
+    currentStep.value++;
+  }
 
   if (currentStep.value <= 9) {
     await addBotMessage(getStepMessage(currentStep.value));

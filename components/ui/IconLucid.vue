@@ -23,6 +23,7 @@ import {
   AlertTriangle,
   Aperture,
   BadgeCheck,
+  Building2,
   User,
   MoveRight,
   Sparkles,
@@ -110,6 +111,7 @@ import {
   NotebookPen,
   ChevronLeft,
   MoreHorizontal,
+  Users,
 } from "lucide-vue-next";
 
 const icons = {
@@ -117,6 +119,7 @@ const icons = {
   AlertTriangle,
   Aperture,
   BadgeCheck,
+  Building2,
   User,
   MoveRight,
   UserCheck,
@@ -204,6 +207,7 @@ const icons = {
   NotebookPen,
   ChevronLeft,
   MoreHorizontal,
+  Users,
 };
 
 const props = defineProps({

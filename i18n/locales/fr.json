@@ -10,7 +10,7 @@
     "shop": "Boutique",
     "quote": "Demander un devis",
     "login": "Mon Espace",
-    "social_proof": "Plus de 50 mariages sublim\u00e9s",
+    "social_proof": "Plus de 50 mariages sublimés",
     "skip_to_content": "Aller au contenu"
   },
   "common": {
@@ -198,6 +198,8 @@
   "faq": {
     "tagline": "FAQ",
     "title": "Questions fréquentes",
+    "page_title": "FAQ",
+    "subtitle": "Tout ce que vous devez savoir sur nos prestations florales.",
     "q1": "Combien de temps à l'avance faut-il réserver ?",
     "a1": "Nous recommandons de nous contacter 6 à 12 mois avant votre événement, surtout pour les mariages en haute saison (mai à septembre).",
     "q2": "Travaillez-vous uniquement avec des fleurs françaises ?",
@@ -205,7 +207,25 @@
     "q3": "Intervenez-vous partout en France ?",
     "a3": "Oui, nous nous déplaçons dans toute la France pour vos événements. Des frais de déplacement peuvent s'appliquer selon la distance.",
     "q4": "Comment se déroule une première consultation ?",
-    "a4": "Contactez-nous par email ou téléphone. Nous échangeons sur votre projet, vos envies et votre budget lors d'un premier rendez-vous gratuit et sans engagement."
+    "a4": "Contactez-nous par email ou téléphone. Nous échangeons sur votre projet, vos envies et votre budget lors d'un premier rendez-vous gratuit et sans engagement.",
+    "q5": "Où et comment les créations sont-elles réalisées ?",
+    "a5": "Les compositions sont assemblées à la commande dans notre atelier en région parisienne, avec le plus grand soin.",
+    "q6": "Quelle est la durée de vie d'un bouquet de fleurs séchées ?",
+    "a6": "Les fleurs séchées restent intactes plusieurs mois, voire plusieurs années, à condition de les conserver à l'abri du soleil et de l'humidité.",
+    "q7": "Proposez-vous une offre mariage ?",
+    "a7": "Oui, Boticia vous accompagne dans la réalisation de votre mariage avec des créations florales sur-mesure : bouquets, arches, centres de table et bien plus.",
+    "q8": "Des décorations florales sur-mesure pour un événement, c'est possible ?",
+    "a8": "Chaque événement est une prestation sur-mesure adaptée à vos besoins : scénographie florale, corners fleuris, installations suspendues.",
+    "q9": "Comment conserver une création en fleurs séchées ?",
+    "a9": "Placez vos bouquets à l'abri du soleil direct et évitez l'humidité, les courants d'air et les sources de chaleur pour qu'ils gardent leur éclat.",
+    "q10": "Quels types d'ateliers proposez-vous ?",
+    "a10": "Nous proposons des ateliers de composition de bouquet, couronnes de fleurs, terrariums et créations saisonnières, pour tous niveaux et toutes occasions.",
+    "more_tagline": "Aller plus loin",
+    "more_title": "Nos prestations en détail",
+    "cta_title": "Une question qui n'est pas ici ?",
+    "cta_desc": "Contactez-nous directement, nous serons ravis de vous répondre.",
+    "cta_button": "Demander un devis",
+    "cta_button_all": "Voir toutes les questions"
   },
   "stories": {
     "tagline": "Nos réalisations",
@@ -252,16 +272,11 @@
     "copyright": "© 2026 Boticia. Tous droits réservés.",
     "privacy": "Nous respectons votre vie privée et protégeons vos données personnelles.",
     "about_link": "Qui suis-je ?",
-    "legal_link": "Mentions légales",
-    "terms_link": "Conditions générales"
+    "faq_link": "FAQ",
+    "legal_link": "Mentions légales"
   },
   "language": {
     "select_language": "Choisir la langue"
-  },
-  "terms": {
-    "title": "Conditions générales",
-    "subtitle": "Dernière mise à jour : janvier 2025",
-    "article": "Article {n}"
   },
   "legal": {
     "title": "Mentions légales",
@@ -389,7 +404,8 @@
     "chat_step3_mariage": "Quand est prévu le grand jour ? Et où aura-t-il lieu ?",
     "chat_step3_evenement": "Quand a lieu votre événement ? Et où se déroule-t-il ?",
     "chat_step3_atelier": "Quelle date souhaitez-vous pour l'atelier ? Combien de participants prévoyez-vous ?",
-    "chat_step4": "Quel budget envisagez-vous pour la décoration florale ?",
+    "chat_step4_mariage": "Quel budget envisagez-vous pour la décoration florale ?",
+    "chat_step4_evenement": "Quel budget envisagez-vous pour la scénographie florale ?",
     "chat_step5_mariage": "Quelles prestations florales vous font envie ? Sélectionnez celles qui vous intéressent.",
     "chat_step5_evenement": "Quelles prestations souhaitez-vous pour votre événement ?",
     "chat_step5_atelier": "Quel type d'atelier vous intéresse ?",
@@ -442,13 +458,13 @@
     "status_completed": "Terminé",
     "status_cancelled": "Annulé",
     "motivation_1": "Chaque fleur raconte une belle histoire.",
-    "motivation_2": "Aujourd'hui est un bon jour pour cr\u00e9er.",
-    "motivation_3": "Vos cr\u00e9ations inspirent le bonheur.",
-    "motivation_4": "La beaut\u00e9 est dans chaque d\u00e9tail.",
+    "motivation_2": "Aujourd'hui est un bon jour pour créer.",
+    "motivation_3": "Vos créations inspirent le bonheur.",
+    "motivation_4": "La beauté est dans chaque détail.",
     "motivation_5": "Un nouveau jour, de nouvelles fleurs.",
     "motivation_6": "Votre talent embellit le monde.",
     "motivation_7": "Les plus belles choses prennent du temps.",
-    "motivation_8": "Faites confiance \u00e0 votre instinct cr\u00e9atif.",
+    "motivation_8": "Faites confiance à votre instinct créatif.",
     "quotes_title": "Demandes de devis",
     "quotes_count": "{count} demande | {count} demandes",
     "quotes_refresh": "Actualiser",
@@ -495,8 +511,12 @@
     "quote_detail_no_venue": "Non renseigné",
     "quote_detail_personal_flowers": "Fleurs personnelles",
     "quote_detail_no_needs": "Aucune prestation renseignée.",
+    "quote_detail_no_inspirations": "Aucune inspiration partagée.",
     "quote_detail_no_date": "Non renseignée",
     "quote_detail_no_budget": "Non renseigné",
+    "quote_detail_workshop_type": "Type d'atelier",
+    "quote_detail_event_type": "Type d'événement",
+    "quote_detail_guest_count": "Participants",
     "quote_detail_meeting": "Créneau d'appel",
     "quote_detail_no_meeting": "Non défini",
     "quotes_empty": "Aucune demande de devis",
@@ -519,6 +539,7 @@
     "moodboard_file_too_large": "Le fichier dépasse la taille maximale de 50 Mo.",
     "moodboard_empty": "Aucun élément dans le moodboard",
     "client_inspirations_title": "Inspirations du couple",
+    "client_inspirations_title_generic": "Inspirations du client",
     "client_inspirations_empty": "Aucune photo d'inspiration",
     "proposal_section_title": "Proposition",
     "proposal_create": "Créer une proposition",
@@ -720,12 +741,11 @@
     "slot_hours": "{start} - {end}"
   },
   "seo": {
-    "home_description": "Boticia — Art floral sur mesure par La\u00ebtitia Schaeffer. D\u00e9coration florale de mariage, sc\u00e9nographie \u00e9v\u00e9nementielle et ateliers d'art floral. Fleurs fran\u00e7aises en circuit court, de Paris \u00e0 la C\u00f4te d'Azur.",
-    "about_description": "D\u00e9couvrez La\u00ebtitia Schaeffer, cr\u00e9atrice florale passionn\u00e9e, fondatrice de Boticia. Compositions sur mesure, fleurs fran\u00e7aises en circuit court et accompagnement bienveillant.",
-    "devis_description": "Demandez un devis personnalis\u00e9 pour votre d\u00e9coration florale de mariage avec Boticia. Bouquets, arches, centres de table et sc\u00e9nographie compl\u00e8te.",
-    "terms_description": "Conditions g\u00e9n\u00e9rales de vente et de prestation de Boticia, atelier de design floral.",
-    "legal_description": "Mentions l\u00e9gales de Boticia, atelier de design floral par La\u00ebtitia Schaeffer.",
-    "login_description": "Acc\u00e9dez \u00e0 votre espace client Boticia pour suivre votre projet floral de mariage."
+    "home_description": "Boticia — Art floral sur mesure par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court, de Paris à la Côte d'Azur.",
+    "about_description": "Découvrez Laëtitia Schaeffer, créatrice florale passionnée, fondatrice de Boticia. Compositions sur mesure, fleurs françaises en circuit court et accompagnement bienveillant.",
+    "devis_description": "Demandez un devis personnalisé pour votre décoration florale de mariage avec Boticia. Bouquets, arches, centres de table et scénographie complète.",
+    "legal_description": "Mentions légales de Boticia, atelier de design floral par Laëtitia Schaeffer.",
+    "login_description": "Accédez à votre espace client Boticia pour suivre votre projet floral de mariage."
   },
   "errors": {
     "generic": "Une erreur est survenue",
