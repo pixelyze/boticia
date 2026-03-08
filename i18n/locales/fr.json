@@ -312,6 +312,8 @@
     "phone_placeholder": "6 12 34 56 78",
     "phone_search_country": "Rechercher un pays",
     "date_label": "Date du mariage",
+    "date_label_evenement": "Date de l'événement",
+    "date_label_atelier": "Date souhaitée",
     "venue_label": "Lieu de réception",
     "venue_placeholder": "Nom ou ville du lieu",
     "budget_label": "Budget envisagé",

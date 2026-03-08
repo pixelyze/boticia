@@ -312,6 +312,8 @@
     "phone_placeholder": "90 1234 5678",
     "phone_search_country": "国を検索",
     "date_label": "挙式日",
+    "date_label_evenement": "イベント日",
+    "date_label_atelier": "ご希望日",
     "venue_label": "会場",
     "venue_placeholder": "会場名または都市名",
     "budget_label": "ご予算",

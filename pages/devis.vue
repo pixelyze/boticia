@@ -334,7 +334,7 @@
                   <label
                     class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
                   >
-                    {{ t("quote_form.date_label") }}
+                    {{ dateLabelText }}
                     <span class="text-dark/30 normal-case tracking-normal">
                       — {{ t("quote_form.chat_optional") }}
                     </span>
@@ -838,7 +838,7 @@
                   class="flex justify-between"
                 >
                   <span class="text-fuchsia-500">
-                    {{ t("quote_form.date_label") }}
+                    {{ dateLabelText }}
                   </span>
                   <span class="font-medium text-dark">
                     {{ formatDisplayDate(form.wedding_date) }}
@@ -1104,6 +1104,15 @@ const budgetOptions = computed(() => [
   { label: t("quote_form.budget_lt_4000"), value: "lt_4000" },
   { label: t("quote_form.budget_lt_10000"), value: "lt_10000" },
 ]);
+
+// Date label (adapts to service type)
+const dateLabelText = computed(() => {
+  if (form.service_type === "evenement")
+    return t("quote_form.date_label_evenement");
+  if (form.service_type === "atelier")
+    return t("quote_form.date_label_atelier");
+  return t("quote_form.date_label");
+});
 
 // Budget label for recap
 const budgetLabel = computed(() => {

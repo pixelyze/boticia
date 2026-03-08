@@ -312,6 +312,8 @@
     "phone_placeholder": "612 345 678",
     "phone_search_country": "Search country",
     "date_label": "Wedding date",
+    "date_label_evenement": "Event date",
+    "date_label_atelier": "Preferred date",
     "venue_label": "Venue",
     "venue_placeholder": "Venue name or city",
     "budget_label": "Estimated budget",
