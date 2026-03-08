@@ -168,269 +168,139 @@
               <div
                 class="rounded-3xl bg-white p-6 border-2 border-dark/10"
               >
-              <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-2"
-              >
-                <!-- Statut + dates -->
-                <div>
-                  <h2
-                    class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3"
-                  >
-                    {{ t("dashboard.quote_detail_status") }}
-                  </h2>
-                  <div class="space-y-3">
-                    <button
-                      class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
-                      :aria-label="t('dashboard.quote_detail_change_status')"
-                      @click="statusModalOpen = true"
-                    >
-                      <div
-                        class="w-7 h-7 rounded-full bg-cream-dark flex items-center justify-center shrink-0"
+              <div class="flex flex-col md:flex-row gap-6">
+                <!-- Left column: Statut + Prestations -->
+                <div class="flex-1 min-w-0 space-y-6">
+                  <!-- Statut -->
+                  <div>
+                    <h2 class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3">
+                      {{ t("dashboard.quote_detail_status") }}
+                    </h2>
+                    <div class="space-y-3">
+                      <button
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
+                        :aria-label="t('dashboard.quote_detail_change_status')"
+                        @click="statusModalOpen = true"
                       >
-                        <IconLucid
-                          :name="statusIcon(quote.status)"
-                          size="xs"
-                          class="text-dark/60"
-                        />
-                      </div>
-                      <div class="flex-1 min-w-0">
-                        <span class="text-xs text-dark/40 block">
-                          {{ t("dashboard.quote_detail_change_status") }}
-                        </span>
-                        <span class="font-medium text-dark text-sm block">
-                          {{ t(`dashboard.quote_status_${quote.status}`) }}
-                        </span>
-                      </div>
-                      <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
-                    </button>
-                    <div class="flex items-center gap-3 px-3">
-                      <div
-                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
+                        <div class="w-7 h-7 rounded-full bg-cream-dark flex items-center justify-center shrink-0">
+                          <IconLucid :name="statusIcon(quote.status)" size="xs" class="text-dark/60" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <span class="text-xs text-dark/40 block">{{ t("dashboard.quote_detail_change_status") }}</span>
+                          <span class="font-medium text-dark text-sm block">{{ t(`dashboard.quote_status_${quote.status}`) }}</span>
+                        </div>
+                        <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
+                      </button>
+                      <button
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
+                        @click="scheduleModalOpen = true"
                       >
-                        <IconLucid
-                          name="Heart"
-                          size="xs"
-                          class="text-dark/40"
-                        />
-                      </div>
-                      <span class="text-sm text-dark">
-                        {{
-                          quote.wedding_date
-                            ? formatDate(quote.wedding_date)
-                            : t("dashboard.quote_detail_no_date")
-                        }}
-                      </span>
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="CalendarCheck" size="xs" class="text-dark/40" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <span class="text-xs text-dark/40 block">{{ t("dashboard.quote_detail_change_meeting") }}</span>
+                          <span class="text-sm block" :class="quote.meeting_date ? 'text-dark font-medium' : 'text-dark/40'">
+                            {{ quote.meeting_date ? formatDate(quote.meeting_date) + (quote.meeting_time ? ` — ${quote.meeting_time}` : "") : t("dashboard.quote_detail_no_meeting") }}
+                          </span>
+                        </div>
+                        <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
+                      </button>
                     </div>
-                    <button
-                      class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
-                      @click="scheduleModalOpen = true"
-                    >
-                      <div
-                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
-                      >
-                        <IconLucid
-                          name="CalendarCheck"
-                          size="xs"
-                          class="text-dark/40"
-                        />
-                      </div>
-                      <div class="flex-1 min-w-0">
-                        <span class="text-xs text-dark/40 block">
-                          {{ t("dashboard.quote_detail_change_meeting") }}
-                        </span>
-                        <span
-                          class="text-sm block"
-                          :class="
-                            quote.meeting_date
-                              ? 'text-dark font-medium'
-                              : 'text-dark/40'
-                          "
-                        >
-                          {{
-                            quote.meeting_date
-                              ? formatDate(quote.meeting_date) +
-                                (quote.meeting_time
-                                  ? ` — ${quote.meeting_time}`
-                                  : "")
-                              : t("dashboard.quote_detail_no_meeting")
-                          }}
+                  </div>
+                  <!-- Prestations -->
+                  <div>
+                    <h2 class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3">
+                      {{ t("dashboard.quote_detail_needs") }}
+                    </h2>
+                    <div v-if="quote.floral_needs?.length">
+                      <div class="flex items-center gap-2 mb-2">
+                        <IconLucid name="Heart" size="xs" class="text-dark/40" />
+                        <span class="font-heading text-xs text-dark/50 uppercase tracking-wider">
+                          {{ t("dashboard.quote_detail_personal_flowers") }}
                         </span>
                       </div>
-                      <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
-                    </button>
+                      <ul class="space-y-1 pl-1">
+                        <li v-for="need in quote.floral_needs" :key="need" class="flex items-center gap-2 text-sm text-dark/80">
+                          <span class="w-1.5 h-1.5 rounded-full bg-dark/30 shrink-0"></span>
+                          {{ t(`quote_form.need_${need}`) }}
+                        </li>
+                      </ul>
+                    </div>
+                    <p v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_needs") }}</p>
                   </div>
                 </div>
-
-                <!-- Coordonnees -->
-                <div>
-                  <h2
-                    class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3"
-                  >
-                    {{ t("dashboard.quote_detail_contact") }}
-                  </h2>
-                  <div class="space-y-2.5">
-                    <div class="flex items-center gap-3 px-3">
-                      <div
-                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
-                      >
-                        <IconLucid
-                          name="Mail"
-                          size="xs"
-                          class="text-dark/40"
-                        />
+                <!-- Right column: Coordonnées + Inspirations -->
+                <div class="flex-1 min-w-0 space-y-6">
+                  <!-- Coordonnées -->
+                  <div>
+                    <h2 class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3">
+                      {{ t("dashboard.quote_detail_contact") }}
+                    </h2>
+                    <div class="space-y-2.5">
+                      <div class="flex items-center gap-3 px-3">
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="Mail" size="xs" class="text-dark/40" />
+                        </div>
+                        <a :href="`mailto:${quote.email}`" class="text-sm text-dark underline truncate">{{ quote.email }}</a>
                       </div>
-                      <a
-                        :href="`mailto:${quote.email}`"
-                        class="text-sm text-dark underline truncate"
-                      >
-                        {{ quote.email }}
-                      </a>
+                      <div class="flex items-center gap-3 px-3">
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="Phone" size="xs" class="text-dark/40" />
+                        </div>
+                        <span v-if="quote.phone">
+                          <a :href="`tel:${quote.phone}`" class="text-sm text-dark underline">{{ quote.phone }}</a>
+                        </span>
+                        <span v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_phone") }}</span>
+                      </div>
+                      <div class="flex items-center gap-3 px-3">
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="Heart" size="xs" class="text-dark/40" />
+                        </div>
+                        <span class="text-sm text-dark">{{ quote.wedding_date ? formatDate(quote.wedding_date) : t("dashboard.quote_detail_no_date") }}</span>
+                      </div>
+                      <div class="flex items-center gap-3 px-3">
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="MapPin" size="xs" class="text-dark/40" />
+                        </div>
+                        <span class="text-sm text-dark">{{ quote.venue || t("dashboard.quote_detail_no_venue") }}</span>
+                      </div>
+                      <div class="flex items-center gap-3 px-3">
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="BadgeEuro" size="xs" class="text-dark/40" />
+                        </div>
+                        <span class="text-sm text-dark">{{ quote.budget ? t(`quote_form.budget_${quote.budget}`) : t("dashboard.quote_detail_no_budget") }}</span>
+                      </div>
                     </div>
-                    <div class="flex items-center gap-3 px-3">
-                      <div
-                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
-                      >
-                        <IconLucid
-                          name="Phone"
-                          size="xs"
-                          class="text-dark/40"
-                        />
-                      </div>
-                      <span v-if="quote.phone">
-                        <a
-                          :href="`tel:${quote.phone}`"
-                          class="text-sm text-dark underline"
-                        >
-                          {{ quote.phone }}
-                        </a>
-                      </span>
-                      <span v-else class="text-sm text-dark/40">
-                        {{ t("dashboard.quote_detail_no_phone") }}
-                      </span>
-                    </div>
-                    <div class="flex items-center gap-3 px-3">
-                      <div
-                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
-                      >
-                        <IconLucid
-                          name="MapPin"
-                          size="xs"
-                          class="text-dark/40"
-                        />
-                      </div>
-                      <span class="text-sm text-dark">
-                        {{
-                          quote.venue ||
-                          t("dashboard.quote_detail_no_venue")
-                        }}
+                  </div>
+                  <!-- Inspirations du couple -->
+                  <div>
+                    <div class="flex items-center justify-between mb-3">
+                      <h2 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
+                        {{ t("dashboard.client_inspirations_title") }}
+                      </h2>
+                      <span v-if="clientInspirations.length > 0" class="w-6 h-6 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center">
+                        {{ clientInspirations.length }}
                       </span>
                     </div>
-                    <div class="flex items-center gap-3 px-3">
-                      <div
-                        class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
+                    <div v-if="clientInspirations.length > 0" class="grid grid-cols-3 gap-2">
+                      <button
+                        v-for="(item, idx) in clientInspirations.slice(0, 3)"
+                        :key="item.id"
+                        @click="copilotGalleryOpen = true"
+                        class="relative rounded-xl overflow-hidden aspect-square hover:ring-2 hover:ring-fuchsia-300 transition-all"
                       >
-                        <IconLucid
-                          name="BadgeEuro"
-                          size="xs"
-                          class="text-dark/40"
-                        />
-                      </div>
-                      <span class="text-sm text-dark">
-                        {{
-                          quote.budget
-                            ? t(`quote_form.budget_${quote.budget}`)
-                            : t("dashboard.quote_detail_no_budget")
-                        }}
-                      </span>
+                        <img :src="item.public_url" :alt="item.caption || item.original_filename" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                        <div v-if="idx === 2 && clientInspirations.length > 3" class="absolute inset-0 bg-dark/40 flex items-center justify-center">
+                          <span class="text-white text-lg font-semibold">+{{ clientInspirations.length - 3 }}</span>
+                        </div>
+                      </button>
                     </div>
+                    <p v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_inspirations") }}</p>
                   </div>
                 </div>
               </div>
 
-              <!-- Prestations + Inspirations -->
-              <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4"
-              >
-                <!-- Prestations -->
-                <div>
-                  <h2
-                    class="font-heading text-sm text-dark/60 uppercase tracking-wider mb-3"
-                  >
-                    {{ t("dashboard.quote_detail_needs") }}
-                  </h2>
-                  <div v-if="quote.floral_needs?.length">
-                    <div class="flex items-center gap-2 mb-2">
-                      <IconLucid
-                        name="Heart"
-                        size="xs"
-                        class="text-dark/40"
-                      />
-                      <span class="font-heading text-xs text-dark/50 uppercase tracking-wider">
-                        {{ t("dashboard.quote_detail_personal_flowers") }}
-                      </span>
-                    </div>
-                    <ul class="space-y-1 pl-1">
-                      <li
-                        v-for="need in quote.floral_needs"
-                        :key="need"
-                        class="flex items-center gap-2 text-sm text-dark/80"
-                      >
-                        <span class="w-1.5 h-1.5 rounded-full bg-dark/30 shrink-0"></span>
-                        {{ t(`quote_form.need_${need}`) }}
-                      </li>
-                    </ul>
-                  </div>
-                  <p v-else class="text-sm text-dark/40">
-                    {{ t("dashboard.quote_detail_no_needs") }}
-                  </p>
-                </div>
-
-                <!-- Inspirations du couple -->
-                <div>
-                  <div class="flex items-center justify-between mb-3">
-                    <h2
-                      class="font-heading text-sm text-dark/60 uppercase tracking-wider"
-                    >
-                      {{ t("dashboard.client_inspirations_title") }}
-                    </h2>
-                    <span
-                      v-if="clientInspirations.length > 0"
-                      class="w-6 h-6 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center"
-                    >
-                      {{ clientInspirations.length }}
-                    </span>
-                  </div>
-                  <div
-                    v-if="clientInspirations.length > 0"
-                    class="grid grid-cols-3 gap-2"
-                  >
-                    <button
-                      v-for="(item, idx) in clientInspirations.slice(0, 3)"
-                      :key="item.id"
-                      @click="copilotGalleryOpen = true"
-                      class="relative rounded-xl overflow-hidden aspect-[4/3] hover:ring-2 hover:ring-fuchsia-300 transition-all"
-                    >
-                      <img
-                        :src="item.public_url"
-                        :alt="item.caption || item.original_filename"
-                        class="absolute inset-0 w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <!-- Overlay +N on last image -->
-                      <div
-                        v-if="idx === 2 && clientInspirations.length > 3"
-                        class="absolute inset-0 bg-dark/40 flex items-center justify-center"
-                      >
-                        <span class="text-white text-lg font-semibold">
-                          +{{ clientInspirations.length - 3 }}
-                        </span>
-                      </div>
-                    </button>
-                  </div>
-                  <p v-else class="text-sm text-dark/40">
-                    {{ t("dashboard.quote_detail_no_inspirations") }}
-                  </p>
-                </div>
               </div>
 
               <!-- Portal toggle -->
@@ -463,7 +333,6 @@
                   }}:
                   {{ quote.locale }}
                 </span>
-              </div>
               </div>
               </div>
 
@@ -520,7 +389,7 @@
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border border-dark/10"
                   >
                     <div
-                      class="w-10 h-10 rounded-lg overflow-hidden bg-cream shrink-0"
+                      class="w-8 h-8 rounded-lg overflow-hidden bg-cream shrink-0"
                     >
                       <img
                         v-if="item.type === 'image'"
@@ -535,7 +404,7 @@
                         <IconLucid
                           name="FileText"
                           size="xs"
-                          class="text-dark/40"
+                          class="text-dark/60"
                         />
                       </div>
                     </div>
