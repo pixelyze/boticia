@@ -201,13 +201,14 @@
                           {{ t(`dashboard.quote_status_${quote.status}`) }}
                         </span>
                       </div>
+                      <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
                     </button>
                     <div class="flex items-center gap-3 px-3">
                       <div
                         class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
-                          name="Calendar"
+                          name="Heart"
                           size="xs"
                           class="text-dark/40"
                         />
@@ -255,6 +256,7 @@
                           }}
                         </span>
                       </div>
+                      <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
                     </button>
                   </div>
                 </div>
@@ -311,7 +313,7 @@
                         class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0"
                       >
                         <IconLucid
-                          name="Target"
+                          name="MapPin"
                           size="xs"
                           class="text-dark/40"
                         />
@@ -356,19 +358,27 @@
                   >
                     {{ t("dashboard.quote_detail_needs") }}
                   </h2>
-                  <div v-if="quote.floral_needs?.length" class="space-y-1">
-                    <div
-                      v-for="need in quote.floral_needs"
-                      :key="need"
-                      class="flex items-center gap-2 text-sm text-dark/80"
-                    >
+                  <div v-if="quote.floral_needs?.length">
+                    <div class="flex items-center gap-2 mb-2">
                       <IconLucid
-                        name="Flower2"
+                        name="Heart"
                         size="xs"
-                        class="text-dark/30 shrink-0"
+                        class="text-dark/40"
                       />
-                      {{ t(`quote_form.need_${need}`) }}
+                      <span class="font-heading text-xs text-dark/50 uppercase tracking-wider">
+                        {{ t("dashboard.quote_detail_personal_flowers") }}
+                      </span>
                     </div>
+                    <ul class="space-y-1 pl-1">
+                      <li
+                        v-for="need in quote.floral_needs"
+                        :key="need"
+                        class="flex items-center gap-2 text-sm text-dark/80"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full bg-dark/30 shrink-0"></span>
+                        {{ t(`quote_form.need_${need}`) }}
+                      </li>
+                    </ul>
                   </div>
                   <p v-else class="text-sm text-dark/40">
                     {{ t("dashboard.quote_detail_no_needs") }}
@@ -392,27 +402,29 @@
                   </div>
                   <div
                     v-if="clientInspirations.length > 0"
-                    class="flex flex-wrap gap-2"
+                    class="grid grid-cols-3 gap-2"
                   >
                     <button
-                      v-for="item in clientInspirations.slice(0, 4)"
+                      v-for="(item, idx) in clientInspirations.slice(0, 3)"
                       :key="item.id"
                       @click="copilotGalleryOpen = true"
-                      class="w-14 h-14 rounded-xl overflow-hidden ring-1 ring-dark/5 hover:ring-fuchsia-300 transition-all hover:scale-105"
+                      class="relative rounded-xl overflow-hidden aspect-[4/3] hover:ring-2 hover:ring-fuchsia-300 transition-all"
                     >
                       <img
                         :src="item.public_url"
                         :alt="item.caption || item.original_filename"
-                        class="w-full h-full object-cover"
+                        class="absolute inset-0 w-full h-full object-cover"
                         loading="lazy"
                       />
-                    </button>
-                    <button
-                      v-if="clientInspirations.length > 4"
-                      @click="copilotGalleryOpen = true"
-                      class="w-14 h-14 rounded-xl bg-cream flex items-center justify-center text-dark/60 text-xs font-semibold hover:bg-cream-dark transition-colors"
-                    >
-                      +{{ clientInspirations.length - 4 }}
+                      <!-- Overlay +N on last image -->
+                      <div
+                        v-if="idx === 2 && clientInspirations.length > 3"
+                        class="absolute inset-0 bg-dark/40 flex items-center justify-center"
+                      >
+                        <span class="text-white text-lg font-semibold">
+                          +{{ clientInspirations.length - 3 }}
+                        </span>
+                      </div>
                     </button>
                   </div>
                   <p v-else class="text-sm text-dark/40">
@@ -457,7 +469,7 @@
 
               <!-- RIGHT: Timeline -->
               <div
-                class="w-full xl:w-80 shrink-0 flex flex-col"
+                class="w-full xl:w-80 shrink-0 flex flex-col xl:h-[calc(100vh-10rem)]"
               >
                 <h2
                   class="font-heading text-sm text-dark/80 uppercase tracking-wider mb-4"
@@ -492,11 +504,14 @@
                   </p>
                 </div>
 
-                <!-- Feed -->
+                <!-- Feed + Compose wrapper -->
                 <div
                   v-else
+                  class="flex-1 min-h-0 relative"
+                >
+                <div
                   ref="timelineScroll"
-                  class="flex-1 overflow-y-auto space-y-3 pr-1 xl:max-h-[calc(100vh-20rem)]"
+                  class="h-full overflow-y-auto space-y-3 pb-28"
                 >
                   <!-- Moodboard items -->
                   <div
@@ -665,7 +680,9 @@
                     </div>
                   </div>
 
-                  <!-- Compose bar -->
+                </div>
+                <!-- Compose bar (floating) -->
+                <div class="absolute bottom-0 left-0 right-0">
                   <div class="rounded-2xl bg-cream-light p-3 grid grid-cols-2 gap-2">
                     <!-- Moodboard upload -->
                     <button
@@ -717,6 +734,7 @@
                       </span>
                     </button>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -770,10 +788,12 @@
         <textarea
           v-model="newNoteText"
           :placeholder="t('dashboard.timeline_note_placeholder')"
-          class="w-full h-28 px-4 py-3 rounded-xl border border-dark/10 bg-cream focus:outline-none focus:border-dark/20 transition-all resize-none"
+          class="w-full h-32 px-4 py-3 rounded-xl border-0 bg-cream-light focus:outline-none focus:ring-2 focus:ring-dark/10 transition-all resize-none text-dark"
+          autofocus
         />
-        <div class="mt-3">
+        <div class="mt-4">
           <Button
+            variant="primary"
             icon="Send"
             :loading="sendingNote"
             :disabled="!newNoteText.trim()"
