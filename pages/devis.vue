@@ -158,11 +158,77 @@
 
           <!-- Input area (changes per step) -->
           <div
-            v-if="!isTyping && currentStep <= 8"
+            v-if="!isTyping && currentStep <= 9"
             class="ml-[52px] max-w-md"
           >
-            <!-- Step 1: Name -->
-            <div v-if="currentStep === 1" class="space-y-4">
+            <!-- Step 1: Service type -->
+            <div v-if="currentStep === 1" class="space-y-3">
+              <button
+                v-for="opt in serviceTypeOptions"
+                :key="opt.value"
+                type="button"
+                class="group w-full flex items-center gap-4 px-5 py-4 rounded-2xl border-2 text-left transition-all duration-200"
+                :class="
+                  form.service_type === opt.value
+                    ? 'bg-dark border-dark'
+                    : 'bg-white border-dark/10 hover:border-dark/30'
+                "
+                @click="form.service_type = opt.value"
+              >
+                <div
+                  class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all"
+                  :class="
+                    form.service_type === opt.value
+                      ? 'bg-cream/20'
+                      : 'bg-cream'
+                  "
+                >
+                  <IconLucid
+                    :name="opt.icon"
+                    size="sm"
+                    :class="
+                      form.service_type === opt.value
+                        ? 'text-cream'
+                        : 'text-terracotta'
+                    "
+                  />
+                </div>
+                <div>
+                  <span
+                    class="font-medium text-base block transition-colors"
+                    :class="
+                      form.service_type === opt.value
+                        ? 'text-cream'
+                        : 'text-dark'
+                    "
+                  >
+                    {{ opt.label }}
+                  </span>
+                  <span
+                    class="text-sm transition-colors"
+                    :class="
+                      form.service_type === opt.value
+                        ? 'text-cream/70'
+                        : 'text-dark/50'
+                    "
+                  >
+                    {{ opt.desc }}
+                  </span>
+                </div>
+              </button>
+              <div v-if="form.service_type" class="flex justify-center pt-1">
+                <Button
+                  variant="primary"
+                  rightIcon="MoveRight"
+                  @click="nextStep"
+                >
+                  {{ t("quote_form.chat_next") }}
+                </Button>
+              </div>
+            </div>
+
+            <!-- Step 2: Name -->
+            <div v-if="currentStep === 2" class="space-y-4">
               <div>
                 <label
                   class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
@@ -199,8 +265,8 @@
               </div>
             </div>
 
-            <!-- Step 2: Email + phone -->
-            <div v-if="currentStep === 2" class="space-y-4">
+            <!-- Step 3: Email + phone -->
+            <div v-if="currentStep === 3" class="space-y-4">
               <div class="space-y-4">
                 <div>
                   <label
@@ -261,8 +327,8 @@
               </div>
             </div>
 
-            <!-- Step 3: Date + venue -->
-            <div v-if="currentStep === 3" class="space-y-4">
+            <!-- Step 4: Date + venue/guest_count/event_type -->
+            <div v-if="currentStep === 4" class="space-y-4">
               <div class="space-y-4">
                 <div>
                   <label
@@ -280,7 +346,9 @@
                     class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
                   />
                 </div>
-                <div>
+
+                <!-- Mariage: venue -->
+                <div v-if="form.service_type === 'mariage' || form.service_type === 'evenement'">
                   <label
                     class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
                   >
@@ -297,6 +365,45 @@
                     @keydown.enter="nextStep"
                   />
                 </div>
+
+                <!-- Evenement: event type -->
+                <div v-if="form.service_type === 'evenement'">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
+                    {{ t("quote_form.event_type_label") }}
+                    <span class="text-dark/30 normal-case tracking-normal">
+                      — {{ t("quote_form.chat_optional") }}
+                    </span>
+                  </label>
+                  <input
+                    v-model="form.event_type"
+                    type="text"
+                    :placeholder="t('quote_form.event_type_placeholder')"
+                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    @keydown.enter="nextStep"
+                  />
+                </div>
+
+                <!-- Atelier: guest count -->
+                <div v-if="form.service_type === 'atelier'">
+                  <label
+                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  >
+                    {{ t("quote_form.guest_count_label") }}
+                    <span class="text-dark/30 normal-case tracking-normal">
+                      — {{ t("quote_form.chat_optional") }}
+                    </span>
+                  </label>
+                  <input
+                    v-model="form.guest_count"
+                    type="number"
+                    min="1"
+                    :placeholder="t('quote_form.guest_count_placeholder')"
+                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    @keydown.enter="nextStep"
+                  />
+                </div>
               </div>
               <div class="flex justify-center">
                 <Button
@@ -309,8 +416,8 @@
               </div>
             </div>
 
-            <!-- Step 4: Budget -->
-            <div v-if="currentStep === 4" class="space-y-4">
+            <!-- Step 5: Budget -->
+            <div v-if="currentStep === 5" class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <button
                   v-for="opt in budgetOptions"
@@ -341,69 +448,175 @@
               </div>
             </div>
 
-            <!-- Step 5: Floral needs -->
-            <div v-if="currentStep === 5" class="space-y-4">
-              <div class="space-y-5">
-                <div
-                  v-for="group in floralNeedGroups"
-                  :key="group.label"
-                >
+            <!-- Step 6: Needs (service-specific) -->
+            <div v-if="currentStep === 6" class="space-y-4">
+              <!-- Mariage: floral needs grouped -->
+              <template v-if="form.service_type === 'mariage'">
+                <div class="space-y-5">
                   <div
-                    class="flex items-center gap-2 mb-2"
+                    v-for="group in floralNeedGroups"
+                    :key="group.label"
                   >
-                    <IconLucid
-                      :name="group.icon"
-                      size="xs"
-                      class="text-terracotta"
-                    />
-                    <span
-                      class="text-xs uppercase tracking-[0.15em] text-dark/40 font-medium"
+                    <div
+                      class="flex items-center gap-2 mb-2"
                     >
-                      {{ group.label }}
-                    </span>
-                  </div>
-                  <div class="space-y-2">
-                    <button
-                      v-for="need in group.needs"
-                      :key="need"
-                      type="button"
-                      class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
-                      :class="
-                        selectedNeeds.has(need)
-                          ? 'bg-dark border-dark'
-                          : 'bg-white border-dark/10 hover:border-dark/30'
-                      "
-                      @click="toggleNeed(need)"
-                    >
+                      <IconLucid
+                        :name="group.icon"
+                        size="xs"
+                        class="text-terracotta"
+                      />
                       <span
-                        class="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                        class="text-xs uppercase tracking-[0.15em] text-dark/40 font-medium"
+                      >
+                        {{ group.label }}
+                      </span>
+                    </div>
+                    <div class="space-y-2">
+                      <button
+                        v-for="need in group.needs"
+                        :key="need"
+                        type="button"
+                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
                         :class="
                           selectedNeeds.has(need)
-                            ? 'bg-cream border-cream'
-                            : 'border-dark/20 group-hover:border-dark/40'
+                            ? 'bg-dark border-dark'
+                            : 'bg-white border-dark/10 hover:border-dark/30'
                         "
+                        @click="toggleNeed(need)"
                       >
-                        <IconLucid
-                          v-if="selectedNeeds.has(need)"
-                          name="Check"
-                          size="xs"
-                          class="text-dark"
-                        />
-                      </span>
-                      <span
-                        class="font-medium text-base transition-colors duration-200"
-                        :class="
-                          selectedNeeds.has(need)
-                            ? 'text-cream'
-                            : 'text-dark/70 group-hover:text-dark'
-                        "
-                      >
-                        {{ t(`quote_form.need_${need}`) }}
-                      </span>
-                    </button>
+                        <span
+                          class="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                          :class="
+                            selectedNeeds.has(need)
+                              ? 'bg-cream border-cream'
+                              : 'border-dark/20 group-hover:border-dark/40'
+                          "
+                        >
+                          <IconLucid
+                            v-if="selectedNeeds.has(need)"
+                            name="Check"
+                            size="xs"
+                            class="text-dark"
+                          />
+                        </span>
+                        <span
+                          class="font-medium text-base transition-colors duration-200"
+                          :class="
+                            selectedNeeds.has(need)
+                              ? 'text-cream'
+                              : 'text-dark/70 group-hover:text-dark'
+                          "
+                        >
+                          {{ t(`quote_form.need_${need}`) }}
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </template>
+
+              <!-- Evenement: event needs -->
+              <template v-else-if="form.service_type === 'evenement'">
+                <div class="space-y-5">
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <IconLucid
+                        name="Sparkles"
+                        size="xs"
+                        class="text-terracotta"
+                      />
+                      <span
+                        class="text-xs uppercase tracking-[0.15em] text-dark/40 font-medium"
+                      >
+                        {{ t("quote_form.need_group_event") }}
+                      </span>
+                    </div>
+                    <div class="space-y-2">
+                      <button
+                        v-for="need in eventNeeds"
+                        :key="need"
+                        type="button"
+                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
+                        :class="
+                          selectedNeeds.has(need)
+                            ? 'bg-dark border-dark'
+                            : 'bg-white border-dark/10 hover:border-dark/30'
+                        "
+                        @click="toggleNeed(need)"
+                      >
+                        <span
+                          class="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                          :class="
+                            selectedNeeds.has(need)
+                              ? 'bg-cream border-cream'
+                              : 'border-dark/20 group-hover:border-dark/40'
+                          "
+                        >
+                          <IconLucid
+                            v-if="selectedNeeds.has(need)"
+                            name="Check"
+                            size="xs"
+                            class="text-dark"
+                          />
+                        </span>
+                        <span
+                          class="font-medium text-base transition-colors duration-200"
+                          :class="
+                            selectedNeeds.has(need)
+                              ? 'text-cream'
+                              : 'text-dark/70 group-hover:text-dark'
+                          "
+                        >
+                          {{ t(`quote_form.need_${need}`) }}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- Atelier: workshop type -->
+              <template v-else-if="form.service_type === 'atelier'">
+                <div class="space-y-2">
+                  <button
+                    v-for="ws in workshopTypes"
+                    :key="ws"
+                    type="button"
+                    class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
+                    :class="
+                      form.workshop_type === ws
+                        ? 'bg-dark border-dark'
+                        : 'bg-white border-dark/10 hover:border-dark/30'
+                    "
+                    @click="form.workshop_type = form.workshop_type === ws ? '' : ws"
+                  >
+                    <span
+                      class="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                      :class="
+                        form.workshop_type === ws
+                          ? 'bg-cream border-cream'
+                          : 'border-dark/20 group-hover:border-dark/40'
+                      "
+                    >
+                      <span
+                        v-if="form.workshop_type === ws"
+                        class="w-2 h-2 rounded-full bg-dark"
+                      ></span>
+                    </span>
+                    <span
+                      class="font-medium text-base transition-colors duration-200"
+                      :class="
+                        form.workshop_type === ws
+                          ? 'text-cream'
+                          : 'text-dark/70 group-hover:text-dark'
+                      "
+                    >
+                      {{ t(`quote_form.workshop_${ws}`) }}
+                    </span>
+                  </button>
+                </div>
+              </template>
+
               <p
                 v-if="errors.floral_needs"
                 class="text-sm text-red-500"
@@ -421,8 +634,8 @@
               </div>
             </div>
 
-            <!-- Step 6: Inspirations (optional) -->
-            <div v-if="currentStep === 6" class="space-y-4">
+            <!-- Step 7: Inspirations (optional) -->
+            <div v-if="currentStep === 7" class="space-y-4">
               <!-- Drop zone -->
               <div
                 v-if="inspirationFiles.length < MAX_INSPIRATION_FILES"
@@ -506,8 +719,8 @@
               </div>
             </div>
 
-            <!-- Step 7: Meeting -->
-            <div v-if="currentStep === 7" class="space-y-4">
+            <!-- Step 8: Meeting -->
+            <div v-if="currentStep === 8" class="space-y-4">
               <!-- Selected slot display -->
               <div
                 v-if="form.meeting_date"
@@ -578,11 +791,22 @@
               </div>
             </div>
 
-            <!-- Step 8: Recap + submit -->
-            <div v-if="currentStep === 8" class="space-y-4">
+            <!-- Step 9: Recap + submit -->
+            <div v-if="currentStep === 9" class="space-y-4">
               <div
                 class="rounded-2xl border-2 border-dark/10 bg-cream/30 px-6 py-5 space-y-3 text-sm"
               >
+                <!-- Service type -->
+                <div class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.service_type_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ t(`quote_form.service_type_${form.service_type}`) }}
+                  </span>
+                </div>
+                <div class="h-px bg-dark/5"></div>
+
                 <div class="flex justify-between">
                   <span class="text-fuchsia-500">
                     {{ t("quote_form.name_label") }}
@@ -628,6 +852,22 @@
                     {{ form.venue }}
                   </span>
                 </div>
+                <div v-if="form.event_type" class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.event_type_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ form.event_type }}
+                  </span>
+                </div>
+                <div v-if="form.guest_count" class="flex justify-between">
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.guest_count_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ form.guest_count }}
+                  </span>
+                </div>
                 <div v-if="form.budget" class="flex justify-between">
                   <span class="text-fuchsia-500">
                     {{ t("quote_form.budget_label") }}
@@ -636,6 +876,8 @@
                     {{ budgetLabel }}
                   </span>
                 </div>
+
+                <!-- Floral/event needs -->
                 <div
                   v-if="selectedNeeds.size > 0"
                   class="pt-1"
@@ -653,6 +895,20 @@
                     </span>
                   </div>
                 </div>
+
+                <!-- Workshop type -->
+                <div
+                  v-if="form.workshop_type"
+                  class="flex justify-between"
+                >
+                  <span class="text-fuchsia-500">
+                    {{ t("quote_form.workshop_type_label") }}
+                  </span>
+                  <span class="font-medium text-dark">
+                    {{ t(`quote_form.workshop_${form.workshop_type}`) }}
+                  </span>
+                </div>
+
                 <div
                   v-if="inspirationFiles.length > 0"
                   class="pt-1"
@@ -726,7 +982,12 @@ import {
   onUnmounted,
 } from "vue";
 import { useI18n } from "vue-i18n";
-import type { FloralNeedKey } from "~/server/utils/quotes-types";
+import type {
+  ServiceType,
+  FloralNeedKey,
+  EventNeedKey,
+  WorkshopTypeKey,
+} from "~/server/utils/quotes-types";
 
 definePageMeta({
   layout: "minimal",
@@ -762,19 +1023,23 @@ const scrollAnchor = ref<HTMLElement | null>(null);
 let msgCounter = 0;
 let typingInterval: ReturnType<typeof setInterval> | null = null;
 
-// ── Form state (unchanged) ──────────────────────────
+// ── Form state ──────────────────────────────────────
 const form = reactive({
+  service_type: "" as ServiceType | "",
   name: "",
   email: "",
   phone: "",
   wedding_date: "",
   venue: "",
   budget: "",
+  event_type: "",
+  guest_count: "",
+  workshop_type: "",
   meeting_date: "",
   meeting_time: "",
 });
 
-const selectedNeeds = ref<Set<FloralNeedKey>>(new Set());
+const selectedNeeds = ref<Set<FloralNeedKey | EventNeedKey>>(new Set());
 const loading = ref(false);
 const submitted = ref(false);
 const scheduleModalOpen = ref(false);
@@ -811,6 +1076,28 @@ const minDate = computed(() => {
   return d.toISOString().split("T")[0];
 });
 
+// ── Service type options ────────────────────────────
+const serviceTypeOptions = computed(() => [
+  {
+    value: "mariage" as ServiceType,
+    label: t("quote_form.service_type_mariage"),
+    desc: t("quote_form.service_type_mariage_desc"),
+    icon: "Heart",
+  },
+  {
+    value: "evenement" as ServiceType,
+    label: t("quote_form.service_type_evenement"),
+    desc: t("quote_form.service_type_evenement_desc"),
+    icon: "Sparkles",
+  },
+  {
+    value: "atelier" as ServiceType,
+    label: t("quote_form.service_type_atelier"),
+    desc: t("quote_form.service_type_atelier_desc"),
+    icon: "Palette",
+  },
+]);
+
 // Budget options
 const budgetOptions = computed(() => [
   { label: t("quote_form.budget_lt_2500"), value: "lt_2500" },
@@ -826,23 +1113,7 @@ const budgetLabel = computed(() => {
   return opt?.label || "";
 });
 
-// Floral needs
-const floralNeeds: FloralNeedKey[] = [
-  "bridal_bouquet",
-  "bridesmaid_bouquet",
-  "boutonnieres",
-  "ceremony_arch",
-  "ceremony_aisle",
-  "table_centerpieces",
-  "table_runner",
-  "welcome_sign",
-  "cocktail_decor",
-  "cake_flowers",
-  "hair_flowers",
-  "venue_entrance",
-];
-
-// Grouped floral needs for display
+// ── Floral needs (mariage) ──────────────────────────
 const floralNeedGroups = computed(() => [
   {
     label: t("quote_form.need_group_personal"),
@@ -876,7 +1147,25 @@ const floralNeedGroups = computed(() => [
   },
 ]);
 
-const toggleNeed = (key: FloralNeedKey) => {
+// ── Event needs (evenement) ─────────────────────────
+const eventNeeds: EventNeedKey[] = [
+  "scenographie",
+  "corner_floral",
+  "suspended_installations",
+  "stage_decor",
+  "table_decor",
+  "welcome_compositions",
+];
+
+// ── Workshop types (atelier) ────────────────────────
+const workshopTypes: WorkshopTypeKey[] = [
+  "bouquet_composition",
+  "wreath",
+  "terrarium",
+  "seasonal",
+];
+
+const toggleNeed = (key: FloralNeedKey | EventNeedKey) => {
   if (selectedNeeds.value.has(key)) {
     selectedNeeds.value.delete(key);
   } else {
@@ -930,7 +1219,6 @@ const addBotMessage = (text: string): Promise<void> => {
       if (i >= text.length) {
         clearInterval(typingInterval!);
         typingInterval = null;
-        // Push the completed message then hide typing
         chatMessages.value.push({
           type: "bot",
           text,
@@ -960,22 +1248,28 @@ const addUserMessage = (text: string) => {
 const getStepMessage = (step: number): string => {
   switch (step) {
     case 1:
-      return t("quote_form.chat_step1");
+      return t("quote_form.chat_step_service");
     case 2:
+      return t("quote_form.chat_step1");
+    case 3:
       return t("quote_form.chat_step2", {
         name: form.name,
       });
-    case 3:
-      return t("quote_form.chat_step3");
-    case 4:
-      return t("quote_form.chat_step4");
+    case 4: {
+      const key = `quote_form.chat_step3_${form.service_type}`;
+      return t(key);
+    }
     case 5:
-      return t("quote_form.chat_step5");
-    case 6:
-      return t("quote_form.chat_step6_inspirations");
+      return t("quote_form.chat_step4");
+    case 6: {
+      const key = `quote_form.chat_step5_${form.service_type}`;
+      return t(key);
+    }
     case 7:
-      return t("quote_form.chat_step7");
+      return t("quote_form.chat_step6_inspirations");
     case 8:
+      return t("quote_form.chat_step7");
+    case 9:
       return t("quote_form.chat_step8");
     default:
       return "";
@@ -986,31 +1280,40 @@ const getStepMessage = (step: number): string => {
 const getStepSummary = (step: number): string => {
   switch (step) {
     case 1:
+      return t(`quote_form.service_type_${form.service_type}`);
+    case 2:
       return form.name;
-    case 2: {
+    case 3: {
       let summary = form.email;
       if (form.phone) summary += ` • ${form.phone}`;
       return summary;
     }
-    case 3: {
+    case 4: {
       const parts: string[] = [];
       if (form.wedding_date)
         parts.push(formatDisplayDate(form.wedding_date));
       if (form.venue) parts.push(form.venue);
+      if (form.event_type) parts.push(form.event_type);
+      if (form.guest_count)
+        parts.push(`${form.guest_count} ${t("quote_form.guest_count_label").toLowerCase()}`);
       return parts.length > 0 ? parts.join(" • ") : "—";
     }
-    case 4:
-      return budgetLabel.value || "—";
     case 5:
+      return budgetLabel.value || "—";
+    case 6: {
+      if (form.service_type === "atelier" && form.workshop_type) {
+        return t(`quote_form.workshop_${form.workshop_type}`);
+      }
       return Array.from(selectedNeeds.value)
         .map((k) => t(`quote_form.need_${k}`))
         .join(", ");
-    case 6:
+    }
+    case 7:
       if (inspirationFiles.value.length > 0) {
         return `${inspirationFiles.value.length} photo${inspirationFiles.value.length > 1 ? "s" : ""}`;
       }
       return t("quote_form.chat_step6_skip");
-    case 7: {
+    case 8: {
       let summary = formatDisplayDate(form.meeting_date);
       if (form.meeting_time) summary += ` — ${form.meeting_time}`;
       return summary;
@@ -1022,7 +1325,6 @@ const getStepSummary = (step: number): string => {
 
 // ── Validation per step ─────────────────────────────
 const validateStep = (step: number): boolean => {
-  // Reset relevant errors
   errors.name = "";
   errors.email = "";
   errors.phone = "";
@@ -1031,12 +1333,14 @@ const validateStep = (step: number): boolean => {
 
   switch (step) {
     case 1:
+      return !!form.service_type;
+    case 2:
       if (!form.name.trim()) {
         errors.name = t("quote_form.error_name");
         return false;
       }
       return true;
-    case 2: {
+    case 3: {
       let valid = true;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!form.email.trim() || !emailRegex.test(form.email)) {
@@ -1049,13 +1353,21 @@ const validateStep = (step: number): boolean => {
       }
       return valid;
     }
-    case 5:
+    case 6: {
+      if (form.service_type === "atelier") {
+        if (!form.workshop_type) {
+          errors.floral_needs = t("quote_form.error_needs");
+          return false;
+        }
+        return true;
+      }
       if (selectedNeeds.value.size === 0) {
         errors.floral_needs = t("quote_form.error_needs");
         return false;
       }
       return true;
-    case 7:
+    }
+    case 8:
       if (!form.meeting_date) {
         errors.meeting = t("quote_form.error_meeting");
         return false;
@@ -1070,20 +1382,17 @@ const validateStep = (step: number): boolean => {
 const nextStep = async () => {
   if (isTyping.value) return;
 
-  // Validate current step
   if (currentStep.value > 0 && !validateStep(currentStep.value)) {
     return;
   }
 
-  // Add user summary for completed step
   if (currentStep.value > 0) {
     addUserMessage(getStepSummary(currentStep.value));
   }
 
-  // Advance
   currentStep.value++;
 
-  if (currentStep.value <= 8) {
+  if (currentStep.value <= 9) {
     await addBotMessage(getStepMessage(currentStep.value));
   }
 };
@@ -1098,7 +1407,6 @@ const handleSlotConfirmed = (data: {
   form.meeting_time = data.time;
   errors.meeting = "";
   scheduleModalOpen.value = false;
-  // Auto-advance to recap after slot selection
   nextTick(() => nextStep());
 };
 
@@ -1108,23 +1416,36 @@ const handleSubmit = async () => {
   errors.generic = "";
 
   try {
+    const body: Record<string, any> = {
+      service_type: form.service_type,
+      partner1_name: form.name.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      wedding_date: form.wedding_date || undefined,
+      venue: form.venue.trim() || undefined,
+      budget: form.budget || undefined,
+      floral_needs: Array.from(selectedNeeds.value),
+      meeting_date: form.meeting_date,
+      meeting_time: form.meeting_time,
+      locale: locale.value,
+    };
+
+    if (form.service_type === "evenement") {
+      body.event_type = form.event_type.trim() || undefined;
+    }
+    if (form.service_type === "atelier") {
+      body.guest_count = form.guest_count
+        ? parseInt(form.guest_count)
+        : undefined;
+      body.workshop_type = form.workshop_type || undefined;
+    }
+
     const result = await $fetch<{
       success: boolean;
       data: { id: string };
     }>("/api/quotes", {
       method: "POST",
-      body: {
-        partner1_name: form.name.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim(),
-        wedding_date: form.wedding_date || undefined,
-        venue: form.venue.trim() || undefined,
-        budget: form.budget || undefined,
-        floral_needs: Array.from(selectedNeeds.value),
-        meeting_date: form.meeting_date,
-        meeting_time: form.meeting_time,
-        locale: locale.value,
-      },
+      body,
     });
 
     // Upload inspiration files (non-blocking)

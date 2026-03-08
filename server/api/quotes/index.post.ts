@@ -10,6 +10,14 @@ export default defineEventHandler(async (event) => {
   const body = await readBody<CreateQuoteRequestInput>(event);
 
   // Validate required fields
+  const validServiceTypes = ["mariage", "evenement", "atelier"];
+  if (!body.service_type || !validServiceTypes.includes(body.service_type)) {
+    throw createError({
+      statusCode: 400,
+      message: "service_type must be mariage, evenement, or atelier",
+    });
+  }
+
   if (!body.partner1_name?.trim()) {
     throw createError({
       statusCode: 400,

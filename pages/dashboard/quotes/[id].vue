@@ -46,12 +46,13 @@
                 />
               </div>
 
-              <!-- Urgent badge -->
+              <!-- Status badge -->
               <div
-                v-if="isUrgent"
                 class="mb-4 copilot-fade-in copilot-fade-in-2"
               >
-                <Tag variant="warning">Urgent</Tag>
+                <Tag :variant="isUrgent ? 'warning' : 'default'">
+                  {{ t(`dashboard.quote_status_${quote.status}`) }}
+                </Tag>
               </div>
 
               <!-- Typewriter message -->
@@ -71,20 +72,11 @@
                 >|</span>
               </p>
 
-              <!-- CTA row: Status + Espace projet -->
+              <!-- CTA: Espace projet -->
               <div
                 v-if="!isTyping && !isTypingLink"
-                class="flex flex-wrap justify-center items-center gap-3 copilot-actions-reveal"
+                class="flex justify-center copilot-actions-reveal"
               >
-                <span
-                  class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-cream text-base font-medium text-dark"
-                >
-                  <span
-                    class="w-2.5 h-2.5 rounded-full"
-                    :class="statusDotColor(quote.status)"
-                  ></span>
-                  {{ t(`dashboard.quote_status_${quote.status}`) }}
-                </span>
                 <button
                   @click="activeSection = 'project'"
                   class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-dark text-cream text-sm font-semibold hover:bg-dark/80 transition-all"

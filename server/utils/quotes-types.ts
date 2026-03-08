@@ -1,10 +1,12 @@
 /**
- * Types TypeScript pour les demandes de devis mariage
+ * Types TypeScript pour les demandes de devis
  */
 
 // ========================================
 // ENUMS & CONSTANTS
 // ========================================
+
+export type ServiceType = "mariage" | "evenement" | "atelier";
 
 export type QuoteRequestStatus =
   | "new"
@@ -33,12 +35,27 @@ export type FloralNeedKey =
   | "hair_flowers"
   | "venue_entrance";
 
+export type EventNeedKey =
+  | "scenographie"
+  | "corner_floral"
+  | "suspended_installations"
+  | "stage_decor"
+  | "table_decor"
+  | "welcome_compositions";
+
+export type WorkshopTypeKey =
+  | "bouquet_composition"
+  | "wreath"
+  | "terrarium"
+  | "seasonal";
+
 // ========================================
 // QUOTE REQUEST
 // ========================================
 
 export interface QuoteRequest {
   id: string;
+  service_type: ServiceType;
   partner1_name: string;
   partner2_name?: string;
   email: string;
@@ -47,6 +64,9 @@ export interface QuoteRequest {
   venue?: string;
   budget?: BudgetRange;
   floral_needs: FloralNeedKey[];
+  event_type?: string;
+  guest_count?: number;
+  workshop_type?: string;
   meeting_date?: string;
   meeting_time?: string;
   status: QuoteRequestStatus;
@@ -60,6 +80,7 @@ export interface QuoteRequest {
 }
 
 export interface CreateQuoteRequestInput {
+  service_type: ServiceType;
   partner1_name: string;
   partner2_name?: string;
   email: string;
@@ -67,7 +88,10 @@ export interface CreateQuoteRequestInput {
   wedding_date?: string;
   venue?: string;
   budget?: BudgetRange;
-  floral_needs: FloralNeedKey[];
+  floral_needs: (FloralNeedKey | EventNeedKey)[];
+  event_type?: string;
+  guest_count?: number;
+  workshop_type?: string;
   meeting_date: string;
   meeting_time: string;
   locale?: string;
