@@ -7,7 +7,7 @@
           <IconLucid
             name="Loader2"
             size="lg"
-            class="animate-spin mx-auto text-dark/50"
+            class="animate-spin mx-auto text-gray-500"
           />
           <p class="text-dark/60 mt-4">{{ t("common.loading") }}</p>
         </div>
@@ -60,22 +60,16 @@
                 class="text-xl md:text-2xl font-heading text-dark leading-relaxed mb-10 copilot-fade-in copilot-fade-in-2"
               >
                 <span>{{ displayedText }}</span>
-                <a
-                  v-if="isTypingLink || displayedLinkText"
-                  :href="calendarUrl"
-                  target="_blank"
-                  class="text-fuchsia-500 hover:underline"
-                >{{ displayedLinkText }}</a>
                 <span
-                  v-if="isTyping || isTypingLink"
+                  v-if="isTyping"
                   class="copilot-cursor"
                 >|</span>
               </p>
 
-              <!-- CTA: Espace projet -->
+              <!-- CTAs -->
               <div
-                v-if="!isTyping && !isTypingLink"
-                class="flex justify-center copilot-actions-reveal"
+                v-if="!isTyping"
+                class="flex flex-wrap justify-center gap-3 copilot-actions-reveal"
               >
                 <button
                   @click="activeSection = 'project'"
@@ -84,13 +78,20 @@
                   <IconLucid name="NotebookPen" size="xs" />
                   {{ t("dashboard.project_view_title") }}
                 </button>
+                <button
+                  v-if="quote.meeting_date && !isMeetingPast"
+                  @click="openCalendarEvent"
+                  class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border-2 border-dark/10 text-dark text-sm font-semibold hover:bg-cream transition-all"
+                >
+                  <IconLucid name="CalendarPlus" size="xs" />
+                  {{ t("dashboard.copilot_add_calendar") }}
+                </button>
               </div>
 
               <!-- Client inspirations preview -->
               <div
                 v-if="
                   !isTyping &&
-                  !isTypingLink &&
                   clientInspirations.length > 0
                 "
                 class="mt-10 copilot-actions-reveal"
@@ -175,20 +176,20 @@
                         @click="statusModalOpen = true"
                       >
                         <div class="w-7 h-7 rounded-full bg-cream-dark flex items-center justify-center shrink-0">
-                          <IconLucid :name="statusIcon(quote.status)" size="xs" class="text-dark/60" />
+                          <IconLucid :name="statusIcon(quote.status)" size="xs" class="text-gray-500" />
                         </div>
                         <div class="flex-1 min-w-0">
                           <span class="text-xs text-dark/40 block">{{ t("dashboard.quote_detail_change_status") }}</span>
                           <span class="font-medium text-dark text-sm block">{{ t(`dashboard.quote_status_${quote.status}`) }}</span>
                         </div>
-                        <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
+                        <IconLucid name="ChevronRight" size="xs" class="text-gray-400 shrink-0" />
                       </button>
                       <button
                         class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
                         @click="scheduleModalOpen = true"
                       >
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="CalendarCheck" size="xs" class="text-dark/40" />
+                          <IconLucid name="CalendarCheck" size="xs" class="text-gray-400" />
                         </div>
                         <div class="flex-1 min-w-0">
                           <span class="text-xs text-dark/40 block">{{ t("dashboard.quote_detail_change_meeting") }}</span>
@@ -196,7 +197,7 @@
                             {{ quote.meeting_date ? formatDate(quote.meeting_date) + (quote.meeting_time ? ` — ${quote.meeting_time}` : "") : t("dashboard.quote_detail_no_meeting") }}
                           </span>
                         </div>
-                        <IconLucid name="ChevronRight" size="xs" class="text-dark/30 shrink-0" />
+                        <IconLucid name="ChevronRight" size="xs" class="text-gray-400 shrink-0" />
                       </button>
                     </div>
                   </div>
@@ -208,7 +209,7 @@
                     <!-- Atelier: workshop type -->
                     <template v-if="quote.service_type === 'atelier'">
                       <div v-if="quote.workshop_type" class="flex items-center gap-2">
-                        <IconLucid name="Palette" size="xs" class="text-dark/40" />
+                        <IconLucid name="Palette" size="xs" class="text-gray-400" />
                         <span class="text-sm text-dark/80">{{ t(`quote_form.workshop_${quote.workshop_type}`) }}</span>
                       </div>
                       <p v-else class="text-sm text-dark/40">{{ t("dashboard.quote_detail_no_needs") }}</p>
@@ -217,7 +218,7 @@
                     <template v-else>
                       <div v-if="quote.floral_needs?.length">
                         <div v-if="quote.service_type === 'mariage'" class="flex items-center gap-2 mb-2">
-                          <IconLucid name="Heart" size="xs" class="text-dark/40" />
+                          <IconLucid name="Heart" size="xs" class="text-gray-400" />
                           <span class="font-heading text-xs text-dark/50 uppercase tracking-wider">
                             {{ t("dashboard.quote_detail_personal_flowers") }}
                           </span>
@@ -243,13 +244,13 @@
                     <div class="space-y-2.5">
                       <div class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="Mail" size="xs" class="text-dark/40" />
+                          <IconLucid name="Mail" size="xs" class="text-gray-400" />
                         </div>
                         <a :href="`mailto:${quote.email}`" class="text-sm text-dark underline truncate">{{ quote.email }}</a>
                       </div>
                       <div class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="Phone" size="xs" class="text-dark/40" />
+                          <IconLucid name="Phone" size="xs" class="text-gray-400" />
                         </div>
                         <span v-if="quote.phone">
                           <a :href="`tel:${quote.phone}`" class="text-sm text-dark underline">{{ quote.phone }}</a>
@@ -259,35 +260,35 @@
                       <!-- Date -->
                       <div class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid :name="quote.service_type === 'mariage' ? 'Heart' : 'Calendar'" size="xs" class="text-dark/40" />
+                          <IconLucid :name="quote.service_type === 'mariage' ? 'Heart' : 'Calendar'" size="xs" class="text-gray-400" />
                         </div>
                         <span class="text-sm text-dark">{{ quote.wedding_date ? formatDate(quote.wedding_date) : t("dashboard.quote_detail_no_date") }}</span>
                       </div>
                       <!-- Venue (mariage/evenement) -->
                       <div v-if="quote.service_type !== 'atelier'" class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="MapPin" size="xs" class="text-dark/40" />
+                          <IconLucid name="MapPin" size="xs" class="text-gray-400" />
                         </div>
                         <span class="text-sm text-dark">{{ quote.venue || t("dashboard.quote_detail_no_venue") }}</span>
                       </div>
                       <!-- Event type (evenement) -->
                       <div v-if="quote.service_type === 'evenement' && quote.event_type" class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="Sparkles" size="xs" class="text-dark/40" />
+                          <IconLucid name="Sparkles" size="xs" class="text-gray-400" />
                         </div>
                         <span class="text-sm text-dark">{{ quote.event_type }}</span>
                       </div>
                       <!-- Guest count (atelier) -->
                       <div v-if="quote.service_type === 'atelier' && quote.guest_count" class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="Users" size="xs" class="text-dark/40" />
+                          <IconLucid name="Users" size="xs" class="text-gray-400" />
                         </div>
                         <span class="text-sm text-dark">{{ quote.guest_count }} {{ t("dashboard.quote_detail_guest_count").toLowerCase() }}</span>
                       </div>
                       <!-- Budget (mariage only) -->
                       <div v-if="quote.service_type === 'mariage'" class="flex items-center gap-3 px-3">
                         <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
-                          <IconLucid name="BadgeEuro" size="xs" class="text-dark/40" />
+                          <IconLucid name="BadgeEuro" size="xs" class="text-gray-400" />
                         </div>
                         <span class="text-sm text-dark">{{ quote.budget ? t(`quote_form.budget_${quote.budget}`) : t("dashboard.quote_detail_no_budget") }}</span>
                       </div>
@@ -321,6 +322,161 @@
                 </div>
               </div>
 
+              </div>
+
+              <!-- Moodboard + Devis -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              <!-- Moodboard section -->
+              <div class="rounded-xl border-2 border-dark/10 p-4">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
+                    Moodboard
+                  </h3>
+                  <button
+                    @click="triggerMoodboardUpload"
+                    :disabled="uploadingMoodboard"
+                    class="text-sm text-dark/60 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
+                  >
+                    <IconLucid
+                      :name="uploadingMoodboard ? 'Loader2' : 'Plus'"
+                      size="xs"
+                      :class="uploadingMoodboard ? 'animate-spin' : ''"
+                    />
+                    {{ $t("dashboard.moodboard_add_file") }}
+                  </button>
+                </div>
+                <input
+                  ref="moodboardFileInput"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,application/pdf"
+                  class="hidden"
+                  @change="handleMoodboardFileChange"
+                />
+                <!-- Mini-list -->
+                <div v-if="moodboardItems.length > 0" class="space-y-2 mb-3">
+                  <div
+                    v-for="item in moodboardItems"
+                    :key="item.id"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-cream/50"
+                  >
+                    <div class="w-6 h-6 rounded-md overflow-hidden bg-cream shrink-0">
+                      <img
+                        v-if="item.type === 'image'"
+                        :src="item.public_url"
+                        :alt="item.original_filename"
+                        class="w-full h-full object-cover"
+                      />
+                      <div v-else class="w-full h-full flex items-center justify-center">
+                        <IconLucid name="FileText" size="xs" class="text-gray-500" />
+                      </div>
+                    </div>
+                    <span class="text-sm text-dark/80 truncate flex-1">
+                      {{ item.original_filename }}
+                    </span>
+                    <button
+                      @click="handleMoodboardDelete(item.id)"
+                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0"
+                    >
+                      <IconLucid name="X" size="xs" />
+                    </button>
+                  </div>
+                </div>
+                <p v-else class="text-sm text-dark/40 mb-3">
+                  {{ $t("dashboard.moodboard_empty") }}
+                </p>
+                <!-- Send moodboard button -->
+                <button
+                  @click="handleSendMoodboard"
+                  :disabled="moodboardItems.length === 0 || sendingMoodboard"
+                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40"
+                  :class="quote.status === 'moodboard_sent' && moodboardItems.length > 0
+                    ? 'bg-green-50 text-green-600 border-2 border-green-200'
+                    : 'bg-dark text-cream hover:bg-dark/80'"
+                >
+                  <IconLucid
+                    :name="quote.status === 'moodboard_sent' && moodboardItems.length > 0 ? 'Check' : sendingMoodboard ? 'Loader2' : 'Send'"
+                    size="xs"
+                    :class="sendingMoodboard ? 'animate-spin' : ''"
+                  />
+                  {{
+                    quote.status === 'moodboard_sent' && moodboardItems.length > 0
+                      ? $t("dashboard.moodboard_sent")
+                      : $t("dashboard.moodboard_send")
+                  }}
+                </button>
+              </div>
+
+              <!-- Devis section -->
+              <div class="rounded-xl border-2 border-dark/10 p-4">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
+                    {{ $t("dashboard.proposal_title") }}
+                  </h3>
+                  <button
+                    @click="triggerProposalUpload"
+                    :disabled="uploadingProposal"
+                    class="text-sm text-dark/60 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
+                  >
+                    <IconLucid
+                      :name="uploadingProposal ? 'Loader2' : 'Plus'"
+                      size="xs"
+                      :class="uploadingProposal ? 'animate-spin' : ''"
+                    />
+                    {{ $t("dashboard.proposal_add_file") }}
+                  </button>
+                </div>
+                <input
+                  ref="proposalFileInput"
+                  type="file"
+                  accept="application/pdf"
+                  class="hidden"
+                  @change="handleProposalFileChange"
+                />
+                <!-- Mini-list -->
+                <div v-if="proposals.length > 0" class="space-y-2 mb-3">
+                  <div
+                    v-for="prop in proposals"
+                    :key="prop.id"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-cream/50"
+                  >
+                    <div class="w-6 h-6 rounded-md bg-cream flex items-center justify-center shrink-0">
+                      <IconLucid name="FileText" size="xs" class="text-gray-500" />
+                    </div>
+                    <span class="text-sm text-dark/80 truncate flex-1">
+                      {{ prop.original_filename || prop.title }}
+                    </span>
+                    <button
+                      @click="handleDeleteProposal(prop.id)"
+                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0"
+                    >
+                      <IconLucid name="X" size="xs" />
+                    </button>
+                  </div>
+                </div>
+                <p v-else class="text-sm text-dark/40 mb-3">
+                  {{ $t("dashboard.proposal_empty") }}
+                </p>
+                <!-- Send proposal button -->
+                <button
+                  @click="handleSendProposal"
+                  :disabled="proposals.length === 0 || sendingProposal || quote.status === 'quote_sent'"
+                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40"
+                  :class="quote.status === 'quote_sent'
+                    ? 'bg-green-50 text-green-600 border-2 border-green-200'
+                    : 'bg-dark text-cream hover:bg-dark/80'"
+                >
+                  <IconLucid
+                    :name="quote.status === 'quote_sent' ? 'Check' : sendingProposal ? 'Loader2' : 'Send'"
+                    size="xs"
+                    :class="sendingProposal ? 'animate-spin' : ''"
+                  />
+                  {{
+                    quote.status === 'quote_sent'
+                      ? $t("dashboard.proposal_sent")
+                      : $t("dashboard.proposal_send")
+                  }}
+                </button>
+              </div>
               </div>
 
               <!-- Portal toggle -->
@@ -374,85 +530,33 @@
                   <IconLucid
                     name="Loader2"
                     size="md"
-                    class="animate-spin mx-auto text-dark/50"
+                    class="animate-spin mx-auto text-gray-500"
                   />
-                </div>
-
-                <!-- Empty -->
-                <div
-                  v-else-if="activityLog.length === 0 && moodboardItems.length === 0"
-                  class="py-8 text-center flex-1"
-                >
-                  <IconLucid
-                    name="Clock"
-                    size="lg"
-                    class="mx-auto text-dark/30 mb-3"
-                  />
-                  <p class="text-dark/50 text-sm">
-                    {{ t("dashboard.timeline_empty") }}
-                  </p>
                 </div>
 
                 <!-- Feed + Compose wrapper -->
                 <div
-                  v-else
+                  v-if="!loadingActivity"
                   class="flex-1 min-h-0 relative"
                 >
                 <div
                   ref="timelineScroll"
                   class="h-full overflow-y-auto space-y-3 pb-28"
                 >
-                  <!-- Moodboard items -->
+                  <!-- Empty -->
                   <div
-                    v-for="item in moodboardItems"
-                    :key="'mb-' + item.id"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border border-dark/10"
+                    v-if="activityLog.length === 0"
+                    class="py-8 text-center"
                   >
-                    <div
-                      class="w-8 h-8 rounded-lg overflow-hidden bg-cream shrink-0"
-                    >
-                      <img
-                        v-if="item.type === 'image'"
-                        :src="item.public_url"
-                        :alt="item.original_filename"
-                        class="w-full h-full object-cover"
-                      />
-                      <div
-                        v-else
-                        class="w-full h-full flex items-center justify-center"
-                      >
-                        <IconLucid
-                          name="FileText"
-                          size="xs"
-                          class="text-dark/60"
-                        />
-                      </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <p class="text-sm text-dark/80 truncate">
-                        {{ item.original_filename }}
-                      </p>
-                      <p class="text-[11px] text-dark/40">
-                        {{
-                          item.type === "pdf" ? "PDF" : "Image"
-                        }}
-                        <span v-if="item.file_size">
-                          &middot;
-                          {{
-                            (item.file_size / 1024 / 1024).toFixed(1)
-                          }}
-                          Mo
-                        </span>
-                      </p>
-                    </div>
-                    <button
-                      @click="handleMoodboardDelete(item.id)"
-                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0"
-                    >
-                      <IconLucid name="Trash2" size="xs" />
-                    </button>
+                    <IconLucid
+                      name="Clock"
+                      size="lg"
+                      class="mx-auto text-gray-400 mb-3"
+                    />
+                    <p class="text-dark/50 text-sm">
+                      {{ t("dashboard.timeline_empty") }}
+                    </p>
                   </div>
-
                   <!-- Activity log entries -->
                   <div
                     v-for="entry in activityLog"
@@ -471,7 +575,7 @@
                           <IconLucid
                             name="NotebookPen"
                             size="xs"
-                            class="text-dark/60"
+                            class="text-gray-500"
                           />
                         </div>
                         <div class="flex-1 min-w-0">
@@ -555,7 +659,7 @@
                         <IconLucid
                           :name="activityIcon(entry.action)"
                           size="xs"
-                          class="text-dark/60"
+                          class="text-gray-500"
                         />
                       </div>
                       <div class="flex-1 min-w-0">
@@ -572,46 +676,10 @@
                 </div>
                 <!-- Compose bar (floating) -->
                 <div class="absolute bottom-0 left-0 right-0">
-                  <div class="rounded-2xl bg-cream-light p-3 grid grid-cols-2 gap-2">
-                    <!-- Moodboard upload -->
-                    <button
-                      @click="triggerMoodboardUpload"
-                      :disabled="uploadingMoodboard"
-                      class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white text-left hover:bg-cream active:bg-cream-dark transition-all disabled:opacity-50"
-                    >
-                      <div
-                        class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-green-100 text-green-600"
-                      >
-                        <IconLucid
-                          :name="uploadingMoodboard ? 'Loader2' : 'ImagePlus'"
-                          size="xs"
-                          :class="uploadingMoodboard ? 'animate-spin' : ''"
-                        />
-                      </div>
-                      <span class="flex-1 min-w-0">
-                        <span class="text-sm text-dark/60 block">
-                          {{
-                            uploadingMoodboard
-                              ? $t("common.loading")
-                              : $t("dashboard.moodboard_add_file")
-                          }}
-                        </span>
-                        <span class="text-[10px] text-dark/30 block">
-                          {{ $t("dashboard.moodboard_max_size") }}
-                        </span>
-                      </span>
-                    </button>
-                    <input
-                      ref="moodboardFileInput"
-                      type="file"
-                      accept="image/png,image/jpeg,image/webp,application/pdf"
-                      class="hidden"
-                      @change="handleMoodboardFileChange"
-                    />
-                    <!-- Add note button -->
+                  <div class="rounded-2xl bg-cream-light p-3">
                     <button
                       @click="showNotePanel = true"
-                      class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white text-left hover:bg-cream active:bg-cream-dark transition-all"
+                      class="flex items-center gap-2.5 w-full px-3.5 py-2.5 rounded-xl bg-white text-left hover:bg-cream active:bg-cream-dark transition-all"
                     >
                       <div
                         class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-green-100 text-green-600"
@@ -796,8 +864,6 @@ const pageTitle = useState<string | null>("dashboard-page-title", () => null);
 
 // State
 const quote = ref<QuoteRequest | null>(null);
-const loading = ref(true);
-const fetchError = ref(false);
 const adminNotes = ref("");
 const savingNotes = ref(false);
 
@@ -822,6 +888,10 @@ const loadingActivity = ref(false);
 
 // Timeline compose
 const moodboardFileInput = ref<HTMLInputElement | null>(null);
+const proposalFileInput = ref<HTMLInputElement | null>(null);
+const uploadingProposal = ref(false);
+const sendingMoodboard = ref(false);
+const sendingProposal = ref(false);
 const showNotePanel = ref(false);
 const newNoteText = ref("");
 const sendingNote = ref(false);
@@ -851,22 +921,43 @@ const copilotName = computed(() => {
   return part.charAt(0).toUpperCase() + part.slice(1);
 });
 
-const calendarUrl = computed(() => {
+const openCalendarEvent = () => {
   const q = quote.value;
-  if (!q?.meeting_date) return "";
+  if (!q?.meeting_date) return;
   const date = q.meeting_date.replace(/-/g, "");
   const raw = (q.meeting_time || "10h00").replace(/[h:]/g, "");
   const hh = raw.slice(0, 2);
   const mm = raw.slice(2, 4) || "00";
-  const startTime = `${hh}${mm}00`;
+  const startTime = `${date}T${hh}${mm}00`;
   const endHH = String(
     Math.min(parseInt(hh) + 1, 23)
   ).padStart(2, "0");
-  const endTime = `${endHH}${mm}00`;
-  const title = encodeURIComponent(
-    `RDV ${q.service_type === "mariage" && q.partner2_name ? `${q.partner1_name} & ${q.partner2_name}` : q.partner1_name} — Boticia`
-  );
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${date}T${startTime}/${date}T${endTime}`;
+  const endTime = `${date}T${endHH}${mm}00`;
+  const clientName = q.partner2_name
+    ? `${q.partner1_name} & ${q.partner2_name}`
+    : q.partner1_name;
+  const title = `RDV ${clientName} — Boticia`;
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Boticia//FR",
+    "BEGIN:VEVENT",
+    `DTSTART:${startTime}`,
+    `DTEND:${endTime}`,
+    `SUMMARY:${title}`,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+  const blob = new Blob([ics], { type: "text/calendar" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+const isMeetingPast = computed(() => {
+  if (!quote.value?.meeting_date) return false;
+  const meeting = new Date(quote.value.meeting_date);
+  return meeting.getTime() < Date.now();
 });
 
 const daysToWedding = computed(() => {
@@ -883,6 +974,7 @@ const statusDotColor = (status: string) => {
   const map: Record<string, string> = {
     new: "bg-yellow-500",
     contacted: "bg-blue-500",
+    moodboard_sent: "bg-fuchsia-500",
     quote_sent: "bg-gray-500",
     signed: "bg-green-500",
     completed: "bg-green-700",
@@ -898,7 +990,10 @@ const copilotInsight = computed(() => {
 
   const s = q.status;
   const now = new Date();
-  const g = { greeting: copilotGreeting.value, name: copilotName.value, partner1: q.partner1_name, partner2: q.partner2_name };
+  const coupleName = q.partner2_name
+    ? `${q.partner1_name} & ${q.partner2_name}`
+    : q.partner1_name;
+  const g = { greeting: copilotGreeting.value, name: copilotName.value, couple: coupleName };
   const meetingDate = q.meeting_date ? new Date(q.meeting_date) : null;
   const weddingDate = q.wedding_date ? new Date(q.wedding_date) : null;
   const daysToWedding = weddingDate
@@ -982,6 +1077,19 @@ const copilotInsight = computed(() => {
           label: t("dashboard.copilot_action_status"),
           section: "project",
           icon: "Flag",
+        },
+      ],
+    };
+  }
+
+  if (s === "moodboard_sent") {
+    return {
+      message: t("dashboard.copilot_moodboard_sent", g),
+      actions: [
+        {
+          label: t("dashboard.copilot_action_proposal"),
+          section: "project",
+          icon: "FileText",
         },
       ],
     };
@@ -1077,38 +1185,16 @@ const handleCopilotAction = (action: { section?: string; action?: string }) => {
 };
 
 const displayedText = ref("");
-const displayedLinkText = ref("");
 const isTyping = ref(true);
-const isTypingLink = ref(false);
-const LINK_TEXT = " Ajoute-le dans ton agenda \u2192";
 let typingInterval: ReturnType<typeof setInterval> | null = null;
-let linkTypingInterval: ReturnType<typeof setInterval> | null = null;
-
-const startLinkTypewriter = () => {
-  if (!quote.value?.meeting_date) return;
-  displayedLinkText.value = "";
-  isTypingLink.value = true;
-  let j = 0;
-  linkTypingInterval = setInterval(() => {
-    displayedLinkText.value = LINK_TEXT.slice(0, ++j);
-    if (j >= LINK_TEXT.length) {
-      clearInterval(linkTypingInterval!);
-      linkTypingInterval = null;
-      isTypingLink.value = false;
-    }
-  }, 12);
-};
 
 watch(
   () => copilotInsight.value.message,
   (fullText) => {
     if (!fullText) return;
     if (typingInterval) clearInterval(typingInterval);
-    if (linkTypingInterval) clearInterval(linkTypingInterval);
     displayedText.value = "";
-    displayedLinkText.value = "";
     isTyping.value = true;
-    isTypingLink.value = false;
     let i = 0;
     typingInterval = setInterval(() => {
       displayedText.value = fullText.slice(0, ++i);
@@ -1116,7 +1202,6 @@ watch(
         clearInterval(typingInterval!);
         typingInterval = null;
         isTyping.value = false;
-        startLinkTypewriter();
       }
     }, 12);
   },
@@ -1127,6 +1212,7 @@ const statusIcon = (status: string) => {
   const map: Record<string, string> = {
     new: "Sparkles",
     contacted: "Phone",
+    moodboard_sent: "Palette",
     quote_sent: "Send",
     signed: "BadgeCheck",
     completed: "CheckCircle",
@@ -1139,6 +1225,7 @@ const statusIconBg = (status: string) => {
   const map: Record<string, string> = {
     new: "bg-yellow-500",
     contacted: "bg-blue-500",
+    moodboard_sent: "bg-fuchsia-500",
     quote_sent: "bg-gray-500",
     signed: "bg-green-500",
     completed: "bg-green-700",
@@ -1159,6 +1246,10 @@ const statusOptions = computed(() => [
   {
     label: t("dashboard.quote_status_contacted"),
     value: "contacted",
+  },
+  {
+    label: t("dashboard.quote_status_moodboard_sent"),
+    value: "moodboard_sent",
   },
   {
     label: t("dashboard.quote_status_quote_sent"),
@@ -1184,6 +1275,7 @@ const activityIcon = (action: string) => {
     meeting_scheduled: "CalendarCheck",
     portal_toggled: "UserCheck",
     moodboard_added: "ImagePlus",
+    moodboard_removed: "Trash2",
     proposal_created: "FileText",
   };
   return map[action] || "Clock";
@@ -1206,6 +1298,10 @@ const activityLabel = (entry: QuoteActivityLog) => {
         : t("dashboard.portal_desc_off");
     case "moodboard_added":
       return t("dashboard.moodboard_add_file");
+    case "moodboard_removed":
+      return d.filename
+        ? `${t("dashboard.moodboard_removed")}: ${d.filename}`
+        : t("dashboard.moodboard_removed");
     case "proposal_created":
       return d.title || t("dashboard.proposal_created");
     case "note_added":
@@ -1317,7 +1413,81 @@ const handleMoodboardFileChange = async (event: Event) => {
   input.value = "";
 };
 
+// Send moodboard: change status + log activity
+const handleSendMoodboard = async () => {
+  if (!quote.value || moodboardItems.value.length === 0) return;
+  sendingMoodboard.value = true;
+  try {
+    await adminFetch(`/api/quotes/${quoteId}`, {
+      method: "PATCH",
+      body: { status: "moodboard_sent" },
+    });
+    quote.value.status = "moodboard_sent" as any;
+    fetchActivityLog();
+  } catch (err) {
+    console.error("Error sending moodboard:", err);
+  } finally {
+    sendingMoodboard.value = false;
+  }
+};
+
+// Send proposal: change status + log activity
+const handleSendProposal = async () => {
+  if (!quote.value || proposals.value.length === 0) return;
+  sendingProposal.value = true;
+  try {
+    await adminFetch(`/api/quotes/${quoteId}`, {
+      method: "PATCH",
+      body: { status: "quote_sent" },
+    });
+    quote.value.status = "quote_sent" as any;
+    fetchActivityLog();
+  } catch (err) {
+    console.error("Error sending proposal:", err);
+  } finally {
+    sendingProposal.value = false;
+  }
+};
+
+// Proposal PDF upload from compose bar
+const triggerProposalUpload = () => {
+  proposalFileInput.value?.click();
+};
+
+const handleProposalFileChange = async (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file || !quote.value) return;
+  uploadingProposal.value = true;
+  try {
+    const formData = new FormData();
+    formData.append("title", file.name.replace(/\.pdf$/i, ""));
+    formData.append("description", "");
+    formData.append("status", "pending");
+    formData.append("file", file);
+
+    const res = await adminFetch<{
+      success: boolean;
+      data: ProjectProposal;
+    }>(`/api/admin/proposals/${quoteId}`, {
+      method: "POST",
+      body: formData,
+    });
+    if (res.data) {
+      proposals.value.unshift(res.data);
+    }
+  } catch (err) {
+    console.error("Error uploading proposal:", err);
+  } finally {
+    uploadingProposal.value = false;
+    input.value = "";
+  }
+};
+
 // Fetch quote by ID
+const loading = ref(true);
+const fetchError = ref(false);
+
 const fetchQuote = async () => {
   loading.value = true;
   fetchError.value = false;
@@ -1342,6 +1512,10 @@ const fetchQuote = async () => {
     loading.value = false;
   }
 };
+
+onMounted(() => {
+  fetchQuote();
+});
 
 // Update status
 const onStatusChange = async (newStatus: string | number) => {
@@ -1502,6 +1676,14 @@ const handleMoodboardUpload = async (file: File) => {
     });
     if (res.data) {
       moodboardItems.value.push(res.data);
+      // Reset status if moodboard was already sent (content changed)
+      if (quote.value?.status === "moodboard_sent") {
+        await adminFetch(`/api/quotes/${quoteId}`, {
+          method: "PATCH",
+          body: { status: "contacted" },
+        });
+        quote.value.status = "contacted" as any;
+      }
     }
   } catch (err) {
     console.error("Error uploading moodboard:", err);
@@ -1544,6 +1726,18 @@ const handleMoodboardDelete = async (id: string) => {
     moodboardItems.value = moodboardItems.value.filter(
       (i) => i.id !== id
     );
+    // Reset status if moodboard was already sent
+    if (
+      quote.value?.status === "moodboard_sent" &&
+      moodboardItems.value.length === 0
+    ) {
+      await adminFetch(`/api/quotes/${quoteId}`, {
+        method: "PATCH",
+        body: { status: "contacted" },
+      });
+      quote.value.status = "contacted" as any;
+    }
+    fetchActivityLog();
   } catch (err) {
     console.error("Error deleting moodboard item:", err);
   }
@@ -1626,13 +1820,8 @@ const formatDateTime = (dateStr: string) => {
   });
 };
 
-onMounted(() => {
-  fetchQuote();
-});
-
 onUnmounted(() => {
   if (typingInterval) clearInterval(typingInterval);
-  if (linkTypingInterval) clearInterval(linkTypingInterval);
 });
 
 useHead({
