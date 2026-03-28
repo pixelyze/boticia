@@ -39,9 +39,10 @@
         :modules="[Navigation]"
         :slides-per-view="1.3"
         :space-between="12"
+        :slides-per-group="1"
         :breakpoints="{
-          640: { slidesPerView: 2.5, spaceBetween: 16 },
-          1024: { slidesPerView: 3.5, spaceBetween: 16 },
+          640: { slidesPerView: 2.5, spaceBetween: 16, slidesPerGroup: 2 },
+          1024: { slidesPerView: 3.5, spaceBetween: 16, slidesPerGroup: 3 },
         }"
         :navigation="{
           prevEl: prevBtn,

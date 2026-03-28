@@ -10,5 +10,6 @@ export default defineVitestConfig({
     },
     globals: true,
     include: ["tests/**/*.test.ts"],
+    exclude: ["tests/e2e/**"],
   },
 });
