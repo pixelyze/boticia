@@ -161,6 +161,16 @@
       <!-- Availability -->
       <AvailabilityManager />
 
+      <!-- Guide -->
+      <NuxtLink
+        :to="localePath('/dashboard/guide')"
+        @click="menuOpen = false"
+        class="w-full flex items-center gap-3 px-5 py-3 text-sm text-dark/60 hover:text-dark hover:bg-cream/50 transition-colors rounded-xl border-2 border-dark/10"
+      >
+        <IconLucid name="HelpCircle" size="sm" :strokeWidth="2" />
+        {{ $t('dashboard.guide') }}
+      </NuxtLink>
+
       <!-- Sign out -->
       <button
         @click="handleSignOut"

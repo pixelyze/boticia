@@ -682,7 +682,8 @@
     "timeline_note_delete_confirm": "Supprimer cette note ?",
     "timeline_note_edit_placeholder": "Modifier la note...",
     "project_view_title": "Fiche projet",
-    "copilot_add_calendar": "Ajouter à l'agenda"
+    "copilot_add_calendar": "Ajouter à l'agenda",
+    "guide": "Guide du dashboard"
   },
   "client": {
     "page_title": "Mon projet",

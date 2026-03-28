@@ -682,7 +682,8 @@
     "timeline_note_delete_confirm": "このメモを削除しますか？",
     "timeline_note_edit_placeholder": "メモを編集...",
     "project_view_title": "プロジェクト詳細",
-    "copilot_add_calendar": "カレンダーに追加"
+    "copilot_add_calendar": "カレンダーに追加",
+    "guide": "ダッシュボードガイド"
   },
   "client": {
     "page_title": "マイプロジェクト",
