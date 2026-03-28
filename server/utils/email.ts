@@ -225,3 +225,28 @@ export async function sendFeedbackNotification(data: {
     html,
   });
 }
+
+/**
+ * Notify dev team of new chat message from admin
+ */
+export async function sendChatNotification(data: {
+  senderName: string;
+  message: string;
+  chatUrl: string;
+}): Promise<boolean> {
+  const html = renderWelcome({
+    logoUrl: LOGO_URL,
+    title: "Nouveau message",
+    greeting: `${data.senderName} vous a écrit :`,
+    message: `<em>"${data.message.replace(/\n/g, "<br/>")}"</em>`,
+    ctaText: "Répondre dans le chat",
+    ctaUrl: data.chatUrl,
+    footerText: "Boticia — Chat support",
+  });
+
+  return sendEmail({
+    to: DEV_EMAIL,
+    subject: `[Boticia Chat] Message de ${data.senderName}`,
+    html,
+  });
+}

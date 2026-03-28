@@ -5,6 +5,7 @@
 import { getAuthenticatedUser } from "~/server/utils/serverAuth";
 import { isAdmin } from "~/server/utils/adminAuth";
 import { getSupabase } from "~/server/utils/supabase";
+import { sendChatNotification } from "~/server/utils/email";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<{
@@ -51,6 +52,17 @@ export default defineEventHandler(async (event) => {
       .single();
 
     if (error) throw error;
+
+    // Notify dev team by email when admin sends a message
+    if (senderType === "admin") {
+      const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
+      const chatUrl = `${siteUrl}/dev/chat?token=${config.cronSecret}`;
+      sendChatNotification({
+        senderName: senderName,
+        message: body.message.trim(),
+        chatUrl,
+      }).catch((err) => console.error("Error sending chat notification:", err));
+    }
 
     return { success: true, data };
   } catch (err) {
