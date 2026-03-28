@@ -143,9 +143,20 @@ definePageMeta({
   pageTransition: false,
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const config = useRuntimeConfig();
+const route = useRoute();
 const siteUrl = config.public.siteUrl;
+
+useSeoMeta({
+  ogTitle: `${t("hero.title")} | Boticia Côte d'Azur`,
+  ogDescription: t("hero.subtitle"),
+  ogUrl: `${config.public.siteUrl}${route.fullPath}`,
+  ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
+  ogType: "website",
+  twitterTitle: `${t("hero.title")} | Boticia Côte d'Azur`,
+  twitterDescription: t("hero.subtitle"),
+});
 
 useHead({
   title: `${t("hero.title")} | Boticia Côte d'Azur`,

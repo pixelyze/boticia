@@ -116,6 +116,66 @@
       </div>
     </section>
 
+    <!-- Pourquoi nous choisir -->
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-14">
+          <span class="section-tagline">{{ $t("events.why_tagline") }}</span>
+          <h2 class="section-title-lg">{{ $t("events.why_title") }}</h2>
+        </div>
+        <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div
+            v-for="reason in reasons"
+            :key="reason.icon"
+            class="bg-cream-light rounded-2xl px-6 py-6"
+          >
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-4">
+              <IconLucid :name="reason.icon" size="sm" :stroke-width="1.5" class="text-dark" />
+            </div>
+            <h3 class="font-heading text-lg text-dark mb-2">{{ reason.title }}</h3>
+            <p class="text-dark/60 leading-relaxed">{{ reason.desc }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ événements -->
+    <section class="py-16 md:py-24 bg-cream-light">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-14">
+          <span class="section-tagline">{{ $t("events.faq_tagline") }}</span>
+          <h2 class="section-title-lg">{{ $t("events.faq_title") }}</h2>
+        </div>
+        <div class="max-w-3xl mx-auto space-y-0">
+          <div
+            v-for="(faq, i) in faqs"
+            :key="i"
+            class="border-t border-dark/10"
+            :class="{ 'border-b': i === faqs.length - 1 }"
+          >
+            <button
+              class="w-full text-left py-5 flex justify-between items-center group"
+              @click="openFaq === i ? openFaq = null : openFaq = i"
+            >
+              <span class="font-heading text-dark/80 text-lg pr-8 group-hover:text-dark transition-colors">
+                {{ faq.q }}
+              </span>
+              <IconLucid
+                :name="openFaq === i ? 'Minus' : 'Plus'"
+                size="sm"
+                class="text-dark/30 shrink-0"
+              />
+            </button>
+            <div v-if="openFaq === i" class="pb-5">
+              <p class="text-dark/55 text-base leading-relaxed max-w-2xl">
+                {{ faq.a }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA -->
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6 text-center">
@@ -141,8 +201,20 @@ definePageMeta({
   pageTransition: false,
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
+const config = useRuntimeConfig();
+const route = useRoute();
+
+useSeoMeta({
+  ogTitle: `${t("events.title")} | Boticia Côte d'Azur`,
+  ogDescription: t("events.intro"),
+  ogUrl: `${config.public.siteUrl}${route.fullPath}`,
+  ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
+  ogType: "website",
+  twitterTitle: `${t("events.title")} | Boticia Côte d'Azur`,
+  twitterDescription: t("events.intro"),
+});
 
 useHead({
   title: t("events.title") + " | Boticia Côte d'Azur",
@@ -177,6 +249,47 @@ useHead({
         },
       }),
     },
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": t("events.faq_1_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("events.faq_1_a"),
+            },
+          },
+          {
+            "@type": "Question",
+            "name": t("events.faq_2_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("events.faq_2_a"),
+            },
+          },
+          {
+            "@type": "Question",
+            "name": t("events.faq_3_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("events.faq_3_a"),
+            },
+          },
+          {
+            "@type": "Question",
+            "name": t("events.faq_4_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("events.faq_4_a"),
+            },
+          },
+        ],
+      }),
+    },
   ],
 });
 
@@ -202,6 +315,22 @@ const services = computed(() => [
     desc: t("events.service_4_desc"),
   },
 ]);
+
+const reasons = computed(() => [
+  { icon: "Palette", title: t("events.why_1_title"), desc: t("events.why_1_desc") },
+  { icon: "Leaf", title: t("events.why_2_title"), desc: t("events.why_2_desc") },
+  { icon: "Users", title: t("events.why_3_title"), desc: t("events.why_3_desc") },
+  { icon: "Clock", title: t("events.why_4_title"), desc: t("events.why_4_desc") },
+]);
+
+const faqs = computed(() => [
+  { q: t("events.faq_1_q"), a: t("events.faq_1_a") },
+  { q: t("events.faq_2_q"), a: t("events.faq_2_a") },
+  { q: t("events.faq_3_q"), a: t("events.faq_3_a") },
+  { q: t("events.faq_4_q"), a: t("events.faq_4_a") },
+]);
+
+const openFaq = ref(null);
 
 const philosophyImage = "/images/events/scenographie-florale-boticia.jpg";
 
