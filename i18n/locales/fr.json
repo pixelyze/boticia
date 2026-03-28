@@ -865,7 +865,7 @@
     "step1_title": "Le client soumet une demande",
     "step1_action": "Le client remplit le formulaire sur la page mariages, événements ou ateliers.",
     "step1_h1": "Une fiche devis est créée dans la base (statut : Nouveau)",
-    "step1_h2": "Un email de notification est envoyé à laetitia@boticia.fr",
+    "step1_h2": "Un email de notification est envoyé à laetitia{'@'}boticia.fr",
     "step1_h3": "Le devis apparaît dans le pipeline du dashboard",
     "step1_email_subject": "Nouvelle demande de [Nom] — Boticia",
     "step1_client": "Page de confirmation. Pas d'email de confirmation côté client.",

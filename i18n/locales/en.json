@@ -865,7 +865,7 @@
     "step1_title": "Client submits a request",
     "step1_action": "Client fills the form on the weddings, events or workshops page.",
     "step1_h1": "A quote record is created (status: New)",
-    "step1_h2": "A notification email is sent to laetitia@boticia.fr",
+    "step1_h2": "A notification email is sent to laetitia{'@'}boticia.fr",
     "step1_h3": "The quote appears in the dashboard pipeline",
     "step1_email_subject": "New request from [Name] — Boticia",
     "step1_client": "Confirmation page. No confirmation email sent to client.",

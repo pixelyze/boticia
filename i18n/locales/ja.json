@@ -865,7 +865,7 @@
     "step1_title": "クライアントが依頼を送信",
     "step1_action": "クライアントがウェディング、イベント、アトリエページのフォームを送信。",
     "step1_h1": "見積レコードが作成される（ステータス：新規）",
-    "step1_h2": "laetitia@boticia.frに通知メール送信",
+    "step1_h2": "laetitia{'@'}boticia.frに通知メール送信",
     "step1_h3": "ダッシュボードのパイプラインに表示",
     "step1_email_subject": "[名前]からの新規依頼 — Boticia",
     "step1_client": "確認ページ表示。クライアントへの確認メールはなし。",
