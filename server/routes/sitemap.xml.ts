@@ -7,12 +7,12 @@ export default defineEventHandler((event) => {
     "/",
     "/about",
     "/devis",
-    "/pricing",
-    "/events",
-    "/workshops",
-    "/terms",
+    "/mariages",
+    "/evenements",
+    "/ateliers",
+    "/creations",
+    "/faq",
     "/legal",
-    "/login",
   ];
   const today = new Date().toISOString().split("T")[0];
 

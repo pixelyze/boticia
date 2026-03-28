@@ -17,4 +17,12 @@
 <script setup>
 // Initialize site theme (loads from CMS config and applies CSS variable)
 useSiteTheme();
+
+// SEO: inject lang attr, canonical URLs, and hreflang tags for every page
+const i18nHead = useLocaleHead({ addSeoAttributes: true });
+useHead({
+  htmlAttrs: computed(() => i18nHead.value.htmlAttrs),
+  link: computed(() => i18nHead.value.link),
+  meta: computed(() => i18nHead.value.meta),
+});
 </script>

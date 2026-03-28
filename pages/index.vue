@@ -148,7 +148,7 @@ const config = useRuntimeConfig();
 const siteUrl = config.public.siteUrl;
 
 useHead({
-  title: t('hero.title') + ' — Boticia',
+  title: t('hero.title') + ' | Boticia Paris',
   meta: [
     {
       key: 'description',
