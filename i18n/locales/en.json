@@ -905,5 +905,16 @@
     "email2_subject": "Your floral moodboard is ready — Boticia",
     "email3_when": "Quote sent",
     "email3_subject": "Your floral quote is available — Boticia"
+  },
+  "feedback": {
+    "button": "Feedback",
+    "title": "Send feedback",
+    "type_bug": "Bug",
+    "type_suggestion": "Suggestion",
+    "type_question": "Question",
+    "message_placeholder": "Describe your feedback...",
+    "submit": "Send",
+    "success": "Thank you for your feedback!",
+    "error": "Error sending feedback"
   }
 }

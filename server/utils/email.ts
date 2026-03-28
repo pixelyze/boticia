@@ -131,6 +131,7 @@ export async function sendProposalNotification(
 }
 
 const ADMIN_EMAIL = "laetitia@boticia.fr";
+const DEV_EMAIL = "brutalstudio.click@gmail.com";
 
 /**
  * Notify admin of a new quote request
@@ -176,6 +177,51 @@ export async function sendNewQuoteNotification(data: {
   return sendEmail({
     to: ADMIN_EMAIL,
     subject: `Nouvelle demande de ${data.coupleName} — Boticia`,
+    html,
+  });
+}
+
+/**
+ * Notify dev team of new feedback
+ */
+export async function sendFeedbackNotification(data: {
+  type: string;
+  message: string;
+  userEmail: string;
+}): Promise<boolean> {
+  const typeLabels: Record<string, string> = {
+    bug: "Bug",
+    suggestion: "Suggestion",
+    question: "Question",
+  };
+  const typeLabel = typeLabels[data.type] || data.type;
+  const date = new Date().toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const html = renderWelcome({
+    logoUrl: LOGO_URL,
+    title: `Feedback — ${typeLabel}`,
+    greeting: "Nouveau feedback reçu",
+    message:
+      `<strong>Type :</strong> ${typeLabel}<br/>` +
+      `<strong>De :</strong> ${data.userEmail}<br/>` +
+      `<strong>Date :</strong> ${date}<br/><br/>` +
+      `<strong>Message :</strong><br/>${data.message.replace(/\n/g, "<br/>")}`,
+    ctaText: "Voir le dashboard",
+    ctaUrl: process.env.NUXT_PUBLIC_SITE_URL
+      ? `${process.env.NUXT_PUBLIC_SITE_URL}/fr/dashboard`
+      : "http://localhost:3001/fr/dashboard",
+    footerText: "Boticia — Notification feedback",
+  });
+
+  return sendEmail({
+    to: DEV_EMAIL,
+    subject: `[Boticia Feedback] ${typeLabel} — de ${data.userEmail}`,
     html,
   });
 }

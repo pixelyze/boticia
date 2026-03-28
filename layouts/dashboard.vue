@@ -38,6 +38,9 @@
     </main>
     <Footer v-if="!route.params.id" />
 
+    <!-- Feedback button -->
+    <FeedbackButton />
+
     <!-- Settings modal -->
     <BaseModal
       :isOpen="menuOpen"

@@ -905,5 +905,16 @@
     "email2_subject": "Votre moodboard floral est prêt — Boticia",
     "email3_when": "Envoi du devis",
     "email3_subject": "Votre devis floral est disponible — Boticia"
+  },
+  "feedback": {
+    "button": "Feedback",
+    "title": "Envoyer un feedback",
+    "type_bug": "Bug",
+    "type_suggestion": "Suggestion",
+    "type_question": "Question",
+    "message_placeholder": "Décrivez votre retour d'expérience...",
+    "submit": "Envoyer",
+    "success": "Merci pour votre retour !",
+    "error": "Erreur lors de l'envoi"
   }
 }

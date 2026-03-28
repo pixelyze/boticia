@@ -905,5 +905,16 @@
     "email2_subject": "フラワームードボードが完成しました — Boticia",
     "email3_when": "見積送信",
     "email3_subject": "フラワー見積書をご確認ください — Boticia"
+  },
+  "feedback": {
+    "button": "フィードバック",
+    "title": "フィードバックを送信",
+    "type_bug": "バグ",
+    "type_suggestion": "提案",
+    "type_question": "質問",
+    "message_placeholder": "フィードバックを入力...",
+    "submit": "送信",
+    "success": "フィードバックありがとうございます！",
+    "error": "送信エラー"
   }
 }
