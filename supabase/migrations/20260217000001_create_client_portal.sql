@@ -14,7 +14,7 @@ ALTER TABLE quote_requests
 -- TABLE: client_inspirations
 -- ========================================
 CREATE TABLE IF NOT EXISTS client_inspirations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Relation
   quote_id UUID NOT NULL REFERENCES quote_requests(id) ON DELETE CASCADE,
@@ -48,7 +48,7 @@ CREATE TRIGGER set_client_inspirations_updated_at
 -- TABLE: project_moodboard_items
 -- ========================================
 CREATE TABLE IF NOT EXISTS project_moodboard_items (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Relation
   quote_id UUID NOT NULL REFERENCES quote_requests(id) ON DELETE CASCADE,
@@ -90,7 +90,7 @@ CREATE TRIGGER set_project_moodboard_items_updated_at
 -- TABLE: project_proposals
 -- ========================================
 CREATE TABLE IF NOT EXISTS project_proposals (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Relation
   quote_id UUID NOT NULL REFERENCES quote_requests(id) ON DELETE CASCADE,

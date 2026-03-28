@@ -12,7 +12,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ========================================
 -- Gère les pages du site (homepage, about, etc.)
 CREATE TABLE IF NOT EXISTS cms_pages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Identification
   slug TEXT NOT NULL UNIQUE,
@@ -55,7 +55,7 @@ CREATE INDEX idx_cms_pages_published_at ON cms_pages(published_at);
 -- ========================================
 -- Sections de contenu dans les pages (Hero, Features, Pricing, etc.)
 CREATE TABLE IF NOT EXISTS cms_sections (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Relations
   page_id UUID NOT NULL REFERENCES cms_pages(id) ON DELETE CASCADE,
@@ -90,7 +90,7 @@ CREATE INDEX idx_cms_sections_content_gin ON cms_sections USING GIN (content);
 -- ========================================
 -- Composants réutilisables (boutons, cartes, etc.)
 CREATE TABLE IF NOT EXISTS cms_components (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Identification
   name TEXT NOT NULL UNIQUE,
@@ -126,7 +126,7 @@ CREATE INDEX idx_cms_components_category ON cms_components(category);
 -- ========================================
 -- Configuration globale du site (footer, navbar, etc.)
 CREATE TABLE IF NOT EXISTS cms_config (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Identification
   key TEXT NOT NULL UNIQUE,
@@ -157,7 +157,7 @@ CREATE INDEX idx_cms_config_locale ON cms_config(locale);
 -- ========================================
 -- Gestion des médias (images, vidéos, etc.)
 CREATE TABLE IF NOT EXISTS cms_media (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Fichier
   filename TEXT NOT NULL,
@@ -197,7 +197,7 @@ CREATE INDEX idx_cms_media_uploaded_by ON cms_media(uploaded_by);
 -- ========================================
 -- Historique des modifications pour audit
 CREATE TABLE IF NOT EXISTS cms_history (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   -- Référence
   entity_type TEXT NOT NULL, -- 'page', 'section', 'component', 'config'

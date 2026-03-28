@@ -8,7 +8,7 @@
 -- ========================================
 -- Règles récurrentes (ex: lundi 10h-18h, créneaux de 2h)
 CREATE TABLE IF NOT EXISTS availability_rules (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   day_of_week INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
   start_time VARCHAR(5) NOT NULL, -- "HH:MM"
@@ -30,7 +30,7 @@ CREATE TRIGGER set_availability_rules_updated_at
 -- ========================================
 -- Exceptions ponctuelles (bloquer un jour, ajouter un créneau)
 CREATE TABLE IF NOT EXISTS availability_exceptions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
   exception_date DATE NOT NULL,
   exception_type TEXT NOT NULL CHECK (exception_type IN ('block', 'add')),

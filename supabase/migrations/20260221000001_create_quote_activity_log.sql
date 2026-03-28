@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS quote_activity_log (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   quote_id UUID NOT NULL REFERENCES quote_requests(id) ON DELETE CASCADE,
   action TEXT NOT NULL,
   details JSONB DEFAULT '{}',
