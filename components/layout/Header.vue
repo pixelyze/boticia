@@ -36,12 +36,12 @@
             <NuxtLink :to="localePath('/')" class="text-center">
               <span
                 class="font-heading font-medium tracking-tight text-dark transition-all duration-500 block"
-                :class="scrolled ? 'text-2xl' : 'text-3xl md:text-4xl'"
+                :class="scrolled ? 'text-xl md:text-2xl' : 'text-xl md:text-4xl'"
               >
                 Boticia
               </span>
               <p
-                class="text-dark/60 transition-all duration-500"
+                class="text-dark/60 transition-all duration-500 hidden md:block"
                 :class="scrolled ? 'text-sm mt-0.5' : 'text-base mt-1'"
               >
                 {{ t("app.tagline") }}
@@ -68,7 +68,7 @@
           <!-- Mobile menu button -->
           <button
             ref="hamburgerBtn"
-            class="md:hidden p-2"
+            class="md:hidden w-10 h-10 rounded-full bg-dark/5 flex items-center justify-center hover:bg-dark/10 transition-colors"
             @click="openMobileMenu"
             :aria-label="t('common.menu')"
             :aria-expanded="mobileMenuOpen"

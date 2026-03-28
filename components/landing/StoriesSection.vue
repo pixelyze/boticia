@@ -50,6 +50,8 @@
         }"
         @swiper="onSwiper"
         @slide-change="onSlideChange"
+        @touch-start="isSwiping = false"
+        @touch-move="isSwiping = true"
       >
         <SwiperSlide
           v-for="(story, i) in stories"
@@ -57,7 +59,7 @@
         >
           <button
             class="group text-left w-full cursor-pointer"
-            @click="onStoryClick(story)"
+            @click="!isSwiping && onStoryClick(story)"
           >
             <div
               class="relative w-full h-72 md:h-96 rounded-[1.5rem]
@@ -133,6 +135,7 @@ const isEnd = ref(false);
 const progressWidth = ref('15%');
 
 let swiperInstance = null;
+const isSwiping = ref(false);
 
 const updateProgress = (swiper) => {
   const total = swiper.slides.length;
