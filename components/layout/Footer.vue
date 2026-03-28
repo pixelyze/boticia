@@ -5,9 +5,9 @@
       <div class="max-w-2xl mx-auto text-center">
         <!-- Logo -->
         <NuxtLink v-if="!isHomePage" :to="localePath('/')" aria-label="Back to home">
-          <img :src="logo" alt="Boticia" class="h-24 mx-auto mb-6" />
+          <img :src="logo" alt="Boticia" loading="lazy" width="96" height="96" class="h-24 mx-auto mb-6" />
         </NuxtLink>
-        <img v-else :src="logo" alt="Boticia" class="h-24 mx-auto mb-6" />
+        <img v-else :src="logo" alt="Boticia" loading="lazy" width="96" height="96" class="h-24 mx-auto mb-6" />
 
         <span class="font-heading text-2xl text-dark">Boticia</span>
 

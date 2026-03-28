@@ -69,6 +69,9 @@
                 v-if="story.image"
                 :src="story.image"
                 :alt="story.label"
+                loading="lazy"
+                width="600"
+                height="900"
                 class="absolute inset-0 w-full h-full object-cover
                        group-hover:scale-105 transition-transform
                        duration-500"

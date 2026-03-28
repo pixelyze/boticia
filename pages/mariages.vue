@@ -137,6 +137,7 @@
               <img
                 :src="img.public_url"
                 :alt="img.caption || ''"
+                loading="lazy"
                 class="absolute inset-0 w-full h-full
                        object-cover group-hover:scale-105
                        transition-transform duration-500"
@@ -223,6 +224,78 @@ const localePath = useLocalePath();
 useHead({
   title: t("weddings.title") + " | Boticia Côte d'Azur",
   meta: [{ name: "description", content: t("weddings.intro") }],
+  script: [
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Décoration florale de mariage",
+        "description": t("weddings.intro"),
+        "provider": {
+          "@type": "Florist",
+          "name": "Boticia",
+          "url": "https://boticia.fr",
+        },
+        "serviceType": "Wedding Floral Decoration",
+        "areaServed": {
+          "@type": "State",
+          "name": "Provence-Alpes-Côte d'Azur",
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Prestations mariage",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bouquet de mariée" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Décoration de cérémonie" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Décoration de réception" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Accessoires floraux" } },
+          ],
+        },
+      }),
+    },
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": t("weddings.faq_1_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("weddings.faq_1_a"),
+            },
+          },
+          {
+            "@type": "Question",
+            "name": t("weddings.faq_2_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("weddings.faq_2_a"),
+            },
+          },
+          {
+            "@type": "Question",
+            "name": t("weddings.faq_3_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("weddings.faq_3_a"),
+            },
+          },
+          {
+            "@type": "Question",
+            "name": t("weddings.faq_4_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("weddings.faq_4_a"),
+            },
+          },
+        ],
+      }),
+    },
+  ],
 });
 
 const steps = computed(() => [

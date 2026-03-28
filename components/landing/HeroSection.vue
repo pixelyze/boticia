@@ -7,6 +7,9 @@
           <img
             :src="logo"
             alt="Boticia"
+            fetchpriority="high"
+            width="288"
+            height="288"
             class="h-36 md:h-64 lg:h-72 w-auto"
           />
         </div>

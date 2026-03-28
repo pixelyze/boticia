@@ -60,6 +60,7 @@
             <img
               :src="philosophyImage"
               :alt="$t('events.philosophy_title')"
+              loading="lazy"
               class="absolute inset-0 w-full h-full object-cover"
             />
           </div>
@@ -146,6 +147,37 @@ const localePath = useLocalePath();
 useHead({
   title: t("events.title") + " | Boticia Côte d'Azur",
   meta: [{ name: "description", content: t("events.intro") }],
+  script: [
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Scénographie florale événementielle",
+        "description": t("events.intro"),
+        "provider": {
+          "@type": "Florist",
+          "name": "Boticia",
+          "url": "https://boticia.fr",
+        },
+        "serviceType": "Event Floral Design",
+        "areaServed": {
+          "@type": "State",
+          "name": "Provence-Alpes-Côte d'Azur",
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Prestations événementielles",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Scénographie florale" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Décor corporate" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Corner floral" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Shootings & set design" } },
+          ],
+        },
+      }),
+    },
+  ],
 });
 
 const services = computed(() => [
