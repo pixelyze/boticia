@@ -32,7 +32,7 @@
   "hero": {
     "tagline": "Créatrice d'ambiance florale",
     "title": "Fleuriste mariage & événements — art floral sur mesure",
-    "subtitle": "Laëtitia Schaeffer, fleuriste créatrice à Paris. Bouquets, décoration de cérémonie et scénographie florale.",
+    "subtitle": "Laëtitia Schaeffer, fleuriste créatrice sur la Côte d'Azur. Bouquets, décoration de cérémonie et scénographie florale.",
     "services": "Mariages, événements et ateliers",
     "cta_primary": "Découvrir",
     "cta_secondary": "Nous contacter",
@@ -42,7 +42,7 @@
   "intro": {
     "tagline": "Notre univers",
     "title": "L'art floral, une histoire de passion",
-    "description": "Depuis son atelier parisien, Laëtitia Schaeffer imagine et compose des créations florales uniques. Chaque projet est une rencontre, chaque bouquet raconte une histoire. Avec Boticia, vos événements prennent vie à travers les fleurs.",
+    "description": "Depuis son atelier sur la Côte d'Azur, Laëtitia Schaeffer imagine et compose des créations florales uniques. Chaque projet est une rencontre, chaque bouquet raconte une histoire. Avec Boticia, vos événements prennent vie à travers les fleurs.",
     "cta": "Découvrir nos créations"
   },
   "creations": {
@@ -209,7 +209,7 @@
     "q4": "Comment se déroule une première consultation ?",
     "a4": "Contactez-nous par email ou téléphone. Nous échangeons sur votre projet, vos envies et votre budget lors d'un premier rendez-vous gratuit et sans engagement.",
     "q5": "Où et comment les créations sont-elles réalisées ?",
-    "a5": "Les compositions sont assemblées à la commande dans notre atelier en région parisienne, avec le plus grand soin.",
+    "a5": "Les compositions sont assemblées à la commande dans notre atelier sur la Côte d'Azur, avec le plus grand soin.",
     "q6": "Quelle est la durée de vie d'un bouquet de fleurs séchées ?",
     "a6": "Les fleurs séchées restent intactes plusieurs mois, voire plusieurs années, à condition de les conserver à l'abri du soleil et de l'humidité.",
     "q7": "Proposez-vous une offre mariage ?",
@@ -766,7 +766,7 @@
     "slot_hours": "{start} - {end}"
   },
   "seo": {
-    "home_description": "Boticia — Art floral sur mesure par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court, de Paris à la Côte d'Azur.",
+    "home_description": "Boticia — Art floral sur mesure par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court, sur la Côte d'Azur et dans toute la France.",
     "about_description": "Découvrez Laëtitia Schaeffer, créatrice florale passionnée, fondatrice de Boticia. Compositions sur mesure, fleurs françaises en circuit court et accompagnement bienveillant.",
     "devis_description": "Demandez un devis personnalisé pour votre décoration florale de mariage avec Boticia. Bouquets, arches, centres de table et scénographie complète.",
     "legal_description": "Mentions légales de Boticia, atelier de design floral par Laëtitia Schaeffer.",

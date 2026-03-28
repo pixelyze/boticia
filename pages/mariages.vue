@@ -133,7 +133,7 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 
 useHead({
-  title: t("weddings.title") + " | Boticia Paris",
+  title: t("weddings.title") + " | Boticia Côte d'Azur",
   meta: [{ name: "description", content: t("weddings.intro") }],
 });
 

@@ -148,7 +148,7 @@ const config = useRuntimeConfig();
 const siteUrl = config.public.siteUrl;
 
 useHead({
-  title: t('hero.title') + ' | Boticia Paris',
+  title: t('hero.title') + ' | Boticia Côte d'Azur',
   meta: [
     {
       key: 'description',
@@ -184,13 +184,13 @@ useHead({
         image: `${siteUrl}/logo-boticia.png`,
         address: {
           '@type': 'PostalAddress',
-          addressLocality: 'Paris',
+          addressRegion: "Côte d'Azur",
           addressCountry: 'FR',
         },
-        areaServed: {
-          '@type': 'Country',
-          name: 'France',
-        },
+        areaServed: [
+          { '@type': 'State', name: "Provence-Alpes-Côte d'Azur" },
+          { '@type': 'Country', name: 'France' },
+        ],
       }),
     },
   ],
