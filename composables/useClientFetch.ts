@@ -3,7 +3,7 @@
  * Ajoute automatiquement le token JWT Supabase aux requetes
  */
 export const useClientFetch = () => {
-  const client = useSupabaseClient();
+  const session = useSupabaseSession();
 
   /**
    * Fetch avec authentification client
@@ -13,17 +13,15 @@ export const useClientFetch = () => {
     url: string,
     options: Parameters<typeof $fetch>[1] = {}
   ): Promise<T> => {
-    const {
-      data: { session },
-    } = await client.auth.getSession();
+    const token = session.value?.access_token;
 
-    if (!session?.access_token) {
+    if (!token) {
       throw new Error("Non authentifie");
     }
 
     const headers = {
       ...options.headers,
-      Authorization: `Bearer ${session.access_token}`,
+      Authorization: `Bearer ${token}`,
     };
 
     return $fetch<T>(url, {

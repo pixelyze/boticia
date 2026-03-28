@@ -54,8 +54,11 @@
     <!-- A la carte -->
     <AlaCarteSection />
 
-    <!-- Inspirations gallery -->
-    <section class="py-16 md:py-24 bg-white">
+    <!-- Wedding gallery -->
+    <section
+      v-if="galleryImages.length > 0"
+      class="py-16 md:py-24 bg-white"
+    >
       <div class="container mx-auto px-6">
         <div class="text-center mb-12">
           <span class="section-tagline">
@@ -66,35 +69,27 @@
           </h2>
         </div>
 
-        <div v-if="categories.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div
+          class="grid grid-cols-2 md:grid-cols-3 gap-4
+                 max-w-4xl mx-auto"
+        >
           <button
-            v-for="cat in categories"
-            :key="cat.id"
+            v-for="(img, i) in galleryImages"
+            :key="img.id"
             class="group cursor-pointer"
-            @click="openLightbox(cat)"
+            @click="openLightbox(i)"
           >
             <div
-              class="relative w-full h-48 md:h-64 rounded-[1.5rem]
-                     overflow-hidden"
+              class="relative w-full h-48 md:h-64
+                     rounded-[1.5rem] overflow-hidden"
             >
               <img
-                v-if="cat.cover_public_url"
-                :src="cat.cover_public_url"
-                :alt="$t('stories.' + cat.slug)"
-                class="absolute inset-0 w-full h-full object-cover
-                       group-hover:scale-105 transition-transform
-                       duration-500"
+                :src="img.public_url"
+                :alt="img.caption || ''"
+                class="absolute inset-0 w-full h-full
+                       object-cover group-hover:scale-105
+                       transition-transform duration-500"
               />
-              <div
-                v-else
-                class="absolute inset-0 bg-gradient-to-br from-cream to-dark/15"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
-              <div class="absolute bottom-0 inset-x-0 p-4">
-                <span class="text-cream text-sm font-semibold">
-                  {{ $t("stories." + cat.slug) }}
-                </span>
-              </div>
             </div>
           </button>
         </div>
@@ -118,8 +113,9 @@
 
     <GalleryLightbox
       :is-open="lightboxOpen"
-      :category-slug="lightboxSlug"
-      :category-id="lightboxCategoryId"
+      :items="galleryImages"
+      :title="$t('weddings.gallery_title')"
+      :start-index="lightboxIndex"
       @close="lightboxOpen = false"
     />
   </div>
@@ -159,19 +155,19 @@ const steps = computed(() => [
   },
 ]);
 
-const categories = ref([]);
+const galleryImages = ref([]);
 const lightboxOpen = ref(false);
-const lightboxSlug = ref("");
-const lightboxCategoryId = ref("");
+const lightboxIndex = ref(0);
 
-const openLightbox = (cat) => {
-  lightboxSlug.value = cat.slug;
-  lightboxCategoryId.value = cat.id;
+const openLightbox = (index) => {
+  lightboxIndex.value = index;
   lightboxOpen.value = true;
 };
 
-const { data: apiData } = await useFetch("/api/inspirations/homepage");
-if (apiData.value?.data) {
-  categories.value = apiData.value.data;
+const { data: galleryData } = await useFetch(
+  "/api/galleries/wedding"
+);
+if (galleryData.value?.data) {
+  galleryImages.value = galleryData.value.data;
 }
 </script>

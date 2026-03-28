@@ -42,12 +42,14 @@ interface Props {
   required?: boolean;
   disabled?: boolean;
   optional?: string;
+  variant?: 'brutal' | 'soft';
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   required: false,
-  disabled: false
+  disabled: false,
+  variant: 'brutal'
 });
 
 const emit = defineEmits<{
@@ -60,6 +62,20 @@ const inputId = computed(() => `input-${Math.random().toString(36).substr(2, 9)}
 
 // Classes du design system (copiées de espace/index.vue)
 const inputClasses = computed(() => {
+  if (props.variant === 'soft') {
+    const base = 'w-full h-12 px-4 py-3 rounded-xl border-2 bg-white focus:outline-none focus:border-dark/30 transition-all';
+
+    if (props.disabled) {
+      return `${base} border-gray-200 bg-gray-50 cursor-not-allowed opacity-60`;
+    }
+
+    if (props.error) {
+      return `${base} border-red-400`;
+    }
+
+    return `${base} border-dark/10`;
+  }
+
   const base = 'w-full h-12 px-4 py-3 border-2 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px] transition-all';
 
   if (props.disabled) {

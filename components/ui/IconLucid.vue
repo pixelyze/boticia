@@ -1,15 +1,13 @@
 <template>
-  <ClientOnly>
-    <component
-      v-if="icon"
-      :is="icon"
-      class="icon"
-      :class="[sizeClass, $attrs.class]"
-      :stroke-width="strokeWidth"
-      :stroke="color"
-      fill="none"
-    />
-  </ClientOnly>
+  <component
+    v-if="icon"
+    :is="icon"
+    class="icon"
+    :class="[sizeClass, $attrs.class]"
+    :stroke-width="strokeWidth"
+    :stroke="color"
+    fill="none"
+  />
 </template>
 
 <script setup>
@@ -62,6 +60,7 @@ import {
   Calendar,
   CalendarCheck,
   CalendarClock,
+  CalendarPlus,
   Camera,
   Phone,
   Shield,
@@ -158,6 +157,7 @@ const icons = {
   Calendar,
   CalendarCheck,
   CalendarClock,
+  CalendarPlus,
   Camera,
   Phone,
   Shield,
@@ -231,7 +231,6 @@ const props = defineProps({
 });
 
 const icon = computed(() => {
-  if (process.server) return null;
   return icons[props.name];
 });
 

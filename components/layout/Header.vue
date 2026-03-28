@@ -138,39 +138,42 @@
           </div>
 
           <!-- Navigation links -->
-          <div class="flex flex-col px-6 mt-4 gap-3">
-            <!-- CTA : Demander un devis (first for conversion) -->
+          <nav class="flex flex-col px-6 mt-8">
+            <NuxtLink
+              v-for="(link, i) in mobileNavLinks"
+              :key="link.key"
+              :to="localePath(link.to)"
+              class="flex items-center justify-between py-5 border-b border-dark/10 transition-all duration-300"
+              :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'"
+              :style="{ transitionDelay: `${i * 60}ms` }"
+              @click="closeMobileMenu"
+            >
+              <span
+                class="font-heading text-xl"
+                :class="isActivePath(link.to) ? 'text-dark' : 'text-dark/70'"
+              >
+                {{ t(link.key) }}
+              </span>
+              <IconLucid
+                name="ArrowRight"
+                size="xs"
+                class="text-dark/30"
+                :strokeWidth="1.5"
+              />
+            </NuxtLink>
+          </nav>
+
+          <!-- CTA -->
+          <div class="px-6 mt-10">
             <NuxtLink
               ref="firstMenuLink"
               :to="localePath('/devis')"
-              class="block w-full border-2 border-dark bg-dark px-6 py-5 text-base font-semibold uppercase tracking-[0.2em] text-cream text-center transition-all active:translate-x-1 active:translate-y-1 active:shadow-none"
-              :class="mobileMenuVisible ? 'opacity-100 translate-y-0 shadow-[4px_4px_0px_0px_rgba(43,43,43,0.5)]' : 'opacity-0 translate-y-4'"
-              :style="{ transitionDelay: '0ms' }"
+              class="block w-full rounded-full bg-dark px-6 py-4 text-base font-medium text-cream text-center transition-all duration-300"
+              :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'"
+              :style="{ transitionDelay: `${mobileNavLinks.length * 60}ms` }"
               @click="closeMobileMenu"
             >
               {{ t("nav.quote") }}
-            </NuxtLink>
-            <!-- Social proof -->
-            <p
-              class="text-center text-sm text-dark/50 italic -mt-1 mb-1 transition-all"
-              :class="mobileMenuVisible ? 'opacity-100' : 'opacity-0'"
-            >
-              {{ t("nav.social_proof") }}
-            </p>
-
-            <NuxtLink
-              v-for="(link, i) in navLinks"
-              :key="link.key"
-              :to="localePath(link.to)"
-              class="block w-full border-2 border-dark px-6 py-5 text-base font-semibold uppercase tracking-[0.2em] text-dark transition-all active:translate-x-1 active:translate-y-1 active:shadow-none"
-              :style="{ transitionDelay: `${(i + 1) * 50}ms` }"
-              :class="[
-                mobileMenuVisible ? 'opacity-100 translate-y-0 shadow-[4px_4px_0px_0px_rgba(43,43,43,1)]' : 'opacity-0 translate-y-4',
-                isActivePath(link.to) ? 'bg-cream-dark border-l-4 border-l-terracotta' : 'bg-white',
-              ]"
-              @click="closeMobileMenu"
-            >
-              {{ t(link.key) }}
             </NuxtLink>
           </div>
 
@@ -179,23 +182,23 @@
             <!-- Mon Espace -->
             <NuxtLink
               :to="localePath(userSpaceRoute)"
-              class="w-full border-2 border-dark/20 bg-cream px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-dark text-center transition-all flex items-center justify-center gap-2"
+              class="w-full rounded-full border border-dark/15 px-6 py-3.5 text-sm text-dark text-center transition-all flex items-center justify-center gap-2"
               @click="closeMobileMenu"
             >
-              <IconLucid name="User" size="xs" :strokeWidth="2" />
+              <IconLucid name="User" size="xs" class="text-dark/50" :strokeWidth="1.5" />
               {{ t("nav.login") }}
             </NuxtLink>
 
             <!-- Language selector -->
-            <div class="flex items-center justify-center gap-6 mt-6">
+            <div class="flex items-center justify-center gap-6 mt-5">
               <button
                 v-for="loc in availableLocales"
                 :key="loc.code"
                 @click="switchLocale(loc.code); closeMobileMenu()"
                 :lang="loc.code"
                 :aria-label="loc.label"
-                class="text-sm uppercase tracking-[0.15em] transition-colors duration-300"
-                :class="locale === loc.code ? 'text-dark font-semibold' : 'text-dark/40'"
+                class="text-sm uppercase tracking-wider transition-colors duration-300"
+                :class="locale === loc.code ? 'text-dark font-semibold' : 'text-dark/35'"
               >
                 {{ loc.code }}
               </button>
@@ -259,6 +262,12 @@ const closeBtn = ref(null);
 const firstMenuLink = ref(null);
 
 const navLinks = [
+  { key: "nav.weddings", to: "/mariages" },
+  { key: "nav.events", to: "/evenements" },
+  { key: "nav.workshops", to: "/ateliers" },
+];
+
+const mobileNavLinks = [
   { key: "nav.weddings", to: "/mariages" },
   { key: "nav.events", to: "/evenements" },
   { key: "nav.workshops", to: "/ateliers" },

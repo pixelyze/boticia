@@ -1,6 +1,6 @@
 <template>
   <div class="flex-1 flex flex-col bg-white">
-    <section class="py-12 md:py-16">
+    <section class="pt-4 pb-12 md:pt-6 md:pb-16">
       <div class="px-4 md:px-10">
         <div
           class="rounded-[2rem] border-2 border-dark/10
@@ -29,7 +29,7 @@
             <IconLucid
               name="Loader2"
               size="lg"
-              class="animate-spin mx-auto text-dark/30"
+              class="animate-spin mx-auto text-gray-300"
             />
           </div>
 
@@ -65,7 +65,7 @@
               <IconLucid
                 name="ImagePlus"
                 size="lg"
-                class="mx-auto text-dark/20 mb-4"
+                class="mx-auto text-gray-300 mb-4"
               />
               <p class="text-dark/40 max-w-sm mx-auto">
                 {{ t("client.inspirations_empty") }}

@@ -30,7 +30,7 @@
         <IconLucid
           name="BadgeEuro"
           size="sm"
-          class="text-dark/40"
+          class="text-gray-400"
         />
       </div>
       <span class="text-dark font-medium text-lg">
@@ -50,7 +50,7 @@
         <IconLucid
           name="FileText"
           size="sm"
-          class="text-dark/40"
+          class="text-gray-400"
         />
       </div>
       <a

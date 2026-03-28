@@ -5,6 +5,7 @@
 
 import { createQuoteRequest } from "~/server/utils/quotes";
 import type { CreateQuoteRequestInput } from "~/server/utils/quotes-types";
+import { sendNewQuoteNotification } from "~/server/utils/email";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<CreateQuoteRequestInput>(event);
@@ -71,6 +72,24 @@ export default defineEventHandler(async (event) => {
         message: "Failed to create quote request",
       });
     }
+
+    // Notify admin
+    const coupleName = body.partner2_name
+      ? `${body.partner1_name} & ${body.partner2_name}`
+      : body.partner1_name;
+    const baseUrl = process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
+    sendNewQuoteNotification({
+      coupleName,
+      email: body.email,
+      phone: body.phone,
+      serviceType: body.service_type,
+      weddingDate: body.wedding_date,
+      meetingDate: body.meeting_date,
+      meetingTime: body.meeting_time,
+      dashboardUrl: `${baseUrl}/fr/dashboard/quotes/${quote.id}`,
+    }).catch((err) =>
+      console.error("Error sending admin notification:", err)
+    );
 
     return {
       success: true,

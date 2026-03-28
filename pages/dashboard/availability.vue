@@ -373,6 +373,7 @@ definePageMeta({
   layout: "dashboard",
   middleware: ["auth-admin"],
   pageTransition: false,
+  layoutTransition: false,
 });
 
 const { t, locale } = useI18n();

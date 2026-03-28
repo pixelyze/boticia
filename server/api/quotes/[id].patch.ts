@@ -10,6 +10,10 @@ import {
   addQuoteActivity,
 } from "~/server/utils/quotes";
 import type { UpdateQuoteRequestInput } from "~/server/utils/quotes-types";
+import {
+  sendMoodboardNotification,
+  sendProposalNotification,
+} from "~/server/utils/email";
 
 export default defineEventHandler(async (event) => {
   await requireAdmin(event);
@@ -50,6 +54,33 @@ export default defineEventHandler(async (event) => {
         from: existing.status,
         to: body.status,
       });
+
+      // Send email notifications on specific status changes
+      const coupleName = existing.partner2_name
+        ? `${existing.partner1_name} & ${existing.partner2_name}`
+        : existing.partner1_name;
+      const locale = existing.locale || "fr";
+      const portalBase = `${process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001"}/${locale}/mon-projet`;
+
+      if (body.status === "moodboard_sent") {
+        sendMoodboardNotification(
+          existing.email,
+          coupleName,
+          `${portalBase}/moodboard`
+        ).catch((err) =>
+          console.error("Error sending moodboard email:", err)
+        );
+      }
+
+      if (body.status === "quote_sent") {
+        sendProposalNotification(
+          existing.email,
+          coupleName,
+          `${portalBase}/proposition`
+        ).catch((err) =>
+          console.error("Error sending proposal email:", err)
+        );
+      }
     }
 
     // Log activity for note updates

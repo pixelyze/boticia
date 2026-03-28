@@ -10,7 +10,7 @@
             ? 'bg-black border-black text-white'
             : active
               ? 'bg-white border-black text-black'
-              : 'bg-white border-dark/15 text-dark/20'
+              : 'bg-white border-gray-200 text-gray-300'
         "
       >
         <IconLucid
@@ -53,6 +53,17 @@
       >
         {{ description }}
       </p>
+      <p
+        v-if="detail"
+        class="text-sm font-medium mt-1"
+        :class="
+          completed || active
+            ? 'text-dark'
+            : 'text-dark/40'
+        "
+      >
+        {{ detail }}
+      </p>
     </div>
   </div>
 </template>
@@ -62,6 +73,7 @@ defineProps<{
   icon: string;
   label: string;
   description?: string;
+  detail?: string;
   completed: boolean;
   active?: boolean;
   last?: boolean;

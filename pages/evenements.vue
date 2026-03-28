@@ -96,17 +96,18 @@
             {{ $t("events.gallery_desc") }}
           </p>
         </div>
-        <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
+        <div class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4">
           <div
             v-for="(img, i) in galleryImages"
             :key="i"
-            class="relative rounded-[1.5rem] overflow-hidden aspect-[3/4]"
+            class="rounded-2xl overflow-hidden ring-1 ring-dark/5 break-inside-avoid"
           >
             <img
               :src="img.src"
               :alt="img.alt"
-              class="absolute inset-0 w-full h-full object-cover
+              class="w-full h-auto object-cover
                      hover:scale-105 transition-transform duration-500"
+              loading="lazy"
             />
           </div>
         </div>

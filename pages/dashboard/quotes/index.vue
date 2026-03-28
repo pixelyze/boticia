@@ -346,11 +346,11 @@ definePageMeta({
   ssr: false,
   layout: "dashboard",
   middleware: ["auth-admin"],
-  pageTransition: false,
 });
 
 const { t } = useI18n();
 const localePath = useLocalePath();
+const session = useSupabaseSession();
 const { adminFetch } = useAdminFetch();
 
 const pageTitle = useState<string | null>(
@@ -364,11 +364,8 @@ useHead({
 });
 
 // State
-const quotes = ref<QuoteRequest[]>([]);
-const loading = ref(true);
-const refreshing = ref(false);
+const route = useRoute();
 const activeFilter = ref<string>("");
-const fetchError = ref(false);
 const viewMode = ref<"list" | "kanban">("list");
 const dragOverStatus = ref<string | null>(null);
 const draggedQuoteId = ref<string | null>(null);
@@ -378,13 +375,47 @@ const dropTarget = ref<{
 } | null>(null);
 let isDragging = false;
 
-// Persist view mode
-onMounted(() => {
-  const saved = localStorage.getItem("boticia-quotes-view");
-  if (saved === "kanban" || saved === "list") {
-    viewMode.value = saved;
+// State
+const quotes = ref<QuoteRequest[]>([]);
+const loading = ref(true);
+const fetchError = ref(false);
+const refreshing = ref(false);
+
+const fetchQuotes = async () => {
+  if (!loading.value) refreshing.value = true;
+  fetchError.value = false;
+  try {
+    const res = await adminFetch<{
+      success: boolean;
+      data: QuoteRequest[];
+    }>("/api/quotes");
+    quotes.value = res.data;
+  } catch (err) {
+    console.error("Error fetching quotes:", err);
+    fetchError.value = true;
+  } finally {
+    loading.value = false;
+    refreshing.value = false;
   }
+};
+
+onMounted(() => {
+  fetchQuotes();
 });
+
+// Read filter from URL query (?filter=new) and force list view
+if (import.meta.client) {
+  const filterParam = route.query.filter as string | undefined;
+  if (filterParam) {
+    activeFilter.value = filterParam;
+    viewMode.value = "list";
+  } else {
+    const saved = localStorage.getItem("boticia-quotes-view");
+    if (saved === "kanban" || saved === "list") {
+      viewMode.value = saved;
+    }
+  }
+}
 
 watch(viewMode, (v) => {
   localStorage.setItem("boticia-quotes-view", v);
@@ -397,6 +428,10 @@ const statusFilters = computed(() => [
   {
     label: t("dashboard.quotes_filter_contacted"),
     value: "contacted",
+  },
+  {
+    label: t("dashboard.quotes_filter_moodboard_sent"),
+    value: "moodboard_sent",
   },
   {
     label: t("dashboard.quotes_filter_quote_sent"),
@@ -424,6 +459,7 @@ const filteredQuotes = computed(() => {
 const KANBAN_STATUSES: QuoteRequestStatus[] = [
   "new",
   "contacted",
+  "moodboard_sent",
   "quote_sent",
   "signed",
   "completed",
@@ -448,6 +484,7 @@ const statusVariant = (
   const map: Record<QuoteRequestStatus, string> = {
     new: "warning",
     contacted: "info",
+    moodboard_sent: "info",
     quote_sent: "selection",
     signed: "success",
     completed: "completed",
@@ -681,25 +718,6 @@ const onDrop = async (
   }
 };
 
-// Fetch quotes
-const fetchQuotes = async () => {
-  refreshing.value = true;
-  fetchError.value = false;
-  try {
-    const res = await adminFetch<{
-      success: boolean;
-      data: QuoteRequest[];
-    }>("/api/quotes");
-    quotes.value = res.data;
-  } catch (err) {
-    console.error("Error fetching quotes:", err);
-    fetchError.value = true;
-  } finally {
-    loading.value = false;
-    refreshing.value = false;
-  }
-};
-
 // Date formatting
 const formatDate = (dateStr: string) => {
   const d = new Date(dateStr);
@@ -709,8 +727,4 @@ const formatDate = (dateStr: string) => {
     year: "numeric",
   });
 };
-
-onMounted(() => {
-  fetchQuotes();
-});
 </script>

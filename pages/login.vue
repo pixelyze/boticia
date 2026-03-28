@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-cream flex items-center justify-center px-6">
+  <div class="min-h-screen bg-white flex items-center justify-center px-6">
     <div class="max-w-md w-full">
       <!-- Logo -->
       <div class="text-center mb-8">
@@ -9,12 +9,14 @@
           class="h-32 mx-auto mb-6"
         />
         <h1 class="text-4xl font-bold text-dark mb-2">Mon Espace</h1>
-        <p class="text-dark/60">
+        <p class="text-dark/50">
           Entrez votre adresse email pour recevoir un lien de connexion
         </p>
       </div>
 
-      <Card>
+      <div
+        class="rounded-[1.5rem] border-2 border-dark/10 p-6"
+      >
         <!-- Magic Link Form -->
         <form v-if="!sent" @submit.prevent="handleLogin" class="space-y-4">
           <Input
@@ -23,6 +25,7 @@
             label="Adresse email"
             placeholder="votre@email.com"
             icon="Mail"
+            variant="soft"
             required
           />
 
@@ -40,7 +43,7 @@
         <div v-else class="text-center py-4">
           <div class="text-4xl mb-4">📬</div>
           <h2 class="text-xl font-bold text-dark mb-2">Email envoyé !</h2>
-          <p class="text-dark/60 text-sm mb-6">
+          <p class="text-dark/50 text-sm mb-6">
             Un lien de connexion a été envoyé à
             <span class="font-bold text-dark">{{ email }}</span>.
             Vérifiez votre boîte de réception.
@@ -59,7 +62,7 @@
             {{ error }}
           </InfoNote>
         </div>
-      </Card>
+      </div>
 
       <!-- Back to Home -->
       <div class="mt-6 text-center">

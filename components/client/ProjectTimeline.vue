@@ -6,6 +6,7 @@
       :icon="step.icon"
       :label="$t(step.label)"
       :description="$t(step.description)"
+      :detail="step.detail"
       :completed="step.completed"
       :active="step.active"
       :last="i === steps.length - 1"
@@ -20,11 +21,14 @@ const props = defineProps<{
   status: QuoteRequestStatus;
   hasMoodboard: boolean;
   hasProposalAccepted: boolean;
+  meetingDate?: string;
+  meetingTime?: string;
 }>();
 
 const STATUS_ORDER: QuoteRequestStatus[] = [
   "new",
   "contacted",
+  "moodboard_sent",
   "quote_sent",
   "signed",
   "completed",
@@ -33,6 +37,19 @@ const STATUS_ORDER: QuoteRequestStatus[] = [
 const currentIndex = computed(() =>
   STATUS_ORDER.indexOf(props.status)
 );
+
+const meetingDetail = computed(() => {
+  if (!props.meetingDate) return undefined;
+  const d = new Date(props.meetingDate);
+  const dateStr = d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  return props.meetingTime
+    ? `${dateStr} — ${props.meetingTime}`
+    : dateStr;
+});
 
 const steps = computed(() => [
   {
@@ -48,6 +65,7 @@ const steps = computed(() => [
     icon: "Phone",
     label: "client.timeline_call",
     description: "client.timeline_call_desc",
+    detail: meetingDetail.value,
     completed: currentIndex.value >= 1,
     active: currentIndex.value === 0,
   },

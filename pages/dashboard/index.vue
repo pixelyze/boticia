@@ -25,17 +25,14 @@
             <p class="text-dark/40 mt-1">{{ motivationalQuote }}</p>
           </div>
 
-          <!-- New quotes block -->
-          <div class="rounded-[2rem] bg-cream/50 p-8 md:p-10 mb-8">
+          <!-- Pipeline résumé -->
+          <div
+            class="rounded-[2rem] bg-cream/50 p-8 md:p-10 mb-8 copilot-fade-in copilot-fade-in-2"
+          >
             <div class="flex items-center justify-between mb-6">
-              <div>
-                <h2 class="text-2xl md:text-3xl font-bold">
-                  {{ t("dashboard.quotes_title") }}
-                </h2>
-                <p v-if="newQuotes.length > 0" class="text-dark/40 text-sm mt-1">
-                  {{ t("dashboard.quotes_count", { count: newQuotes.length }) }}
-                </p>
-              </div>
+              <h2 class="text-2xl md:text-3xl font-bold">
+                {{ t("dashboard.pipeline_title") }}
+              </h2>
               <button
                 @click="navigateTo(localePath('/dashboard/quotes'))"
                 class="px-5 py-2.5 rounded-full bg-cream-dark text-sm font-semibold text-dark/60 hover:text-dark/80 transition-all"
@@ -45,7 +42,7 @@
             </div>
 
             <!-- Loading -->
-            <div v-if="loadingQuotes" class="py-12 text-center">
+            <div v-if="loadingQuotes" class="py-8 text-center">
               <IconLucid
                 name="Loader2"
                 size="lg"
@@ -53,74 +50,89 @@
               />
             </div>
 
-            <!-- Empty -->
+            <!-- Empty (no quotes at all) -->
             <div
-              v-else-if="newQuotes.length === 0"
-              class="py-12 text-center"
+              v-else-if="quotes.length === 0"
+              class="py-8 text-center"
             >
               <IconLucid
-                name="CheckCircle"
+                name="Inbox"
                 size="lg"
                 class="mx-auto text-dark/20 mb-4"
               />
               <p class="text-dark/40">
-                {{ t("dashboard.quotes_no_new") }}
+                {{ t("dashboard.pipeline_empty") }}
               </p>
             </div>
 
-            <!-- Grid -->
-            <div
-              v-else
-              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-            >
-              <button
-                v-for="quote in newQuotes"
-                :key="quote.id"
-                class="flex flex-col p-5 rounded-[1.5rem] bg-cream-dark transition-all hover:bg-cream group text-left"
-                @click="navigateTo(localePath('/dashboard/quotes/' + quote.id))"
-              >
-                <div class="flex items-start justify-between mb-3">
-                  <Tag variant="warning">
-                    {{ t("dashboard.quote_status_new") }}
-                  </Tag>
-                  <IconLucid
-                    name="ArrowRight"
-                    size="sm"
-                    class="text-stone-400 group-hover:text-orange-500 transition-colors shrink-0"
-                  />
-                </div>
-                <span class="font-heading text-lg text-dark block truncate">
-                  {{ quote.partner1_name }}
-                  <template v-if="quote.partner2_name">
-                    &amp; {{ quote.partner2_name }}
-                  </template>
-                </span>
-                <span class="text-sm text-fuchsia-600 truncate mt-1">
-                  {{ quote.email }}
-                </span>
-                <div
-                  class="flex items-center gap-3 mt-3 text-sm text-dark/50"
+            <!-- Pipeline content -->
+            <template v-else>
+              <!-- Status counters -->
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="s in pipelineStatuses"
+                  :key="s.status"
+                  class="flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium"
+                  :class="
+                    statusCount(s.status) > 0
+                      ? 'bg-cream-dark hover:bg-cream text-dark'
+                      : 'bg-cream/50 text-dark/30 hover:text-dark/50'
+                  "
+                  @click="
+                    navigateTo(
+                      localePath('/dashboard/quotes') +
+                        '?filter=' +
+                        s.status
+                    )
+                  "
                 >
                   <span
-                    v-if="quote.wedding_date"
-                    class="flex items-center gap-1"
-                  >
-                    <IconLucid name="Calendar" size="xs" />
-                    {{ formatDate(quote.wedding_date) }}
-                  </span>
-                  <span
-                    v-if="quote.venue"
-                    class="flex items-center gap-1 truncate"
-                  >
-                    <IconLucid name="MapPin" size="xs" />
-                    {{ quote.venue }}
-                  </span>
-                </div>
-                <span class="text-xs text-dark/30 mt-2">
-                  {{ formatDate(quote.created_at) }}
-                </span>
-              </button>
-            </div>
+                    class="w-2 h-2 rounded-full shrink-0"
+                    :class="s.dotColor"
+                  ></span>
+                  <span>{{ statusCount(s.status) }}</span>
+                  <span>{{ t(s.labelKey) }}</span>
+                </button>
+              </div>
+
+              <!-- Alerts -->
+              <div
+                v-if="alerts.length > 0"
+                class="mt-5 flex flex-col gap-2"
+              >
+                <button
+                  v-for="alert in alerts"
+                  :key="alert.id"
+                  class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all"
+                  :class="
+                    alert.type === 'stale'
+                      ? 'bg-red-50 text-red-700 hover:bg-red-100'
+                      : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100'
+                  "
+                  @click="
+                    navigateTo(
+                      localePath('/dashboard/quotes/' + alert.id)
+                    )
+                  "
+                >
+                  <IconLucid
+                    :name="
+                      alert.type === 'stale'
+                        ? 'AlertTriangle'
+                        : 'Clock'
+                    "
+                    size="sm"
+                    class="shrink-0"
+                  />
+                  <span>{{ alert.message }}</span>
+                  <IconLucid
+                    name="ChevronRight"
+                    size="xs"
+                    class="ml-auto shrink-0 opacity-40"
+                  />
+                </button>
+              </div>
+            </template>
           </div>
 
           <!-- Content management -->
@@ -150,13 +162,38 @@
               </NuxtLink>
             </div>
 
+            <!-- Mariages — with sub-link -->
+            <div
+              class="rounded-[1.5rem] bg-cream/50 p-6 flex flex-col items-center text-center gap-3 copilot-fade-in"
+              :style="{ animationDelay: '0.37s' }"
+            >
+              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center">
+                <IconLucid name="Heart" size="md" class="text-dark" />
+              </div>
+              <div>
+                <span class="font-heading text-base text-dark block">
+                  {{ t("dashboard.page_weddings") }}
+                </span>
+                <span class="text-sm text-dark/40">
+                  {{ t("dashboard.page_weddings_desc") }}
+                </span>
+              </div>
+              <NuxtLink
+                :to="localePath('/dashboard/galleries')"
+                class="mt-1 flex items-center gap-1.5 text-sm font-semibold text-dark/50 hover:text-dark transition-colors"
+              >
+                <IconLucid name="Image" size="xs" color="currentColor" />
+                {{ t("dashboard.page_galleries") }}
+              </NuxtLink>
+            </div>
+
             <!-- Other pages -->
             <NuxtLink
               v-for="(page, i) in contentPages"
               :key="page.key"
               :to="localePath(page.to)"
               class="rounded-[1.5rem] bg-cream/50 p-6 flex flex-col items-center text-center gap-3 transition-all hover:bg-cream group copilot-fade-in"
-              :style="{ animationDelay: `${0.37 + i * 0.07}s` }"
+              :style="{ animationDelay: `${0.44 + i * 0.07}s` }"
             >
               <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center transition-colors">
                 <IconLucid
@@ -190,29 +227,19 @@ definePageMeta({
   ssr: false,
   layout: 'dashboard',
   middleware: ['auth-admin'],
-  pageTransition: false,
 });
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const user = useSupabaseUser();
 const router = useRouter();
-
 const pageTitle = useState<string | null>("dashboard-page-title", () => null);
 pageTitle.value = null;
 
 const contentPages = [
-  { key: "dashboard.page_weddings", descKey: "dashboard.page_weddings_desc", icon: "Heart", to: "/dashboard" },
   { key: "dashboard.page_events", descKey: "dashboard.page_events_desc", icon: "PartyPopper", to: "/dashboard" },
   { key: "dashboard.page_workshops", descKey: "dashboard.page_workshops_desc", icon: "Flower2", to: "/dashboard" },
 ];
-
-// Redirect to login if not authenticated
-watch(user, (val) => {
-  if (val === null) {
-    router.push(localePath('/login'));
-  }
-}, { immediate: true });
 
 // Greeting
 const greeting = computed(() => {
@@ -239,16 +266,10 @@ const { adminFetch } = useAdminFetch();
 const quotes = ref<QuoteRequest[]>([]);
 const loadingQuotes = ref(true);
 
-const newQuotes = computed(() =>
-  quotes.value.filter((q) => q.status === "new")
-);
-
 const fetchQuotes = async () => {
+  loadingQuotes.value = true;
   try {
-    const res = await adminFetch<{
-      success: boolean;
-      data: QuoteRequest[];
-    }>("/api/quotes");
+    const res = await adminFetch<{ success: boolean; data: QuoteRequest[] }>("/api/quotes");
     quotes.value = res.data;
   } catch (err) {
     console.error("Error fetching quotes:", err);
@@ -257,17 +278,90 @@ const fetchQuotes = async () => {
   }
 };
 
-const formatDate = (dateStr: string) => {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-};
-
 onMounted(() => {
   fetchQuotes();
+});
+
+// Pipeline statuses config
+const pipelineStatuses = [
+  { status: "new", labelKey: "dashboard.quotes_filter_new", dotColor: "bg-yellow-400" },
+  { status: "contacted", labelKey: "dashboard.quotes_filter_contacted", dotColor: "bg-purple-400" },
+  { status: "moodboard_sent", labelKey: "dashboard.quotes_filter_moodboard_sent", dotColor: "bg-blue-400" },
+  { status: "quote_sent", labelKey: "dashboard.quotes_filter_quote_sent", dotColor: "bg-orange-400" },
+  { status: "signed", labelKey: "dashboard.quotes_filter_signed", dotColor: "bg-green-400" },
+  { status: "completed", labelKey: "dashboard.quotes_filter_completed", dotColor: "bg-green-600" },
+];
+
+const statusCount = (status: string) =>
+  quotes.value.filter((q) => q.status === status).length;
+
+const daysSince = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const now = new Date();
+  return Math.floor(
+    (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24)
+  );
+};
+
+const daysUntil = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const now = new Date();
+  return Math.floor(
+    (d.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+  );
+};
+
+const quoteName = (q: QuoteRequest) =>
+  q.partner2_name
+    ? `${q.partner1_name} & ${q.partner2_name}`
+    : q.partner1_name;
+
+const alerts = computed(() => {
+  const result: {
+    id: string;
+    type: "stale" | "urgent";
+    message: string;
+  }[] = [];
+
+  for (const q of quotes.value) {
+    // Stale: quote_sent for > 7 days
+    if (q.status === "quote_sent" && daysSince(q.updated_at) > 7) {
+      result.push({
+        id: q.id,
+        type: "stale",
+        message: t("dashboard.alert_stale", {
+          name: quoteName(q),
+          days: daysSince(q.updated_at),
+        }),
+      });
+    }
+    // Urgent: wedding in < 60 days
+    if (
+      q.wedding_date &&
+      q.status !== "completed" &&
+      q.status !== "cancelled"
+    ) {
+      const days = daysUntil(q.wedding_date);
+      if (days > 0 && days < 60) {
+        result.push({
+          id: q.id,
+          type: "urgent",
+          message: t("dashboard.alert_urgent", {
+            name: quoteName(q),
+            days,
+          }),
+        });
+      }
+    }
+  }
+
+  // Sort: stale first, then by urgency (fewer days = more urgent)
+  result.sort((a, b) => {
+    if (a.type !== b.type) return a.type === "stale" ? -1 : 1;
+    return 0;
+  });
+
+  return result.slice(0, 3);
 });
 
 useHead({

@@ -8,6 +8,7 @@ import {
   getMoodboardItemById,
   deleteMoodboardItem,
 } from "~/server/utils/client-portal";
+import { addQuoteActivity } from "~/server/utils/quotes";
 import { getSupabase } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
@@ -46,6 +47,11 @@ export default defineEventHandler(async (event) => {
         message: "Failed to delete moodboard item",
       });
     }
+
+    // Log activity
+    await addQuoteActivity(item.quote_id, "moodboard_removed", {
+      filename: item.original_filename,
+    });
 
     return { success: true };
   } catch (err: any) {

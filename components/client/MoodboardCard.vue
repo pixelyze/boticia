@@ -29,7 +29,7 @@
           <IconLucid
             name="FileText"
             size="md"
-            class="text-dark/40"
+            class="text-gray-400"
           />
         </div>
         <p class="text-sm font-medium text-dark text-center">
@@ -57,7 +57,7 @@
           <IconLucid
             name="ExternalLink"
             size="md"
-            class="text-dark/40"
+            class="text-gray-400"
           />
         </div>
         <p class="text-sm font-medium text-dark text-center">

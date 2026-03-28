@@ -11,6 +11,7 @@ export type ServiceType = "mariage" | "evenement" | "atelier";
 export type QuoteRequestStatus =
   | "new"
   | "contacted"
+  | "moodboard_sent"
   | "quote_sent"
   | "signed"
   | "completed"

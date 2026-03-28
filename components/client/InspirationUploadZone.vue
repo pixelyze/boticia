@@ -16,7 +16,7 @@
       <IconLucid
         name="CloudUpload"
         size="lg"
-        class="mx-auto text-dark/30 mb-3"
+        class="mx-auto text-gray-400 mb-3"
       />
       <p class="font-heading font-medium text-dark/60">
         {{ $t("client.inspirations_upload_title") }}
@@ -29,7 +29,7 @@
       <IconLucid
         name="Loader2"
         size="lg"
-        class="mx-auto text-dark/40 animate-spin mb-3"
+        class="mx-auto text-gray-400 animate-spin mb-3"
       />
       <p class="text-dark/40 text-sm">
         {{ $t("common.loading") }}...

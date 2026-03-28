@@ -7,7 +7,7 @@
     <header class="bg-transparent pt-4 pb-4">
       <div class="px-4 md:px-10">
         <div
-          class="rounded-full border-2 border-dark/10 bg-cream
+          class="rounded-full bg-cream
             px-4 md:px-8 py-3 md:py-4
             flex items-center justify-between"
         >
@@ -32,21 +32,14 @@
               {{ $t("client.space_subtitle") }}
             </span>
           </div>
-          <!-- Sign out button -->
-          <button
-            @click="handleSignOut"
-            class="w-10 h-10 rounded-full bg-cream-dark
-              flex items-center justify-center text-dark/60
-              hover:text-dark/80 transition-all"
-          >
-            <IconLucid name="Settings" size="sm" />
-          </button>
+          <!-- Spacer to keep center alignment -->
+          <div class="w-10 h-10"></div>
         </div>
       </div>
     </header>
 
     <!-- Navigation tabs -->
-    <nav class="px-4 md:px-10 pb-2">
+    <nav class="px-4 md:px-10 py-2">
       <div class="flex gap-2 overflow-x-auto no-scrollbar">
         <NuxtLink
           v-for="tab in tabs"
