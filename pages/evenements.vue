@@ -101,11 +101,12 @@
             v-for="(img, i) in galleryImages"
             :key="i"
             class="rounded-2xl overflow-hidden ring-1 ring-dark/5 break-inside-avoid"
+            :class="i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-square'"
           >
             <img
               :src="img.src"
               :alt="img.alt"
-              class="w-full h-auto object-cover
+              class="w-full h-full object-cover
                      hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
@@ -170,14 +171,14 @@ const services = computed(() => [
   },
 ]);
 
-const philosophyImage = "/api/storage/object/public/homepage-inspirations/events/scenographie.jpg";
+const philosophyImage = "/images/events/scenographie-florale-boticia.jpg";
 
 const galleryImages = [
-  { src: "/api/storage/object/public/homepage-inspirations/events/corporate.jpg", alt: "Set de table floral" },
-  { src: "/api/storage/object/public/homepage-inspirations/events/gallery-arrangement-floral-boticia.jpg", alt: "Arrangement floral Boticia" },
-  { src: "/api/storage/object/public/homepage-inspirations/events/gallery-bouquet-shooting-photo-boticia.jpg", alt: "Bouquet shooting photo Boticia" },
-  { src: "/api/storage/object/public/homepage-inspirations/events/gallery-scenographie-florale-boticia.jpg", alt: "Scénographie florale Boticia" },
-  { src: "/api/storage/object/public/homepage-inspirations/events/scenographie.jpg", alt: "Scénographie florale événementielle" },
-  { src: "/api/storage/object/public/homepage-inspirations/events/gallery-set-design-creation-florale-boticia.jpg", alt: "Set design création florale" },
+  { src: "/images/events/composition_florale_table_mariage_boticia.jpg", alt: "Set de table floral" },
+  { src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_29.jpg", alt: "Arrangement floral Boticia" },
+  { src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_11.jpg", alt: "Décoration florale événementielle" },
+  { src: "/images/events/scenographie-florale-boticia.jpg", alt: "Scénographie florale Boticia" },
+  { src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_42.jpg", alt: "Scénographie florale événementielle" },
+  { src: "/images/events/atelier_composition_florale_team_building_boticia_3.jpg", alt: "Atelier composition florale" },
 ];
 </script>
