@@ -916,5 +916,11 @@
     "submit": "Send",
     "success": "Thank you for your feedback!",
     "error": "Error sending feedback"
+  },
+  "chat": {
+    "title": "Brutal Studio Support",
+    "subtitle": "Ask questions, report bugs or suggest improvements",
+    "placeholder": "Your message...",
+    "empty": "No messages yet. Write to us!"
   }
 }

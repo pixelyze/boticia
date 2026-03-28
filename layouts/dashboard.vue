@@ -38,8 +38,8 @@
     </main>
     <Footer v-if="!route.params.id" />
 
-    <!-- Feedback button -->
-    <FeedbackButton />
+    <!-- Chat bubble -->
+    <ChatBubble />
 
     <!-- Settings modal -->
     <BaseModal

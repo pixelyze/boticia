@@ -916,5 +916,11 @@
     "submit": "Envoyer",
     "success": "Merci pour votre retour !",
     "error": "Erreur lors de l'envoi"
+  },
+  "chat": {
+    "title": "Support Brutal Studio",
+    "subtitle": "Posez vos questions, signalez un bug ou suggérez une amélioration",
+    "placeholder": "Votre message...",
+    "empty": "Aucun message. Écrivez-nous !"
   }
 }
