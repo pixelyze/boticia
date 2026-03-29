@@ -200,7 +200,7 @@ const stories = computed(() => {
     return cats.map((cat, i) => ({
       id: cat.id,
       slug: cat.slug,
-      label: t('stories.' + cat.slug),
+      label: cat.title || t('stories.' + cat.slug),
       image: cat.cover_public_url || FALLBACK_IMAGES[cat.slug] || null,
       bg: FALLBACK_GRADIENTS[i] || FALLBACK_GRADIENTS[0],
       link: localePath(cat.link || '/pricing'),

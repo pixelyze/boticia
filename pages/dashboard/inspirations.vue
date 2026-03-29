@@ -57,9 +57,16 @@
 
             <!-- Card content -->
             <div class="p-5">
-              <h3 class="font-heading text-base text-dark mb-3">
-                {{ t('stories.' + cat.slug) }}
-              </h3>
+              <!-- Editable title -->
+              <div class="mb-3 group">
+                <input
+                  :value="cat.title || t('stories.' + cat.slug)"
+                  @blur="updateTitle(cat, ($event.target as HTMLInputElement).value)"
+                  @keydown.enter="($event.target as HTMLInputElement).blur()"
+                  class="font-heading text-base text-dark w-full bg-transparent border-b border-transparent group-hover:border-dark/15 focus:border-dark/30 focus:outline-none py-1 transition-colors"
+                  :placeholder="t('stories.' + cat.slug)"
+                />
+              </div>
 
               <!-- Cover actions -->
               <div class="flex items-center gap-2 mb-3">
@@ -265,6 +272,24 @@ const fetchCategories = async () => {
 };
 
 // Toggle publish
+const updateTitle = async (cat: HomepageInspirationCategory, newTitle: string) => {
+  const trimmed = newTitle.trim();
+  if (trimmed === cat.title || (!trimmed && !cat.title)) return;
+  try {
+    const res = await adminFetch<{
+      success: boolean;
+      data: HomepageInspirationCategory;
+    }>(`/api/admin/homepage-inspirations/${cat.id}`, {
+      method: "PATCH",
+      body: { title: trimmed || null },
+    });
+    const idx = categories.value.findIndex((c) => c.id === cat.id);
+    if (idx !== -1) categories.value[idx] = res.data;
+  } catch (err) {
+    console.error("Error updating title:", err);
+  }
+};
+
 const togglePublish = async (
   cat: HomepageInspirationCategory
 ) => {
