@@ -51,6 +51,49 @@
       </div>
     </section>
 
+    <!-- Wedding gallery -->
+    <section
+      v-if="galleryImages.length > 0"
+      class="py-16 md:py-24 bg-white"
+    >
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <span class="section-tagline">
+            {{ $t("weddings.gallery_tagline") }}
+          </span>
+          <h2 class="section-title-lg">
+            {{ $t("weddings.gallery_title") }}
+          </h2>
+        </div>
+
+        <div
+          class="grid grid-cols-2 md:grid-cols-3 gap-4
+                 max-w-4xl mx-auto"
+        >
+          <button
+            v-for="(img, i) in galleryImages"
+            :key="img.id"
+            class="group cursor-pointer"
+            @click="openLightbox(i)"
+          >
+            <div
+              class="relative w-full h-48 md:h-64
+                     rounded-[1.5rem] overflow-hidden"
+            >
+              <img
+                :src="img.public_url"
+                :alt="img.caption || ''"
+                loading="lazy"
+                class="absolute inset-0 w-full h-full
+                       object-cover group-hover:scale-105
+                       transition-transform duration-500"
+              />
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- Prestations détaillées -->
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6">
@@ -104,49 +147,6 @@
 
     <!-- A la carte -->
     <AlaCarteSection />
-
-    <!-- Wedding gallery -->
-    <section
-      v-if="galleryImages.length > 0"
-      class="py-16 md:py-24 bg-white"
-    >
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-12">
-          <span class="section-tagline">
-            {{ $t("weddings.gallery_tagline") }}
-          </span>
-          <h2 class="section-title-lg">
-            {{ $t("weddings.gallery_title") }}
-          </h2>
-        </div>
-
-        <div
-          class="grid grid-cols-2 md:grid-cols-3 gap-4
-                 max-w-4xl mx-auto"
-        >
-          <button
-            v-for="(img, i) in galleryImages"
-            :key="img.id"
-            class="group cursor-pointer"
-            @click="openLightbox(i)"
-          >
-            <div
-              class="relative w-full h-48 md:h-64
-                     rounded-[1.5rem] overflow-hidden"
-            >
-              <img
-                :src="img.public_url"
-                :alt="img.caption || ''"
-                loading="lazy"
-                class="absolute inset-0 w-full h-full
-                       object-cover group-hover:scale-105
-                       transition-transform duration-500"
-              />
-            </div>
-          </button>
-        </div>
-      </div>
-    </section>
 
     <!-- FAQ mariage -->
     <section class="py-16 md:py-24 bg-white">
