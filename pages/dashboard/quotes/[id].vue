@@ -78,14 +78,6 @@
                   <IconLucid name="NotebookPen" size="xs" />
                   {{ t("dashboard.project_view_title") }}
                 </button>
-                <button
-                  v-if="quote.meeting_date && !isMeetingPast"
-                  @click="openCalendarEvent"
-                  class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border-2 border-dark/10 text-dark text-sm font-semibold hover:bg-cream transition-all"
-                >
-                  <IconLucid name="CalendarPlus" size="xs" />
-                  {{ t("dashboard.copilot_add_calendar") }}
-                </button>
               </div>
 
               <!-- Client inspirations preview -->
