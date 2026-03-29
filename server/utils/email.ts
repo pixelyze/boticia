@@ -250,3 +250,31 @@ export async function sendChatNotification(data: {
     html,
   });
 }
+
+/**
+ * Send magic link invitation to client
+ */
+export async function sendMagicLinkEmail(
+  clientEmail: string,
+  coupleName: string,
+  magicLink: string
+): Promise<boolean> {
+  const html = renderWelcome({
+    logoUrl: LOGO_URL,
+    title: "Votre espace projet Boticia",
+    greeting: `Bonjour ${coupleName},`,
+    message:
+      "Votre espace projet est maintenant disponible. " +
+      "Vous y trouverez votre moodboard, vos propositions et le suivi de votre projet floral.<br/><br/>" +
+      "Cliquez sur le bouton ci-dessous pour accéder à votre espace. Ce lien est personnel et sécurisé.",
+    ctaText: "Accéder à mon espace",
+    ctaUrl: magicLink,
+    footerText: "Boticia — Espace client",
+  });
+
+  return sendEmail({
+    to: clientEmail,
+    subject: `Accédez à votre espace projet — Boticia`,
+    html,
+  });
+}

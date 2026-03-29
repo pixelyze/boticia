@@ -5,12 +5,13 @@
 
 import { requireAdmin } from "~/server/utils/serverAuth";
 import { generateMagicLink } from "~/server/utils/supabase";
+import { sendMagicLinkEmail } from "~/server/utils/email";
 
 export default defineEventHandler(async (event) => {
   await requireAdmin(event);
 
   const body = await readBody(event);
-  const { email } = body as { email: string };
+  const { email, coupleName } = body as { email: string; coupleName?: string };
 
   if (!email) {
     throw createError({
@@ -21,8 +22,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     const siteUrl =
-      process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3000";
-    const redirectTo = `${siteUrl}/confirm`;
+      process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
+    const redirectTo = `${siteUrl}/fr/mon-projet`;
 
     const { link, error } = await generateMagicLink(
       email,
@@ -36,14 +37,17 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // TODO: Send email via Resend with the magic link
-    // For now, the magic link is generated and logged
-    console.log(
-      `Magic link for ${email}: ${link}`
-    );
+    // Send email with the magic link
+    const name = coupleName || email.split("@")[0];
+    const emailSent = await sendMagicLinkEmail(email, name, link);
+
+    if (!emailSent) {
+      console.error("Magic link generated but email failed to send");
+    }
 
     return {
       success: true,
+      emailSent,
     };
   } catch (err: any) {
     if (err.statusCode) throw err;
