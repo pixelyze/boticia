@@ -33,7 +33,7 @@
         <!-- Masonry gallery -->
         <div
           v-else
-          class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4"
+          class="columns-2 sm:columns-3 gap-4 space-y-4"
         >
           <button
             v-for="(img, i) in galleryImages"
