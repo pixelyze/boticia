@@ -92,6 +92,51 @@
       </div>
     </section>
 
+    <!-- Workshop gallery -->
+    <section
+      v-if="galleryImages.length > 0"
+      class="py-16 md:py-24 bg-cream-light"
+    >
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <span class="section-tagline">
+            {{ $t("workshops.gallery_tagline") }}
+          </span>
+          <h2 class="section-title-lg">
+            {{ $t("workshops.gallery_title") }}
+          </h2>
+        </div>
+        <div class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4">
+          <button
+            v-for="(img, i) in galleryImages"
+            :key="img.id"
+            class="break-inside-avoid group cursor-pointer block w-full"
+            @click="openLightbox(i)"
+          >
+            <div
+              class="rounded-2xl overflow-hidden"
+              :class="i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-square'"
+            >
+              <img
+                :src="img.public_url"
+                :alt="img.caption || $t('workshops.gallery_alt')"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <GalleryLightbox
+      :is-open="lightboxOpen"
+      :items="galleryImages"
+      :title="$t('workshops.gallery_title')"
+      :start-index="lightboxIndex"
+      @close="lightboxOpen = false"
+    />
+
     <!-- CTA -->
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6 text-center">
@@ -145,6 +190,20 @@ const workshopTypes = computed(() => [
     desc: t("workshops.type_3_desc"),
   },
 ]);
+
+const galleryImages = ref([]);
+const lightboxOpen = ref(false);
+const lightboxIndex = ref(0);
+
+const openLightbox = (index) => {
+  lightboxIndex.value = index;
+  lightboxOpen.value = true;
+};
+
+const { data: galleryData } = await useFetch("/api/galleries/workshops");
+if (galleryData.value?.data) {
+  galleryImages.value = galleryData.value.data;
+}
 
 const audiences = computed(() => [
   { icon: "Handshake", label: t("workshops.audience_teambuilding"), desc: t("workshops.audience_teambuilding_desc") },

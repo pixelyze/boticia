@@ -167,7 +167,10 @@
     "audience_private_desc": "Un atelier sur mesure pour vos réceptions, fêtes de famille ou moments entre proches.",
     "cta_title": "Envie d'un atelier floral ?",
     "cta_desc": "Contactez-nous pour organiser un atelier sur mesure pour votre groupe.",
-    "cta": "Nous contacter"
+    "cta": "Nous contacter",
+    "gallery_tagline": "Nos ateliers",
+    "gallery_title": "Moments créatifs",
+    "gallery_alt": "Atelier floral Boticia"
   },
   "features": {
     "tagline": "Notre savoir-faire",
