@@ -50,7 +50,9 @@
     "title": "Discover our floral universe",
     "subtitle": "Every project is unique. Browse our work by category and find inspiration for your event.",
     "cta_hint": "Want a bespoke floral decoration?",
-    "cta": "Request a quote"
+    "cta": "Request a quote",
+    "empty": "No photos yet.",
+    "photo_alt": "Boticia floral creation"
   },
   "weddings": {
     "tagline": "Weddings",

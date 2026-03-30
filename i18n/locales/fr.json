@@ -50,7 +50,9 @@
     "title": "Découvrez notre univers floral",
     "subtitle": "Chaque projet est unique. Parcourez nos réalisations par catégorie et laissez-vous inspirer pour votre événement.",
     "cta_hint": "Envie d'une décoration florale sur mesure ?",
-    "cta": "Demander un devis"
+    "cta": "Demander un devis",
+    "empty": "Aucune photo pour le moment.",
+    "photo_alt": "Création florale Boticia"
   },
   "weddings": {
     "tagline": "Mariages",

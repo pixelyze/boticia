@@ -7,9 +7,9 @@
           <span class="section-tagline">
             {{ $t("creations.tagline") }}
           </span>
-          <h2 class="section-title-lg">
+          <h1 class="section-title-lg">
             {{ $t("creations.title") }}
-          </h2>
+          </h1>
           <p class="mt-4 text-dark/60 max-w-xl mx-auto text-lg">
             {{ $t("creations.subtitle") }}
           </p>
@@ -24,51 +24,33 @@
           />
         </div>
 
-        <!-- Categories grid -->
+        <!-- Empty state -->
+        <div v-else-if="galleryImages.length === 0" class="py-16 text-center">
+          <IconLucid name="Image" size="lg" class="mx-auto text-dark/20 mb-4" />
+          <p class="text-dark/40">{{ $t("creations.empty") }}</p>
+        </div>
+
+        <!-- Masonry gallery -->
         <div
           v-else
-          class="grid grid-cols-1 sm:grid-cols-2 gap-5
-                 max-w-4xl mx-auto"
+          class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4"
         >
           <button
-            v-for="cat in categories"
-            :key="cat.id"
-            class="group text-left cursor-pointer"
-            @click="openLightbox(cat)"
+            v-for="(img, i) in galleryImages"
+            :key="img.id"
+            class="break-inside-avoid group cursor-pointer block w-full"
+            @click="openLightbox(i)"
           >
             <div
-              class="relative w-full h-72 md:h-96 rounded-[1.5rem]
-                     overflow-hidden border-2 border-dark/10"
+              class="rounded-2xl overflow-hidden"
+              :class="sizeClass(i)"
             >
               <img
-                v-if="cat.cover_public_url"
-                :src="cat.cover_public_url"
-                :alt="$t('stories.' + cat.slug)"
-                class="absolute inset-0 w-full h-full object-cover
-                       group-hover:scale-105 transition-transform
-                       duration-500"
+                :src="img.public_url"
+                :alt="img.caption || $t('creations.photo_alt')"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div
-                v-else
-                class="absolute inset-0 bg-gradient-to-br
-                       from-cream to-dark/15"
-              />
-
-              <!-- Gradient overlay -->
-              <div
-                class="absolute inset-0 bg-gradient-to-t
-                       from-dark/60 via-transparent to-transparent"
-              />
-
-              <!-- Label -->
-              <div class="absolute bottom-0 inset-x-0 p-5">
-                <span
-                  class="text-cream text-base font-semibold
-                         leading-tight"
-                >
-                  {{ $t("stories." + cat.slug) }}
-                </span>
-              </div>
             </div>
           </button>
         </div>
@@ -89,11 +71,12 @@
       </div>
     </section>
 
-    <!-- Gallery Lightbox -->
+    <!-- Lightbox -->
     <GalleryLightbox
       :is-open="lightboxOpen"
-      :category-slug="lightboxSlug"
-      :category-id="lightboxCategoryId"
+      :items="galleryImages"
+      :title="$t('creations.title')"
+      :start-index="lightboxIndex"
       @close="lightboxOpen = false"
     />
   </div>
@@ -111,32 +94,33 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 
 useHead({
-  title: t("creations.title") + " - Boticia",
-  meta: [
-    {
-      name: "description",
-      content: t("creations.subtitle"),
-    },
-  ],
+  title: `${t("creations.title")} | Boticia Côte d'Azur`,
+  meta: [{ name: "description", content: t("creations.subtitle") }],
 });
 
 const loading = ref(true);
-const categories = ref([]);
-
+const galleryImages = ref([]);
 const lightboxOpen = ref(false);
-const lightboxSlug = ref("");
-const lightboxCategoryId = ref("");
+const lightboxIndex = ref(0);
 
-const openLightbox = (cat) => {
-  lightboxSlug.value = cat.slug;
-  lightboxCategoryId.value = cat.id;
+const openLightbox = (index) => {
+  lightboxIndex.value = index;
   lightboxOpen.value = true;
 };
 
-const { data: apiData } = await useFetch("/api/inspirations/homepage");
+const sizeClass = (i) => {
+  const pattern = i % 6;
+  if (pattern === 0) return "aspect-[3/4]";
+  if (pattern === 1) return "aspect-square";
+  if (pattern === 2) return "aspect-[4/3]";
+  if (pattern === 3) return "aspect-[4/5]";
+  if (pattern === 4) return "aspect-square";
+  return "aspect-[3/4]";
+};
 
-if (apiData.value?.data) {
-  categories.value = apiData.value.data;
+const { data: galleryData } = await useFetch("/api/galleries/creations");
+if (galleryData.value?.data) {
+  galleryImages.value = galleryData.value.data;
 }
 loading.value = false;
 </script>
