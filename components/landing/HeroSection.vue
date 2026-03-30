@@ -33,7 +33,7 @@
       <div class="w-12 h-[2px] bg-cream/30 mb-6 hero-fade hero-fade-1" />
 
       <!-- Subtitle -->
-      <p class="max-w-lg mx-auto text-cream/60 text-center text-base md:text-lg leading-relaxed mb-10 hero-fade hero-fade-2">
+      <p class="max-w-lg mx-auto text-cream/80 text-center text-base md:text-lg leading-relaxed mb-10 hero-fade hero-fade-2">
         {{ $t('hero.subtitle') }}
       </p>
 
@@ -48,7 +48,7 @@
         </NuxtLink>
         <NuxtLink
           :to="localePath('/creations')"
-          class="inline-flex items-center gap-2 text-base text-cream/50 hover:text-cream transition-colors"
+          class="inline-flex items-center gap-2 text-base text-cream/80 hover:text-cream transition-colors"
         >
           <span class="border-b border-cream/20 hover:border-cream/50 pb-0.5">{{ $t('intro.cta') }}</span>
         </NuxtLink>
