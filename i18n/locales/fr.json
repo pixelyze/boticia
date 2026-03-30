@@ -922,5 +922,10 @@
     "subtitle": "Posez vos questions, signalez un bug ou suggérez une amélioration",
     "placeholder": "Votre message...",
     "empty": "Aucun message. Écrivez-nous !"
+  },
+  "portfolio": {
+    "tagline": "Portfolio",
+    "title": "Nos réalisations",
+    "photo_alt": "Création florale Boticia"
   }
 }

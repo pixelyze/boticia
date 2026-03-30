@@ -922,5 +922,10 @@
     "subtitle": "質問、バグ報告、改善提案をお送りください",
     "placeholder": "メッセージを入力...",
     "empty": "メッセージはまだありません。お気軽にどうぞ！"
+  },
+  "portfolio": {
+    "tagline": "ポートフォリオ",
+    "title": "実績",
+    "photo_alt": "Boticiaフラワー作品"
   }
 }

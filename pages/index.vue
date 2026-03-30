@@ -68,6 +68,14 @@
     <IntroSection />
 
     <!-- ==========================================
+         [SECTION-MASONRY] — Galerie portfolio masonry
+         Composant : components/landing/MasonryGallery.vue
+         Data : API /api/galleries/portfolio
+         Géré depuis /dashboard/galleries
+         ========================================== -->
+    <MasonryGallery />
+
+    <!-- ==========================================
          [SECTION-FEATURES] — Fonctionnalités numérotées
          Padding : py-20 md:py-28 | Background : bg-cream
          Composant : components/landing/FeaturesSection.vue

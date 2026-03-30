@@ -922,5 +922,10 @@
     "subtitle": "Ask questions, report bugs or suggest improvements",
     "placeholder": "Your message...",
     "empty": "No messages yet. Write to us!"
+  },
+  "portfolio": {
+    "tagline": "Portfolio",
+    "title": "Our creations",
+    "photo_alt": "Boticia floral creation"
   }
 }
