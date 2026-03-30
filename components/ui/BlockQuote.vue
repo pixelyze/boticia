@@ -4,7 +4,7 @@
     <div class="md:hidden">
       <div class="relative h-[70vh] rounded-[2rem] overflow-hidden">
         <img
-          src="/bouquet_mariee_boticia._1.webp"
+          :src="imageUrl"
           alt="Bouquet de mariée Boticia"
           class="absolute inset-0 w-full h-full object-cover"
         />
@@ -33,7 +33,7 @@
       <!-- Image side -->
       <div class="relative overflow-hidden">
         <img
-          src="/bouquet_mariee_boticia._1.webp"
+          :src="imageUrl"
           alt="Bouquet de mariée Boticia"
           class="absolute inset-0 w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-[1.5s] ease-out"
         />
@@ -65,8 +65,19 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   quote: string;
   author: string;
 }>();
+
+const defaultImage = "/bouquet_mariee_boticia._1.webp";
+
+const { data: configData } = await useFetch("/api/cms/config", {
+  params: { key: "blockquote_image" },
+});
+
+const imageUrl = computed(() => {
+  const url = configData.value?.data?.value?.url;
+  return url || defaultImage;
+});
 </script>

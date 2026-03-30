@@ -683,7 +683,11 @@
     "timeline_note_edit_placeholder": "Edit note...",
     "project_view_title": "Project file",
     "copilot_add_calendar": "Add to calendar",
-    "guide": "Dashboard guide"
+    "guide": "Dashboard guide",
+    "blockquote_title": "Quote photo",
+    "blockquote_desc": "Change the photo in the quote block on the homepage.",
+    "blockquote_upload": "Change photo",
+    "blockquote_success": "Photo updated!"
   },
   "client": {
     "page_title": "My project",
