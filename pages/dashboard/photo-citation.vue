@@ -68,12 +68,13 @@ useHead({
   title: t("dashboard.blockquote_title") + " - Boticia",
 });
 
-const currentImage = ref("");
+const defaultImage = "/bouquet_mariee_boticia._1.webp";
+const currentImage = ref(defaultImage);
 const uploading = ref(false);
 const success = ref(false);
 const error = ref("");
 
-// Fetch current image
+// Fetch current image from CMS config (override default if set)
 onMounted(async () => {
   try {
     const res = await $fetch<{ data: { value: any } }>("/api/cms/config", {
@@ -83,7 +84,7 @@ onMounted(async () => {
       currentImage.value = res.data.value.url;
     }
   } catch {
-    // Default image
+    // Keep default image
   }
 });
 
