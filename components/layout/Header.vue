@@ -1,8 +1,8 @@
 <template>
-  <div class="sticky top-0 z-50">
+  <div class="fixed top-0 left-0 right-0 z-50">
     <!-- Main header -->
     <header class="transition-all duration-500" :class="scrolled ? 'bg-cream-light' : 'bg-transparent'">
-      <div class="px-4 md:px-10 pt-4 transition-all duration-500" :class="scrolled ? 'pb-2' : 'pb-4'">
+      <div class="px-4 md:px-10 transition-all duration-500" :class="scrolled ? 'pt-2 pb-2' : 'pt-4 pb-4'">
         <div
           class="rounded-full transition-all duration-500"
           :class="scrolled ? 'py-2 px-5 md:px-12 bg-cream-light/90 backdrop-blur-md border-2 border-transparent' : 'py-4 px-4 md:px-8 border-2 border-transparent'"
