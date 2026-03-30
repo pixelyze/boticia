@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="py-16 md:py-24">
+    <section class="pt-32 md:pt-40 pb-16 md:pb-24">
       <div class="container mx-auto px-6">
         <!-- Header -->
         <div class="text-center mb-16">
