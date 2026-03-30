@@ -5,7 +5,7 @@
       <div class="px-4 md:px-10 transition-all duration-500" :class="scrolled ? 'pt-2 pb-2' : 'pt-4 pb-4'">
         <div
           class="rounded-full transition-all duration-500"
-          :class="scrolled ? 'py-2 px-5 md:px-12 bg-cream-light/90 backdrop-blur-md border-2 border-transparent' : 'py-4 px-4 md:px-8 border-2 border-transparent'"
+          :class="isTransparent ? 'py-4 px-4 md:px-8 border-2 border-transparent' : 'py-2 px-5 md:px-12 bg-cream-light/90 backdrop-blur-md border-2 border-transparent'"
         >
         <!-- Main nav -->
         <nav class="flex items-center justify-between md:grid md:grid-cols-3">
@@ -14,21 +14,21 @@
             <NuxtLink
               :to="localePath('/mariages')"
               class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
-              :class="scrolled ? 'text-dark hover:text-dark/60' : 'text-cream/80 hover:text-cream'"
+              :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
             >
               {{ t("nav.weddings") }}
             </NuxtLink>
             <NuxtLink
               :to="localePath('/evenements')"
               class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
-              :class="scrolled ? 'text-dark hover:text-dark/60' : 'text-cream/80 hover:text-cream'"
+              :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
             >
               {{ t("nav.events") }}
             </NuxtLink>
             <NuxtLink
               :to="localePath('/ateliers')"
               class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
-              :class="scrolled ? 'text-dark hover:text-dark/60' : 'text-cream/80 hover:text-cream'"
+              :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
             >
               {{ t("nav.workshops") }}
             </NuxtLink>
@@ -39,17 +39,13 @@
             <NuxtLink :to="localePath('/')" class="text-center">
               <span
                 class="font-heading font-medium tracking-tight transition-all duration-500 block"
-                :class="[
-                  scrolled ? 'text-xl md:text-2xl text-dark' : 'text-xl md:text-4xl text-cream',
-                ]"
+                :class="isTransparent ? 'text-xl md:text-4xl text-cream' : 'text-xl md:text-2xl text-dark'"
               >
                 Boticia
               </span>
               <p
                 class="transition-all duration-500 hidden md:block"
-                :class="[
-                  scrolled ? 'text-sm mt-0.5 text-dark/60' : 'text-base mt-1 text-cream/50',
-                ]"
+                :class="isTransparent ? 'text-base mt-1 text-cream/50' : 'text-sm mt-0.5 text-dark/60'"
               >
                 {{ t("app.tagline") }}
               </p>
@@ -61,14 +57,14 @@
             <NuxtLink
               :to="localePath('/devis')"
               class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
-              :class="scrolled ? 'text-dark hover:text-dark/60' : 'text-cream/80 hover:text-cream'"
+              :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
             >
               {{ t("nav.quote") }}
             </NuxtLink>
             <NuxtLink
               :to="localePath(userSpaceRoute)"
               class="px-5 py-2 rounded-full border-2 text-xs font-semibold uppercase tracking-[0.15em] transition-all"
-              :class="scrolled ? 'border-transparent bg-dark/10 text-dark hover:bg-dark/15' : 'border-cream/20 bg-cream/10 text-cream hover:bg-cream/20'"
+              :class="isTransparent ? 'border-cream/20 bg-cream/10 text-cream hover:bg-cream/20' : 'border-transparent bg-dark/10 text-dark hover:bg-dark/15'"
             >
               {{ t("nav.login") }}
             </NuxtLink>
@@ -78,7 +74,7 @@
           <button
             ref="hamburgerBtn"
             class="md:hidden w-10 h-10 rounded-full flex items-center justify-center transition-colors"
-            :class="scrolled ? 'bg-dark/5 hover:bg-dark/10 text-dark' : 'bg-cream/10 hover:bg-cream/20 text-cream'"
+            :class="isTransparent ? 'bg-cream/10 hover:bg-cream/20 text-cream' : 'bg-dark/5 hover:bg-dark/10 text-dark'"
             @click="openMobileMenu"
             :aria-label="t('common.menu')"
             :aria-expanded="mobileMenuOpen"
@@ -100,9 +96,9 @@
               :lang="loc.code"
               :aria-label="loc.label"
               class="px-3 py-1.5 text-xs uppercase tracking-wider rounded-full transition-all duration-300"
-              :class="scrolled
-                ? (locale === loc.code ? 'bg-dark/10 text-dark font-semibold' : 'text-dark/30 hover:text-dark/60')
-                : (locale === loc.code ? 'bg-cream/15 text-cream font-semibold' : 'text-cream/30 hover:text-cream/60')"
+              :class="isTransparent
+                ? (locale === loc.code ? 'bg-cream/15 text-cream font-semibold' : 'text-cream/30 hover:text-cream/60')
+                : (locale === loc.code ? 'bg-dark/10 text-dark font-semibold' : 'text-dark/30 hover:text-dark/60')"
             >
               {{ loc.code }}
             </button>
@@ -262,6 +258,13 @@ const userSpaceRoute = computed(() => {
 const mobileMenuOpen = ref(false);
 const mobileMenuVisible = ref(false);
 const scrolled = ref(false);
+
+// Transparent navbar only on homepage (dark hero)
+const isHomepage = computed(() => {
+  const path = route.path.replace(/^\/(fr|en|ja)/, '') || '/';
+  return path === '/';
+});
+const isTransparent = computed(() => isHomepage.value && !scrolled.value);
 
 // Reset header to expanded state on route change
 watch(() => route.path, () => {
