@@ -1,12 +1,14 @@
 /**
- * Middleware global — redirige tout vers /coming-soon
- * Sauf : /coming-soon, /login, /dashboard, /mon-projet, /confirm, /dev, /api
+ * Middleware global — redirige tout vers /coming-soon EN PROD UNIQUEMENT
+ * En dev (localhost), le site fonctionne normalement.
  * Supprimer ce fichier quand le site est prêt à être lancé.
  */
 export default defineNuxtRouteMiddleware((to) => {
+  // Ne pas rediriger en dev
+  if (process.dev) return;
+
   const path = to.path;
 
-  // Pages autorisées (pas de redirection)
   const allowed = [
     "/coming-soon",
     "/login",
@@ -17,7 +19,6 @@ export default defineNuxtRouteMiddleware((to) => {
     "/api",
   ];
 
-  // Vérifier si le chemin (sans le préfixe locale) est autorisé
   const pathWithoutLocale = path.replace(/^\/(fr|en|ja)/, "") || "/";
 
   if (
