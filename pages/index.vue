@@ -38,6 +38,14 @@
     <AlaCarteSection />
 
     <!-- ==========================================
+         [SECTION-MASONRY] — Galerie portfolio masonry
+         Composant : components/landing/MasonryGallery.vue
+         Data : API /api/galleries/portfolio
+         Géré depuis /dashboard/galleries
+         ========================================== -->
+    <MasonryGallery />
+
+    <!-- ==========================================
          [SECTION-STORIES] — Grille d'histoires / réalisations
          Padding : py-16 md:py-24 | Background : bg-cream
          Composant : components/landing/StoriesSection.vue
@@ -67,14 +75,6 @@
          [EL-INTRO-CTA] — Bouton ghost | Composant Button variant="ghost" rightIcon="MoveRight"
            Lien vers /pricing | i18n : intro.cta -->
     <IntroSection />
-
-    <!-- ==========================================
-         [SECTION-MASONRY] — Galerie portfolio masonry
-         Composant : components/landing/MasonryGallery.vue
-         Data : API /api/galleries/portfolio
-         Géré depuis /dashboard/galleries
-         ========================================== -->
-    <MasonryGallery />
 
     <!-- ==========================================
          [SECTION-FEATURES] — Fonctionnalités numérotées
