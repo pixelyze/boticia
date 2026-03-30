@@ -50,11 +50,7 @@
     "title": "Discover our floral universe",
     "subtitle": "Every project is unique. Browse our work by category and find inspiration for your event.",
     "cta_hint": "Want a bespoke floral decoration?",
-    "cta": "Request a quote",
-    "stat_events": "events elevated",
-    "stat_flowers": "seasonal French flowers",
-    "stat_rating": "client satisfaction",
-    "cta_desc": "Tell us about your project, we'll create floral decoration that reflects you."
+    "cta": "Request a quote"
   },
   "weddings": {
     "tagline": "Weddings",
