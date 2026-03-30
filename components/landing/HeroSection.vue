@@ -1,5 +1,5 @@
 <template>
-  <section class="relative bg-dark overflow-hidden min-h-screen max-h-[900px]">
+  <section class="relative bg-dark overflow-hidden min-h-screen max-h-[900px] -mt-32">
     <!-- Background image with parallax feel -->
     <div class="absolute inset-0">
       <img
