@@ -38,7 +38,7 @@
       <div class="w-12 h-[2px] bg-cream/30 mb-6 hero-fade hero-fade-2" />
 
       <!-- Subtitle with stagger -->
-      <p class="max-w-md mx-auto text-cream/60 text-center text-sm md:text-base leading-relaxed mb-10 hero-fade hero-fade-3">
+      <p class="max-w-lg mx-auto text-cream/60 text-center text-base md:text-lg leading-relaxed mb-10 hero-fade hero-fade-3">
         {{ $t('hero.subtitle') }}
       </p>
 
@@ -46,14 +46,14 @@
       <div class="flex flex-col sm:flex-row items-center gap-4 hero-fade hero-fade-4">
         <NuxtLink
           :to="localePath('/devis')"
-          class="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-cream text-dark text-sm font-semibold hover:bg-white transition-all hover:shadow-lg hover:shadow-cream/20"
+          class="group inline-flex items-center gap-3 px-10 py-4 rounded-full bg-cream text-dark text-base font-semibold hover:bg-white transition-all hover:shadow-lg hover:shadow-cream/20"
         >
           {{ $t('weddings.cta') }}
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </NuxtLink>
         <NuxtLink
           :to="localePath('/creations')"
-          class="inline-flex items-center gap-2 text-sm text-cream/50 hover:text-cream transition-colors"
+          class="inline-flex items-center gap-2 text-base text-cream/50 hover:text-cream transition-colors"
         >
           <span class="border-b border-cream/20 hover:border-cream/50 pb-0.5">{{ $t('intro.cta') }}</span>
         </NuxtLink>
