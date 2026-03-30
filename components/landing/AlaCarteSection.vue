@@ -36,7 +36,7 @@
           </h3>
           <ul class="space-y-3 text-left flex-1">
             <li
-              v-for="(item, i) in group.items"
+              v-for="(item, i) in group.items.filter(x => x)"
               :key="i"
               class="flex items-start gap-3 text-dark/70"
             >
