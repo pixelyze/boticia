@@ -22,28 +22,23 @@
 
     <!-- Content -->
     <div class="relative h-screen max-h-[900px] flex flex-col items-center justify-center px-6">
-      <!-- Animated tagline -->
-      <p class="text-cream/50 text-xs md:text-sm uppercase tracking-[0.5em] mb-6 hero-fade hero-fade-1">
-        {{ $t('app.tagline') }}
-      </p>
-
-      <!-- Large animated title -->
-      <h1 class="text-center mb-4 overflow-hidden">
-        <span class="block font-heading text-5xl md:text-7xl lg:text-[6rem] font-medium text-cream leading-none hero-slide hero-slide-1">
-          Boticia
+      <!-- Title (H1 for SEO, visually the main statement) -->
+      <h1 class="text-center mb-6 overflow-hidden">
+        <span class="block font-heading text-3xl md:text-5xl lg:text-6xl font-medium text-cream leading-tight hero-slide hero-slide-1">
+          {{ $t('hero.title') }}
         </span>
       </h1>
 
       <!-- Decorative line -->
-      <div class="w-12 h-[2px] bg-cream/30 mb-6 hero-fade hero-fade-2" />
+      <div class="w-12 h-[2px] bg-cream/30 mb-6 hero-fade hero-fade-1" />
 
-      <!-- Subtitle with stagger -->
-      <p class="max-w-lg mx-auto text-cream/60 text-center text-base md:text-lg leading-relaxed mb-10 hero-fade hero-fade-3">
+      <!-- Subtitle -->
+      <p class="max-w-lg mx-auto text-cream/60 text-center text-base md:text-lg leading-relaxed mb-10 hero-fade hero-fade-2">
         {{ $t('hero.subtitle') }}
       </p>
 
       <!-- CTAs -->
-      <div class="flex flex-col sm:flex-row items-center gap-4 hero-fade hero-fade-4">
+      <div class="flex flex-col sm:flex-row items-center gap-4 hero-fade hero-fade-3">
         <NuxtLink
           :to="localePath('/devis')"
           class="group inline-flex items-center gap-3 px-10 py-4 rounded-full bg-cream text-dark text-base font-semibold hover:bg-white transition-all hover:shadow-lg hover:shadow-cream/20"
@@ -61,7 +56,7 @@
     </div>
 
     <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hero-fade hero-fade-5">
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hero-fade hero-fade-4">
       <div class="flex flex-col items-center gap-2">
         <span class="text-cream/25 text-[10px] uppercase tracking-[0.3em]">Scroll</span>
         <div class="w-[1px] h-8 bg-gradient-to-b from-cream/30 to-transparent scroll-line" />
