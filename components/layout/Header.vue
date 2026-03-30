@@ -1,7 +1,7 @@
 <template>
   <div class="fixed top-0 left-0 right-0 z-50">
     <!-- Main header -->
-    <header class="transition-all duration-500" :class="scrolled ? 'bg-cream-light' : 'bg-transparent'">
+    <header class="transition-all duration-500 bg-transparent">
       <div class="px-4 md:px-10 transition-all duration-500" :class="scrolled ? 'pt-2 pb-2' : 'pt-4 pb-4'">
         <div
           class="rounded-full transition-all duration-500"
