@@ -33,7 +33,7 @@
       <div class="w-12 h-[2px] bg-cream/30 mb-6 hero-fade hero-fade-1" />
 
       <!-- Subtitle -->
-      <p class="max-w-lg mx-auto text-cream/80 text-center text-base md:text-lg leading-relaxed mb-10 hero-fade hero-fade-2">
+      <p class="max-w-lg mx-auto text-cream/80 text-center text-lg md:text-xl leading-relaxed mb-10 hero-fade hero-fade-2 tracking-wide">
         {{ $t('hero.subtitle') }}
       </p>
 
