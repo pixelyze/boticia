@@ -167,13 +167,6 @@
                 <IconLucid name="Image" size="xs" color="currentColor" />
                 {{ t("dashboard.page_galleries") }}
               </NuxtLink>
-              <NuxtLink
-                :to="localePath('/dashboard/photo-citation')"
-                class="mt-1 flex items-center gap-1.5 text-sm font-semibold text-dark/50 hover:text-dark transition-colors"
-              >
-                <IconLucid name="Camera" size="xs" color="currentColor" />
-                {{ t("dashboard.blockquote_title") }}
-              </NuxtLink>
             </div>
 
             <!-- Mariages — with sub-link -->
