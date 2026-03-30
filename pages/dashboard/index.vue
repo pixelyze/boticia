@@ -135,109 +135,23 @@
             </template>
           </div>
 
-          <!-- Content management -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <!-- Page d'accueil — with sub-links -->
-            <div
-              class="rounded-[1.5rem] bg-cream/50 p-6 flex flex-col items-center text-center gap-3 copilot-fade-in"
-              :style="{ animationDelay: '0.3s' }"
-            >
-              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center">
-                <IconLucid name="Layout" size="md" class="text-dark" />
-              </div>
-              <div>
-                <span class="font-heading text-base text-dark block">
-                  {{ t("dashboard.page_home") }}
-                </span>
-                <span class="text-sm text-dark/40">
-                  {{ t("dashboard.page_home_desc") }}
-                </span>
-              </div>
-              <NuxtLink
-                :to="localePath('/dashboard/inspirations')"
-                class="mt-1 flex items-center gap-1.5 text-sm font-semibold text-dark/50 hover:text-dark transition-colors"
-              >
-                <IconLucid name="Images" size="xs" color="currentColor" />
-                {{ t("dashboard.page_inspirations") }}
-              </NuxtLink>
-              <NuxtLink
-                :to="localePath('/dashboard/galleries')"
-                class="mt-1 flex items-center gap-1.5 text-sm font-semibold text-dark/50 hover:text-dark transition-colors"
-              >
-                <IconLucid name="Image" size="xs" color="currentColor" />
-                {{ t("dashboard.page_galleries") }}
-              </NuxtLink>
+          <!-- Galeries -->
+          <NuxtLink
+            :to="localePath('/dashboard/galleries')"
+            class="rounded-[1.5rem] bg-cream/50 p-6 flex items-center gap-4 transition-all hover:bg-cream group copilot-fade-in copilot-fade-in-2"
+          >
+            <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center shrink-0">
+              <IconLucid name="Images" size="md" class="text-dark" />
             </div>
-
-            <!-- Mariages — with sub-link -->
-            <div
-              class="rounded-[1.5rem] bg-cream/50 p-6 flex flex-col items-center text-center gap-3 copilot-fade-in"
-              :style="{ animationDelay: '0.37s' }"
-            >
-              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center">
-                <IconLucid name="Heart" size="md" class="text-dark" />
-              </div>
-              <div>
-                <span class="font-heading text-base text-dark block">
-                  {{ t("dashboard.page_weddings") }}
-                </span>
-                <span class="text-sm text-dark/40">
-                  {{ t("dashboard.page_weddings_desc") }}
-                </span>
-              </div>
-              <NuxtLink
-                :to="localePath('/dashboard/galleries')"
-                class="mt-1 flex items-center gap-1.5 text-sm font-semibold text-dark/50 hover:text-dark transition-colors"
-              >
-                <IconLucid name="Image" size="xs" color="currentColor" />
+            <div>
+              <span class="font-heading text-base text-dark block">
                 {{ t("dashboard.page_galleries") }}
-              </NuxtLink>
+              </span>
+              <span class="text-sm text-dark/40">
+                {{ t("dashboard.page_galleries_desc") }}
+              </span>
             </div>
-
-            <!-- Galeries -->
-            <NuxtLink
-              :to="localePath('/dashboard/galleries')"
-              class="rounded-[1.5rem] bg-cream/50 p-6 flex flex-col items-center text-center gap-3 transition-all hover:bg-cream group copilot-fade-in"
-              :style="{ animationDelay: '0.44s' }"
-            >
-              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center">
-                <IconLucid name="Images" size="md" class="text-dark" />
-              </div>
-              <div>
-                <span class="font-heading text-base text-dark block">
-                  {{ t("dashboard.page_galleries") }}
-                </span>
-                <span class="text-sm text-dark/40">
-                  {{ t("dashboard.page_galleries_desc") }}
-                </span>
-              </div>
-            </NuxtLink>
-
-            <!-- Other pages -->
-            <NuxtLink
-              v-for="(page, i) in contentPages"
-              :key="page.key"
-              :to="localePath(page.to)"
-              class="rounded-[1.5rem] bg-cream/50 p-6 flex flex-col items-center text-center gap-3 transition-all hover:bg-cream group copilot-fade-in"
-              :style="{ animationDelay: `${0.44 + i * 0.07}s` }"
-            >
-              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center transition-colors">
-                <IconLucid
-                  :name="page.icon"
-                  size="md"
-                  class="text-dark"
-                />
-              </div>
-              <div>
-                <span class="font-heading text-base text-dark block">
-                  {{ t(page.key) }}
-                </span>
-                <span class="text-sm text-dark/40">
-                  {{ t(page.descKey) }}
-                </span>
-              </div>
-            </NuxtLink>
-          </div>
+          </NuxtLink>
         </div>
       </section>
     </template>
