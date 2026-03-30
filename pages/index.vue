@@ -52,7 +52,8 @@
            [STATE-STORIES-CARD-HOVER] — Image scale-105 → scale-100, transition 500ms
          Data : 6 stories computed, liens vers pages internes
          Responsive : grid-cols-3 md:grid-cols-6 -->
-    <StoriesSection />
+    <!-- StoriesSection retiré (remplacé par MasonryGallery) — composant conservé -->
+    <!-- <StoriesSection /> -->
 
     <!-- ==========================================
          [SECTION-INTRO] — Bloc d'introduction / philosophie
