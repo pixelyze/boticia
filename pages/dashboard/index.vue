@@ -201,6 +201,25 @@
               </NuxtLink>
             </div>
 
+            <!-- Galeries -->
+            <NuxtLink
+              :to="localePath('/dashboard/galleries')"
+              class="rounded-[1.5rem] bg-cream/50 p-6 flex flex-col items-center text-center gap-3 transition-all hover:bg-cream group copilot-fade-in"
+              :style="{ animationDelay: '0.44s' }"
+            >
+              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center">
+                <IconLucid name="Images" size="md" class="text-dark" />
+              </div>
+              <div>
+                <span class="font-heading text-base text-dark block">
+                  {{ t("dashboard.page_galleries") }}
+                </span>
+                <span class="text-sm text-dark/40">
+                  {{ t("dashboard.page_galleries_desc") }}
+                </span>
+              </div>
+            </NuxtLink>
+
             <!-- Other pages -->
             <NuxtLink
               v-for="(page, i) in contentPages"
