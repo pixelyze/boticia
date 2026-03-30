@@ -66,26 +66,23 @@
           </h2>
         </div>
 
-        <div
-          class="grid grid-cols-2 md:grid-cols-3 gap-4
-                 max-w-4xl mx-auto"
-        >
+        <div class="columns-2 sm:columns-3 gap-4 space-y-4">
           <button
             v-for="(img, i) in galleryImages"
             :key="img.id"
-            class="group cursor-pointer"
+            class="break-inside-avoid group cursor-pointer block w-full"
             @click="openLightbox(i)"
           >
             <div
-              class="relative w-full h-48 md:h-64
-                     rounded-[1.5rem] overflow-hidden"
+              class="rounded-2xl overflow-hidden"
+              :class="i % 3 === 0 ? 'aspect-[3/4]' : i % 3 === 1 ? 'aspect-square' : 'aspect-[4/5]'"
             >
               <img
                 :src="img.public_url"
-                :alt="img.caption || ''"
+                :alt="img.caption || 'Création florale Boticia'"
                 loading="lazy"
-                class="absolute inset-0 w-full h-full
-                       object-cover group-hover:scale-105
+                class="w-full h-full object-cover
+                       group-hover:scale-105
                        transition-transform duration-500"
               />
             </div>
