@@ -3,7 +3,7 @@
     <!-- Background image with parallax feel -->
     <div class="absolute inset-0">
       <img
-        src="/bouquet_mariee_boticia._1.webp"
+        :src="imageUrl"
         alt="Boticia"
         fetchpriority="high"
         class="w-full h-full object-cover scale-110 hero-zoom"
@@ -67,6 +67,14 @@
 
 <script setup>
 const localePath = useLocalePath();
+
+const defaultImage = "/bouquet_mariee_boticia._1.webp";
+const { data: configData } = await useFetch("/api/cms/config", {
+  params: { key: "hero_image" },
+});
+const imageUrl = computed(() => {
+  return configData.value?.data?.value?.url || defaultImage;
+});
 </script>
 
 <style scoped>

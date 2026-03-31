@@ -692,7 +692,11 @@
     "blockquote_title": "引用写真",
     "blockquote_desc": "ホームページの引用ブロックの写真を変更します。",
     "blockquote_upload": "写真を変更",
-    "blockquote_success": "写真を更新しました！"
+    "blockquote_success": "写真を更新しました！",
+    "hero_photo_title": "ヒーロー写真",
+    "hero_photo_desc": "ホームページの背景写真を変更します。",
+    "hero_photo_upload": "写真を変更",
+    "hero_photo_success": "写真を更新しました！"
   },
   "client": {
     "page_title": "マイプロジェクト",

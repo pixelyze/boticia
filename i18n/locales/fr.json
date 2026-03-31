@@ -692,7 +692,11 @@
     "blockquote_title": "Photo citation",
     "blockquote_desc": "Changez la photo du bloc citation sur la page d'accueil.",
     "blockquote_upload": "Changer la photo",
-    "blockquote_success": "Photo mise à jour !"
+    "blockquote_success": "Photo mise à jour !",
+    "hero_photo_title": "Photo hero",
+    "hero_photo_desc": "Changez la photo de fond de la page d'accueil.",
+    "hero_photo_upload": "Changer la photo",
+    "hero_photo_success": "Photo mise à jour !"
   },
   "client": {
     "page_title": "Mon projet",

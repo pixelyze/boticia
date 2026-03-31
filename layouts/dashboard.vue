@@ -161,6 +161,43 @@
         </div>
       </div>
 
+      <!-- Photo hero -->
+      <div>
+        <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.hero_photo_title') }}</h2>
+        <div class="flex items-center gap-4">
+          <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
+            <img
+              :src="heroImage"
+              alt="Photo hero"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.hero_photo_desc') }}</p>
+            <label
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all"
+            >
+              <IconLucid
+                v-if="uploadingHero"
+                name="Loader2"
+                size="xs"
+                class="animate-spin"
+              />
+              <IconLucid v-else name="Upload" size="xs" />
+              {{ $t('dashboard.hero_photo_upload') }}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                class="hidden"
+                :disabled="uploadingHero"
+                @change="handleHeroUpload"
+              />
+            </label>
+            <p v-if="heroSuccess" class="text-green-600 text-sm mt-2">{{ $t('dashboard.hero_photo_success') }}</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Photo citation -->
       <div>
         <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.blockquote_title') }}</h2>
@@ -266,6 +303,67 @@ async function selectThemeColor(color: ThemeColor) {
 }
 
 
+// Hero photo management
+const heroImage = ref("/bouquet_mariee_boticia._1.webp");
+const uploadingHero = ref(false);
+const heroSuccess = ref(false);
+
+async function fetchHeroImage() {
+  try {
+    const { data } = await $fetch<{ data: { value: any } }>("/api/cms/config", {
+      params: { key: "hero_image" },
+    });
+    if (data?.value?.url) {
+      heroImage.value = data.value.url;
+    }
+  } catch {
+    // Keep default
+  }
+}
+
+async function handleHeroUpload(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+
+  uploadingHero.value = true;
+  heroSuccess.value = false;
+
+  try {
+    const token = useSupabaseSession().value?.access_token;
+    if (!token) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const uploadRes = await $fetch<{ success: boolean; data: { path: string; url: string } }>("/api/cms/logos/upload", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+
+    if (uploadRes?.data?.url) {
+      await $fetch("/api/cms/config", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: {
+          key: "hero_image",
+          category: "homepage",
+          value: { url: uploadRes.data.url },
+        },
+      });
+      heroImage.value = uploadRes.data.url;
+      heroSuccess.value = true;
+      setTimeout(() => { heroSuccess.value = false; }, 3000);
+    }
+  } catch (err) {
+    console.error("Error uploading hero photo:", err);
+  } finally {
+    uploadingHero.value = false;
+    input.value = "";
+  }
+}
+
 // Blockquote photo management
 const blockquoteImage = ref("/bouquet_mariee_boticia._1.webp");
 const uploadingBlockquote = ref(false);
@@ -341,6 +439,7 @@ onMounted(async () => {
   await fetchLogos();
   await fetchSelectedLogo();
   await fetchBlockquoteImage();
+  await fetchHeroImage();
 });
 
 async function fetchLogos() {

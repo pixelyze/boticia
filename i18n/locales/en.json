@@ -692,7 +692,11 @@
     "blockquote_title": "Quote photo",
     "blockquote_desc": "Change the photo in the quote block on the homepage.",
     "blockquote_upload": "Change photo",
-    "blockquote_success": "Photo updated!"
+    "blockquote_success": "Photo updated!",
+    "hero_photo_title": "Hero photo",
+    "hero_photo_desc": "Change the homepage background photo.",
+    "hero_photo_upload": "Change photo",
+    "hero_photo_success": "Photo updated!"
   },
   "client": {
     "page_title": "My project",
