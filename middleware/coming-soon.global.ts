@@ -31,5 +31,8 @@ export default defineNuxtRouteMiddleware((to) => {
     return;
   }
 
-  return navigateTo("/coming-soon");
+  // Extraire le locale du path pour rediriger avec le bon préfixe
+  const localeMatch = path.match(/^\/(fr|en|ja)/);
+  const locale = localeMatch ? localeMatch[1] : "fr";
+  return navigateTo(`/${locale}/coming-soon`);
 });
