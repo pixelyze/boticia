@@ -21,6 +21,9 @@ export default defineNuxtRouteMiddleware((to) => {
 
   const pathWithoutLocale = path.replace(/^\/(fr|en|ja)/, "") || "/";
 
+  // Autoriser la homepage
+  if (pathWithoutLocale === "/") return;
+
   if (
     path === "/coming-soon" ||
     allowed.some((a) => pathWithoutLocale.startsWith(a))
