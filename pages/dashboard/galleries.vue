@@ -42,6 +42,9 @@
                 >
                   {{ gallery.description }}
                 </p>
+                <p class="text-xs text-dark/30 mt-0.5 font-mono">
+                  {{ galleryUrl(gallery.slug) }}
+                </p>
               </div>
               <div class="flex items-center gap-3">
                 <span
@@ -194,6 +197,15 @@ const galleryImages = reactive<
   Record<string, GalleryImage[]>
 >({});
 const imageCounts = reactive<Record<string, number>>({});
+
+const slugToPage: Record<string, string> = {
+  portfolio: "/",
+  creations: "/creations",
+  wedding: "/mariages",
+  workshops: "/ateliers",
+};
+
+const galleryUrl = (slug: string) => slugToPage[slug] || `/${slug}`;
 
 const fetchGalleries = async () => {
   loading.value = true;
