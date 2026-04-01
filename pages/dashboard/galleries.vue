@@ -202,9 +202,15 @@ const fetchGalleries = async () => {
       success: boolean;
       data: Gallery[];
     }>("/api/admin/galleries");
-    galleries.value = res.data;
+    // Tri : portfolio (homepage) en premier
+    const order = ["portfolio", "creations", "wedding", "workshops"];
+    galleries.value = res.data.sort((a, b) => {
+      const ia = order.indexOf(a.slug);
+      const ib = order.indexOf(b.slug);
+      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    });
 
-    for (const gallery of res.data) {
+    for (const gallery of galleries.value) {
       await fetchImages(gallery.id);
     }
   } catch (err) {
