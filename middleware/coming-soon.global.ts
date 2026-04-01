@@ -1,19 +1,22 @@
 /**
  * Middleware global — redirige tout vers /coming-soon EN PROD UNIQUEMENT
  * En dev (localhost), le site fonctionne normalement.
+ * Accès preview : ajouter ?preview=boticia2026 à n'importe quelle URL
  * Supprimer ce fichier quand le site est prêt à être lancé.
  */
 export default defineNuxtRouteMiddleware((to) => {
   if (process.dev) return;
 
-  // Accès preview avec ?preview=boticia2026 (stocké en cookie)
-  if (import.meta.client) {
-    if (to.query.preview === "boticia2026") {
-      document.cookie = "preview=1; path=/; max-age=86400";
-      return;
-    }
-    if (document.cookie.includes("preview=1")) return;
+  // Accès preview via query param
+  if (to.query.preview === "boticia2026") {
+    const previewCookie = useCookie("preview", { maxAge: 60 * 60 * 24 * 30 });
+    previewCookie.value = "1";
+    return;
   }
+
+  // Vérifier le cookie preview
+  const previewCookie = useCookie("preview");
+  if (previewCookie.value === "1") return;
 
   const path = to.path;
 
