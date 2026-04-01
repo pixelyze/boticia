@@ -6,6 +6,15 @@
 export default defineNuxtRouteMiddleware((to) => {
   if (process.dev) return;
 
+  // Accès preview avec ?preview=boticia2026 (stocké en cookie)
+  if (import.meta.client) {
+    if (to.query.preview === "boticia2026") {
+      document.cookie = "preview=1; path=/; max-age=86400";
+      return;
+    }
+    if (document.cookie.includes("preview=1")) return;
+  }
+
   const path = to.path;
 
   const allowed = [
