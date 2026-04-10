@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero + Workshop types -->
-    <section class="py-20 md:py-28 bg-cream-light">
+    <section class="py-20 md:py-28 bg-white">
       <div class="container mx-auto px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <!-- Text -->
@@ -29,10 +29,10 @@
             <div
               v-for="(workshop, i) in workshopTypes"
               :key="i"
-              class="flex items-start gap-4 bg-white rounded-2xl px-6 py-5"
+              class="flex items-start gap-4 bg-cream-light rounded-2xl px-6 py-5"
             >
               <div
-                class="w-12 h-12 rounded-xl bg-cream-light flex items-center
+                class="w-12 h-12 rounded-xl bg-white flex items-center
                        justify-center shrink-0"
               >
                 <IconLucid :name="workshop.icon" size="md" :stroke-width="2" class="text-dark" />
@@ -52,7 +52,7 @@
     </section>
 
     <!-- For whom -->
-    <section class="py-16 md:py-24 bg-white">
+    <section class="py-16 md:py-24 bg-cream-light">
       <div class="container mx-auto px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <!-- Text -->
@@ -72,10 +72,10 @@
             <div
               v-for="(audience, i) in audiences"
               :key="i"
-              class="px-5 py-6 rounded-2xl bg-cream-light text-center"
+              class="px-5 py-6 rounded-2xl bg-white text-center"
             >
               <div
-                class="w-12 h-12 rounded-xl bg-white flex items-center
+                class="w-12 h-12 rounded-xl bg-cream-light flex items-center
                        justify-center mx-auto mb-3"
               >
                 <IconLucid :name="audience.icon" size="md" :stroke-width="2" class="text-dark" />
