@@ -162,12 +162,65 @@ definePageMeta({
   pageTransition: false,
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
+const config = useRuntimeConfig();
+const siteUrl = config.public.siteUrl;
 
 useHead({
   title: t("workshops.title") + " - Boticia",
   meta: [{ name: "description", content: t("workshops.intro") }],
+  script: [
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Ateliers d'art floral",
+        "description": t("workshops.intro"),
+        "provider": {
+          "@type": "Florist",
+          "name": "Boticia",
+          "url": siteUrl,
+        },
+        "serviceType": "Floral Design Workshop",
+        "areaServed": {
+          "@type": "State",
+          "name": "Provence-Alpes-Côte d'Azur",
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Ateliers proposés",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": t("workshops.type_1_title") } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": t("workshops.type_2_title") } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": t("workshops.type_3_title") } },
+          ],
+        },
+      }),
+    },
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Boticia",
+            "item": `${siteUrl}/${locale.value}`,
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": t("workshops.title"),
+            "item": `${siteUrl}/${locale.value}/ateliers`,
+          },
+        ],
+      }),
+    },
+  ],
 });
 
 const workshopTypes = computed(() => [

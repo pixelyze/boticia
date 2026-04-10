@@ -290,6 +290,27 @@ useHead({
         ],
       }),
     },
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Boticia",
+            "item": `${config.public.siteUrl}/${locale.value}`,
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": t("events.title"),
+            "item": `${config.public.siteUrl}/${locale.value}/evenements`,
+          },
+        ],
+      }),
+    },
   ],
 });
 

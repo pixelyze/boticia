@@ -80,13 +80,10 @@ definePageMeta({
   pageTransition: false,
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
-
-useHead({
-  title: t("faq.page_title") + " - Boticia",
-  meta: [{ name: "description", content: t("faq.subtitle") }],
-});
+const config = useRuntimeConfig();
+const siteUrl = config.public.siteUrl;
 
 const FAQ_COUNT = 10;
 
@@ -99,4 +96,47 @@ const allFaqItems = computed(() =>
 
 const heroFaqItems = computed(() => allFaqItems.value.slice(0, 4));
 const restFaqItems = computed(() => allFaqItems.value.slice(4));
+
+useHead({
+  title: t("faq.page_title") + " - Boticia",
+  meta: [{ name: "description", content: t("faq.subtitle") }],
+  script: [
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": allFaqItems.value.map((item) => ({
+          "@type": "Question",
+          "name": item.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": item.answer,
+          },
+        })),
+      }),
+    },
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Boticia",
+            "item": `${siteUrl}/${locale.value}`,
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": t("faq.page_title"),
+            "item": `${siteUrl}/${locale.value}/faq`,
+          },
+        ],
+      }),
+    },
+  ],
+});
 </script>
