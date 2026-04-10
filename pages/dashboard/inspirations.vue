@@ -232,6 +232,7 @@ definePageMeta({
 
 const { t } = useI18n();
 const { adminFetch } = useAdminFetch();
+const { compress } = useImageCompression();
 
 const pageTitle = useState<string | null>(
   "dashboard-page-title",
@@ -316,11 +317,12 @@ const uploadCover = async (
   event: Event
 ) => {
   const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
+  const rawFile = input.files?.[0];
+  if (!rawFile) return;
 
   uploadingCover.value = cat.id;
   try {
+    const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -403,11 +405,12 @@ const uploadGalleryImage = async (
   event: Event
 ) => {
   const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
+  const rawFile = input.files?.[0];
+  if (!rawFile) return;
 
   uploadingGallery.value = categoryId;
   try {
+    const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
 

@@ -850,6 +850,7 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 const route = useRoute();
 const { adminFetch } = useAdminFetch();
+const { compress } = useImageCompression();
 
 const quoteId = route.params.id as string;
 const pageTitle = useState<string | null>("dashboard-page-title", () => null);
@@ -1653,10 +1654,11 @@ const handleSaveMoodboardNote = async () => {
 };
 
 // Moodboard upload
-const handleMoodboardUpload = async (file: File) => {
+const handleMoodboardUpload = async (rawFile: File) => {
   if (!quote.value) return;
   uploadingMoodboard.value = true;
   try {
+    const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
     const res = await adminFetch<{

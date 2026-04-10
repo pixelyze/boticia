@@ -92,6 +92,7 @@ const localePath = useLocalePath();
 const user = useSupabaseUser();
 const router = useRouter();
 const { clientFetch } = useClientFetch();
+const { compress } = useImageCompression();
 
 const MAX_PHOTOS = 20;
 
@@ -132,10 +133,11 @@ const handleUpload = async (files: File[]) => {
   uploading.value = true;
   uploadError.value = "";
 
-  for (const file of files) {
+  for (const rawFile of files) {
     if (inspirations.value.length >= MAX_PHOTOS) break;
 
     try {
+      const file = await compress(rawFile);
       const formData = new FormData();
       formData.append("file", file);
 

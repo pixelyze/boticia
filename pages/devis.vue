@@ -995,6 +995,7 @@ definePageMeta({
 
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
+const { compress } = useImageCompression();
 
 useHead({
   title: t("quote_form.page_title") + " - Boticia",
@@ -1465,8 +1466,9 @@ const handleSubmit = async () => {
     // Upload inspiration files (non-blocking)
     if (inspirationFiles.value.length > 0 && result.data?.id) {
       inspirationUploading.value = true;
-      for (const file of inspirationFiles.value) {
+      for (const rawFile of inspirationFiles.value) {
         try {
+          const file = await compress(rawFile);
           const fd = new FormData();
           fd.append("file", file);
           await $fetch(

@@ -268,6 +268,7 @@ const { getClient: getSupabase } = useSupabase();
 const localePath = useLocalePath();
 const router = useRouter();
 const route = useRoute();
+const { compress } = useImageCompression();
 
 const isDetailPage = computed(() => !!route.params.id);
 
@@ -323,8 +324,8 @@ async function fetchHeroImage() {
 
 async function handleHeroUpload(event: Event) {
   const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
+  const rawFile = input.files?.[0];
+  if (!rawFile) return;
 
   uploadingHero.value = true;
   heroSuccess.value = false;
@@ -333,6 +334,7 @@ async function handleHeroUpload(event: Event) {
     const token = useSupabaseSession().value?.access_token;
     if (!token) return;
 
+    const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -384,8 +386,8 @@ async function fetchBlockquoteImage() {
 
 async function handleBlockquoteUpload(event: Event) {
   const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
+  const rawFile = input.files?.[0];
+  if (!rawFile) return;
 
   uploadingBlockquote.value = true;
   blockquoteSuccess.value = false;
@@ -395,6 +397,7 @@ async function handleBlockquoteUpload(event: Event) {
     const token = useSupabaseSession().value?.access_token;
     if (!token) return;
 
+    const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -487,14 +490,15 @@ function triggerUpload() {
 
 async function handleUpload(event: Event) {
   const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
+  const rawFile = input.files?.[0];
+  if (!rawFile) return;
 
   uploading.value = true;
   uploadError.value = "";
   uploadSuccess.value = "";
 
   try {
+    const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
 

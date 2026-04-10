@@ -178,6 +178,7 @@ definePageMeta({
 
 const { t } = useI18n();
 const { adminFetch } = useAdminFetch();
+const { compress } = useImageCompression();
 
 const pageTitle = useState<string | null>(
   "dashboard-page-title",
@@ -280,8 +281,9 @@ const uploadImages = async (
     galleryImages[galleryId] = [];
   }
 
-  for (const file of Array.from(files)) {
+  for (const rawFile of Array.from(files)) {
     try {
+      const file = await compress(rawFile);
       const formData = new FormData();
       formData.append("file", file);
 
