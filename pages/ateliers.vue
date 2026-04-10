@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero + Workshop types -->
-    <section class="py-20 md:py-28 bg-white">
+    <section class="py-20 md:py-28 bg-cream-light">
       <div class="container mx-auto px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <!-- Text -->
@@ -29,10 +29,10 @@
             <div
               v-for="(workshop, i) in workshopTypes"
               :key="i"
-              class="flex items-start gap-4 bg-cream-light rounded-2xl px-6 py-5"
+              class="flex items-start gap-4 bg-white rounded-2xl px-6 py-5"
             >
               <div
-                class="w-12 h-12 rounded-xl bg-white flex items-center
+                class="w-12 h-12 rounded-xl bg-cream-light flex items-center
                        justify-center shrink-0"
               >
                 <IconLucid :name="workshop.icon" size="md" :stroke-width="2" class="text-dark" />
@@ -51,7 +51,44 @@
       </div>
     </section>
 
-    <!-- For whom -->
+    <!-- Workshop gallery (Nos ateliers) -->
+    <section
+      v-if="galleryImages.length > 0"
+      class="py-16 md:py-24 bg-white"
+    >
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <span class="section-tagline">
+            {{ $t("workshops.gallery_tagline") }}
+          </span>
+          <h2 class="section-title-lg">
+            {{ $t("workshops.gallery_title") }}
+          </h2>
+        </div>
+        <div class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4">
+          <button
+            v-for="(img, i) in galleryImages"
+            :key="img.id"
+            class="break-inside-avoid group cursor-pointer block w-full"
+            @click="openLightbox(i)"
+          >
+            <div
+              class="rounded-2xl overflow-hidden"
+              :class="i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-square'"
+            >
+              <img
+                :src="img.public_url"
+                :alt="img.caption || $t('workshops.gallery_alt')"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- For whom (Pour qui) -->
     <section class="py-16 md:py-24 bg-cream-light">
       <div class="container mx-auto px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -88,43 +125,6 @@
               </p>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Workshop gallery -->
-    <section
-      v-if="galleryImages.length > 0"
-      class="py-16 md:py-24 bg-cream-light"
-    >
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-12">
-          <span class="section-tagline">
-            {{ $t("workshops.gallery_tagline") }}
-          </span>
-          <h2 class="section-title-lg">
-            {{ $t("workshops.gallery_title") }}
-          </h2>
-        </div>
-        <div class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4">
-          <button
-            v-for="(img, i) in galleryImages"
-            :key="img.id"
-            class="break-inside-avoid group cursor-pointer block w-full"
-            @click="openLightbox(i)"
-          >
-            <div
-              class="rounded-2xl overflow-hidden"
-              :class="i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-square'"
-            >
-              <img
-                :src="img.public_url"
-                :alt="img.caption || $t('workshops.gallery_alt')"
-                loading="lazy"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-          </button>
         </div>
       </div>
     </section>
