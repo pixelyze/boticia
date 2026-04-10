@@ -109,24 +109,12 @@
     <ProcessSection />
 
     <!-- ==========================================
-         [SECTION-BLOCKQUOTE] — Citation éditoriale avec image
-         Background : image + cream (split desktop)
-         Composant : components/ui/BlockQuote.vue
+         [SECTION-WEDDING-INTRO] — Bloc intro mariage
+         Remplace l'ancienne BlockQuote. Même bloc en hero
+         de la page Mariage.
+         Composant : components/landing/WeddingIntroSection.vue
          ========================================== -->
-    <!-- [COMP-BLOCKQUOTE] — Citation pleine largeur
-         Props : quote (string), author (string) | i18n : hero.quote, hero.quote_author
-         Mobile : image plein cadre h-[70vh] rounded-[2rem] + overlay gradient + citation en bas
-           [EL-QUOTE-TEXT-MOBILE] — font-heading text-2xl italic text-white
-           [EL-QUOTE-AUTHOR-MOBILE] — text-cream/70 text-sm tracking-widest uppercase
-         Desktop : grid 2 cols min-h-[85vh] rounded-[2rem] border-2 border-dark/10
-           [EL-QUOTE-IMAGE] — Image bouquet | object-cover scale-105
-             [STATE-QUOTE-IMAGE-HOVER] — scale-100 transition 1.5s ease-out
-           [EL-QUOTE-TEXT-DESKTOP] — text-3xl lg:text-4xl xl:text-5xl font-heading italic text-dark/85
-           [EL-QUOTE-AUTHOR-DESKTOP] — text-dark/50 text-sm tracking-[0.2em] uppercase -->
-    <BlockQuote
-      :quote="$t('hero.quote')"
-      :author="$t('hero.quote_author')"
-    />
+    <WeddingIntroSection title-tag="h2" />
 
     <!-- ==========================================
          [SECTION-FAQ] — Questions fréquentes (accordéon)
