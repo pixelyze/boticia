@@ -31,8 +31,9 @@
   },
   "hero": {
     "tagline": "フローラルアンビアンスデザイナー",
-    "title": "Boticia フラワーアンビアンスデザイナー",
-    "subtitle": "レティシア・シェファー · ウェディングフローリスト プロヴァンス",
+    "title": "Boticia",
+    "subtitle": "Floral designer",
+    "location": "Provence · Paris",
     "services": "ウェディング、イベント、アトリエ",
     "cta_primary": "詳しく見る",
     "cta_secondary": "お問い合わせ",
@@ -176,13 +177,13 @@
   },
   "features": {
     "tagline": "私たちの専門性",
-    "title": "感動に寄り添うフラワーアート",
-    "feature_1_title": "フランス産の花",
-    "feature_1_description": "地元フランスで栽培された新鮮な花を優先的に使用し、環境への負荷を軽減しています。",
+    "title": "イベントのためのフラワーデザイン",
+    "feature_1_title": "季節の花",
+    "feature_1_description": "60%以上を地元産の季節の花で揃え、最高の鮮度を保ちながら環境への負荷を軽減しています。",
     "feature_2_title": "オーダーメイド",
-    "feature_2_description": "すべてのアレンジメントは、お客様のビジョン、テーマ、会場に合わせて手作りされるユニークな作品です。",
+    "feature_2_description": "すべてのフラワーアレンジメントは、お客様のビジョン、テーマ、会場に合わせて手作りされるユニークな作品です。",
     "feature_3_title": "エコ・レスポンシブル",
-    "feature_3_description": "旬の花、合成フローラルフォーム不使用、再利用可能な素材など、あらゆる段階でサステナブルな実践を行っています。"
+    "feature_3_description": "旬の花、合理的なアプローチ、再利用可能な素材など、あらゆる段階でサステナブルな実践を行っています。"
   },
   "pricing": {
     "tagline": "プラン",
@@ -222,11 +223,11 @@
   "alacarte": {
     "tagline": "イベント",
     "title": "イベントのフラワー装飾をイメージする",
-    "subtitle": "お客様に合ったイベントタイプをお選びいただき、ニーズ、ご要望、世界観に合わせたオーダーメイドのフラワーサービスをご利用ください。",
+    "subtitle": "お客様にぴったりのイベントをお選びいただき、ご要望、ニーズ、世界観に合わせたオーダーメイドのフラワーサービスをお楽しみください。",
     "group_personal": "ウェディング",
     "group_ceremony": "イベント",
     "group_reception": "アトリエ",
-    "item_bridal_bouquet": "お二人の世界観に合わせたフラワー装飾。",
+    "item_bridal_bouquet": "お二人のビジョンに合わせたフラワー装飾。",
     "item_bridesmaid_bouquet": "季節の花、カラー、ビジュアルシミュレーションを含むフローラルブック。",
     "item_boutonnieres": "イベントのためにデザインされたオーダーメイドのフラワー作品。",
     "item_hair_flowers": "制作、設置、撤収までのトータルサービス。",
@@ -696,7 +697,12 @@
     "hero_photo_title": "ヒーロー写真",
     "hero_photo_desc": "ホームページの背景写真を変更します。",
     "hero_photo_upload": "写真を変更",
-    "hero_photo_success": "写真を更新しました！"
+    "hero_photo_success": "写真を更新しました！",
+    "philosophy_photos_title": "アプローチ写真（イベント）",
+    "philosophy_photo_1_desc": "メイン画像（左上）。",
+    "philosophy_photo_2_desc": "サブ画像（右下）。",
+    "philosophy_photo_upload": "写真を変更",
+    "philosophy_photo_success": "写真を更新しました！"
   },
   "client": {
     "page_title": "マイプロジェクト",

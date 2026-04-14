@@ -31,8 +31,9 @@
   },
   "hero": {
     "tagline": "Floral ambiance designer",
-    "title": "Boticia Floral ambiance designer",
-    "subtitle": "Laëtitia Schaeffer · wedding florist in Provence",
+    "title": "Boticia",
+    "subtitle": "Floral designer",
+    "location": "Provence · Paris",
     "services": "Weddings, events and workshops",
     "cta_primary": "Discover",
     "cta_secondary": "Contact us",
@@ -176,13 +177,13 @@
   },
   "features": {
     "tagline": "Our expertise",
-    "title": "Floral art at the service of your emotions",
-    "feature_1_title": "French flowers",
-    "feature_1_description": "We prioritize locally grown French flowers for unmatched freshness and a reduced environmental footprint.",
+    "title": "Floral design crafted for your events",
+    "feature_1_title": "Seasonal flowers",
+    "feature_1_description": "We favour seasonal flowers, over 60% locally sourced, to ensure optimal freshness while reducing our environmental impact.",
     "feature_2_title": "Bespoke creations",
-    "feature_2_description": "Every arrangement is unique, designed and handcrafted to match your vision, theme and venue.",
+    "feature_2_description": "Every floral arrangement is unique, designed and handcrafted to match your vision, theme and venue.",
     "feature_3_title": "Eco-responsible approach",
-    "feature_3_description": "Sustainable practices at every step: seasonal flowers, zero synthetic floral foam, reusable supports."
+    "feature_3_description": "Sustainable practices at every step: seasonal flowers, a mindful approach, reusable supports."
   },
   "pricing": {
     "tagline": "Our packages",
@@ -222,11 +223,11 @@
   "alacarte": {
     "tagline": "OUR EVENTS",
     "title": "Imagine the floral decoration for your event",
-    "subtitle": "Choose the type of event that suits you and benefit from a bespoke floral service, tailored to your needs, desires and world.",
+    "subtitle": "Choose the event that suits you and enjoy a bespoke floral service, designed around your desires, needs and universe.",
     "group_personal": "WEDDING",
     "group_ceremony": "EVENT",
     "group_reception": "WORKSHOP",
-    "item_bridal_bouquet": "Floral decoration designed around your world.",
+    "item_bridal_bouquet": "Floral decoration designed around your vision.",
     "item_bridesmaid_bouquet": "Visual projection, a floral book with seasonal flowers, colours and visual simulation.",
     "item_boutonnieres": "Bespoke decor, floral creations imagined for your event.",
     "item_hair_flowers": "Complete service, creation, installation and removal on site.",
@@ -696,7 +697,12 @@
     "hero_photo_title": "Hero photo",
     "hero_photo_desc": "Change the homepage background photo.",
     "hero_photo_upload": "Change photo",
-    "hero_photo_success": "Photo updated!"
+    "hero_photo_success": "Photo updated!",
+    "philosophy_photos_title": "Our approach photos (Events)",
+    "philosophy_photo_1_desc": "Main image (top left).",
+    "philosophy_photo_2_desc": "Secondary image (bottom right).",
+    "philosophy_photo_upload": "Change photo",
+    "philosophy_photo_success": "Photo updated!"
   },
   "client": {
     "page_title": "My project",

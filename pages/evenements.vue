@@ -55,14 +55,32 @@
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <!-- Image -->
-          <div class="relative w-full h-80 md:h-[28rem] rounded-[2rem] overflow-hidden">
-            <img
-              :src="philosophyImage"
-              :alt="$t('events.philosophy_title')"
-              loading="lazy"
-              class="absolute inset-0 w-full h-full object-cover"
-            />
+          <!-- Images superposées -->
+          <div class="relative w-full aspect-square max-w-md mx-auto">
+            <div
+              class="absolute top-0 left-0 w-[65%] aspect-square
+                     rounded-[2rem] overflow-hidden shadow-lg
+                     border-2 border-dark/10 z-10"
+            >
+              <img
+                :src="philosophyImage1"
+                :alt="$t('events.philosophy_title')"
+                loading="lazy"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div
+              class="absolute bottom-0 right-0 w-[65%] aspect-square
+                     rounded-[2rem] overflow-hidden shadow-lg
+                     border-2 border-dark/10"
+            >
+              <img
+                :src="philosophyImage2"
+                :alt="$t('events.philosophy_title')"
+                loading="lazy"
+                class="w-full h-full object-cover"
+              />
+            </div>
           </div>
           <!-- Text -->
           <div>
@@ -353,7 +371,21 @@ const faqs = computed(() => [
 
 const openFaq = ref(null);
 
-const philosophyImage = "/images/events/scenographie-florale-boticia.jpg";
+const defaultPhiloImage = "/images/events/scenographie-florale-boticia.jpg";
+
+const { data: philoConfig1 } = await useFetch("/api/cms/config", {
+  params: { key: "events_philosophy_image_1" },
+});
+const { data: philoConfig2 } = await useFetch("/api/cms/config", {
+  params: { key: "events_philosophy_image_2" },
+});
+
+const philosophyImage1 = computed(
+  () => philoConfig1.value?.data?.value?.url || defaultPhiloImage
+);
+const philosophyImage2 = computed(
+  () => philoConfig2.value?.data?.value?.url || defaultPhiloImage
+);
 
 const galleryImages = [
   { src: "/images/events/composition_florale_table_mariage_boticia.jpg", alt: "Set de table floral" },

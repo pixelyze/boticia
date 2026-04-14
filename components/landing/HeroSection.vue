@@ -24,17 +24,22 @@
     <div class="relative h-screen max-h-[900px] flex flex-col items-center justify-center px-6">
       <!-- Title (H1 for SEO, visually the main statement) -->
       <h1 class="text-center mb-6 overflow-hidden">
-        <span class="block font-heading text-3xl md:text-5xl lg:text-6xl font-medium text-cream leading-tight hero-slide hero-slide-1">
+        <span class="block font-heading text-4xl md:text-6xl lg:text-7xl font-medium text-cream leading-tight uppercase tracking-[0.15em] hero-slide hero-slide-1">
           {{ $t('hero.title') }}
         </span>
       </h1>
 
-      <!-- Decorative line -->
-      <div class="w-12 h-[2px] bg-cream/30 mb-6 hero-fade hero-fade-1" />
-
       <!-- Subtitle -->
-      <p class="max-w-lg mx-auto text-cream/80 text-center text-lg md:text-xl leading-relaxed mb-10 hero-fade hero-fade-2 tracking-wide">
+      <p class="text-cream/70 text-center text-base md:text-lg tracking-[0.25em] uppercase mb-4 hero-fade hero-fade-1">
         {{ $t('hero.subtitle') }}
+      </p>
+
+      <!-- Decorative line -->
+      <div class="w-12 h-[2px] bg-cream/30 mb-4 hero-fade hero-fade-2" />
+
+      <!-- Location -->
+      <p class="text-cream/50 text-center text-sm md:text-base tracking-[0.3em] uppercase mb-10 hero-fade hero-fade-2">
+        {{ $t('hero.location') }}
       </p>
 
       <!-- CTAs -->

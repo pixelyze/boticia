@@ -31,8 +31,9 @@
   },
   "hero": {
     "tagline": "Créatrice d'ambiance florale",
-    "title": "Boticia Créatrice d'ambiance florale",
-    "subtitle": "Laëtitia Schaeffer · fleuriste mariage en Provence",
+    "title": "Boticia",
+    "subtitle": "Floral designer",
+    "location": "Provence · Paris",
     "services": "Mariages, événements et ateliers",
     "cta_primary": "Découvrir",
     "cta_secondary": "Nous contacter",
@@ -176,13 +177,13 @@
   },
   "features": {
     "tagline": "Notre savoir-faire",
-    "title": "L'art floral au service de vos émotions",
-    "feature_1_title": "Fleurs françaises",
-    "feature_1_description": "Nous privilégions les fleurs cultivées en France, en circuit court, pour une fraîcheur incomparable et un impact écologique réduit.",
+    "title": "Un design floral pensé pour vos événements",
+    "feature_1_title": "Fleurs de saison",
+    "feature_1_description": "Nous privilégions des fleurs de saison, cultivées en circuit court à plus de 60 %, afin de garantir une fraîcheur optimale tout en réduisant notre impact écologique.",
     "feature_2_title": "Créations sur mesure",
-    "feature_2_description": "Chaque composition est unique, pensée et réalisée à la main selon vos envies, votre thème et votre lieu de réception.",
+    "feature_2_description": "Chaque composition florale est unique pensée et réalisée à la main selon vos envies, votre thème et votre lieu de réception.",
     "feature_3_title": "Approche éco-responsable",
-    "feature_3_description": "Des pratiques durables à chaque étape : fleurs de saison, zéro mousse florale synthétique, supports réutilisables."
+    "feature_3_description": "Des pratiques durables à chaque étape : fleurs de saison, une approche raisonnée, supports réutilisables."
   },
   "pricing": {
     "tagline": "Nos formules",
@@ -222,11 +223,11 @@
   "alacarte": {
     "tagline": "NOS ÉVÉNEMENTS",
     "title": "Imaginez la décoration florale de votre événement",
-    "subtitle": "Choisissez le type d'événement qui vous correspond et bénéficiez d'une prestation florale sur mesure, adaptée à vos besoins, à vos envies et à votre univers.",
+    "subtitle": "Choisissez l'événement qui vous ressemble et profitez d'une prestation florale sur mesure, pensée selon vos envies, vos besoins et votre univers.",
     "group_personal": "MARIAGE",
     "group_ceremony": "ÉVÉNEMENT",
     "group_reception": "ATELIER",
-    "item_bridal_bouquet": "Une décoration florale pensée selon votre univers.",
+    "item_bridal_bouquet": "Une décoration florale pensée selon votre vision.",
     "item_bridesmaid_bouquet": "Projection visuelle, un book floral avec fleurs de saison, couleurs et simulation visuelle.",
     "item_boutonnieres": "Décor sur mesure, des créations florales imaginées pour votre événement.",
     "item_hair_flowers": "Prestation complète, création, installation et désinstallation sur place.",
@@ -696,7 +697,12 @@
     "hero_photo_title": "Photo hero",
     "hero_photo_desc": "Changez la photo de fond de la page d'accueil.",
     "hero_photo_upload": "Changer la photo",
-    "hero_photo_success": "Photo mise à jour !"
+    "hero_photo_success": "Photo mise à jour !",
+    "philosophy_photos_title": "Photos Notre approche (Événements)",
+    "philosophy_photo_1_desc": "Image principale (en haut à gauche).",
+    "philosophy_photo_2_desc": "Image secondaire (en bas à droite).",
+    "philosophy_photo_upload": "Changer la photo",
+    "philosophy_photo_success": "Photo mise à jour !"
   },
   "client": {
     "page_title": "Mon projet",

@@ -235,6 +235,77 @@
         </div>
       </div>
 
+      <!-- Photos Notre approche (page Événements) -->
+      <div>
+        <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.philosophy_photos_title') }}</h2>
+        <div class="flex flex-wrap gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
+              <img
+                :src="philosophyImage1"
+                alt="Photo approche 1"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.philosophy_photo_1_desc') }}</p>
+              <label
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all"
+              >
+                <IconLucid
+                  v-if="uploadingPhilosophy1"
+                  name="Loader2"
+                  size="xs"
+                  class="animate-spin"
+                />
+                <IconLucid v-else name="Upload" size="xs" />
+                {{ $t('dashboard.philosophy_photo_upload') }}
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  class="hidden"
+                  :disabled="uploadingPhilosophy1"
+                  @change="handlePhilosophyUpload($event, 'events_philosophy_image_1', philosophyImage1Ref, uploadingPhilosophy1, philosophySuccess1)"
+                />
+              </label>
+              <p v-if="philosophySuccess1" class="text-green-600 text-sm mt-2">{{ $t('dashboard.philosophy_photo_success') }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
+              <img
+                :src="philosophyImage2"
+                alt="Photo approche 2"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.philosophy_photo_2_desc') }}</p>
+              <label
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all"
+              >
+                <IconLucid
+                  v-if="uploadingPhilosophy2"
+                  name="Loader2"
+                  size="xs"
+                  class="animate-spin"
+                />
+                <IconLucid v-else name="Upload" size="xs" />
+                {{ $t('dashboard.philosophy_photo_upload') }}
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  class="hidden"
+                  :disabled="uploadingPhilosophy2"
+                  @change="handlePhilosophyUpload($event, 'events_philosophy_image_2', philosophyImage2Ref, uploadingPhilosophy2, philosophySuccess2)"
+                />
+              </label>
+              <p v-if="philosophySuccess2" class="text-green-600 text-sm mt-2">{{ $t('dashboard.philosophy_photo_success') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Availability -->
       <AvailabilityManager />
 
@@ -261,6 +332,7 @@
 </template>
 
 <script setup lang="ts">
+import type { Ref } from "vue";
 import type { ThemeColor } from "~/composables/useSiteTheme";
 
 const user = useSupabaseUser();
@@ -429,6 +501,83 @@ async function handleBlockquoteUpload(event: Event) {
   }
 }
 
+// Philosophy photos management (page Événements)
+const philosophyImage1Ref = ref("/images/events/scenographie-florale-boticia.jpg");
+const philosophyImage2Ref = ref("/images/events/scenographie-florale-boticia.jpg");
+const philosophyImage1 = computed(() => philosophyImage1Ref.value);
+const philosophyImage2 = computed(() => philosophyImage2Ref.value);
+const uploadingPhilosophy1 = ref(false);
+const uploadingPhilosophy2 = ref(false);
+const philosophySuccess1 = ref(false);
+const philosophySuccess2 = ref(false);
+
+async function fetchPhilosophyImages() {
+  try {
+    const [res1, res2] = await Promise.all([
+      $fetch<{ data: { value: any } }>("/api/cms/config", {
+        params: { key: "events_philosophy_image_1" },
+      }),
+      $fetch<{ data: { value: any } }>("/api/cms/config", {
+        params: { key: "events_philosophy_image_2" },
+      }),
+    ]);
+    if (res1?.data?.value?.url) philosophyImage1Ref.value = res1.data.value.url;
+    if (res2?.data?.value?.url) philosophyImage2Ref.value = res2.data.value.url;
+  } catch {
+    // Keep defaults
+  }
+}
+
+async function handlePhilosophyUpload(
+  event: Event,
+  configKey: string,
+  imageRef: Ref<string>,
+  uploadingRef: Ref<boolean>,
+  successRef: Ref<boolean>
+) {
+  const input = event.target as HTMLInputElement;
+  const rawFile = input.files?.[0];
+  if (!rawFile) return;
+
+  uploadingRef.value = true;
+  successRef.value = false;
+
+  try {
+    const token = useSupabaseSession().value?.access_token;
+    if (!token) return;
+
+    const file = await compress(rawFile);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const uploadRes = await $fetch<{ success: boolean; data: { path: string; url: string } }>("/api/cms/logos/upload", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+
+    if (uploadRes?.data?.url) {
+      await $fetch("/api/cms/config", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: {
+          key: configKey,
+          category: "events",
+          value: { url: uploadRes.data.url },
+        },
+      });
+      imageRef.value = uploadRes.data.url;
+      successRef.value = true;
+      setTimeout(() => { successRef.value = false; }, 3000);
+    }
+  } catch (err) {
+    console.error(`Error uploading ${configKey}:`, err);
+  } finally {
+    uploadingRef.value = false;
+    input.value = "";
+  }
+}
+
 // Logo management
 const { logo: siteLogoRef, setLogo: setSiteLogoGlobal } = useSiteLogo();
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -443,6 +592,7 @@ onMounted(async () => {
   await fetchSelectedLogo();
   await fetchBlockquoteImage();
   await fetchHeroImage();
+  await fetchPhilosophyImages();
 });
 
 async function fetchLogos() {
