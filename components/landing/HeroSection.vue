@@ -60,13 +60,6 @@
       </div>
     </div>
 
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hero-fade hero-fade-4">
-      <div class="flex flex-col items-center gap-2">
-        <span class="text-cream/25 text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <div class="w-[1px] h-8 bg-gradient-to-b from-cream/30 to-transparent scroll-line" />
-      </div>
-    </div>
   </section>
 </template>
 
@@ -148,12 +141,4 @@ const imageUrl = computed(() => {
   }
 }
 
-/* Scroll line pulse */
-.scroll-line {
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(1); }
-  50% { opacity: 0.7; transform: scaleY(1.3); }
-}
 </style>
