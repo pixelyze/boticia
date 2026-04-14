@@ -38,7 +38,7 @@
       <div class="w-12 h-[2px] bg-cream/30 mb-4 hero-fade hero-fade-2" />
 
       <!-- Location -->
-      <p class="text-cream/50 text-center text-sm md:text-base tracking-[0.3em] uppercase mb-10 hero-fade hero-fade-2">
+      <p class="text-cream/70 text-center text-base md:text-lg tracking-[0.25em] uppercase mb-10 hero-fade hero-fade-2">
         {{ $t('hero.location') }}
       </p>
 
