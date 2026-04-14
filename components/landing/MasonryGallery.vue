@@ -215,7 +215,17 @@ const openLightbox = (index) => {
   lightboxOpen.value = true;
 };
 
-const displayImages = computed(() => images.value.slice(0, 6));
+// Use bento_slot images first (sorted 1-6), then fill remaining slots
+const displayImages = computed(() => {
+  const slotted = images.value
+    .filter((img) => img.bento_slot >= 1 && img.bento_slot <= 6)
+    .sort((a, b) => a.bento_slot - b.bento_slot);
+  if (slotted.length >= 6) return slotted.slice(0, 6);
+  const slottedIds = new Set(slotted.map((img) => img.id));
+  const rest = images.value.filter((img) => !slottedIds.has(img.id));
+  const result = [...slotted, ...rest].slice(0, 6);
+  return result;
+});
 const remainingCount = computed(() => Math.max(0, images.value.length - 6));
 
 const { data: galleryData } = await useFetch("/api/galleries/portfolio");

@@ -88,6 +88,25 @@
               </div>
 
               <template v-else>
+                <!-- Bento layout reference -->
+                <div
+                  v-if="galleryImages[gallery.id]?.length"
+                  class="mb-4 p-3 rounded-xl bg-cream/50
+                         border border-dark/10"
+                >
+                  <p class="text-xs text-dark/40 mb-2 font-semibold uppercase tracking-wide">
+                    {{ t("dashboard.bento_layout") }}
+                  </p>
+                  <div class="grid grid-cols-3 gap-1 max-w-[200px]">
+                    <div class="col-span-2 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">①</div>
+                    <div class="col-span-1 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">②</div>
+                    <div class="col-span-1 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">③</div>
+                    <div class="col-span-2 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">④</div>
+                    <div class="col-span-2 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">⑤</div>
+                    <div class="col-span-1 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">⑥</div>
+                  </div>
+                </div>
+
                 <div
                   v-if="galleryImages[gallery.id]?.length"
                   class="grid grid-cols-3 sm:grid-cols-4
@@ -104,6 +123,27 @@
                       :alt="img.original_filename"
                       class="w-full h-full object-cover"
                     />
+                    <!-- Bento slot selector -->
+                    <select
+                      :value="img.bento_slot || ''"
+                      @change="setBentoSlot(gallery.id, img.id, $event)"
+                      class="absolute bottom-1 left-1 w-8 h-8
+                             rounded-full bg-dark/70 text-cream
+                             text-center text-sm font-bold
+                             appearance-none cursor-pointer
+                             border-2"
+                      :class="img.bento_slot
+                        ? 'border-cream'
+                        : 'border-transparent opacity-0 group-hover:opacity-70'"
+                    >
+                      <option value="">–</option>
+                      <option
+                        v-for="n in 6"
+                        :key="n"
+                        :value="n"
+                      >{{ n }}</option>
+                    </select>
+                    <!-- Delete button -->
                     <button
                       @click="deleteImage(gallery.id, img.id)"
                       class="absolute top-1 right-1 w-6 h-6
@@ -323,6 +363,52 @@ const deleteImage = async (
       galleryImages[galleryId].length;
   } catch (err) {
     console.error("Error deleting image:", err);
+  }
+};
+
+const setBentoSlot = async (
+  galleryId: string,
+  imageId: string,
+  event: Event
+) => {
+  const select = event.target as HTMLSelectElement;
+  const value = select.value;
+  const slot = value ? parseInt(value) : null;
+
+  // If assigning a slot that's already taken, clear the other image
+  if (slot !== null && galleryImages[galleryId]) {
+    const existing = galleryImages[galleryId].find(
+      (img) => img.bento_slot === slot && img.id !== imageId
+    );
+    if (existing) {
+      try {
+        await adminFetch(
+          `/api/admin/galleries/${galleryId}/images/${existing.id}`,
+          { method: "PATCH", body: { bento_slot: null } }
+        );
+        existing.bento_slot = null;
+      } catch (err) {
+        console.error("Error clearing slot:", err);
+      }
+    }
+  }
+
+  try {
+    const res = await adminFetch<{
+      success: boolean;
+      data: GalleryImage;
+    }>(
+      `/api/admin/galleries/${galleryId}/images/${imageId}`,
+      { method: "PATCH", body: { bento_slot: slot } }
+    );
+    const idx = galleryImages[galleryId].findIndex(
+      (img) => img.id === imageId
+    );
+    if (idx !== -1) {
+      galleryImages[galleryId][idx] = res.data;
+    }
+  } catch (err) {
+    console.error("Error setting bento slot:", err);
   }
 };
 

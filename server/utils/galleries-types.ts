@@ -23,6 +23,7 @@ export interface GalleryImage {
   public_url: string;
   caption?: string;
   sort_order: number;
+  bento_slot?: number | null;
   created_at: string;
   updated_at: string;
 }

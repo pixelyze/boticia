@@ -10,6 +10,8 @@ import type {
   CreateGalleryImageInput,
 } from "./galleries-types";
 
+export type { GalleryImage };
+
 // ========================================
 // GALLERIES
 // ========================================
@@ -217,6 +219,33 @@ export async function getGalleryImageById(
         "Error getting gallery image:",
         error.message
       );
+      return null;
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Error:", err);
+    return null;
+  }
+}
+
+/**
+ * Update a gallery image (bento_slot, caption, sort_order)
+ */
+export async function updateGalleryImage(
+  id: string,
+  input: Partial<Pick<GalleryImage, "bento_slot" | "caption" | "sort_order">>
+): Promise<GalleryImage | null> {
+  try {
+    const { data, error } = await getSupabase()
+      .from("gallery_images")
+      .update(input)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating gallery image:", error.message);
       return null;
     }
 
