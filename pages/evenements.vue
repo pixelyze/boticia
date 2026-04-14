@@ -572,13 +572,22 @@ const lightboxOpen = ref(false);
 const lightboxIndex = ref(0);
 
 const displayGallery = computed(() => {
-  const slotted = galleryImages.value
-    .filter((img) => img.bento_slot >= 1 && img.bento_slot <= 6)
-    .sort((a, b) => a.bento_slot - b.bento_slot);
-  if (slotted.length >= 6) return slotted.slice(0, 6);
-  const slottedIds = new Set(slotted.map((img) => img.id));
-  const rest = galleryImages.value.filter((img) => !slottedIds.has(img.id));
-  return [...slotted, ...rest].slice(0, 6);
+  const result = new Array(6).fill(null);
+  const used = new Set();
+  for (const img of galleryImages.value) {
+    if (img.bento_slot >= 1 && img.bento_slot <= 6) {
+      result[img.bento_slot - 1] = img;
+      used.add(img.id);
+    }
+  }
+  const rest = galleryImages.value.filter((img) => !used.has(img.id));
+  let restIdx = 0;
+  for (let i = 0; i < 6; i++) {
+    if (!result[i] && restIdx < rest.length) {
+      result[i] = rest[restIdx++];
+    }
+  }
+  return result.filter(Boolean);
 });
 const remainingGallery = computed(() => Math.max(0, galleryImages.value.length - 6));
 
