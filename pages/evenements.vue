@@ -101,42 +101,197 @@
       </div>
     </section>
 
-    <!-- Gallery -->
+    <!-- Gallery — bento layout -->
     <section
-      v-if="galleryImages.length > 0"
+      v-if="displayGallery.length > 0"
       class="py-16 md:py-24 bg-cream-light"
     >
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-12">
+      <div class="px-5 sm:px-10">
+        <div class="max-w-6xl mx-auto mb-12">
           <span class="section-tagline">
             {{ $t("events.gallery_tagline") }}
           </span>
           <h2 class="section-title-lg">
             {{ $t("events.gallery_title") }}
           </h2>
-          <p class="mt-4 text-dark/70 max-w-2xl mx-auto text-lg leading-relaxed">
-            {{ $t("events.gallery_desc") }}
-          </p>
         </div>
-        <div class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4">
-          <button
-            v-for="(img, i) in galleryImages"
-            :key="img.id"
-            class="break-inside-avoid group cursor-pointer block w-full"
-            @click="openLightbox(i)"
+
+        <div class="max-w-6xl mx-auto space-y-4">
+          <!-- Row 1 : wide + square -->
+          <div
+            v-if="displayGallery[0]"
+            class="flex flex-col sm:flex-row gap-4"
           >
-            <div
-              class="rounded-2xl overflow-hidden"
-              :class="i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-square'"
+            <button
+              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              @click="openLightbox(0)"
             >
-              <img
-                :src="img.public_url"
-                :alt="img.caption || $t('events.gallery_alt')"
-                loading="lazy"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-          </button>
+              <div
+                class="relative w-full h-full min-h-[250px]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="displayGallery[0].public_url"
+                  :alt="displayGallery[0].caption || $t('events.gallery_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+            <button
+              v-if="displayGallery[1]"
+              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              @click="openLightbox(1)"
+            >
+              <div
+                class="relative aspect-square
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="displayGallery[1].public_url"
+                  :alt="displayGallery[1].caption || $t('events.gallery_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+          </div>
+
+          <!-- Row 2 : square + wide -->
+          <div
+            v-if="displayGallery[2]"
+            class="flex flex-col sm:flex-row gap-4"
+          >
+            <button
+              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              @click="openLightbox(2)"
+            >
+              <div
+                class="relative aspect-square
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="displayGallery[2].public_url"
+                  :alt="displayGallery[2].caption || $t('events.gallery_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+            <button
+              v-if="displayGallery[3]"
+              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              @click="openLightbox(3)"
+            >
+              <div
+                class="relative w-full h-full min-h-[250px]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="displayGallery[3].public_url"
+                  :alt="displayGallery[3].caption || $t('events.gallery_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+          </div>
+
+          <!-- Row 3 : wide + square (+N overlay) -->
+          <div
+            v-if="displayGallery[4]"
+            class="flex flex-col sm:flex-row gap-4"
+          >
+            <button
+              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              @click="openLightbox(4)"
+            >
+              <div
+                class="relative w-full h-full min-h-[250px]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="displayGallery[4].public_url"
+                  :alt="displayGallery[4].caption || $t('events.gallery_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+            <button
+              v-if="displayGallery[5]"
+              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              @click="openLightbox(5)"
+            >
+              <div
+                class="relative aspect-square
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="displayGallery[5].public_url"
+                  :alt="displayGallery[5].caption || $t('events.gallery_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+                <div
+                  v-if="remainingGallery > 0"
+                  class="absolute inset-0 bg-dark/40
+                         flex items-center justify-center
+                         group-hover:bg-dark/50
+                         transition-colors duration-500"
+                >
+                  <span
+                    class="text-cream font-heading text-5xl
+                           md:text-7xl font-medium"
+                  >
+                    +{{ remainingGallery }}
+                  </span>
+                </div>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -402,9 +557,22 @@ const philosophyImage2 = computed(
   () => philoConfig2.value?.data?.value?.url || defaultPhiloImage
 );
 
+// Placeholder images until gallery "events" is created in Supabase
+const placeholders = [
+  { id: "p1", public_url: "/images/events/composition_florale_table_mariage_boticia.jpg", caption: "" },
+  { id: "p2", public_url: "/images/events/decoration_florale_mariage_sophiethomas_boticia_29.jpg", caption: "" },
+  { id: "p3", public_url: "/images/events/decoration_florale_mariage_sophiethomas_boticia_11.jpg", caption: "" },
+  { id: "p4", public_url: "/images/events/scenographie-florale-boticia.jpg", caption: "" },
+  { id: "p5", public_url: "/images/events/decoration_florale_mariage_sophiethomas_boticia_42.jpg", caption: "" },
+  { id: "p6", public_url: "/images/events/atelier_composition_florale_team_building_boticia_3.jpg", caption: "" },
+];
+
 const galleryImages = ref([]);
 const lightboxOpen = ref(false);
 const lightboxIndex = ref(0);
+
+const displayGallery = computed(() => galleryImages.value.slice(0, 6));
+const remainingGallery = computed(() => Math.max(0, galleryImages.value.length - 6));
 
 const openLightbox = (index) => {
   lightboxIndex.value = index;
@@ -414,7 +582,9 @@ const openLightbox = (index) => {
 const { data: galleryData } = await useFetch(
   "/api/galleries/events"
 );
-if (galleryData.value?.data) {
+if (galleryData.value?.data && galleryData.value.data.length > 0) {
   galleryImages.value = galleryData.value.data;
+} else {
+  galleryImages.value = placeholders;
 }
 </script>
