@@ -244,6 +244,7 @@ const slugToPage: Record<string, string> = {
   creations: "/creations",
   wedding: "/mariages",
   workshops: "/ateliers",
+  events: "/evenements",
 };
 
 const galleryUrl = (slug: string) => slugToPage[slug] || `/${slug}`;
