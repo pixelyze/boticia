@@ -146,17 +146,17 @@ const route = useRoute();
 const siteUrl = config.public.siteUrl;
 
 useSeoMeta({
-  ogTitle: `${t("hero.title")} | Boticia Côte d'Azur`,
+  ogTitle: `${t("hero.title")} | Boticia Provence`,
   ogDescription: t("hero.subtitle"),
   ogUrl: `${config.public.siteUrl}${route.fullPath}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
-  twitterTitle: `${t("hero.title")} | Boticia Côte d'Azur`,
+  twitterTitle: `${t("hero.title")} | Boticia Provence`,
   twitterDescription: t("hero.subtitle"),
 });
 
 useHead({
-  title: `${t("hero.title")} | Boticia Côte d'Azur`,
+  title: `${t("hero.title")} | Boticia Provence`,
   meta: [
     {
       key: 'description',

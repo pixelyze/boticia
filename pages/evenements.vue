@@ -207,17 +207,17 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 useSeoMeta({
-  ogTitle: `${t("events.title")} | Boticia Côte d'Azur`,
+  ogTitle: `${t("events.title")} | Boticia Provence`,
   ogDescription: t("events.intro"),
   ogUrl: `${config.public.siteUrl}${route.fullPath}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
-  twitterTitle: `${t("events.title")} | Boticia Côte d'Azur`,
+  twitterTitle: `${t("events.title")} | Boticia Provence`,
   twitterDescription: t("events.intro"),
 });
 
 useHead({
-  title: t("events.title") + " | Boticia Côte d'Azur",
+  title: t("events.title") + " | Boticia Provence",
   meta: [{ name: "description", content: t("events.intro") }],
   script: [
     {

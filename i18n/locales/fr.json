@@ -88,8 +88,8 @@
     "why_2_desc": "De la première rencontre à l'installation le jour J, vous avez une interlocutrice unique qui connaît votre projet dans les moindres détails.",
     "why_3_title": "Espace client dédié",
     "why_3_desc": "Suivez votre projet en temps réel : moodboard collaboratif, propositions détaillées et échanges simplifiés dans votre espace privé.",
-    "why_4_title": "Sur la Côte d'Azur et au-delà",
-    "why_4_desc": "Basée sur la Côte d'Azur, nous intervenons dans toute la région PACA et nous déplaçons dans toute la France pour votre mariage.",
+    "why_4_title": "En Provence et au-delà",
+    "why_4_desc": "Basée en Provence, nous intervenons dans toute la région PACA et nous déplaçons dans toute la France pour votre mariage.",
     "faq_tagline": "Questions fréquentes",
     "faq_title": "Tout savoir sur la décoration florale de mariage",
     "faq_1_q": "Quel budget prévoir pour la décoration florale d'un mariage ?",
@@ -98,7 +98,7 @@
     "faq_2_a": "Nous recommandons de nous contacter 8 à 12 mois avant votre mariage, surtout en haute saison (mai à septembre). Pour les mariages en semaine ou hors saison, 4 à 6 mois suffisent. Plus tôt vous nous contactez, plus nous avons de disponibilité pour votre date.",
     "faq_3_q": "Peut-on choisir des fleurs spécifiques ?",
     "faq_3_a": "Absolument. Nous travaillons avec vous pour identifier les variétés qui correspondent à votre univers. Certaines fleurs sont saisonnières · nous vous conseillerons les meilleures alternatives si votre fleur préférée n'est pas disponible à la date de votre mariage.",
-    "faq_4_q": "Intervenez-vous en dehors de la Côte d'Azur ?",
+    "faq_4_q": "Intervenez-vous en dehors de la Provence ?",
     "faq_4_a": "Oui, nous nous déplaçons dans toute la France. Des frais de déplacement s'appliquent au-delà de la région PACA. Contactez-nous pour un devis personnalisé incluant le transport et l'installation."
   },
   "events": {
@@ -265,7 +265,7 @@
     "q4": "Comment se déroule une première consultation ?",
     "a4": "Contactez-nous par email ou téléphone. Nous échangeons sur votre projet, vos envies et votre budget lors d'un premier rendez-vous gratuit et sans engagement.",
     "q5": "Où et comment les créations sont-elles réalisées ?",
-    "a5": "Les compositions sont assemblées à la commande dans notre atelier sur la Côte d'Azur, avec le plus grand soin.",
+    "a5": "Les compositions sont assemblées à la commande dans notre atelier en Provence, avec le plus grand soin.",
     "q6": "Quelle est la durée de vie d'un bouquet de fleurs séchées ?",
     "a6": "Les fleurs séchées restent intactes plusieurs mois, voire plusieurs années, à condition de les conserver à l'abri du soleil et de l'humidité.",
     "q7": "Proposez-vous une offre mariage ?",
@@ -831,7 +831,7 @@
     "slot_hours": "{start} - {end}"
   },
   "seo": {
-    "home_description": "Boticia · Art floral sur mesure par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court, sur la Côte d'Azur et dans toute la France.",
+    "home_description": "Boticia · Art floral sur mesure par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court, en Provence et dans toute la France.",
     "about_description": "Découvrez Laëtitia Schaeffer, créatrice florale passionnée, fondatrice de Boticia. Compositions sur mesure, fleurs françaises en circuit court et accompagnement bienveillant.",
     "devis_description": "Demandez un devis personnalisé pour votre décoration florale de mariage avec Boticia. Bouquets, arches, centres de table et scénographie complète.",
     "legal_description": "Mentions légales de Boticia, atelier de design floral par Laëtitia Schaeffer.",

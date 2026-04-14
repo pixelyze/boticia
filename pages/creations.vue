@@ -94,7 +94,7 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 
 useHead({
-  title: `${t("creations.title")} | Boticia Côte d'Azur`,
+  title: `${t("creations.title")} | Boticia Provence`,
   meta: [{ name: "description", content: t("creations.subtitle") }],
 });
 

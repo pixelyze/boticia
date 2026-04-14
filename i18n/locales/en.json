@@ -88,8 +88,8 @@
     "why_2_desc": "From the first meeting to installation on the day, you have a single point of contact who knows your project inside out.",
     "why_3_title": "Dedicated client portal",
     "why_3_desc": "Follow your project in real time: collaborative moodboard, detailed proposals and streamlined communication in your private space.",
-    "why_4_title": "French Riviera and beyond",
-    "why_4_desc": "Based on the French Riviera, we serve the entire PACA region and travel throughout France for your wedding.",
+    "why_4_title": "Provence and beyond",
+    "why_4_desc": "Based in Provence, we serve the entire PACA region and travel throughout France for your wedding.",
     "faq_tagline": "FAQ",
     "faq_title": "Everything about wedding floral decoration",
     "faq_1_q": "What budget should I plan for wedding floral decoration?",
@@ -98,7 +98,7 @@
     "faq_2_a": "We recommend contacting us 8 to 12 months before your wedding, especially during peak season (May to September). For weekday or off-season weddings, 4 to 6 months is sufficient.",
     "faq_3_q": "Can I choose specific flowers?",
     "faq_3_a": "Absolutely. We work with you to identify varieties that match your vision. Some flowers are seasonal · we will suggest the best alternatives if your favourite isn't available on your wedding date.",
-    "faq_4_q": "Do you work outside the French Riviera?",
+    "faq_4_q": "Do you work outside Provence?",
     "faq_4_a": "Yes, we travel throughout France. Travel fees apply beyond the PACA region. Contact us for a personalised quote including transport and installation."
   },
   "events": {
@@ -265,7 +265,7 @@
     "q4": "How does a first consultation work?",
     "a4": "Get in touch by email or phone. We discuss your project, your wishes and your budget during a free, no-obligation first meeting.",
     "q5": "Where and how are the creations made?",
-    "a5": "All compositions are assembled to order in our workshop on the French Riviera, with the utmost care.",
+    "a5": "All compositions are assembled to order in our workshop in Provence, with the utmost care.",
     "q6": "How long do dried flower bouquets last?",
     "a6": "Dried flowers stay intact for several months, even years, as long as they are kept away from direct sunlight and moisture.",
     "q7": "Do you offer wedding services?",
@@ -831,7 +831,7 @@
     "slot_hours": "{start} - {end}"
   },
   "seo": {
-    "home_description": "Boticia · Bespoke floral art by Laëtitia Schaeffer. Wedding floral decoration, event scenography and floral art workshops. French flowers, locally sourced, on the French Riviera and throughout France.",
+    "home_description": "Boticia · Bespoke floral art by Laëtitia Schaeffer. Wedding floral decoration, event scenography and floral art workshops. French flowers, locally sourced, in Provence and throughout France.",
     "about_description": "Meet Laëtitia Schaeffer, passionate floral designer and founder of Boticia. Bespoke compositions, locally sourced French flowers and caring guidance.",
     "devis_description": "Request a personalised quote for your wedding floral decoration with Boticia. Bouquets, arches, centrepieces and complete scenography.",
     "legal_description": "Legal notice for Boticia, floral design studio by Laëtitia Schaeffer.",

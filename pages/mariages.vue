@@ -170,17 +170,17 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 useSeoMeta({
-  ogTitle: `${t("weddings.title")} | Boticia Côte d'Azur`,
+  ogTitle: `${t("weddings.title")} | Boticia Provence`,
   ogDescription: t("weddings.intro"),
   ogUrl: `${config.public.siteUrl}${route.fullPath}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
-  twitterTitle: `${t("weddings.title")} | Boticia Côte d'Azur`,
+  twitterTitle: `${t("weddings.title")} | Boticia Provence`,
   twitterDescription: t("weddings.intro"),
 });
 
 useHead({
-  title: t("weddings.title") + " | Boticia Côte d'Azur",
+  title: t("weddings.title") + " | Boticia Provence",
   meta: [{ name: "description", content: t("weddings.intro") }],
   script: [
     {
