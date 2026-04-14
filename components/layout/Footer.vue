@@ -9,11 +9,16 @@
         </NuxtLink>
         <img v-else :src="logo" alt="Boticia" loading="lazy" width="96" height="96" class="h-24 mx-auto mb-6" />
 
-        <span class="font-heading text-2xl text-dark">Boticia</span>
+        <span class="font-heading text-2xl text-dark uppercase">Boticia</span>
 
-        <!-- Description -->
-        <p class="text-dark/80 text-base leading-relaxed max-w-sm mx-auto mt-4">
-          {{ $t("footer.description") }}
+        <!-- Subtitle -->
+        <p class="text-dark/70 text-base mt-2">
+          {{ $t("footer.subtitle") }}
+        </p>
+
+        <!-- Services -->
+        <p class="text-dark/50 text-sm tracking-widest uppercase mt-2">
+          {{ $t("footer.services_line") }}
         </p>
 
         <!-- Social links -->
@@ -44,8 +49,8 @@
           >Pinterest</a>
         </nav>
 
-        <!-- Legal links -->
-        <nav aria-label="Liens l\u00e9gaux" class="mt-10 sm:mt-16">
+        <!-- Navigation links -->
+        <nav aria-label="Navigation" class="mt-10 sm:mt-16">
           <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm sm:text-base">
             <NuxtLink
               v-if="!isAboutPage"
@@ -57,6 +62,7 @@
             <span v-else class="text-dark/70">
               {{ $t("footer.about_link") }}
             </span>
+            <span class="text-dark/30">·</span>
             <NuxtLink
               v-if="!isFaqPage"
               :to="localePath('/faq')"
@@ -67,24 +73,23 @@
             <span v-else class="text-dark/70">
               {{ $t("footer.faq_link") }}
             </span>
-            <NuxtLink
-              v-if="!isLegalPage"
-              :to="localePath('/legal')"
-              class="text-dark/70 hover:text-dark transition-colors duration-300"
-            >
-              {{ $t("footer.legal_link") }}
-            </NuxtLink>
-            <span v-else class="text-dark/70">
-              {{ $t("footer.legal_link") }}
-            </span>
           </div>
         </nav>
       </div>
       </div>
 
-      <!-- Copyright outside colored block -->
-      <p class="text-dark/50 text-sm text-center mt-6">
+      <!-- Copyright + legal link -->
+      <p class="text-dark/40 text-sm text-center mt-6">
         {{ $t("footer.copyright") }}
+        <span class="text-dark/20 mx-1">·</span>
+        <NuxtLink
+          v-if="!isLegalPage"
+          :to="localePath('/legal')"
+          class="text-dark/40 hover:text-dark/60 underline underline-offset-2 transition-colors duration-300"
+        >
+          {{ $t("footer.legal_link") }}
+        </NuxtLink>
+        <span v-else>{{ $t("footer.legal_link") }}</span>
       </p>
     </div>
   </footer>

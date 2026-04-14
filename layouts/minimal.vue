@@ -7,7 +7,7 @@
           <NuxtLink :to="localePath('/')" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
             <IconLucid name="ArrowLeft" size="sm" />
           </NuxtLink>
-          <span class="font-heading font-medium text-xl tracking-tight text-dark">
+          <span class="font-heading font-medium text-xl tracking-tight text-dark uppercase">
             Boticia
           </span>
           <div class="w-10"></div>

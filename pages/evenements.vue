@@ -102,7 +102,10 @@
     </section>
 
     <!-- Gallery -->
-    <section class="py-16 md:py-24 bg-cream-light">
+    <section
+      v-if="galleryImages.length > 0"
+      class="py-16 md:py-24 bg-cream-light"
+    >
       <div class="container mx-auto px-6">
         <div class="text-center mb-12">
           <span class="section-tagline">
@@ -116,23 +119,35 @@
           </p>
         </div>
         <div class="max-w-5xl mx-auto columns-2 sm:columns-3 gap-4 space-y-4">
-          <div
+          <button
             v-for="(img, i) in galleryImages"
-            :key="i"
-            class="rounded-2xl overflow-hidden ring-1 ring-dark/5 break-inside-avoid"
-            :class="i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-square'"
+            :key="img.id"
+            class="break-inside-avoid group cursor-pointer block w-full"
+            @click="openLightbox(i)"
           >
-            <img
-              :src="img.src"
-              :alt="img.alt"
-              class="w-full h-full object-cover
-                     hover:scale-105 transition-transform duration-500"
-              loading="lazy"
-            />
-          </div>
+            <div
+              class="rounded-2xl overflow-hidden"
+              :class="i % 3 === 1 ? 'aspect-[3/4]' : 'aspect-square'"
+            >
+              <img
+                :src="img.public_url"
+                :alt="img.caption || $t('events.gallery_alt')"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+          </button>
         </div>
       </div>
     </section>
+
+    <GalleryLightbox
+      :is-open="lightboxOpen"
+      :items="galleryImages"
+      :title="$t('events.gallery_title')"
+      :start-index="lightboxIndex"
+      @close="lightboxOpen = false"
+    />
 
     <!-- Pourquoi nous choisir -->
     <section class="py-16 md:py-24 bg-white">
@@ -387,12 +402,19 @@ const philosophyImage2 = computed(
   () => philoConfig2.value?.data?.value?.url || defaultPhiloImage
 );
 
-const galleryImages = [
-  { src: "/images/events/composition_florale_table_mariage_boticia.jpg", alt: "Set de table floral" },
-  { src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_29.jpg", alt: "Arrangement floral Boticia" },
-  { src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_11.jpg", alt: "Décoration florale événementielle" },
-  { src: "/images/events/scenographie-florale-boticia.jpg", alt: "Scénographie florale Boticia" },
-  { src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_42.jpg", alt: "Scénographie florale événementielle" },
-  { src: "/images/events/atelier_composition_florale_team_building_boticia_3.jpg", alt: "Atelier composition florale" },
-];
+const galleryImages = ref([]);
+const lightboxOpen = ref(false);
+const lightboxIndex = ref(0);
+
+const openLightbox = (index) => {
+  lightboxIndex.value = index;
+  lightboxOpen.value = true;
+};
+
+const { data: galleryData } = await useFetch(
+  "/api/galleries/events"
+);
+if (galleryData.value?.data) {
+  galleryImages.value = galleryData.value.data;
+}
 </script>

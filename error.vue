@@ -9,7 +9,7 @@
         <NuxtLink
           to="/"
           class="font-heading font-medium text-3xl
-                 tracking-tight text-dark inline-block"
+                 tracking-tight text-dark inline-block uppercase"
         >
           Boticia
         </NuxtLink>

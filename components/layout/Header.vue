@@ -38,7 +38,7 @@
           <div class="flex flex-col items-center">
             <NuxtLink :to="localePath('/')" class="text-center">
               <span
-                class="font-heading font-medium tracking-tight transition-all duration-500 block"
+                class="font-heading font-medium tracking-tight transition-all duration-500 block uppercase"
                 :class="isTransparent ? 'text-xl md:text-4xl text-cream' : 'text-xl md:text-2xl text-dark'"
               >
                 Boticia
@@ -130,7 +130,7 @@
           <div class="flex items-center justify-between px-6 py-5">
             <NuxtLink
               :to="localePath('/')"
-              class="font-heading font-medium text-2xl tracking-tight text-dark"
+              class="font-heading font-medium text-2xl tracking-tight text-dark uppercase"
               @click="closeMobileMenu"
             >
               Boticia
