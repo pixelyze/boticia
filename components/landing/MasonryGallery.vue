@@ -47,7 +47,7 @@
             @click="openLightbox(1)"
           >
             <div
-              class="relative aspect-square
+              class="relative aspect-[3/4]
                      rounded-[1.5rem] overflow-hidden"
             >
               <img
@@ -77,7 +77,7 @@
             @click="openLightbox(2)"
           >
             <div
-              class="relative aspect-square
+              class="relative aspect-[3/4]
                      rounded-[1.5rem] overflow-hidden"
             >
               <img
@@ -155,7 +155,7 @@
             @click="openLightbox(5)"
           >
             <div
-              class="relative aspect-square
+              class="relative aspect-[3/4]
                      rounded-[1.5rem] overflow-hidden"
             >
               <img
