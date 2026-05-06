@@ -388,7 +388,7 @@ export async function getProposalById(
 // ========================================
 
 /**
- * Find a quote_request by email with portal_enabled
+ * Find the most recent quote_request by email
  */
 export async function getQuoteByClientEmail(
   email: string
@@ -398,7 +398,6 @@ export async function getQuoteByClientEmail(
       .from("quote_requests")
       .select("*")
       .ilike("email", email)
-      .eq("portal_enabled", true)
       .order("created_at", { ascending: false })
       .limit(1)
       .single();

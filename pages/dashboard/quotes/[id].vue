@@ -471,13 +471,6 @@
               </div>
               </div>
 
-              <!-- Portal toggle -->
-              <PortalToggle
-                :enabled="portalEnabled"
-                :quoteEmail="quote.email"
-                @toggle="handlePortalToggle"
-                class="mt-4"
-              />
 
               <!-- Metadata footer -->
               <div
@@ -861,7 +854,7 @@ const adminNotes = ref("");
 const savingNotes = ref(false);
 
 // Portal state
-const portalEnabled = ref(false);
+const portalEnabled = ref(true);
 const sendingInvite = ref(false);
 const inviteSent = ref(false);
 const moodboardItems = ref<MoodboardItem[]>([]);
@@ -1494,7 +1487,7 @@ const fetchQuote = async () => {
       ? `${res.data.partner1_name} & ${res.data.partner2_name}`
       : res.data.partner1_name;
     adminNotes.value = res.data.admin_notes || "";
-    portalEnabled.value = res.data.portal_enabled || false;
+    portalEnabled.value = true;
     moodboardNote.value = res.data.moodboard_note || "";
     fetchPortalData();
     fetchActivityLog();
