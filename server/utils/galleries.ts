@@ -10,8 +10,6 @@ import type {
   CreateGalleryImageInput,
 } from "./galleries-types";
 
-export type { GalleryImage };
-
 // ========================================
 // GALLERIES
 // ========================================
