@@ -130,6 +130,9 @@
               :key="selectedDay.dateKey"
               class="slots-container space-y-2 mt-3"
             >
+              <p class="text-xs text-dark/40 mb-1">
+                {{ $t("planifier.timezone_hint") }}
+              </p>
               <template v-for="slot in selectedDay.slots" :key="slot.id">
                 <div class="flex gap-3">
                   <!-- Bouton créneau -->

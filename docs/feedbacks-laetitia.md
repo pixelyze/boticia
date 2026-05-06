@@ -159,3 +159,11 @@
 **Problème** : Risque que le projet Supabase se mette en pause après 7 jours d'inactivité.
 
 **Solution** : Cron Vercel qui ping Supabase toutes les 6 heures (`/api/cron/keep-alive`).
+
+---
+
+## 17. Confusion fuseau horaire — Prise de RDV
+
+**Problème** : Une cliente américaine a réservé un créneau en pensant que l'heure affichée était dans son fuseau local, alors que c'était l'heure de Paris.
+
+**Solution** : Ajout de la mention "(heure de Paris)" à côté du créneau sélectionné dans le formulaire de devis, et "Les horaires sont en heure de Paris (CET)" dans le modal de prise de RDV au-dessus des créneaux.

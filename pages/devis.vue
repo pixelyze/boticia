@@ -749,6 +749,9 @@
                         class="text-sm text-green-600"
                       >
                         {{ form.meeting_time }}
+                        <span class="text-green-500">
+                          ({{ t("quote_form.meeting_timezone") }})
+                        </span>
                       </p>
                     </div>
                   </div>
