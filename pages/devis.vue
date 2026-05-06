@@ -1047,7 +1047,9 @@ const scheduleModalOpen = ref(false);
 
 // Phone input state
 const phoneValid = ref(false);
+const detectedCountry = ref("");
 const phoneDefaultCountry = computed(() => {
+  if (detectedCountry.value) return detectedCountry.value;
   const map: Record<string, string> = {
     fr: "FR",
     en: "US",
@@ -1055,6 +1057,41 @@ const phoneDefaultCountry = computed(() => {
   };
   return map[locale.value] || "FR";
 });
+
+// Detect country from browser timezone
+if (import.meta.client) {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const tzToCountry: Record<string, string> = {
+      "America/New_York": "US",
+      "America/Chicago": "US",
+      "America/Denver": "US",
+      "America/Los_Angeles": "US",
+      "America/Phoenix": "US",
+      "America/Anchorage": "US",
+      "Pacific/Honolulu": "US",
+      "America/Toronto": "CA",
+      "America/Vancouver": "CA",
+      "Europe/London": "GB",
+      "Europe/Paris": "FR",
+      "Europe/Brussels": "BE",
+      "Europe/Zurich": "CH",
+      "Europe/Berlin": "DE",
+      "Europe/Rome": "IT",
+      "Europe/Madrid": "ES",
+      "Europe/Amsterdam": "NL",
+      "Europe/Luxembourg": "LU",
+      "Asia/Tokyo": "JP",
+      "Australia/Sydney": "AU",
+      "Pacific/Auckland": "NZ",
+    };
+    if (tzToCountry[tz]) {
+      detectedCountry.value = tzToCountry[tz];
+    }
+  } catch {
+    // Fallback to locale-based detection
+  }
+}
 
 // Inspiration files state
 const inspirationFiles = ref<File[]>([]);
