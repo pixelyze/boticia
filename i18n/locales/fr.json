@@ -435,6 +435,7 @@
     "error_name": "Votre nom est requis",
     "error_email": "Une adresse email valide est requise",
     "error_phone": "Votre numéro de téléphone est requis",
+    "phone_hint": "Indicatif détecté automatiquement. Cliquez sur le drapeau pour le modifier.",
     "error_meeting": "Veuillez choisir un créneau pour l'appel découverte",
     "error_needs": "Sélectionnez au moins une prestation",
     "error_generic": "Une erreur est survenue. Veuillez réessayer.",

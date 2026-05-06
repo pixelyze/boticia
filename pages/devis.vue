@@ -314,6 +314,9 @@
                   >
                     {{ errors.phone }}
                   </p>
+                  <p class="mt-1.5 text-xs text-dark/40">
+                    {{ t("quote_form.phone_hint") }}
+                  </p>
                 </div>
               </div>
               <div class="flex justify-center">
