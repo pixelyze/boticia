@@ -314,7 +314,7 @@
                   >
                     {{ errors.phone }}
                   </p>
-                  <p class="mt-1.5 text-xs text-dark/40">
+                  <p class="mt-1.5 text-xs text-gray-500">
                     {{ t("quote_form.phone_hint") }}
                   </p>
                 </div>
