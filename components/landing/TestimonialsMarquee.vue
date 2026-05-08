@@ -1,5 +1,5 @@
 <template>
-  <section class="py-20 md:py-28 bg-white overflow-hidden">
+  <section class="pt-20 pb-10 md:pt-28 md:pb-12 bg-white overflow-hidden">
     <div class="container mx-auto px-6 mb-12">
       <div class="relative text-center">
         <span class="section-tagline">{{ $t('testimonials.tagline') }}</span>
