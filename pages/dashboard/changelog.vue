@@ -174,6 +174,16 @@ const releases = [
         title: "Déploiements Vercel rétablis",
         description: "Un cron toutes les 6h bloquait les déploiements automatiques depuis le 15 avril. Corrigé : le cron est maintenant quotidien, compatible avec le plan Hobby.",
       },
+      {
+        category: "feature" as Category,
+        title: "Page Mises à jour dans le dashboard",
+        description: "Cette page ! Vous pouvez maintenant consulter l'historique de toutes les améliorations apportées à votre site, directement depuis votre espace.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Retrait du bloc photo citation (obsolète)",
+        description: "Le réglage 'Photo citation' dans les Paramètres a été supprimé — ce bloc n'existe plus sur la homepage et n'avait plus d'utilité.",
+      },
     ],
   },
   {
