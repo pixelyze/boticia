@@ -122,59 +122,9 @@ const releases = [
     date: "8 mai 2026",
     items: [
       {
-        category: "seo" as Category,
-        title: "Balises HSTS et X-Robots-Tag",
-        description: "Les pages privées (dashboard, admin) sont maintenant protégées contre l'indexation accidentelle par Google. Le site force le HTTPS.",
-      },
-      {
-        category: "seo" as Category,
-        title: "Hreflang et sitemap corrigés",
-        description: "Les codes de langue sont maintenant au format BCP-47 (fr-FR, en-US, ja-JP) dans le sitemap, avec balise x-default ajoutée. Google comprend mieux quelle version afficher selon la langue de l'utilisateur.",
-      },
-      {
-        category: "seo" as Category,
-        title: "Fichier llms.txt créé",
-        description: "Un fichier de présentation structuré permet aux intelligences artificielles (ChatGPT, Perplexity, Claude…) de mieux comprendre votre activité et de vous citer dans leurs réponses.",
-      },
-      {
-        category: "seo" as Category,
-        title: "Préchargement de l'image principale",
-        description: "L'image du hero se charge maintenant plus vite — amélioration des Core Web Vitals (LCP).",
-      },
-      {
-        category: "seo" as Category,
-        title: "Méta-description Mariages dédiée",
-        description: "La description qui apparaît dans Google pour la page Mariages est maintenant précise et limitée à 155 caractères (au lieu d'un texte trop long tronqué).",
-      },
-      {
-        category: "content" as Category,
-        title: "Correction grammaticale page d'accueil",
-        description: "\"Boticia est un atelier de design floral, donne vie à vos idées\" corrigé en \"qui donne vie à vos idées\".",
-      },
-      {
-        category: "feature" as Category,
-        title: "Tags Open Graph sur toutes les pages",
-        description: "Les pages À propos, FAQ et Mentions légales ont maintenant des aperçus corrects quand elles sont partagées sur les réseaux sociaux.",
-      },
-      {
-        category: "feature" as Category,
-        title: "Témoignages défilants sur la homepage",
-        description: "Un bloc de témoignages clients apparaît avant la FAQ. Défilement automatique sur desktop, swipe sur mobile, boutons de navigation.",
-      },
-      {
-        category: "feature" as Category,
-        title: "Placeholder téléphone adapté au pays",
-        description: "Le format de numéro de téléphone dans le formulaire de devis s'adapte automatiquement selon le pays sélectionné (ex: 201 555 0123 pour les États-Unis).",
-      },
-      {
         category: "fix" as Category,
-        title: "Tranches tarifaires mises à jour",
-        description: "Les fourchettes de budget dans le formulaire de devis sont maintenant : 3 000–5 000 € / 5 000–8 000 € / 8 000 € et plus.",
-      },
-      {
-        category: "fix" as Category,
-        title: "Déploiements Vercel rétablis",
-        description: "Un cron toutes les 6h bloquait les déploiements automatiques depuis le 15 avril. Corrigé : le cron est maintenant quotidien, compatible avec le plan Hobby.",
+        title: "Retrait du bloc photo citation (obsolète)",
+        description: "Le réglage 'Photo citation' dans les Paramètres a été supprimé — ce bloc n'existe plus sur la homepage et n'avait plus d'utilité.",
       },
       {
         category: "feature" as Category,
@@ -183,8 +133,58 @@ const releases = [
       },
       {
         category: "fix" as Category,
-        title: "Retrait du bloc photo citation (obsolète)",
-        description: "Le réglage 'Photo citation' dans les Paramètres a été supprimé — ce bloc n'existe plus sur la homepage et n'avait plus d'utilité.",
+        title: "Déploiements Vercel rétablis",
+        description: "Un cron toutes les 6h bloquait les déploiements automatiques depuis le 15 avril. Corrigé : le cron est maintenant quotidien, compatible avec le plan Hobby.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Tranches tarifaires mises à jour",
+        description: "Les fourchettes de budget dans le formulaire de devis sont maintenant : 3 000–5 000 € / 5 000–8 000 € / 8 000 € et plus.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Placeholder téléphone adapté au pays",
+        description: "Le format de numéro de téléphone dans le formulaire de devis s'adapte automatiquement selon le pays sélectionné (ex: 201 555 0123 pour les États-Unis).",
+      },
+      {
+        category: "feature" as Category,
+        title: "Témoignages défilants sur la homepage",
+        description: "Un bloc de témoignages clients apparaît avant la FAQ. Défilement automatique sur desktop, swipe sur mobile, boutons de navigation.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Tags Open Graph sur toutes les pages",
+        description: "Les pages À propos, FAQ et Mentions légales ont maintenant des aperçus corrects quand elles sont partagées sur les réseaux sociaux.",
+      },
+      {
+        category: "content" as Category,
+        title: "Correction grammaticale page d'accueil",
+        description: "\"Boticia est un atelier de design floral, donne vie à vos idées\" corrigé en \"qui donne vie à vos idées\".",
+      },
+      {
+        category: "seo" as Category,
+        title: "Méta-description Mariages dédiée",
+        description: "La description qui apparaît dans Google pour la page Mariages est maintenant précise et limitée à 155 caractères (au lieu d'un texte trop long tronqué).",
+      },
+      {
+        category: "seo" as Category,
+        title: "Préchargement de l'image principale",
+        description: "L'image du hero se charge maintenant plus vite — amélioration des Core Web Vitals (LCP).",
+      },
+      {
+        category: "seo" as Category,
+        title: "Fichier llms.txt créé",
+        description: "Un fichier de présentation structuré permet aux intelligences artificielles (ChatGPT, Perplexity, Claude…) de mieux comprendre votre activité et de vous citer dans leurs réponses.",
+      },
+      {
+        category: "seo" as Category,
+        title: "Hreflang et sitemap corrigés",
+        description: "Les codes de langue sont maintenant au format BCP-47 (fr-FR, en-US, ja-JP) dans le sitemap, avec balise x-default ajoutée. Google comprend mieux quelle version afficher selon la langue de l'utilisateur.",
+      },
+      {
+        category: "seo" as Category,
+        title: "Balises HSTS et X-Robots-Tag",
+        description: "Les pages privées (dashboard, admin) sont maintenant protégées contre l'indexation accidentelle par Google. Le site force le HTTPS.",
       },
     ],
   },
