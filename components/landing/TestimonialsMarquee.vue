@@ -104,49 +104,73 @@ const testimonials = computed(() => [
 ]);
 
 const trackRef = ref<HTMLElement | null>(null);
-const CARD_WIDTH = 400; // px par carte + gap
-let autoTimer: ReturnType<typeof setInterval> | null = null;
-let isPaused = false;
+const CARD_WIDTH = 405; // largeur carte + gap
+let rafId: number | null = null;
+let isManualScrolling = false;
+let isHovered = false;
 
+// Normalise scrollLeft dans la première moitié (boucle infinie)
+const normalizeScroll = (el: HTMLElement) => {
+  const half = el.scrollWidth / 2;
+  if (el.scrollLeft >= half) el.scrollLeft -= half;
+  else if (el.scrollLeft < 0) el.scrollLeft += half;
+};
+
+// Auto-scroll via requestAnimationFrame
+let lastTime = 0;
+const autoTick = (time: number) => {
+  rafId = requestAnimationFrame(autoTick);
+  if (isManualScrolling || isHovered) {
+    lastTime = time;
+    return;
+  }
+  const delta = time - lastTime;
+  lastTime = time;
+  if (!trackRef.value || delta > 100) return; // skip si tab en arrière-plan
+  trackRef.value.scrollLeft += delta * 0.04; // ~40px/s
+  normalizeScroll(trackRef.value);
+};
+
+// Boutons : animation manuelle sans conflit avec autoTick
 const scroll = (direction: 1 | -1) => {
   if (!trackRef.value) return;
-  pauseAuto();
-  // Smooth uniquement pour les boutons
-  trackRef.value.style.scrollBehavior = "smooth";
-  trackRef.value.scrollBy({ left: direction * CARD_WIDTH });
-  setTimeout(() => {
-    if (trackRef.value) trackRef.value.style.scrollBehavior = "auto";
-    resumeAuto();
-  }, 600);
-};
+  isManualScrolling = true;
 
-const tick = () => {
-  if (!trackRef.value || isPaused) return;
   const el = trackRef.value;
-  const half = el.scrollWidth / 2;
-  el.scrollLeft += 1;
-  // Reset silencieux : saute à la position équivalente dans la première copie
-  if (el.scrollLeft >= half) {
-    el.scrollLeft -= half;
-  }
+  const start = el.scrollLeft;
+  const target = start + direction * CARD_WIDTH;
+  const startTime = performance.now();
+  const duration = 380;
+
+  const animate = (now: number) => {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    el.scrollLeft = start + (target - start) * ease;
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      normalizeScroll(el);
+      lastTime = performance.now();
+      isManualScrolling = false;
+    }
+  };
+
+  requestAnimationFrame(animate);
 };
 
-const pauseAuto = () => {
-  isPaused = true;
-};
-
-const resumeAuto = () => {
-  isPaused = false;
-};
+const pauseAuto = () => { isHovered = true; };
+const resumeAuto = () => { isHovered = false; };
 
 onMounted(() => {
   if (window.innerWidth >= 768) {
-    autoTimer = setInterval(tick, 20);
+    lastTime = performance.now();
+    rafId = requestAnimationFrame(autoTick);
   }
 });
 
 onBeforeUnmount(() => {
-  if (autoTimer) clearInterval(autoTimer);
+  if (rafId) cancelAnimationFrame(rafId);
 });
 </script>
 
