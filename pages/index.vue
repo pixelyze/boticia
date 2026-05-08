@@ -128,6 +128,8 @@
            Props : items (array of { question, answer })
            Data : 4 questions/réponses depuis i18n (faq.q1-q4, faq.a1-a4)
          [SLOT-FAQ-ITEMS] — Contenu dynamique i18n | 4 items min -->
+    <TestimonialsMarquee />
+
     <FAQSection />
 
   </div>
