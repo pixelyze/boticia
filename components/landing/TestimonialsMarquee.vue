@@ -6,8 +6,8 @@
           <span class="section-tagline">{{ $t('testimonials.tagline') }}</span>
           <h2 class="section-title-lg">{{ $t('testimonials.title') }}</h2>
         </div>
-        <!-- Boutons navigation -->
-        <div class="flex items-center gap-2 shrink-0">
+        <!-- Boutons navigation — desktop uniquement -->
+        <div class="hidden md:flex items-center gap-2 shrink-0">
           <button
             type="button"
             class="flex h-10 w-10 items-center justify-center rounded-full border border-dark/15 bg-white text-dark transition-all hover:border-dark/40 hover:bg-dark hover:text-white"
@@ -30,9 +30,9 @@
 
     <!-- Conteneur scrollable -->
     <div class="relative">
-      <!-- Masques dégradés gauche/droite -->
-      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-white to-transparent sm:w-32" />
-      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-white to-transparent sm:w-32" />
+      <!-- Masques dégradés gauche/droite — desktop uniquement -->
+      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 hidden md:block w-32 bg-gradient-to-r from-white to-transparent" />
+      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden md:block w-32 bg-gradient-to-l from-white to-transparent" />
 
       <!-- Track scrollable -->
       <div
