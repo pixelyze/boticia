@@ -977,6 +977,8 @@
   "testimonials": {
     "tagline": "Testimonials",
     "title": "What they say",
+    "prev": "Previous testimonial",
+    "next": "Next testimonial",
     "items": [
       {
         "text": "Laëtitia perfectly captured the universe I envisioned for my wedding. The floral arrangements were strikingly beautiful — elegant and poetic.",

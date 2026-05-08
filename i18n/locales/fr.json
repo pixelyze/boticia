@@ -977,6 +977,8 @@
   "testimonials": {
     "tagline": "Témoignages",
     "title": "Ce qu'elles disent",
+    "prev": "Témoignage précédent",
+    "next": "Témoignage suivant",
     "items": [
       {
         "text": "Laëtitia a su capturer exactement l'univers que j'imaginais pour mon mariage. Les compositions florales étaient d'une beauté rare, élégantes et poétiques.",

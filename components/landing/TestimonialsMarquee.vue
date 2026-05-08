@@ -1,20 +1,48 @@
 <template>
   <section class="py-20 md:py-28 bg-white overflow-hidden">
     <div class="container mx-auto px-6 mb-12">
-      <div class="text-center">
-        <span class="section-tagline">{{ $t('testimonials.tagline') }}</span>
-        <h2 class="section-title-lg">{{ $t('testimonials.title') }}</h2>
+      <div class="flex items-end justify-between">
+        <div class="text-center flex-1">
+          <span class="section-tagline">{{ $t('testimonials.tagline') }}</span>
+          <h2 class="section-title-lg">{{ $t('testimonials.title') }}</h2>
+        </div>
+        <!-- Boutons navigation -->
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            class="flex h-10 w-10 items-center justify-center rounded-full border border-dark/15 bg-white text-dark transition-all hover:border-dark/40 hover:bg-dark hover:text-white"
+            @click="scroll(-1)"
+            :aria-label="$t('testimonials.prev')"
+          >
+            <IconLucid name="ArrowLeft" size="sm" />
+          </button>
+          <button
+            type="button"
+            class="flex h-10 w-10 items-center justify-center rounded-full border border-dark/15 bg-white text-dark transition-all hover:border-dark/40 hover:bg-dark hover:text-white"
+            @click="scroll(1)"
+            :aria-label="$t('testimonials.next')"
+          >
+            <IconLucid name="ArrowRight" size="sm" />
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Marquee pleine largeur -->
+    <!-- Conteneur scrollable -->
     <div class="relative">
       <!-- Masques dégradés gauche/droite -->
       <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-white to-transparent sm:w-32" />
       <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-white to-transparent sm:w-32" />
 
-      <!-- Track défilant — dupliqué pour boucle infinie -->
-      <div class="flex w-max animate-marquee gap-5 hover:[animation-play-state:paused]">
+      <!-- Track scrollable -->
+      <div
+        ref="trackRef"
+        class="flex gap-5 overflow-x-auto scroll-smooth pl-6 pr-6"
+        style="scrollbar-width: none; -ms-overflow-style: none;"
+        @mouseenter="pauseAuto"
+        @mouseleave="resumeAuto"
+      >
+        <!-- Cartes dupliquées pour boucle infinie -->
         <template v-for="loop in 2" :key="loop">
           <blockquote
             v-for="(item, index) in testimonials"
@@ -41,6 +69,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -72,4 +101,48 @@ const testimonials = computed(() => [
     location: t("testimonials.items.4.location"),
   },
 ]);
+
+const trackRef = ref<HTMLElement | null>(null);
+const CARD_WIDTH = 400; // px par carte + gap
+let autoTimer: ReturnType<typeof setInterval> | null = null;
+let isPaused = false;
+
+const scroll = (direction: 1 | -1) => {
+  if (!trackRef.value) return;
+  pauseAuto();
+  trackRef.value.scrollBy({ left: direction * CARD_WIDTH, behavior: "smooth" });
+  setTimeout(resumeAuto, 2000);
+};
+
+const tick = () => {
+  if (!trackRef.value || isPaused) return;
+  const el = trackRef.value;
+  el.scrollLeft += 1;
+  // Réinitialisation silencieuse à mi-chemin (contenu dupliqué)
+  if (el.scrollLeft >= el.scrollWidth / 2) {
+    el.scrollLeft = 0;
+  }
+};
+
+const pauseAuto = () => {
+  isPaused = true;
+};
+
+const resumeAuto = () => {
+  isPaused = false;
+};
+
+onMounted(() => {
+  autoTimer = setInterval(tick, 20);
+});
+
+onBeforeUnmount(() => {
+  if (autoTimer) clearInterval(autoTimer);
+});
 </script>
+
+<style scoped>
+div::-webkit-scrollbar {
+  display: none;
+}
+</style>
