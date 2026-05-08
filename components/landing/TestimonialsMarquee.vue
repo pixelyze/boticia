@@ -133,7 +133,9 @@ const resumeAuto = () => {
 };
 
 onMounted(() => {
-  autoTimer = setInterval(tick, 20);
+  if (window.innerWidth >= 768) {
+    autoTimer = setInterval(tick, 20);
+  }
 });
 
 onBeforeUnmount(() => {
