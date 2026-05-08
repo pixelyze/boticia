@@ -435,7 +435,7 @@
     "error_name": "Your name is required",
     "error_email": "A valid email address is required",
     "error_phone": "Your phone number is required",
-    "phone_hint": "Country code detected automatically. Click the flag if needed.",
+    "phone_hint": "Country code detected automatically. Click the flag to change your country if needed.",
     "error_meeting": "Please select a slot for the discovery call",
     "error_needs": "Please select at least one service",
     "error_generic": "An error occurred. Please try again.",
