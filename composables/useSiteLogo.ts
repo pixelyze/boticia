@@ -4,11 +4,20 @@ const siteLogo = ref(DEFAULT_LOGO);
 let fetched = false;
 
 /**
+ * Validate that a logo URL is usable (starts with / or https?://).
+ * Rejects corrupted values like "&/logo-boticia.png".
+ */
+function isValidLogoUrl(url: string): boolean {
+  if (!url) return false;
+  return url.startsWith("/") || url.startsWith("http://") || url.startsWith("https://");
+}
+
+/**
  * Sanitize logo URL: convert absolute Supabase URLs to relative proxy URLs.
  * This ensures the logo works from any network (localhost, LAN, production).
  */
 function sanitizeLogoUrl(url: string): string {
-  if (!url) return DEFAULT_LOGO;
+  if (!url || !isValidLogoUrl(url)) return DEFAULT_LOGO;
   // Convert absolute Supabase storage URLs to relative proxy path
   const match = url.match(/\/storage\/v1(\/object\/public\/.+)$/);
   if (match) {
@@ -22,6 +31,11 @@ export const useSiteLogo = () => {
     default: () => DEFAULT_LOGO,
     maxAge: 60 * 60 * 24 * 30,
   });
+
+  // Reset corrupted cookie values silently
+  if (cookie.value && !isValidLogoUrl(cookie.value)) {
+    cookie.value = DEFAULT_LOGO;
+  }
 
   if (cookie.value && cookie.value !== siteLogo.value) {
     siteLogo.value = sanitizeLogoUrl(cookie.value);
