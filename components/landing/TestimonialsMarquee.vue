@@ -30,9 +30,10 @@
 
     <!-- Conteneur scrollable -->
     <div class="relative">
-      <!-- Masques dégradés gauche/droite — desktop uniquement -->
+      <!-- Masque gauche — desktop uniquement -->
       <div class="pointer-events-none absolute inset-y-0 left-0 z-10 hidden md:block w-32 bg-gradient-to-r from-white to-transparent" />
-      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden md:block w-32 bg-gradient-to-l from-white to-transparent" />
+      <!-- Masque droite — toujours visible -->
+      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-white to-transparent md:w-32" />
 
       <!-- Track scrollable -->
       <div
