@@ -1,13 +1,11 @@
 <template>
   <section class="py-20 md:py-28 bg-white overflow-hidden">
     <div class="container mx-auto px-6 mb-12">
-      <div class="flex items-end justify-between">
-        <div class="text-center flex-1">
-          <span class="section-tagline">{{ $t('testimonials.tagline') }}</span>
-          <h2 class="section-title-lg">{{ $t('testimonials.title') }}</h2>
-        </div>
+      <div class="relative text-center">
+        <span class="section-tagline">{{ $t('testimonials.tagline') }}</span>
+        <h2 class="section-title-lg">{{ $t('testimonials.title') }}</h2>
         <!-- Boutons navigation — desktop uniquement -->
-        <div class="hidden md:flex items-center gap-2 shrink-0">
+        <div class="hidden md:flex items-center gap-2 absolute right-0 bottom-0">
           <button
             type="button"
             class="flex h-10 w-10 items-center justify-center rounded-full border border-dark/15 bg-white text-dark transition-all hover:border-dark/40 hover:bg-dark hover:text-white"
