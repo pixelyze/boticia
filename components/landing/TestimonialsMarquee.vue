@@ -38,8 +38,8 @@
       <!-- Track scrollable -->
       <div
         ref="trackRef"
-        class="flex gap-5 overflow-x-auto scroll-smooth pl-6 pr-6"
-        style="scrollbar-width: none; -ms-overflow-style: none;"
+        class="flex gap-5 overflow-x-auto pl-6 pr-6"
+        style="scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: auto;"
         @mouseenter="pauseAuto"
         @mouseleave="resumeAuto"
       >
@@ -111,17 +111,23 @@ let isPaused = false;
 const scroll = (direction: 1 | -1) => {
   if (!trackRef.value) return;
   pauseAuto();
-  trackRef.value.scrollBy({ left: direction * CARD_WIDTH, behavior: "smooth" });
-  setTimeout(resumeAuto, 2000);
+  // Smooth uniquement pour les boutons
+  trackRef.value.style.scrollBehavior = "smooth";
+  trackRef.value.scrollBy({ left: direction * CARD_WIDTH });
+  setTimeout(() => {
+    if (trackRef.value) trackRef.value.style.scrollBehavior = "auto";
+    resumeAuto();
+  }, 600);
 };
 
 const tick = () => {
   if (!trackRef.value || isPaused) return;
   const el = trackRef.value;
+  const half = el.scrollWidth / 2;
   el.scrollLeft += 1;
-  // Réinitialisation silencieuse à mi-chemin (contenu dupliqué)
-  if (el.scrollLeft >= el.scrollWidth / 2) {
-    el.scrollLeft = 0;
+  // Reset silencieux : saute à la position équivalente dans la première copie
+  if (el.scrollLeft >= half) {
+    el.scrollLeft -= half;
   }
 };
 
