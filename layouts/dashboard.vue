@@ -198,43 +198,6 @@
         </div>
       </div>
 
-      <!-- Photo citation -->
-      <div>
-        <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.blockquote_title') }}</h2>
-        <div class="flex items-center gap-4">
-          <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
-            <img
-              :src="blockquoteImage"
-              alt="Photo citation"
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.blockquote_desc') }}</p>
-            <label
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all"
-            >
-              <IconLucid
-                v-if="uploadingBlockquote"
-                name="Loader2"
-                size="xs"
-                class="animate-spin"
-              />
-              <IconLucid v-else name="Upload" size="xs" />
-              {{ $t('dashboard.blockquote_upload') }}
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                class="hidden"
-                :disabled="uploadingBlockquote"
-                @change="handleBlockquoteUpload"
-              />
-            </label>
-            <p v-if="blockquoteSuccess" class="text-green-600 text-sm mt-2">{{ $t('dashboard.blockquote_success') }}</p>
-          </div>
-        </div>
-      </div>
-
       <!-- Photos Notre approche (page Événements) -->
       <div>
         <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.philosophy_photos_title') }}</h2>
@@ -448,68 +411,6 @@ async function handleHeroUpload(event: Event) {
   }
 }
 
-// Blockquote photo management
-const blockquoteImage = ref("/bouquet_mariee_boticia._1.webp");
-const uploadingBlockquote = ref(false);
-const blockquoteSuccess = ref(false);
-
-async function fetchBlockquoteImage() {
-  try {
-    const { data } = await $fetch<{ data: { value: any } }>("/api/cms/config", {
-      params: { key: "blockquote_image" },
-    });
-    if (data?.value?.url) {
-      blockquoteImage.value = data.value.url;
-    }
-  } catch {
-    // Keep default
-  }
-}
-
-async function handleBlockquoteUpload(event: Event) {
-  const input = event.target as HTMLInputElement;
-  const rawFile = input.files?.[0];
-  if (!rawFile) return;
-
-  uploadingBlockquote.value = true;
-  blockquoteSuccess.value = false;
-
-  try {
-    const supabase = getSupabase();
-    const token = useSupabaseSession().value?.access_token;
-    if (!token) return;
-
-    const file = await compress(rawFile);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const uploadRes = await $fetch<{ success: boolean; data: { path: string; url: string } }>("/api/cms/logos/upload", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
-
-    if (uploadRes?.data?.url) {
-      await $fetch("/api/cms/config", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: {
-          key: "blockquote_image",
-          category: "homepage",
-          value: { url: uploadRes.data.url },
-        },
-      });
-      blockquoteImage.value = uploadRes.data.url;
-      blockquoteSuccess.value = true;
-      setTimeout(() => { blockquoteSuccess.value = false; }, 3000);
-    }
-  } catch (err) {
-    console.error("Error uploading blockquote photo:", err);
-  } finally {
-    uploadingBlockquote.value = false;
-    input.value = "";
-  }
-}
 
 // Philosophy photos management (page Événements)
 const philosophyImage1Ref = ref("/images/events/scenographie-florale-boticia.jpg");
@@ -600,7 +501,6 @@ const uploadedLogos = ref<{ path: string; url: string }[]>([]);
 onMounted(async () => {
   await fetchLogos();
   await fetchSelectedLogo();
-  await fetchBlockquoteImage();
   await fetchHeroImage();
   await fetchPhilosophyImages();
 });
