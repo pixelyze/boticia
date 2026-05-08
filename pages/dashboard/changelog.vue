@@ -69,6 +69,8 @@ definePageMeta({
   ssr: false,
   layout: "dashboard",
   middleware: ["auth-admin"],
+  pageTransition: false,
+  layoutTransition: false,
 });
 
 type Category = "feature" | "fix" | "seo" | "design" | "content";
