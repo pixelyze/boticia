@@ -67,6 +67,8 @@
 <script setup lang="ts">
 definePageMeta({
   ssr: false,
+  layout: "dashboard",
+  middleware: ["auth-admin"],
 });
 
 type Category = "feature" | "fix" | "seo" | "design" | "content";
