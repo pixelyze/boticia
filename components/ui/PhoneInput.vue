@@ -28,7 +28,7 @@
         ref="inputRef"
         v-model="phoneNumber"
         type="tel"
-        :placeholder="placeholder"
+        :placeholder="localPlaceholder"
         class="flex-1 h-full px-4 bg-transparent outline-none text-dark"
         @focus="focused = true"
         @blur="focused = false"
@@ -205,9 +205,58 @@ const selectedData = computed(
     countries[0]
 );
 
+const phonePlaceholders: Record<string, string> = {
+  FR: "6 12 34 56 78",
+  BE: "470 12 34 56",
+  CH: "78 123 45 67",
+  CA: "204 555 0123",
+  US: "201 555 0123",
+  GB: "7700 900123",
+  JP: "90 1234 5678",
+  DE: "151 1234 5678",
+  IT: "312 345 6789",
+  ES: "612 345 678",
+  PT: "912 345 678",
+  NL: "6 12345678",
+  LU: "621 123 456",
+  MC: "6 12 34 56 78",
+  AU: "412 345 678",
+  BR: "11 91234 5678",
+  CN: "139 1234 5678",
+  IN: "98765 43210",
+  MX: "55 1234 5678",
+  MA: "612-345678",
+  DZ: "551 23 45 67",
+  TN: "20 123 456",
+  KR: "10-1234-5678",
+  IE: "85 123 4567",
+  AT: "664 123456",
+  PL: "512 345 678",
+  SE: "70 123 45 67",
+  NO: "406 12 345",
+  DK: "20 12 34 56",
+  FI: "40 123 4567",
+  GR: "691 234 5678",
+  TR: "532 123 45 67",
+  RU: "912 345-67-89",
+  NZ: "21 123 4567",
+  AR: "11 1234-5678",
+  CO: "300 123 4567",
+  CL: "9 1234 5678",
+  SG: "8123 4567",
+  TH: "81 234 5678",
+  JP: "90 1234 5678",
+};
+
 const selectedFlag = computed(() => selectedData.value.flag);
 const selectedDialCode = computed(
   () => `+${selectedData.value.dialCode}`
+);
+const localPlaceholder = computed(
+  () =>
+    phonePlaceholders[selectedCountry.value] ||
+    props.placeholder ||
+    ""
 );
 
 const filteredCountries = computed(() => {
