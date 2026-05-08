@@ -150,7 +150,7 @@ const siteUrl = config.public.siteUrl;
 useSeoMeta({
   ogTitle: "Boticia — Floral designer | Provence · Paris",
   ogDescription: t("hero.subtitle"),
-  ogUrl: `${config.public.siteUrl}${route.fullPath}`,
+  ogUrl: `${config.public.siteUrl}${route.path}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
   twitterTitle: "Boticia — Floral designer | Provence · Paris",
@@ -164,6 +164,14 @@ useHead({
       key: 'description',
       name: 'description',
       content: t('seo.home_description'),
+    },
+  ],
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/bouquet_mariee_boticia._1.webp',
+      fetchpriority: 'high',
     },
   ],
   script: [

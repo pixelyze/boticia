@@ -43,7 +43,7 @@
   "intro": {
     "tagline": "Qui sommes nous ?",
     "title": "L'art floral, une histoire de passion",
-    "description": "Boticia est un atelier de design floral, donne vie à vos idées en créant des scénographies florales personnalisées. Que ce soit pour un mariage, un projet artistique ou l'embellissement de votre hôtel ou restaurant, nous concevons des compositions florales durables qui subliment vos événements et reflètent votre vision et ce uniquement avec des fleurs de saison.",
+    "description": "Boticia est un atelier de design floral qui donne vie à vos idées en créant des scénographies florales personnalisées. Que ce soit pour un mariage, un projet artistique ou l'embellissement de votre hôtel ou restaurant, nous concevons des compositions florales durables qui subliment vos événements et reflètent votre vision et ce uniquement avec des fleurs de saison.",
     "cta": "Découvrir nos créations"
   },
   "creations": {
@@ -865,6 +865,7 @@
   },
   "seo": {
     "home_description": "Boticia · Art floral sur mesure par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court, en Provence et dans toute la France.",
+    "mariages_description": "Fleuriste mariage en Provence — Boticia crée des compositions florales sur mesure : bouquet de mariée, arche florale, centres de table. Budget à partir de 3 000 €.",
     "about_description": "Découvrez Laëtitia Schaeffer, créatrice florale passionnée, fondatrice de Boticia. Compositions sur mesure, fleurs françaises en circuit court et accompagnement bienveillant.",
     "devis_description": "Demandez un devis personnalisé pour votre décoration florale de mariage avec Boticia. Bouquets, arches, centres de table et scénographie complète.",
     "legal_description": "Mentions légales de Boticia, atelier de design floral par Laëtitia Schaeffer.",

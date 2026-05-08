@@ -397,7 +397,7 @@ const route = useRoute();
 useSeoMeta({
   ogTitle: `${t("events.title")} | Boticia Provence`,
   ogDescription: t("events.intro"),
-  ogUrl: `${config.public.siteUrl}${route.fullPath}`,
+  ogUrl: `${config.public.siteUrl}${route.path}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
   twitterTitle: `${t("events.title")} | Boticia Provence`,

@@ -97,6 +97,17 @@ const allFaqItems = computed(() =>
 const heroFaqItems = computed(() => allFaqItems.value.slice(0, 4));
 const restFaqItems = computed(() => allFaqItems.value.slice(4));
 
+const route = useRoute();
+
+useSeoMeta({
+  ogTitle: t("faq.page_title") + " | Boticia",
+  ogDescription: t("faq.subtitle"),
+  ogUrl: `${siteUrl}${route.path}`,
+  ogType: "website",
+  twitterTitle: t("faq.page_title") + " | Boticia",
+  twitterDescription: t("faq.subtitle"),
+});
+
 useHead({
   title: t("faq.page_title") + " - Boticia",
   meta: [{ name: "description", content: t("faq.subtitle") }],

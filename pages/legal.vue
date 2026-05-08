@@ -86,10 +86,21 @@
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
+const config = useRuntimeConfig();
+const route = useRoute();
 
 definePageMeta({
   layout: "homepage",
   pageTransition: false,
+});
+
+useSeoMeta({
+  ogTitle: t("legal.title") + " | Boticia",
+  ogDescription: t("seo.legal_description"),
+  ogUrl: `${config.public.siteUrl}${route.path}`,
+  ogType: "website",
+  twitterTitle: t("legal.title") + " | Boticia",
+  twitterDescription: t("seo.legal_description"),
 });
 
 useHead({

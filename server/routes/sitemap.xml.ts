@@ -3,6 +3,11 @@ export default defineEventHandler((event) => {
   const siteUrl =
     config.public.siteUrl || "https://boticia.fr";
   const locales = ["fr", "en", "ja"];
+  const hreflangMap: Record<string, string> = {
+    fr: "fr-FR",
+    en: "en-US",
+    ja: "ja-JP",
+  };
   const pages = [
     "/",
     "/about",
@@ -30,14 +35,17 @@ export default defineEventHandler((event) => {
       xml += `    <loc>${siteUrl}${path}</loc>\n`;
       xml += `    <lastmod>${today}</lastmod>\n`;
 
-      // Alternate hreflang links
+      // Alternate hreflang links (BCP-47 codes)
       for (const altLoc of locales) {
         const altPath =
           page === "/"
             ? `/${altLoc}`
             : `/${altLoc}${page}`;
-        xml += `    <xhtml:link rel="alternate" hreflang="${altLoc}" href="${siteUrl}${altPath}" />\n`;
+        xml += `    <xhtml:link rel="alternate" hreflang="${hreflangMap[altLoc]}" href="${siteUrl}${altPath}" />\n`;
       }
+      // x-default points to French (default locale)
+      const xDefaultPath = page === "/" ? "/fr" : `/fr${page}`;
+      xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${xDefaultPath}" />\n`;
 
       xml += "  </url>\n";
     }

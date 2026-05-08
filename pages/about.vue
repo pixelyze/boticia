@@ -64,6 +64,18 @@ definePageMeta({
   pageTransition: false,
 });
 
+const config = useRuntimeConfig();
+const route = useRoute();
+
+useSeoMeta({
+  ogTitle: t('about.title') + ' | Boticia',
+  ogDescription: t('seo.about_description'),
+  ogUrl: `${config.public.siteUrl}${route.path}`,
+  ogType: 'website',
+  twitterTitle: t('about.title') + ' | Boticia',
+  twitterDescription: t('seo.about_description'),
+});
+
 useHead({
   title: t('about.title') + ' - Boticia',
   meta: [
