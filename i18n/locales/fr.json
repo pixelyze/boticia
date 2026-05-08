@@ -973,5 +973,36 @@
     "tagline": "Portfolio",
     "title": "Nos réalisations",
     "photo_alt": "Création florale Boticia"
+  },
+  "testimonials": {
+    "tagline": "Témoignages",
+    "title": "Ce qu'elles disent",
+    "items": [
+      {
+        "text": "Laëtitia a su capturer exactement l'univers que j'imaginais pour mon mariage. Les compositions florales étaient d'une beauté rare, élégantes et poétiques.",
+        "name": "Sophie M.",
+        "location": "Mariage en Provence"
+      },
+      {
+        "text": "Un travail exceptionnel pour notre événement d'entreprise. Les créations florales ont transformé l'espace en quelque chose de vraiment magique.",
+        "name": "Marie-Claire D.",
+        "location": "Paris"
+      },
+      {
+        "text": "J'ai participé à un atelier de Laëtitia et j'en suis ressortie avec bien plus qu'un bouquet — une vraie passion pour le design floral.",
+        "name": "Camille R.",
+        "location": "Aix-en-Provence"
+      },
+      {
+        "text": "Des fleurs qui racontent une histoire. Laëtitia a une sensibilité artistique unique, chaque composition est une œuvre en soi.",
+        "name": "Isabelle T.",
+        "location": "Mariage au Château"
+      },
+      {
+        "text": "Professionnalisme, écoute et créativité. Tout ce qu'on espère trouver chez un fleuriste de mariage. Je recommande sans hésitation.",
+        "name": "Aurélie B.",
+        "location": "Côte d'Azur"
+      }
+    ]
   }
 }

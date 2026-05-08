@@ -973,5 +973,36 @@
     "tagline": "Portfolio",
     "title": "Our creations",
     "photo_alt": "Boticia floral creation"
+  },
+  "testimonials": {
+    "tagline": "Testimonials",
+    "title": "What they say",
+    "items": [
+      {
+        "text": "Laëtitia perfectly captured the universe I envisioned for my wedding. The floral arrangements were strikingly beautiful — elegant and poetic.",
+        "name": "Sophie M.",
+        "location": "Wedding in Provence"
+      },
+      {
+        "text": "Exceptional work for our corporate event. The floral creations truly transformed the space into something magical.",
+        "name": "Marie-Claire D.",
+        "location": "Paris"
+      },
+      {
+        "text": "I attended one of Laëtitia's workshops and left with far more than a bouquet — a genuine passion for floral design.",
+        "name": "Camille R.",
+        "location": "Aix-en-Provence"
+      },
+      {
+        "text": "Flowers that tell a story. Laëtitia has a unique artistic sensibility; every arrangement is a work of art in itself.",
+        "name": "Isabelle T.",
+        "location": "Château Wedding"
+      },
+      {
+        "text": "Professionalism, attentiveness, and creativity — everything you hope to find in a wedding florist. Highly recommended.",
+        "name": "Aurélie B.",
+        "location": "Côte d'Azur"
+      }
+    ]
   }
 }
