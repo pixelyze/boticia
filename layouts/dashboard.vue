@@ -87,7 +87,6 @@
                 <IconLucid name="Check" size="xs" class="text-cream" />
               </span>
             </button>
-            <!-- Delete button -->
             <button
               @click="deleteLogo(logo.path)"
               class="absolute -top-2 -left-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -114,7 +113,6 @@
             </template>
           </button>
 
-          <!-- Hidden file input -->
           <input
             ref="fileInput"
             type="file"
@@ -123,8 +121,6 @@
             @change="handleUpload"
           />
         </div>
-
-        <!-- Status message -->
         <p v-if="uploadError" class="text-red-500 text-sm mt-3">{{ uploadError }}</p>
         <p v-if="uploadSuccess" class="text-green-600 text-sm mt-3">{{ uploadSuccess }}</p>
       </div>
@@ -166,32 +162,15 @@
         <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.hero_photo_title') }}</h2>
         <div class="flex items-center gap-4">
           <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
-            <img
-              :src="heroImage"
-              alt="Photo hero"
-              class="w-full h-full object-cover"
-            />
+            <img :src="heroImage" alt="Photo hero" class="w-full h-full object-cover" />
           </div>
           <div>
             <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.hero_photo_desc') }}</p>
-            <label
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all"
-            >
-              <IconLucid
-                v-if="uploadingHero"
-                name="Loader2"
-                size="xs"
-                class="animate-spin"
-              />
+            <label class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all">
+              <IconLucid v-if="uploadingHero" name="Loader2" size="xs" class="animate-spin" />
               <IconLucid v-else name="Upload" size="xs" />
               {{ $t('dashboard.hero_photo_upload') }}
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                class="hidden"
-                :disabled="uploadingHero"
-                @change="handleHeroUpload"
-              />
+              <input type="file" accept="image/png,image/jpeg,image/webp" class="hidden" :disabled="uploadingHero" @change="handleHeroUpload" />
             </label>
             <p v-if="heroSuccess" class="text-green-600 text-sm mt-2">{{ $t('dashboard.hero_photo_success') }}</p>
           </div>
@@ -204,64 +183,30 @@
         <div class="flex flex-wrap gap-6">
           <div class="flex items-center gap-4">
             <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
-              <img
-                :src="philosophyImage1"
-                alt="Photo approche 1"
-                class="w-full h-full object-cover"
-              />
+              <img :src="philosophyImage1" alt="Photo approche 1" class="w-full h-full object-cover" />
             </div>
             <div>
               <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.philosophy_photo_1_desc') }}</p>
-              <label
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all"
-              >
-                <IconLucid
-                  v-if="uploadingPhilosophy1"
-                  name="Loader2"
-                  size="xs"
-                  class="animate-spin"
-                />
+              <label class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all">
+                <IconLucid v-if="uploadingPhilosophy1" name="Loader2" size="xs" class="animate-spin" />
                 <IconLucid v-else name="Upload" size="xs" />
                 {{ $t('dashboard.philosophy_photo_upload') }}
-                <input
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  class="hidden"
-                  :disabled="uploadingPhilosophy1"
-                  @change="handlePhilosophyUpload($event, 'events_philosophy_image_1', philosophyImage1Ref, uploadingPhilosophy1, philosophySuccess1)"
-                />
+                <input type="file" accept="image/png,image/jpeg,image/webp" class="hidden" :disabled="uploadingPhilosophy1" @change="handlePhilosophyUpload($event, 'events_philosophy_image_1', philosophyImage1Ref, uploadingPhilosophy1, philosophySuccess1)" />
               </label>
               <p v-if="philosophySuccess1" class="text-green-600 text-sm mt-2">{{ $t('dashboard.philosophy_photo_success') }}</p>
             </div>
           </div>
           <div class="flex items-center gap-4">
             <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
-              <img
-                :src="philosophyImage2"
-                alt="Photo approche 2"
-                class="w-full h-full object-cover"
-              />
+              <img :src="philosophyImage2" alt="Photo approche 2" class="w-full h-full object-cover" />
             </div>
             <div>
               <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.philosophy_photo_2_desc') }}</p>
-              <label
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all"
-              >
-                <IconLucid
-                  v-if="uploadingPhilosophy2"
-                  name="Loader2"
-                  size="xs"
-                  class="animate-spin"
-                />
+              <label class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all">
+                <IconLucid v-if="uploadingPhilosophy2" name="Loader2" size="xs" class="animate-spin" />
                 <IconLucid v-else name="Upload" size="xs" />
                 {{ $t('dashboard.philosophy_photo_upload') }}
-                <input
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  class="hidden"
-                  :disabled="uploadingPhilosophy2"
-                  @change="handlePhilosophyUpload($event, 'events_philosophy_image_2', philosophyImage2Ref, uploadingPhilosophy2, philosophySuccess2)"
-                />
+                <input type="file" accept="image/png,image/jpeg,image/webp" class="hidden" :disabled="uploadingPhilosophy2" @change="handlePhilosophyUpload($event, 'events_philosophy_image_2', philosophyImage2Ref, uploadingPhilosophy2, philosophySuccess2)" />
               </label>
               <p v-if="philosophySuccess2" class="text-green-600 text-sm mt-2">{{ $t('dashboard.philosophy_photo_success') }}</p>
             </div>
@@ -272,30 +217,31 @@
       <!-- Availability -->
       <AvailabilityManager />
 
-      <!-- Guide -->
-      <NuxtLink
-        :to="localePath('/dashboard/guide')"
-        @click="menuOpen = false"
-        class="w-full flex items-center gap-3 px-5 py-3 text-sm text-dark/60 hover:text-dark hover:bg-cream/50 transition-colors rounded-xl border-2 border-dark/10"
-      >
-        <IconLucid name="HelpCircle" size="sm" :strokeWidth="2" />
-        {{ $t('dashboard.guide') }}
-      </NuxtLink>
+      <!-- Guide + Changelog -->
+      <div class="grid grid-cols-2 gap-3">
+        <NuxtLink
+          :to="localePath('/dashboard/guide')"
+          @click="menuOpen = false"
+          class="flex flex-col items-center justify-center gap-2 rounded-2xl bg-dark text-cream px-4 py-8 text-center hover:bg-dark/80 transition-colors"
+        >
+          <IconLucid name="HelpCircle" size="md" :strokeWidth="1.5" />
+          <span class="text-sm font-semibold">{{ $t('dashboard.guide') }}</span>
+        </NuxtLink>
 
-      <!-- Changelog -->
-      <NuxtLink
-        :to="localePath('/dashboard/changelog')"
-        @click="menuOpen = false"
-        class="w-full flex items-center gap-3 px-5 py-3 text-sm text-dark/60 hover:text-dark hover:bg-cream/50 transition-colors rounded-xl border-2 border-dark/10"
-      >
-        <IconLucid name="Sparkles" size="sm" :strokeWidth="2" />
-        Mises à jour
-      </NuxtLink>
+        <NuxtLink
+          :to="localePath('/dashboard/changelog')"
+          @click="menuOpen = false"
+          class="flex flex-col items-center justify-center gap-2 rounded-2xl bg-dark text-cream px-4 py-8 text-center hover:bg-dark/80 transition-colors"
+        >
+          <IconLucid name="Sparkles" size="md" :strokeWidth="1.5" />
+          <span class="text-sm font-semibold">Mises à jour</span>
+        </NuxtLink>
+      </div>
 
       <!-- Sign out -->
       <button
         @click="handleSignOut"
-        class="w-full flex items-center gap-3 px-5 py-3 text-sm text-dark/60 hover:text-dark hover:bg-cream/50 transition-colors rounded-xl border-2 border-dark/10"
+        class="w-full flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-cream text-dark/60 text-sm font-semibold hover:bg-cream-dark hover:text-dark transition-colors"
       >
         <IconLucid name="LogOut" size="sm" :strokeWidth="2" />
         {{ $t('dashboard.sign_out') }}
