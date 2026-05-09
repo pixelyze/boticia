@@ -70,32 +70,6 @@
         {{ images[currentIndex].caption }}
       </p>
 
-      <!-- Peek : photo précédente (mobile) -->
-      <div
-        v-if="showModal && images.length > 1"
-        class="sm:hidden fixed top-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-[102]"
-      >
-        <img
-          :src="images[(currentIndex - 1 + images.length) % images.length].public_url"
-          class="w-full h-full object-cover brightness-[0.4]"
-          aria-hidden="true"
-        />
-        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
-      </div>
-
-      <!-- Peek : photo suivante (mobile) -->
-      <div
-        v-if="showModal && images.length > 1"
-        class="sm:hidden fixed bottom-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-[102]"
-      >
-        <img
-          :src="images[(currentIndex + 1) % images.length].public_url"
-          class="w-full h-full object-cover brightness-[0.4]"
-          aria-hidden="true"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-      </div>
-
       <!-- Chevrons (desktop uniquement) -->
       <button
         v-if="showModal && images.length > 1"
