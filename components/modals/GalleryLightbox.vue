@@ -82,7 +82,7 @@
 
             <!-- Photo -->
             <Transition :name="transitionName" mode="out-in">
-              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center px-16 py-20 sm:py-4">
+              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center px-3 sm:px-16 py-20 sm:py-4">
                 <img
                   :src="images[currentIndex].public_url"
                   :alt="images[currentIndex].caption || ''"
