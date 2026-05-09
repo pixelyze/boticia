@@ -1,44 +1,26 @@
 <template>
   <Teleport to="body">
-    <div
-      v-if="modalIsOpen"
-      class="fixed inset-0 z-[100]"
-    >
-      <!-- Fullscreen black overlay with transition -->
+    <div v-if="modalIsOpen" class="fixed inset-0 z-[100]">
+      <!-- Overlay -->
       <Transition v-bind="overlayTransition">
-        <div
-          v-if="showModal"
-          class="fixed inset-0 bg-black"
-        />
+        <div v-if="showModal" class="fixed inset-0 bg-black" />
       </Transition>
 
       <!-- Content -->
-      <Transition
-        v-bind="contentTransition"
-        @after-leave="onTransitionComplete"
-      >
-        <div
-          v-if="showModal"
-          class="fixed inset-0 flex flex-col"
-        >
+      <Transition v-bind="contentTransition" @after-leave="onTransitionComplete">
+        <div v-if="showModal" class="fixed inset-0 flex flex-col">
+
           <!-- Header -->
-          <div
-            class="flex-shrink-0 flex items-center justify-between px-4 h-14 z-10"
-          >
-            <!-- Close button -->
+          <div class="flex-shrink-0 flex items-center justify-between px-4 h-14 z-10">
             <button
               class="flex items-center justify-center w-10 h-10 text-white/80 hover:text-white transition-colors"
               @click="handleClose"
             >
               <IconLucid name="X" size="md" color="currentColor" />
             </button>
-
-            <!-- Category label -->
             <span class="text-white font-semibold text-base truncate mx-4">
-              {{ props.title || (props.categorySlug ? $t("stories." + categorySlug) : '') }}
+              {{ props.title }}
             </span>
-
-            <!-- Counter -->
             <span class="text-white/60 text-sm tabular-nums min-w-[3rem] text-right">
               <template v-if="images.length > 0">
                 {{ currentIndex + 1 }}/{{ images.length }}
@@ -46,57 +28,77 @@
             </span>
           </div>
 
-          <!-- Loading state -->
-          <div
-            v-if="loading"
-            class="flex-1 flex items-center justify-center"
-          >
-            <IconLucid
-              name="Loader2"
-              size="lg"
-              color="white"
-              class="animate-spin"
-            />
+          <!-- Loading -->
+          <div v-if="loading" class="flex-1 flex items-center justify-center">
+            <IconLucid name="Loader2" size="lg" color="white" class="animate-spin" />
           </div>
 
-          <!-- Empty state -->
-          <div
-            v-else-if="images.length === 0"
-            class="flex-1 flex items-center justify-center px-6"
-          >
-            <p class="text-white/60 text-center text-lg">
-              {{ $t("stories.gallery_empty") }}
-            </p>
+          <!-- Empty -->
+          <div v-else-if="images.length === 0" class="flex-1 flex items-center justify-center px-6">
+            <p class="text-white/60 text-center text-lg">{{ $t("stories.gallery_empty") }}</p>
           </div>
 
-          <!-- Gallery scroll area -->
+          <!-- Main photo + nav -->
+          <div v-else class="flex-1 relative flex items-center justify-center overflow-hidden min-h-0">
+            <!-- Photo -->
+            <Transition :name="transitionName" mode="out-in">
+              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center px-16 py-4">
+                <img
+                  :src="images[currentIndex].public_url"
+                  :alt="images[currentIndex].caption || ''"
+                  class="max-w-full max-h-full object-contain"
+                />
+                <p
+                  v-if="images[currentIndex].caption"
+                  class="text-white/60 text-sm text-center mt-3"
+                >
+                  {{ images[currentIndex].caption }}
+                </p>
+              </div>
+            </Transition>
+
+            <!-- Prev -->
+            <button
+              v-if="currentIndex > 0"
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10
+                     flex items-center justify-center rounded-full
+                     bg-white/10 hover:bg-white/20 text-white transition-all"
+              @click="go(-1)"
+            >
+              <IconLucid name="ChevronLeft" size="sm" color="currentColor" />
+            </button>
+
+            <!-- Next -->
+            <button
+              v-if="currentIndex < images.length - 1"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10
+                     flex items-center justify-center rounded-full
+                     bg-white/10 hover:bg-white/20 text-white transition-all"
+              @click="go(1)"
+            >
+              <IconLucid name="ChevronRight" size="sm" color="currentColor" />
+            </button>
+          </div>
+
+          <!-- Thumbnail strip -->
           <div
-            v-else
-            ref="scrollContainerRef"
-            class="flex-1 overflow-y-auto snap-y snap-mandatory gallery-scroll"
-            @scroll="onScroll"
+            v-if="images.length > 1"
+            ref="thumbStripRef"
+            class="flex-shrink-0 flex gap-2 overflow-x-auto px-4 py-3"
+            style="scrollbar-width: none;"
           >
-            <div
+            <button
               v-for="(img, i) in images"
               :key="img.id"
-              :ref="(el) => setImageRef(el, i)"
-              class="snap-start w-full flex flex-col items-center justify-center"
-              :style="{ height: scrollHeight + 'px' }"
+              :ref="(el) => setThumbRef(el, i)"
+              class="flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden transition-all"
+              :class="i === currentIndex ? 'ring-2 ring-white opacity-100' : 'opacity-40 hover:opacity-70'"
+              @click="goTo(i)"
             >
-              <img
-                :src="img.public_url"
-                :alt="img.caption || ''"
-                class="max-w-full max-h-full object-contain"
-                loading="lazy"
-              />
-              <p
-                v-if="img.caption"
-                class="text-white/60 text-sm text-center mt-3 px-6"
-              >
-                {{ img.caption }}
-              </p>
-            </div>
+              <img :src="img.public_url" :alt="img.caption || ''" class="w-full h-full object-cover" />
+            </button>
           </div>
+
         </div>
       </Transition>
     </div>
@@ -133,133 +135,36 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: "close"): void }>();
 
-const {
-  showModal,
-  isOpen: modalIsOpen,
-  open,
-  close,
-  onTransitionComplete,
-} = useModal();
+const { showModal, isOpen: modalIsOpen, open, close, onTransitionComplete } = useModal();
 
 const loading = ref(false);
 const images = ref<HomepageInspirationImage[]>([]);
 const currentIndex = ref(0);
-const scrollContainerRef = ref<HTMLElement | null>(null);
-const imageRefs = ref<(HTMLElement | null)[]>([]);
-const scrollHeight = ref(0);
+const transitionName = ref("slide-left");
+const thumbStripRef = ref<HTMLElement | null>(null);
+const thumbRefs = ref<(HTMLElement | null)[]>([]);
 
-const setImageRef = (el: any, i: number) => {
-  imageRefs.value[i] = el as HTMLElement | null;
+const setThumbRef = (el: any, i: number) => {
+  thumbRefs.value[i] = el as HTMLElement | null;
 };
 
-const computeScrollHeight = () => {
-  scrollHeight.value =
-    typeof window !== "undefined" ? window.innerHeight - 56 : 600;
+const scrollThumbIntoView = (index: number) => {
+  const el = thumbRefs.value[index];
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
 };
 
-const FALLBACK_GALLERY: Record<string, { url: string; caption: string }[]> = {
-  story_1: [
-    { url: 'https://images.unsplash.com/photo-1550005809-91ad75fb315f?w=1200&fit=crop', caption: 'Bouquet champêtre' },
-    { url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=1200&fit=crop', caption: 'Roses pastel' },
-    { url: 'https://images.unsplash.com/photo-1533616688419-b7a585564566?w=1200&fit=crop', caption: 'Bouquet romantique' },
-    { url: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=1200&fit=crop', caption: 'Pivoines et renoncules' },
-  ],
-  story_2: [
-    { url: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=1200&fit=crop', caption: 'Centre de table fleuri' },
-    { url: 'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=1200&fit=crop', caption: 'Arrangement élégant' },
-    { url: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=1200&fit=crop', caption: 'Table de réception' },
-    { url: 'https://images.unsplash.com/photo-1595437193398-f24279553f4f?w=1200&fit=crop', caption: 'Composition florale' },
-  ],
-  story_3: [
-    { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&fit=crop', caption: 'Arche de cérémonie' },
-    { url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1200&fit=crop', caption: 'Décoration de cérémonie' },
-    { url: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=1200&fit=crop', caption: 'Arche en plein air' },
-    { url: 'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=1200&fit=crop', caption: 'Cérémonie champêtre' },
-  ],
-  story_4: [
-    { url: 'https://images.unsplash.com/photo-1464699908537-0954e50791ee?w=1200&fit=crop', caption: 'Atelier floral' },
-    { url: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1200&fit=crop', caption: 'Création en cours' },
-    { url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=1200&fit=crop', caption: 'Sélection de fleurs' },
-    { url: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=1200&fit=crop', caption: 'Composition artisanale' },
-  ],
-  story_5: [
-    { url: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=1200&fit=crop', caption: 'Décor événementiel' },
-    { url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1200&fit=crop', caption: 'Réception privée' },
-    { url: 'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=1200&fit=crop', caption: 'Ambiance florale' },
-    { url: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=1200&fit=crop', caption: 'Mise en scène' },
-  ],
-  story_6: [
-    { url: 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=1200&fit=crop', caption: 'Scénographie florale' },
-    { url: 'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=1200&fit=crop', caption: 'Installation artistique' },
-    { url: 'https://images.unsplash.com/photo-1595437193398-f24279553f4f?w=1200&fit=crop', caption: 'Décor immersif' },
-    { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&fit=crop', caption: 'Mise en espace' },
-  ],
+const go = (dir: 1 | -1) => {
+  const next = currentIndex.value + dir;
+  if (next < 0 || next >= images.value.length) return;
+  transitionName.value = dir === 1 ? "slide-left" : "slide-right";
+  currentIndex.value = next;
+  nextTick(() => scrollThumbIntoView(next));
 };
 
-const buildFallbackImages = (slug: string): HomepageInspirationImage[] => {
-  const items = FALLBACK_GALLERY[slug] || [];
-  return items.map((item, i) => ({
-    id: `fallback-${slug}-${i}`,
-    category_id: '',
-    filename: '',
-    original_filename: '',
-    mime_type: 'image/jpeg',
-    file_size: 0,
-    storage_path: '',
-    public_url: item.url,
-    caption: item.caption,
-    sort_order: i,
-    created_at: '',
-    updated_at: '',
-  }));
-};
-
-const loadImages = async () => {
-  // Mode 1: items passed directly via props
-  if (props.items && props.items.length > 0) {
-    images.value = props.items.map((item, i) => ({
-      id: item.id || `item-${i}`,
-      category_id: '',
-      filename: '',
-      original_filename: '',
-      mime_type: 'image/jpeg',
-      file_size: 0,
-      storage_path: '',
-      public_url: item.public_url,
-      caption: item.caption,
-      sort_order: i,
-      created_at: '',
-      updated_at: '',
-    }));
-    return;
-  }
-
-  // Mode 2: fetch from API by categoryId
-  if (!props.categoryId) return;
-  loading.value = true;
-  try {
-    const res = await $fetch<{
-      success: boolean;
-      data: HomepageInspirationImage[];
-    }>(`/api/inspirations/${props.categoryId}`);
-    images.value = res.data || [];
-  } catch {
-    images.value = [];
-  } finally {
-    loading.value = false;
-  }
-
-  // Use fallback Unsplash images if gallery is empty
-  if (images.value.length === 0 && props.categorySlug) {
-    images.value = buildFallbackImages(props.categorySlug);
-  }
-
-  // Auto-close if still empty after fallback
-  if (images.value.length === 0) {
-    setTimeout(() => {
-      handleClose();
-    }, 1500);
-  }
+const goTo = (index: number) => {
+  transitionName.value = index > currentIndex.value ? "slide-left" : "slide-right";
+  currentIndex.value = index;
+  nextTick(() => scrollThumbIntoView(index));
 };
 
 const handleClose = () => {
@@ -267,66 +172,57 @@ const handleClose = () => {
   emit("close");
 };
 
-const onScroll = () => {
-  const container = scrollContainerRef.value;
-  if (!container || scrollHeight.value === 0) return;
-  const index = Math.round(container.scrollTop / scrollHeight.value);
-  currentIndex.value = Math.min(
-    Math.max(0, index),
-    images.value.length - 1
-  );
-};
-
-const scrollToIndex = (index: number) => {
-  const target = imageRefs.value[index];
-  if (target) {
-    target.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
 // Keyboard navigation
 useEventListener("keydown", (e: KeyboardEvent) => {
   if (!showModal.value) return;
-
-  if (e.key === "Escape") {
-    handleClose();
-    return;
-  }
-
-  if (
-    e.key === "ArrowDown" ||
-    e.key === "ArrowRight"
-  ) {
-    e.preventDefault();
-    if (currentIndex.value < images.value.length - 1) {
-      scrollToIndex(currentIndex.value + 1);
-    }
-  }
-
-  if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-    e.preventDefault();
-    if (currentIndex.value > 0) {
-      scrollToIndex(currentIndex.value - 1);
-    }
-  }
+  if (e.key === "Escape") { handleClose(); return; }
+  if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); go(1); }
+  if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); go(-1); }
 });
 
-// Watch open/close
+const loadImages = async () => {
+  if (props.items && props.items.length > 0) {
+    images.value = props.items.map((item, i) => ({
+      id: item.id || `item-${i}`,
+      category_id: "",
+      filename: "",
+      original_filename: "",
+      mime_type: "image/jpeg",
+      file_size: 0,
+      storage_path: "",
+      public_url: item.public_url,
+      caption: item.caption,
+      sort_order: i,
+      created_at: "",
+      updated_at: "",
+    }));
+    return;
+  }
+  if (!props.categoryId) return;
+  loading.value = true;
+  try {
+    const res = await $fetch<{ success: boolean; data: HomepageInspirationImage[] }>(
+      `/api/inspirations/${props.categoryId}`
+    );
+    images.value = res.data || [];
+  } catch {
+    images.value = [];
+  } finally {
+    loading.value = false;
+  }
+};
+
 watch(
   () => props.isOpen,
   async (newVal) => {
     if (newVal) {
-      computeScrollHeight();
       currentIndex.value = props.startIndex || 0;
       images.value = [];
       open();
       await nextTick();
       await loadImages();
-      // Scroll to startIndex after images are loaded
-      if (props.startIndex && props.startIndex > 0) {
-        await nextTick();
-        scrollToIndex(props.startIndex);
-      }
+      await nextTick();
+      scrollThumbIntoView(currentIndex.value);
     } else {
       close();
     }
@@ -334,22 +230,20 @@ watch(
   { immediate: true }
 );
 
-// Handle window resize
-useEventListener("resize", computeScrollHeight);
-
-onUnmounted(() => {
-  images.value = [];
-});
+onUnmounted(() => { images.value = []; });
 </script>
 
 <style scoped>
-.gallery-scroll {
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
+.slide-left-enter-from { opacity: 0; transform: translateX(40px); }
+.slide-left-leave-to  { opacity: 0; transform: translateX(-40px); }
+.slide-right-enter-from { opacity: 0; transform: translateX(-40px); }
+.slide-right-leave-to  { opacity: 0; transform: translateX(40px); }
 
-.gallery-scroll::-webkit-scrollbar {
-  display: none;
-}
+div::-webkit-scrollbar { display: none; }
 </style>
