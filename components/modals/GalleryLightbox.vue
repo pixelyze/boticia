@@ -54,7 +54,25 @@
             @touchstart.passive="onTouchStart"
             @touchend.passive="onTouchEnd"
           >
-            <!-- Peek: photo précédente (mobile) -->
+            <!-- Photo principale (absolute, plein écran) -->
+            <Transition :name="transitionName" mode="out-in">
+              <img
+                :key="currentIndex"
+                :src="images[currentIndex].public_url"
+                :alt="images[currentIndex].caption || ''"
+                class="absolute inset-0 w-full h-full object-cover sm:object-contain z-0"
+              />
+            </Transition>
+
+            <!-- Caption -->
+            <p
+              v-if="images[currentIndex].caption"
+              class="absolute bottom-4 inset-x-0 text-white/60 text-sm text-center px-4 z-20"
+            >
+              {{ images[currentIndex].caption }}
+            </p>
+
+            <!-- Peek: photo précédente (mobile, au-dessus) -->
             <div
               v-if="currentIndex > 0"
               class="sm:hidden absolute top-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
@@ -64,10 +82,10 @@
                 class="w-full h-full object-cover brightness-[0.4]"
                 aria-hidden="true"
               />
-              <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent" />
+              <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
             </div>
 
-            <!-- Peek: photo suivante (mobile) -->
+            <!-- Peek: photo suivante (mobile, au-dessus) -->
             <div
               v-if="currentIndex < images.length - 1"
               class="sm:hidden absolute bottom-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
@@ -77,43 +95,25 @@
                 class="w-full h-full object-cover brightness-[0.4]"
                 aria-hidden="true"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             </div>
 
-            <!-- Photo -->
-            <Transition :name="transitionName" mode="out-in">
-              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center sm:px-16 sm:py-4">
-                <img
-                  :src="images[currentIndex].public_url"
-                  :alt="images[currentIndex].caption || ''"
-                  class="sm:max-w-full sm:max-h-full sm:object-contain w-full h-full object-cover"
-                />
-                <p
-                  v-if="images[currentIndex].caption"
-                  class="text-white/60 text-sm text-center mt-3"
-                >
-                  {{ images[currentIndex].caption }}
-                </p>
-              </div>
-            </Transition>
-
-            <!-- Prev -->
+            <!-- Chevrons (desktop uniquement) -->
             <button
               v-if="currentIndex > 0"
               class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10
                      hidden sm:flex items-center justify-center rounded-full
-                     bg-white/10 hover:bg-white/20 text-white transition-all"
+                     bg-white/10 hover:bg-white/20 text-white transition-all z-20"
               @click="go(-1)"
             >
               <IconLucid name="ChevronLeft" size="sm" color="currentColor" />
             </button>
 
-            <!-- Next -->
             <button
               v-if="currentIndex < images.length - 1"
               class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10
                      hidden sm:flex items-center justify-center rounded-full
-                     bg-white/10 hover:bg-white/20 text-white transition-all"
+                     bg-white/10 hover:bg-white/20 text-white transition-all z-20"
               @click="go(1)"
             >
               <IconLucid name="ChevronRight" size="sm" color="currentColor" />
