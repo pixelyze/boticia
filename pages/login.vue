@@ -58,12 +58,12 @@
         </div>
 
         <!-- CTA devis -->
-        <div class="mt-8 pt-6 border-t border-dark/10 text-center">
-          <p class="text-dark/40 text-xs mb-2">Pas encore cliente ?</p>
-          <Button variant="ghost" icon="MoveRight" :to="localePath('/devis')">
+        <p class="mt-8 text-center text-dark/40 text-xs">
+          Pas encore cliente ?
+          <NuxtLink :to="localePath('/devis')" class="underline underline-offset-2 hover:text-dark transition-colors">
             Faire une demande de devis
-          </Button>
-        </div>
+          </NuxtLink>
+        </p>
 
       </div>
     </div>
