@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
+  <div class="h-screen grid grid-cols-1 md:grid-cols-2 overflow-hidden">
 
     <!-- Colonne gauche -->
     <div class="bg-cream-light flex flex-col items-center justify-center px-10 py-16 text-center">
