@@ -299,7 +299,7 @@ const fetchGalleries = async () => {
       data: Gallery[];
     }>("/api/admin/galleries");
     // Tri : portfolio (homepage) en premier
-    const order = ["portfolio", "creations", "wedding", "workshops"];
+    const order = ["portfolio", "creations", "wedding", "workshops", "events"];
     galleries.value = res.data.sort((a, b) => {
       const ia = order.indexOf(a.slug);
       const ib = order.indexOf(b.slug);
