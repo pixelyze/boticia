@@ -74,11 +74,11 @@
 
             <!-- Peek: photo précédente (mobile, au-dessus) -->
             <div
-              v-if="currentIndex > 0"
+              v-if="images.length > 1"
               class="sm:hidden absolute top-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
             >
               <img
-                :src="images[currentIndex - 1].public_url"
+                :src="images[(currentIndex - 1 + images.length) % images.length].public_url"
                 class="w-full h-full object-cover brightness-[0.4]"
                 aria-hidden="true"
               />
@@ -87,11 +87,11 @@
 
             <!-- Peek: photo suivante (mobile, au-dessus) -->
             <div
-              v-if="currentIndex < images.length - 1"
+              v-if="images.length > 1"
               class="sm:hidden absolute bottom-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
             >
               <img
-                :src="images[currentIndex + 1].public_url"
+                :src="images[(currentIndex + 1) % images.length].public_url"
                 class="w-full h-full object-cover brightness-[0.4]"
                 aria-hidden="true"
               />
@@ -100,7 +100,7 @@
 
             <!-- Chevrons (desktop uniquement) -->
             <button
-              v-if="currentIndex > 0"
+              v-if="images.length > 1"
               class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10
                      hidden sm:flex items-center justify-center rounded-full
                      bg-white/10 hover:bg-white/20 text-white transition-all z-20"
@@ -110,7 +110,7 @@
             </button>
 
             <button
-              v-if="currentIndex < images.length - 1"
+              v-if="images.length > 1"
               class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10
                      hidden sm:flex items-center justify-center rounded-full
                      bg-white/10 hover:bg-white/20 text-white transition-all z-20"
@@ -194,10 +194,10 @@ const scrollThumbIntoView = (index: number) => {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
 };
 
-const go = (dir: 1 | -1) => {
-  const next = currentIndex.value + dir;
-  if (next < 0 || next >= images.value.length) return;
-  transitionName.value = dir === 1 ? "slide-left" : "slide-right";
+const go = (dir: 1 | -1, transition?: string) => {
+  if (images.value.length <= 1) return;
+  transitionName.value = transition ?? (dir === 1 ? "slide-left" : "slide-right");
+  const next = (currentIndex.value + dir + images.value.length) % images.value.length;
   currentIndex.value = next;
   nextTick(() => scrollThumbIntoView(next));
 };
@@ -215,11 +215,7 @@ const onTouchStart = (e: TouchEvent) => {
 const onTouchEnd = (e: TouchEvent) => {
   const delta = touchStartX.value - e.changedTouches[0].clientY;
   if (Math.abs(delta) < 50) return;
-  transitionName.value = delta > 0 ? "slide-up" : "slide-down";
-  const dir = delta > 0 ? 1 : -1;
-  const next = currentIndex.value + dir;
-  if (next < 0 || next >= images.value.length) return;
-  currentIndex.value = next;
+  go(delta > 0 ? 1 : -1, delta > 0 ? "slide-up" : "slide-down");
 };
 
 const handleClose = () => {
