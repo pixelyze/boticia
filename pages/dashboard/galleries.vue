@@ -97,7 +97,7 @@
                   <p class="text-xs text-dark/40 mb-2 font-semibold uppercase tracking-wide">
                     {{ t("dashboard.bento_layout") }}
                   </p>
-                  <div class="flex gap-1 max-w-[260px]">
+                  <div class="flex gap-1 max-w-[200px]">
                     <!-- Bento principal : 3 lignes flex (hauteur réaliste) -->
                     <div class="flex-[3] flex flex-col gap-1">
                       <!-- Row 1 : wide + portrait -->
