@@ -88,91 +88,78 @@
               </div>
 
               <template v-else>
-                <!-- Bento layout reference -->
-                <div
-                  v-if="galleryImages[gallery.id]?.length"
-                  class="mb-4 p-3 rounded-xl bg-cream/50
-                         border border-dark/10"
-                >
-                  <p class="text-xs text-dark/40 mb-2 font-semibold uppercase tracking-wide">
-                    {{ t("dashboard.bento_layout") }}
-                  </p>
-                  <div class="flex gap-1 max-w-[200px]">
-                    <!-- Bento principal : 3 lignes flex (hauteur réaliste) -->
-                    <div class="flex-[3] flex flex-col gap-1">
-                      <!-- Row 1 : wide + portrait -->
-                      <div class="flex gap-1 h-16">
-                        <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">①</div>
-                        <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">②</div>
-                      </div>
-                      <!-- Row 2 : portrait + wide -->
-                      <div class="flex gap-1 h-16">
-                        <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">③</div>
-                        <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">④</div>
-                      </div>
-                      <!-- Row 3 : wide + portrait -->
-                      <div class="flex gap-1 h-16">
-                        <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑤</div>
-                        <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑥</div>
-                      </div>
-                    </div>
-                    <!-- 3ème colonne sidebar -->
-                    <div class="flex-[1] flex flex-col gap-1">
-                      <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑦</div>
-                      <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑧</div>
-                      <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑨</div>
-                    </div>
-                  </div>
-                </div>
+                <div v-if="galleryImages[gallery.id]?.length" class="flex gap-4 items-start">
 
-                <div
-                  v-if="galleryImages[gallery.id]?.length"
-                  class="grid grid-cols-3 sm:grid-cols-4
-                         md:grid-cols-6 gap-2 mb-4"
-                >
-                  <div
-                    v-for="img in galleryImages[gallery.id]"
-                    :key="img.id"
-                    class="relative group rounded-xl overflow-hidden
-                           bg-dark/5 h-24 flex items-center justify-center"
-                  >
-                    <img
-                      :src="img.public_url"
-                      :alt="img.original_filename"
-                      class="w-full h-full object-contain"
-                    />
-                    <!-- Bento slot selector -->
-                    <select
-                      :value="img.bento_slot || ''"
-                      @change="setBentoSlot(gallery.id, img.id, $event)"
-                      class="absolute bottom-1 left-1 w-8 h-8
-                             rounded-full bg-dark/70 text-cream
-                             text-center text-sm font-bold
-                             appearance-none cursor-pointer
-                             border-2"
-                      :class="img.bento_slot
-                        ? 'border-cream'
-                        : 'border-transparent opacity-0 group-hover:opacity-70'"
-                    >
-                      <option value="">–</option>
-                      <option
-                        v-for="n in 9"
-                        :key="n"
-                        :value="n"
-                      >{{ n }}</option>
-                    </select>
-                    <!-- Delete button -->
-                    <button
-                      @click="deleteImage(gallery.id, img.id)"
-                      class="absolute top-1 right-1 w-6 h-6
-                             rounded-full bg-dark/60 text-cream
-                             flex items-center justify-center
-                             opacity-0 group-hover:opacity-100
-                             transition-opacity"
-                    >
-                      <IconLucid name="Trash2" size="xs" />
-                    </button>
+                  <!-- Bento layout reference -->
+                  <div class="shrink-0 p-3 rounded-xl bg-cream/50 border border-dark/10">
+                    <p class="text-xs text-dark/40 mb-2 font-semibold uppercase tracking-wide">
+                      {{ t("dashboard.bento_layout") }}
+                    </p>
+                    <div class="flex gap-1 w-[180px]">
+                      <div class="flex-[3] flex flex-col gap-1">
+                        <div class="flex gap-1 h-14">
+                          <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">①</div>
+                          <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">②</div>
+                        </div>
+                        <div class="flex gap-1 h-14">
+                          <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">③</div>
+                          <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">④</div>
+                        </div>
+                        <div class="flex gap-1 h-14">
+                          <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑤</div>
+                          <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑥</div>
+                        </div>
+                      </div>
+                      <div class="flex-[1] flex flex-col gap-1">
+                        <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑦</div>
+                        <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑧</div>
+                        <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑨</div>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Photo grid -->
+                  <div class="flex-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                    <div
+                      v-for="img in galleryImages[gallery.id]"
+                      :key="img.id"
+                      class="relative group rounded-xl overflow-hidden bg-dark/5 h-24 flex items-center justify-center"
+                    >
+                      <img
+                        :src="img.public_url"
+                        :alt="img.original_filename"
+                        class="w-full h-full object-contain"
+                      />
+                      <!-- Bento slot selector -->
+                      <select
+                        :value="img.bento_slot || ''"
+                        @change="setBentoSlot(gallery.id, img.id, $event)"
+                        class="absolute bottom-1 left-1 w-8 h-8
+                               rounded-full bg-dark/70 text-cream
+                               text-center text-sm font-bold
+                               appearance-none cursor-pointer
+                               border-2"
+                        :class="img.bento_slot
+                          ? 'border-cream'
+                          : 'border-transparent opacity-0 group-hover:opacity-70'"
+                      >
+                        <option value="">–</option>
+                        <option v-for="n in 9" :key="n" :value="n">{{ n }}</option>
+                      </select>
+                      <!-- Delete button -->
+                      <button
+                        @click="deleteImage(gallery.id, img.id)"
+                        class="absolute top-1 right-1 w-6 h-6
+                               rounded-full bg-dark/60 text-cream
+                               flex items-center justify-center
+                               opacity-0 group-hover:opacity-100
+                               transition-opacity"
+                      >
+                        <IconLucid name="Trash2" size="xs" />
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
 
                 <p
