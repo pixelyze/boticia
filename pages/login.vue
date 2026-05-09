@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-white flex items-center justify-center px-6">
+  <div class="min-h-screen bg-cream-light flex items-center justify-center px-6">
     <div class="max-w-md w-full">
       <!-- Logo -->
       <div class="text-center mb-8">
@@ -8,15 +8,13 @@
           alt="Boticia"
           class="h-32 mx-auto mb-6"
         />
-        <h1 class="text-4xl font-bold text-dark mb-2">Mon Espace</h1>
-        <p class="text-dark/50">
-          Entrez votre adresse email pour recevoir un lien de connexion
+        <h1 class="text-4xl font-bold text-dark mb-3">Espace client</h1>
+        <p class="text-dark/50 text-sm leading-relaxed max-w-xs mx-auto">
+          Réservé aux clientes ayant soumis une demande de devis. Connectez-vous avec l'adresse email utilisée lors de votre demande.
         </p>
       </div>
 
-      <div
-        class="rounded-[1.5rem] border-2 border-dark/10 p-6"
-      >
+      <div class="bg-white rounded-3xl shadow-sm p-8">
         <!-- Magic Link Form -->
         <form v-if="!sent" @submit.prevent="handleLogin" class="space-y-4">
           <Input
@@ -64,11 +62,18 @@
         </div>
       </div>
 
-      <!-- Back to Home -->
-      <div class="mt-6 text-center">
-        <Button variant="ghost" icon="ArrowLeft" to="/">
-          Retour à l'accueil
-        </Button>
+      <!-- Back to Home + CTA devis -->
+      <div class="mt-6 text-center space-y-2">
+        <div>
+          <Button variant="ghost" icon="MoveRight" :to="localePath('/devis')">
+            Pas encore cliente ? Faire une demande de devis
+          </Button>
+        </div>
+        <div>
+          <Button variant="ghost" icon="ArrowLeft" to="/">
+            Retour à l'accueil
+          </Button>
+        </div>
       </div>
     </div>
   </div>
@@ -83,6 +88,7 @@ definePageMeta({
 const supabase = useSupabaseClient();
 const route = useRoute();
 const { t, locale } = useI18n();
+const localePath = useLocalePath();
 
 // State
 const email = ref("");
