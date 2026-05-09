@@ -119,6 +119,51 @@ const categoryLabel = (cat: Category) => {
 
 const releases = [
   {
+    date: "9 mai 2026",
+    items: [
+      {
+        category: "feature" as Category,
+        title: "Galerie portfolio : 3ème colonne de photos",
+        description: "La galerie homepage affiche maintenant une 3ème colonne étroite sur desktop avec 3 emplacements supplémentaires (slots 7, 8, 9) pour montrer plus de photos.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Même layout galerie sur toutes les pages",
+        description: "Les pages Mariages, Ateliers et Événements utilisent maintenant le même bento que la homepage — 9 emplacements, 3ème colonne incluse.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Placeholders galerie — aperçu du layout",
+        description: "Quand des emplacements sont vides, des cases grises animées montrent à quoi ressemblera la galerie une fois remplie.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Dashboard galeries : aperçu en temps réel",
+        description: "Le mini-plan du layout affiche maintenant vos vraies photos dans leurs cases. Vous voyez exactement ce qui sera visible sur le site avant même de sauvegarder.",
+      },
+      {
+        category: "design" as Category,
+        title: "Dashboard galeries : miniatures en ratio naturel",
+        description: "Les photos dans le dashboard respectent leur ratio d'origine (portrait ou paysage) pour mieux choisir dans quel emplacement les placer.",
+      },
+      {
+        category: "design" as Category,
+        title: "Dashboard galeries : bouton ajout intégré à la grille",
+        description: "Le bouton 'Ajouter des photos' apparaît directement comme une case dans la grille, à la suite des photos existantes.",
+      },
+      {
+        category: "design" as Category,
+        title: "Témoignages : suppression des bordures",
+        description: "Les cartes témoignages n'ont plus de contour — l'ensemble est plus aéré et moins chargé visuellement.",
+      },
+      {
+        category: "seo" as Category,
+        title: "Priorités SEO dans le sitemap",
+        description: "Les pages Mariages, Événements et Ateliers ont maintenant une priorité 0.9 dans le sitemap — Google comprend mieux leur importance et devrait mieux les référencer.",
+      },
+    ],
+  },
+  {
     date: "8 mai 2026",
     items: [
       {
