@@ -174,6 +174,7 @@
                         class="animate-spin"
                       />
                       <IconLucid v-else name="Plus" size="sm" />
+                      <span class="text-xs text-center leading-tight px-1">{{ t("dashboard.galleries_add_image") }}</span>
                     </label>
                   </div>
 
