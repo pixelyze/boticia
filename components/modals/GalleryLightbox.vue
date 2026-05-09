@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div v-if="modalIsOpen" class="fixed inset-0 z-[100]">
+    <div v-if="modalIsOpen" class="fixed inset-0 z-[100]" @touchmove.prevent>
       <!-- Overlay with ambient background -->
       <Transition v-bind="overlayTransition">
         <div v-if="showModal" class="fixed inset-0 overflow-hidden">
@@ -263,6 +263,26 @@ const loadImages = async () => {
   }
 };
 
+let savedScrollY = 0;
+
+const lockScroll = () => {
+  if (!import.meta.client) return;
+  savedScrollY = window.scrollY;
+  document.body.style.overflow = "hidden";
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${savedScrollY}px`;
+  document.body.style.width = "100%";
+};
+
+const unlockScroll = () => {
+  if (!import.meta.client) return;
+  document.body.style.overflow = "";
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.width = "";
+  window.scrollTo(0, savedScrollY);
+};
+
 watch(
   () => props.isOpen,
   async (newVal) => {
@@ -270,14 +290,14 @@ watch(
       currentIndex.value = props.startIndex || 0;
       images.value = [];
       open();
-      if (import.meta.client) document.body.style.overflow = "hidden";
+      lockScroll();
       await nextTick();
       await loadImages();
       await nextTick();
       scrollThumbIntoView(currentIndex.value);
     } else {
       close();
-      if (import.meta.client) document.body.style.overflow = "";
+      unlockScroll();
     }
   },
   { immediate: true }
@@ -285,7 +305,7 @@ watch(
 
 onUnmounted(() => {
   images.value = [];
-  if (import.meta.client) document.body.style.overflow = "";
+  unlockScroll();
 });
 </script>
 
