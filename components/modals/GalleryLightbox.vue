@@ -75,7 +75,7 @@
             <button
               v-if="currentIndex > 0"
               class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10
-                     flex items-center justify-center rounded-full
+                     hidden sm:flex items-center justify-center rounded-full
                      bg-white/10 hover:bg-white/20 text-white transition-all"
               @click="go(-1)"
             >
@@ -86,7 +86,7 @@
             <button
               v-if="currentIndex < images.length - 1"
               class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10
-                     flex items-center justify-center rounded-full
+                     hidden sm:flex items-center justify-center rounded-full
                      bg-white/10 hover:bg-white/20 text-white transition-all"
               @click="go(1)"
             >
