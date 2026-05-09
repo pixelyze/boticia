@@ -13,12 +13,11 @@
     <!-- Grille portraits -->
     <div class="px-5 sm:px-10">
       <div class="max-w-5xl mx-auto">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
           <button
             v-for="(img, index) in displayImages"
             :key="img.id"
             class="group cursor-pointer block relative"
-            :class="{ 'md:mt-10': index === 1 || index === 4 }"
             @click="openLightbox(index)"
           >
             <div
