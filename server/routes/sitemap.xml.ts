@@ -8,16 +8,16 @@ export default defineEventHandler((event) => {
     en: "en-US",
     ja: "ja-JP",
   };
-  const pages = [
-    "/",
-    "/about",
-    "/devis",
-    "/mariages",
-    "/evenements",
-    "/ateliers",
-    "/creations",
-    "/faq",
-    "/legal",
+  const pages: { path: string; priority: string }[] = [
+    { path: "/", priority: "1.0" },
+    { path: "/mariages", priority: "0.9" },
+    { path: "/evenements", priority: "0.9" },
+    { path: "/ateliers", priority: "0.9" },
+    { path: "/creations", priority: "0.8" },
+    { path: "/about", priority: "0.7" },
+    { path: "/devis", priority: "0.7" },
+    { path: "/faq", priority: "0.6" },
+    { path: "/legal", priority: "0.3" },
   ];
   const today = new Date().toISOString().split("T")[0];
 
@@ -27,13 +27,14 @@ export default defineEventHandler((event) => {
   xml +=
     ' xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 
-  for (const page of pages) {
+  for (const { path: page, priority } of pages) {
     for (const loc of locales) {
       const path =
         page === "/" ? `/${loc}` : `/${loc}${page}`;
       xml += "  <url>\n";
       xml += `    <loc>${siteUrl}${path}</loc>\n`;
       xml += `    <lastmod>${today}</lastmod>\n`;
+      xml += `    <priority>${priority}</priority>\n`;
 
       // Alternate hreflang links (BCP-47 codes)
       for (const altLoc of locales) {
