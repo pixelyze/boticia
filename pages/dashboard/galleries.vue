@@ -98,22 +98,49 @@
                     <div class="flex gap-1 w-[180px]">
                       <div class="flex-[3] flex flex-col gap-1">
                         <div class="flex gap-1 h-14">
-                          <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">①</div>
-                          <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">②</div>
+                          <div class="flex-[2] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                            <img v-if="slotImage(gallery.id, 1)" :src="slotImage(gallery.id, 1).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                            <span v-else class="text-xs text-dark/50 font-semibold">①</span>
+                          </div>
+                          <div class="flex-[1] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                            <img v-if="slotImage(gallery.id, 2)" :src="slotImage(gallery.id, 2).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                            <span v-else class="text-xs text-dark/50 font-semibold">②</span>
+                          </div>
                         </div>
                         <div class="flex gap-1 h-14">
-                          <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">③</div>
-                          <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">④</div>
+                          <div class="flex-[1] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                            <img v-if="slotImage(gallery.id, 3)" :src="slotImage(gallery.id, 3).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                            <span v-else class="text-xs text-dark/50 font-semibold">③</span>
+                          </div>
+                          <div class="flex-[2] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                            <img v-if="slotImage(gallery.id, 4)" :src="slotImage(gallery.id, 4).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                            <span v-else class="text-xs text-dark/50 font-semibold">④</span>
+                          </div>
                         </div>
                         <div class="flex gap-1 h-14">
-                          <div class="flex-[2] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑤</div>
-                          <div class="flex-[1] bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑥</div>
+                          <div class="flex-[2] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                            <img v-if="slotImage(gallery.id, 5)" :src="slotImage(gallery.id, 5).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                            <span v-else class="text-xs text-dark/50 font-semibold">⑤</span>
+                          </div>
+                          <div class="flex-[1] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                            <img v-if="slotImage(gallery.id, 6)" :src="slotImage(gallery.id, 6).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                            <span v-else class="text-xs text-dark/50 font-semibold">⑥</span>
+                          </div>
                         </div>
                       </div>
                       <div class="flex-[1] flex flex-col gap-1">
-                        <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑦</div>
-                        <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑧</div>
-                        <div class="flex-1 bg-dark/10 rounded-md flex items-center justify-center text-xs text-dark/50 font-semibold">⑨</div>
+                        <div class="flex-1 bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                          <img v-if="slotImage(gallery.id, 7)" :src="slotImage(gallery.id, 7).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                          <span v-else class="text-xs text-dark/50 font-semibold">⑦</span>
+                        </div>
+                        <div class="flex-1 bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                          <img v-if="slotImage(gallery.id, 8)" :src="slotImage(gallery.id, 8).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                          <span v-else class="text-xs text-dark/50 font-semibold">⑧</span>
+                        </div>
+                        <div class="flex-1 bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
+                          <img v-if="slotImage(gallery.id, 9)" :src="slotImage(gallery.id, 9).public_url" class="absolute inset-0 w-full h-full object-cover" />
+                          <span v-else class="text-xs text-dark/50 font-semibold">⑨</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -362,6 +389,9 @@ const uploadImages = async (
   uploading.value = null;
   input.value = "";
 };
+
+const slotImage = (galleryId: string, slot: number) =>
+  galleryImages[galleryId]?.find((img) => img.bento_slot === slot) ?? null;
 
 const deleteImage = async (
   galleryId: string,
