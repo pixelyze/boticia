@@ -1,8 +1,8 @@
 <template>
-  <div class="h-screen grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+  <div class="min-h-screen md:h-screen grid grid-cols-1 md:grid-cols-2 md:overflow-hidden">
 
-    <!-- Colonne gauche -->
-    <div class="bg-cream-light flex flex-col items-center justify-center px-10 py-16 text-center">
+    <!-- Colonne gauche (desktop uniquement) -->
+    <div class="hidden md:flex bg-cream-light flex-col items-center justify-center px-10 py-16 text-center">
       <img src="/logo-boticia.png" alt="Boticia" class="h-28 mb-8" />
       <h1 class="font-heading text-4xl text-dark mb-4">Mon Espace</h1>
       <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -16,8 +16,14 @@
     </div>
 
     <!-- Colonne droite -->
-    <div class="bg-white flex flex-col items-center justify-center px-8 py-16">
+    <div class="bg-white flex flex-col items-center justify-center px-8 py-16 min-h-screen md:min-h-0">
       <div class="w-full max-w-sm">
+
+        <!-- Logo mobile uniquement -->
+        <div class="md:hidden text-center mb-8">
+          <img src="/logo-boticia.png" alt="Boticia" class="h-20 mx-auto mb-4" />
+          <h1 class="font-heading text-3xl text-dark">Mon Espace</h1>
+        </div>
 
         <h2 class="font-heading text-3xl text-dark mb-2">Ravie de vous retrouver</h2>
         <p class="text-gray-500 text-sm mb-8 leading-relaxed">
@@ -64,6 +70,13 @@
             Faire une demande de devis
           </NuxtLink>
         </p>
+
+        <!-- Retour accueil mobile -->
+        <div class="md:hidden mt-6 text-center">
+          <Button variant="ghost" icon="ArrowLeft" to="/">
+            Retour à l'accueil
+          </Button>
+        </div>
 
       </div>
     </div>
