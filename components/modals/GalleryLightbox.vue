@@ -48,7 +48,12 @@
           </div>
 
           <!-- Main photo + nav -->
-          <div v-else class="flex-1 relative flex items-center justify-center overflow-hidden min-h-0">
+          <div
+            v-else
+            class="flex-1 relative flex items-center justify-center overflow-hidden min-h-0"
+            @touchstart.passive="onTouchStart"
+            @touchend.passive="onTouchEnd"
+          >
             <!-- Photo -->
             <Transition :name="transitionName" mode="out-in">
               <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center px-16 py-4">
@@ -89,11 +94,11 @@
             </button>
           </div>
 
-          <!-- Thumbnail strip -->
+          <!-- Thumbnail strip (desktop only) -->
           <div
             v-if="images.length > 1"
             ref="thumbStripRef"
-            class="flex-shrink-0 flex gap-2 overflow-x-auto px-4 py-3"
+            class="flex-shrink-0 hidden sm:flex gap-2 overflow-x-auto px-4 py-3"
             style="scrollbar-width: none;"
           >
             <button
@@ -151,6 +156,7 @@ const images = ref<HomepageInspirationImage[]>([]);
 const currentIndex = ref(0);
 const transitionName = ref("slide-left");
 const thumbStripRef = ref<HTMLElement | null>(null);
+const touchStartX = ref(0);
 const thumbRefs = ref<(HTMLElement | null)[]>([]);
 
 const setThumbRef = (el: any, i: number) => {
@@ -174,6 +180,16 @@ const goTo = (index: number) => {
   transitionName.value = index > currentIndex.value ? "slide-left" : "slide-right";
   currentIndex.value = index;
   nextTick(() => scrollThumbIntoView(index));
+};
+
+const onTouchStart = (e: TouchEvent) => {
+  touchStartX.value = e.touches[0].clientX;
+};
+
+const onTouchEnd = (e: TouchEvent) => {
+  const delta = touchStartX.value - e.changedTouches[0].clientX;
+  if (Math.abs(delta) < 50) return;
+  go(delta > 0 ? 1 : -1);
 };
 
 const handleClose = () => {
