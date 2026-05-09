@@ -4,8 +4,8 @@
     <!-- Colonne gauche -->
     <div class="bg-cream-light flex flex-col items-center justify-center px-10 py-16 text-center">
       <img src="/logo-boticia.png" alt="Boticia" class="h-28 mb-8" />
-      <h1 class="font-heading text-4xl md:text-5xl text-dark mb-4">Mon Espace</h1>
-      <p class="text-dark/50 text-sm leading-relaxed max-w-xs">
+      <h1 class="font-heading text-4xl text-dark mb-4">Mon Espace</h1>
+      <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
         L'espace réservé aux clientes Boticia — suivez l'avancement de votre projet floral en toute simplicité.
       </p>
       <div class="mt-10">
@@ -19,8 +19,8 @@
     <div class="bg-white flex flex-col items-center justify-center px-8 py-16">
       <div class="w-full max-w-sm">
 
-        <h2 class="text-2xl font-bold text-dark mb-1">Ravie de vous retrouver</h2>
-        <p class="text-dark/50 text-sm mb-8 leading-relaxed">
+        <h2 class="font-heading text-3xl text-dark mb-2">Ravie de vous retrouver</h2>
+        <p class="text-gray-500 text-sm mb-8 leading-relaxed">
           Utilisez l'adresse email de votre demande de devis pour recevoir un lien de connexion.
         </p>
 
@@ -43,10 +43,10 @@
         <!-- Success -->
         <div v-else class="text-center py-4">
           <div class="text-4xl mb-4">📬</div>
-          <h2 class="text-xl font-bold text-dark mb-2">Email envoyé !</h2>
-          <p class="text-dark/50 text-sm mb-6">
+          <h2 class="font-heading text-2xl text-dark mb-2">Email envoyé !</h2>
+          <p class="text-gray-500 text-sm mb-6">
             Un lien de connexion a été envoyé à
-            <span class="font-bold text-dark">{{ email }}</span>.
+            <span class="font-semibold text-dark">{{ email }}</span>.
             Vérifiez votre boîte de réception.
           </p>
           <Button variant="ghost" @click="sent = false">Renvoyer un lien</Button>
@@ -58,9 +58,9 @@
         </div>
 
         <!-- CTA devis -->
-        <p class="mt-8 text-center text-dark/40 text-xs">
+        <p class="mt-8 text-center text-gray-400 text-sm">
           Pas encore cliente ?
-          <NuxtLink :to="localePath('/devis')" class="underline underline-offset-2 hover:text-dark transition-colors">
+          <NuxtLink :to="localePath('/devis')" class="text-gray-600 underline underline-offset-2 hover:text-dark transition-colors">
             Faire une demande de devis
           </NuxtLink>
         </p>
