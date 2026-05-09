@@ -15,132 +15,115 @@
         </div>
       </Transition>
 
-      <!-- Content -->
-      <Transition v-bind="contentTransition" @after-leave="onTransitionComplete">
-        <div v-if="showModal" class="fixed inset-0 flex flex-col">
+      <!-- Photo principale : fixed inset-0 vrai plein écran -->
+      <Transition :name="transitionName" mode="out-in" @after-leave="onTransitionComplete">
+        <img
+          v-if="showModal && images[currentIndex]"
+          :key="currentIndex"
+          :src="images[currentIndex].public_url"
+          :alt="images[currentIndex].caption || ''"
+          class="fixed inset-0 w-full h-full object-cover sm:object-contain z-[101]"
+          @touchstart.passive="onTouchStart"
+          @touchend.passive="onTouchEnd"
+        />
+      </Transition>
 
-          <!-- Header -->
-          <div class="flex-shrink-0 flex items-center justify-between px-4 h-14 z-10">
-            <button
-              class="flex items-center justify-center w-10 h-10 text-white/80 hover:text-white transition-colors"
-              @click="handleClose"
-            >
-              <IconLucid name="X" size="md" color="currentColor" />
-            </button>
-            <span class="text-white font-semibold text-base truncate mx-4">
-              {{ props.title }}
-            </span>
-            <span class="text-white/60 text-sm tabular-nums min-w-[3rem] text-right">
-              <template v-if="images.length > 0">
-                {{ currentIndex + 1 }}/{{ images.length }}
-              </template>
-            </span>
-          </div>
+      <!-- States (loading / empty) -->
+      <div v-if="showModal && loading" class="fixed inset-0 z-[102] flex items-center justify-center">
+        <IconLucid name="Loader2" size="lg" color="white" class="animate-spin" />
+      </div>
+      <div v-else-if="showModal && images.length === 0 && !loading" class="fixed inset-0 z-[102] flex items-center justify-center px-6">
+        <p class="text-white/60 text-center text-lg">{{ $t("stories.gallery_empty") }}</p>
+      </div>
 
-          <!-- Loading -->
-          <div v-if="loading" class="flex-1 flex items-center justify-center">
-            <IconLucid name="Loader2" size="lg" color="white" class="animate-spin" />
-          </div>
-
-          <!-- Empty -->
-          <div v-else-if="images.length === 0" class="flex-1 flex items-center justify-center px-6">
-            <p class="text-white/60 text-center text-lg">{{ $t("stories.gallery_empty") }}</p>
-          </div>
-
-          <!-- Main photo + nav -->
-          <div
-            v-else
-            class="flex-1 relative flex items-center justify-center overflow-hidden min-h-0"
-            @touchstart.passive="onTouchStart"
-            @touchend.passive="onTouchEnd"
+      <!-- Header : overlay fixed en haut -->
+      <Transition v-bind="contentTransition">
+        <div v-if="showModal" class="fixed top-0 inset-x-0 h-14 z-[103] flex items-center justify-between px-4">
+          <button
+            class="flex items-center justify-center w-10 h-10 text-white/80 hover:text-white transition-colors"
+            @click="handleClose"
           >
-            <!-- Photo principale (absolute, plein écran) -->
-            <Transition :name="transitionName" mode="out-in">
-              <img
-                :key="currentIndex"
-                :src="images[currentIndex].public_url"
-                :alt="images[currentIndex].caption || ''"
-                class="absolute inset-0 w-full h-full object-cover sm:object-contain z-0"
-              />
-            </Transition>
-
-            <!-- Caption -->
-            <p
-              v-if="images[currentIndex].caption"
-              class="absolute bottom-4 inset-x-0 text-white/60 text-sm text-center px-4 z-20"
-            >
-              {{ images[currentIndex].caption }}
-            </p>
-
-            <!-- Peek: photo précédente (mobile, au-dessus) -->
-            <div
-              v-if="images.length > 1"
-              class="sm:hidden absolute top-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
-            >
-              <img
-                :src="images[(currentIndex - 1 + images.length) % images.length].public_url"
-                class="w-full h-full object-cover brightness-[0.4]"
-                aria-hidden="true"
-              />
-              <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
-            </div>
-
-            <!-- Peek: photo suivante (mobile, au-dessus) -->
-            <div
-              v-if="images.length > 1"
-              class="sm:hidden absolute bottom-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
-            >
-              <img
-                :src="images[(currentIndex + 1) % images.length].public_url"
-                class="w-full h-full object-cover brightness-[0.4]"
-                aria-hidden="true"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            </div>
-
-            <!-- Chevrons (desktop uniquement) -->
-            <button
-              v-if="images.length > 1"
-              class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10
-                     hidden sm:flex items-center justify-center rounded-full
-                     bg-white/10 hover:bg-white/20 text-white transition-all z-20"
-              @click="go(-1)"
-            >
-              <IconLucid name="ChevronLeft" size="sm" color="currentColor" />
-            </button>
-
-            <button
-              v-if="images.length > 1"
-              class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10
-                     hidden sm:flex items-center justify-center rounded-full
-                     bg-white/10 hover:bg-white/20 text-white transition-all z-20"
-              @click="go(1)"
-            >
-              <IconLucid name="ChevronRight" size="sm" color="currentColor" />
-            </button>
-          </div>
-
-          <!-- Thumbnail strip (desktop only) -->
-          <div
-            v-if="images.length > 1"
-            ref="thumbStripRef"
-            class="flex-shrink-0 hidden sm:flex gap-2 overflow-x-auto px-4 py-3"
-            style="scrollbar-width: none;"
-          >
-            <button
-              v-for="(img, i) in images"
-              :key="img.id"
-              :ref="(el) => setThumbRef(el, i)"
-              class="flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden transition-all"
-              :class="i === currentIndex ? 'ring-2 ring-white opacity-100' : 'opacity-40 hover:opacity-70'"
-              @click="goTo(i)"
-            >
-              <img :src="img.public_url" :alt="img.caption || ''" class="w-full h-full object-cover" />
-            </button>
-          </div>
-
+            <IconLucid name="X" size="md" color="currentColor" />
+          </button>
+          <span class="text-white font-semibold text-base truncate mx-4">{{ props.title }}</span>
+          <span class="text-white/60 text-sm tabular-nums min-w-[3rem] text-right">
+            <template v-if="images.length > 0">{{ currentIndex + 1 }}/{{ images.length }}</template>
+          </span>
         </div>
       </Transition>
+
+      <!-- Caption -->
+      <p
+        v-if="showModal && images[currentIndex]?.caption"
+        class="fixed bottom-24 sm:bottom-4 inset-x-0 text-white/60 text-sm text-center px-4 z-[103] pointer-events-none"
+      >
+        {{ images[currentIndex].caption }}
+      </p>
+
+      <!-- Peek : photo précédente (mobile) -->
+      <div
+        v-if="showModal && images.length > 1"
+        class="sm:hidden fixed top-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-[102]"
+      >
+        <img
+          :src="images[(currentIndex - 1 + images.length) % images.length].public_url"
+          class="w-full h-full object-cover brightness-[0.4]"
+          aria-hidden="true"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
+      </div>
+
+      <!-- Peek : photo suivante (mobile) -->
+      <div
+        v-if="showModal && images.length > 1"
+        class="sm:hidden fixed bottom-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-[102]"
+      >
+        <img
+          :src="images[(currentIndex + 1) % images.length].public_url"
+          class="w-full h-full object-cover brightness-[0.4]"
+          aria-hidden="true"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      </div>
+
+      <!-- Chevrons (desktop uniquement) -->
+      <button
+        v-if="showModal && images.length > 1"
+        class="fixed left-2 top-1/2 -translate-y-1/2 w-10 h-10
+               hidden sm:flex items-center justify-center rounded-full
+               bg-white/10 hover:bg-white/20 text-white transition-all z-[103]"
+        @click="go(-1)"
+      >
+        <IconLucid name="ChevronLeft" size="sm" color="currentColor" />
+      </button>
+      <button
+        v-if="showModal && images.length > 1"
+        class="fixed right-2 top-1/2 -translate-y-1/2 w-10 h-10
+               hidden sm:flex items-center justify-center rounded-full
+               bg-white/10 hover:bg-white/20 text-white transition-all z-[103]"
+        @click="go(1)"
+      >
+        <IconLucid name="ChevronRight" size="sm" color="currentColor" />
+      </button>
+
+      <!-- Thumbnail strip (desktop uniquement) -->
+      <div
+        v-if="showModal && images.length > 1"
+        ref="thumbStripRef"
+        class="fixed bottom-0 inset-x-0 hidden sm:flex gap-2 overflow-x-auto px-4 py-3 z-[103]"
+        style="scrollbar-width: none;"
+      >
+        <button
+          v-for="(img, i) in images"
+          :key="img.id"
+          :ref="(el) => setThumbRef(el, i)"
+          class="flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden transition-all"
+          :class="i === currentIndex ? 'ring-2 ring-white opacity-100' : 'opacity-40 hover:opacity-70'"
+          @click="goTo(i)"
+        >
+          <img :src="img.public_url" :alt="img.caption || ''" class="w-full h-full object-cover" />
+        </button>
+      </div>
     </div>
   </Teleport>
 </template>
