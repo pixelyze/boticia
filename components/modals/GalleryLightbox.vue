@@ -15,16 +15,26 @@
         </div>
       </Transition>
 
-      <!-- Photo principale : fixed inset-0 vrai plein écran -->
+      <!-- Photo mobile : suit le doigt, animation manuelle -->
+      <img
+        v-if="showModal && images[currentIndex]"
+        :src="images[currentIndex].public_url"
+        :alt="images[currentIndex].caption || ''"
+        class="sm:hidden fixed inset-0 w-full h-full object-cover z-[101]"
+        :style="mobileImgStyle"
+        @touchstart.passive="onTouchStart"
+        @touchmove.passive="onTouchMove"
+        @touchend.passive="onTouchEnd"
+      />
+
+      <!-- Photo desktop : Transition Vue -->
       <Transition :name="transitionName" mode="out-in" @after-leave="onTransitionComplete">
         <img
           v-if="showModal && images[currentIndex]"
           :key="currentIndex"
           :src="images[currentIndex].public_url"
           :alt="images[currentIndex].caption || ''"
-          class="fixed inset-0 w-full h-full object-cover sm:object-contain z-[101]"
-          @touchstart.passive="onTouchStart"
-          @touchend.passive="onTouchEnd"
+          class="hidden sm:block fixed inset-0 w-full h-full object-contain z-[101]"
         />
       </Transition>
 
@@ -165,8 +175,16 @@ const images = ref<HomepageInspirationImage[]>([]);
 const currentIndex = ref(0);
 const transitionName = ref("slide-left");
 const thumbStripRef = ref<HTMLElement | null>(null);
-const touchStartX = ref(0);
+const touchStartY = ref(0);
+const dragY = ref(0);
+const isDragging = ref(false);
+const noTransition = ref(false);
 const thumbRefs = ref<(HTMLElement | null)[]>([]);
+
+const mobileImgStyle = computed(() => ({
+  transform: `translateY(${dragY.value}px)`,
+  transition: (isDragging.value || noTransition.value) ? "none" : "transform 0.25s ease",
+}));
 
 const setThumbRef = (el: any, i: number) => {
   thumbRefs.value[i] = el as HTMLElement | null;
@@ -192,13 +210,43 @@ const goTo = (index: number) => {
 };
 
 const onTouchStart = (e: TouchEvent) => {
-  touchStartX.value = e.touches[0].clientY;
+  touchStartY.value = e.touches[0].clientY;
+  isDragging.value = true;
 };
 
-const onTouchEnd = (e: TouchEvent) => {
-  const delta = touchStartX.value - e.changedTouches[0].clientY;
-  if (Math.abs(delta) < 50) return;
-  go(delta > 0 ? 1 : -1, delta > 0 ? "slide-up" : "slide-down");
+const onTouchMove = (e: TouchEvent) => {
+  if (!isDragging.value) return;
+  dragY.value = e.touches[0].clientY - touchStartY.value;
+};
+
+const onTouchEnd = async (e: TouchEvent) => {
+  isDragging.value = false;
+  const delta = touchStartY.value - e.changedTouches[0].clientY;
+
+  if (Math.abs(delta) > 80 && images.value.length > 1) {
+    const dir = delta > 0 ? 1 : -1;
+    const next = (currentIndex.value + dir + images.value.length) % images.value.length;
+
+    // 1. Partir hors écran dans le sens du geste
+    dragY.value = dir > 0 ? -window.innerHeight : window.innerHeight;
+
+    await new Promise(r => setTimeout(r, 220));
+
+    // 2. Téléporter la nouvelle photo du côté opposé (sans transition)
+    noTransition.value = true;
+    currentIndex.value = next;
+    dragY.value = dir > 0 ? window.innerHeight : -window.innerHeight;
+    nextTick(() => scrollThumbIntoView(next));
+
+    await nextTick();
+
+    // 3. Glisser vers le centre
+    noTransition.value = false;
+    requestAnimationFrame(() => { dragY.value = 0; });
+  } else {
+    // Revenir au centre
+    dragY.value = 0;
+  }
 };
 
 const handleClose = () => {
