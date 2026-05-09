@@ -97,13 +97,22 @@
                   <p class="text-xs text-dark/40 mb-2 font-semibold uppercase tracking-wide">
                     {{ t("dashboard.bento_layout") }}
                   </p>
-                  <div class="grid grid-cols-3 gap-1 max-w-[200px]">
-                    <div class="col-span-2 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">①</div>
-                    <div class="col-span-1 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">②</div>
-                    <div class="col-span-1 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">③</div>
-                    <div class="col-span-2 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">④</div>
-                    <div class="col-span-2 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">⑤</div>
-                    <div class="col-span-1 bg-dark/10 rounded-md h-8 flex items-center justify-center text-xs text-dark/50 font-semibold">⑥</div>
+                  <div class="flex gap-1 max-w-[260px]">
+                    <!-- Bento principal : 3 lignes × 3 cols -->
+                    <div class="flex-[3] grid grid-cols-3 gap-1">
+                      <div class="col-span-2 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">①</div>
+                      <div class="col-span-1 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">②</div>
+                      <div class="col-span-1 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">③</div>
+                      <div class="col-span-2 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">④</div>
+                      <div class="col-span-2 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">⑤</div>
+                      <div class="col-span-1 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">⑥</div>
+                    </div>
+                    <!-- 3ème colonne sidebar -->
+                    <div class="flex-[1] flex flex-col gap-1">
+                      <div class="flex-1 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">⑦</div>
+                      <div class="flex-1 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">⑧</div>
+                      <div class="flex-1 bg-dark/10 rounded-md h-7 flex items-center justify-center text-xs text-dark/50 font-semibold">⑨</div>
+                    </div>
                   </div>
                 </div>
 
@@ -138,7 +147,7 @@
                     >
                       <option value="">–</option>
                       <option
-                        v-for="n in 6"
+                        v-for="n in 9"
                         :key="n"
                         :value="n"
                       >{{ n }}</option>
