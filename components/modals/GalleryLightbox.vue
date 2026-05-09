@@ -183,13 +183,17 @@ const goTo = (index: number) => {
 };
 
 const onTouchStart = (e: TouchEvent) => {
-  touchStartX.value = e.touches[0].clientX;
+  touchStartX.value = e.touches[0].clientY;
 };
 
 const onTouchEnd = (e: TouchEvent) => {
-  const delta = touchStartX.value - e.changedTouches[0].clientX;
+  const delta = touchStartX.value - e.changedTouches[0].clientY;
   if (Math.abs(delta) < 50) return;
-  go(delta > 0 ? 1 : -1);
+  transitionName.value = delta > 0 ? "slide-up" : "slide-down";
+  const dir = delta > 0 ? 1 : -1;
+  const next = currentIndex.value + dir;
+  if (next < 0 || next >= images.value.length) return;
+  currentIndex.value = next;
 };
 
 const handleClose = () => {
@@ -269,6 +273,17 @@ onUnmounted(() => { images.value = []; });
 .slide-left-leave-to  { opacity: 0; transform: translateX(-40px); }
 .slide-right-enter-from { opacity: 0; transform: translateX(-40px); }
 .slide-right-leave-to  { opacity: 0; transform: translateX(40px); }
+
+.slide-up-enter-active,
+.slide-up-leave-active,
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.slide-up-enter-from { opacity: 0; transform: translateY(40px); }
+.slide-up-leave-to  { opacity: 0; transform: translateY(-40px); }
+.slide-down-enter-from { opacity: 0; transform: translateY(-40px); }
+.slide-down-leave-to  { opacity: 0; transform: translateY(40px); }
 
 div::-webkit-scrollbar { display: none; }
 </style>
