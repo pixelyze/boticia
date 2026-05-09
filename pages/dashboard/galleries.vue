@@ -133,12 +133,13 @@
                   <div
                     v-for="img in galleryImages[gallery.id]"
                     :key="img.id"
-                    class="relative group rounded-xl overflow-hidden"
+                    class="relative group rounded-xl overflow-hidden
+                           bg-dark/5 h-24 flex items-center justify-center"
                   >
                     <img
                       :src="img.public_url"
                       :alt="img.original_filename"
-                      class="w-full h-auto block"
+                      class="w-full h-full object-contain"
                     />
                     <!-- Bento slot selector -->
                     <select
