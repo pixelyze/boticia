@@ -54,9 +54,35 @@
             @touchstart.passive="onTouchStart"
             @touchend.passive="onTouchEnd"
           >
+            <!-- Peek: photo précédente (mobile) -->
+            <div
+              v-if="currentIndex > 0"
+              class="sm:hidden absolute top-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
+            >
+              <img
+                :src="images[currentIndex - 1].public_url"
+                class="w-full h-full object-cover brightness-[0.4]"
+                aria-hidden="true"
+              />
+              <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent" />
+            </div>
+
+            <!-- Peek: photo suivante (mobile) -->
+            <div
+              v-if="currentIndex < images.length - 1"
+              class="sm:hidden absolute bottom-0 inset-x-0 h-20 overflow-hidden pointer-events-none z-10"
+            >
+              <img
+                :src="images[currentIndex + 1].public_url"
+                class="w-full h-full object-cover brightness-[0.4]"
+                aria-hidden="true"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            </div>
+
             <!-- Photo -->
             <Transition :name="transitionName" mode="out-in">
-              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center px-16 py-4">
+              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center px-16 py-20 sm:py-4">
                 <img
                   :src="images[currentIndex].public_url"
                   :alt="images[currentIndex].caption || ''"
