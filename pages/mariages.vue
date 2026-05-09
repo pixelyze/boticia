@@ -4,199 +4,15 @@
     <WeddingIntroSection title-tag="h1" />
 
     <!-- Wedding gallery — bento layout -->
-    <section
-      v-if="galleryImages.length > 0"
-      class="py-16 md:py-24 bg-white"
-    >
-      <div class="px-5 sm:px-10">
-        <div class="max-w-6xl mx-auto mb-12">
-          <span class="section-tagline">
-            {{ $t("weddings.gallery_tagline") }}
-          </span>
-          <h2 class="section-title-lg">
-            {{ $t("weddings.gallery_title") }}
-          </h2>
-        </div>
+    <BentoGallery
+      slug="wedding"
+      :tagline="$t('weddings.gallery_tagline')"
+      :title="$t('weddings.gallery_title')"
+      :alt-text="$t('weddings.gallery_title')"
+      :lightbox-title="$t('weddings.gallery_title')"
+      bg-class="bg-white"
+    />
 
-        <div class="max-w-6xl mx-auto space-y-4">
-          <!-- Row 1 : wide + square -->
-          <div
-            v-if="displayGallery[0]"
-            class="flex flex-col sm:flex-row gap-4"
-          >
-            <button
-              class="group cursor-pointer block sm:flex-[2] min-w-0"
-              @click="openLightbox(0)"
-            >
-              <div
-                class="relative w-full h-full min-h-[250px]
-                       rounded-[1.5rem] overflow-hidden"
-              >
-                <img
-                  :src="displayGallery[0].public_url"
-                  :alt="displayGallery[0].caption || $t('weddings.gallery_title')"
-                  loading="lazy"
-                  class="absolute inset-0 w-full h-full object-cover
-                         group-hover:scale-[1.03]
-                         transition-transform duration-700 ease-out"
-                />
-                <div
-                  class="absolute inset-0 bg-dark/0
-                         group-hover:bg-dark/8
-                         transition-colors duration-500"
-                />
-              </div>
-            </button>
-            <button
-              v-if="displayGallery[1]"
-              class="group cursor-pointer block sm:flex-[1] min-w-0"
-              @click="openLightbox(1)"
-            >
-              <div
-                class="relative aspect-[3/4]
-                       rounded-[1.5rem] overflow-hidden"
-              >
-                <img
-                  :src="displayGallery[1].public_url"
-                  :alt="displayGallery[1].caption || $t('weddings.gallery_title')"
-                  loading="lazy"
-                  class="absolute inset-0 w-full h-full object-cover
-                         group-hover:scale-[1.03]
-                         transition-transform duration-700 ease-out"
-                />
-                <div
-                  class="absolute inset-0 bg-dark/0
-                         group-hover:bg-dark/8
-                         transition-colors duration-500"
-                />
-              </div>
-            </button>
-          </div>
-
-          <!-- Row 2 : square + wide -->
-          <div
-            v-if="displayGallery[2]"
-            class="flex flex-col sm:flex-row gap-4"
-          >
-            <button
-              class="group cursor-pointer block sm:flex-[1] min-w-0"
-              @click="openLightbox(2)"
-            >
-              <div
-                class="relative aspect-[3/4]
-                       rounded-[1.5rem] overflow-hidden"
-              >
-                <img
-                  :src="displayGallery[2].public_url"
-                  :alt="displayGallery[2].caption || $t('weddings.gallery_title')"
-                  loading="lazy"
-                  class="absolute inset-0 w-full h-full object-cover
-                         group-hover:scale-[1.03]
-                         transition-transform duration-700 ease-out"
-                />
-                <div
-                  class="absolute inset-0 bg-dark/0
-                         group-hover:bg-dark/8
-                         transition-colors duration-500"
-                />
-              </div>
-            </button>
-            <button
-              v-if="displayGallery[3]"
-              class="group cursor-pointer block sm:flex-[2] min-w-0"
-              @click="openLightbox(3)"
-            >
-              <div
-                class="relative w-full h-full min-h-[250px]
-                       rounded-[1.5rem] overflow-hidden"
-              >
-                <img
-                  :src="displayGallery[3].public_url"
-                  :alt="displayGallery[3].caption || $t('weddings.gallery_title')"
-                  loading="lazy"
-                  class="absolute inset-0 w-full h-full object-cover
-                         group-hover:scale-[1.03]
-                         transition-transform duration-700 ease-out"
-                />
-                <div
-                  class="absolute inset-0 bg-dark/0
-                         group-hover:bg-dark/8
-                         transition-colors duration-500"
-                />
-              </div>
-            </button>
-          </div>
-
-          <!-- Row 3 : wide + square (+N overlay) -->
-          <div
-            v-if="displayGallery[4]"
-            class="flex flex-col sm:flex-row gap-4"
-          >
-            <button
-              class="group cursor-pointer block sm:flex-[2] min-w-0"
-              @click="openLightbox(4)"
-            >
-              <div
-                class="relative w-full h-full min-h-[250px]
-                       rounded-[1.5rem] overflow-hidden"
-              >
-                <img
-                  :src="displayGallery[4].public_url"
-                  :alt="displayGallery[4].caption || $t('weddings.gallery_title')"
-                  loading="lazy"
-                  class="absolute inset-0 w-full h-full object-cover
-                         group-hover:scale-[1.03]
-                         transition-transform duration-700 ease-out"
-                />
-                <div
-                  class="absolute inset-0 bg-dark/0
-                         group-hover:bg-dark/8
-                         transition-colors duration-500"
-                />
-              </div>
-            </button>
-            <button
-              v-if="displayGallery[5]"
-              class="group cursor-pointer block sm:flex-[1] min-w-0"
-              @click="openLightbox(5)"
-            >
-              <div
-                class="relative aspect-[3/4]
-                       rounded-[1.5rem] overflow-hidden"
-              >
-                <img
-                  :src="displayGallery[5].public_url"
-                  :alt="displayGallery[5].caption || $t('weddings.gallery_title')"
-                  loading="lazy"
-                  class="absolute inset-0 w-full h-full object-cover
-                         group-hover:scale-[1.03]
-                         transition-transform duration-700 ease-out"
-                />
-                <div
-                  class="absolute inset-0 bg-dark/0
-                         group-hover:bg-dark/8
-                         transition-colors duration-500"
-                />
-                <div
-                  v-if="remainingGallery > 0"
-                  class="absolute inset-0 bg-dark/40
-                         flex items-center justify-center
-                         group-hover:bg-dark/50
-                         transition-colors duration-500"
-                >
-                  <span
-                    class="text-cream font-heading text-5xl
-                           md:text-7xl font-medium"
-                  >
-                    +{{ remainingGallery }}
-                  </span>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Prestations détaillées -->
     <section class="py-16 md:py-24 bg-white">
@@ -304,13 +120,6 @@
       </div>
     </section>
 
-    <GalleryLightbox
-      :is-open="lightboxOpen"
-      :items="galleryImages"
-      :title="$t('weddings.gallery_title')"
-      :start-index="lightboxIndex"
-      @close="lightboxOpen = false"
-    />
   </div>
 </template>
 
@@ -458,39 +267,4 @@ const faqs = computed(() => [
 
 const openFaq = ref(null);
 
-const galleryImages = ref([]);
-const lightboxOpen = ref(false);
-const lightboxIndex = ref(0);
-
-const displayGallery = computed(() => {
-  const result = new Array(6).fill(null);
-  const used = new Set();
-  for (const img of galleryImages.value) {
-    if (img.bento_slot >= 1 && img.bento_slot <= 6) {
-      result[img.bento_slot - 1] = img;
-      used.add(img.id);
-    }
-  }
-  const rest = galleryImages.value.filter((img) => !used.has(img.id));
-  let restIdx = 0;
-  for (let i = 0; i < 6; i++) {
-    if (!result[i] && restIdx < rest.length) {
-      result[i] = rest[restIdx++];
-    }
-  }
-  return result.filter(Boolean);
-});
-const remainingGallery = computed(() => Math.max(0, galleryImages.value.length - 6));
-
-const openLightbox = (index) => {
-  lightboxIndex.value = index;
-  lightboxOpen.value = true;
-};
-
-const { data: galleryData } = await useFetch(
-  "/api/galleries/wedding"
-);
-if (galleryData.value?.data) {
-  galleryImages.value = galleryData.value.data;
-}
 </script>
