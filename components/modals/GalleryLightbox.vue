@@ -1,9 +1,18 @@
 <template>
   <Teleport to="body">
     <div v-if="modalIsOpen" class="fixed inset-0 z-[100]">
-      <!-- Overlay -->
+      <!-- Overlay with ambient background -->
       <Transition v-bind="overlayTransition">
-        <div v-if="showModal" class="fixed inset-0 bg-black" />
+        <div v-if="showModal" class="fixed inset-0 overflow-hidden">
+          <img
+            v-if="images[currentIndex]"
+            :key="currentIndex"
+            :src="images[currentIndex].public_url"
+            class="absolute inset-0 w-full h-full object-cover scale-110 blur-3xl brightness-[0.25]"
+            aria-hidden="true"
+          />
+          <div class="absolute inset-0 bg-black/50" />
+        </div>
       </Transition>
 
       <!-- Content -->
