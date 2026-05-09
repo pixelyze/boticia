@@ -46,12 +46,12 @@
           <blockquote
             v-for="(item, index) in testimonials"
             :key="`${loop}-${index}`"
-            class="flex w-[320px] shrink-0 flex-col justify-between rounded-2xl border border-dark/10 bg-cream/30 p-7 sm:w-[380px]"
+            class="flex w-[320px] shrink-0 flex-col justify-between rounded-2xl bg-cream/50 p-7 sm:w-[380px]"
           >
             <p class="leading-relaxed text-dark/70 italic">
               « {{ item.text }} »
             </p>
-            <footer class="mt-6 flex items-center gap-3 border-t border-dark/10 pt-4">
+            <footer class="mt-6 flex items-center gap-3 pt-4">
               <div class="flex h-9 w-9 items-center justify-center rounded-full bg-dark text-sm font-medium text-white shrink-0">
                 {{ item.name.charAt(0) }}
               </div>
