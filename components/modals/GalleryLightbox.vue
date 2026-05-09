@@ -1,9 +1,9 @@
 <template>
   <Teleport to="body">
-    <div v-if="modalIsOpen" class="fixed inset-0 z-[100]" @touchmove.prevent>
+    <div v-if="modalIsOpen" class="fixed top-0 left-0 right-0 h-[100dvh] z-[100]" @touchmove.prevent>
       <!-- Overlay with ambient background -->
       <Transition v-bind="overlayTransition">
-        <div v-if="showModal" class="fixed inset-0 overflow-hidden">
+        <div v-if="showModal" class="fixed top-0 left-0 right-0 h-[100dvh] overflow-hidden">
           <img
             v-if="images[currentIndex]"
             :key="currentIndex"
@@ -39,10 +39,10 @@
       </Transition>
 
       <!-- States (loading / empty) -->
-      <div v-if="showModal && loading" class="fixed inset-0 z-[102] flex items-center justify-center">
+      <div v-if="showModal && loading" class="fixed top-0 left-0 right-0 h-[100dvh] z-[102] flex items-center justify-center">
         <IconLucid name="Loader2" size="lg" color="white" class="animate-spin" />
       </div>
-      <div v-else-if="showModal && images.length === 0 && !loading" class="fixed inset-0 z-[102] flex items-center justify-center px-6">
+      <div v-else-if="showModal && images.length === 0 && !loading" class="fixed top-0 left-0 right-0 h-[100dvh] z-[102] flex items-center justify-center px-6">
         <p class="text-white/60 text-center text-lg">{{ $t("stories.gallery_empty") }}</p>
       </div>
 
