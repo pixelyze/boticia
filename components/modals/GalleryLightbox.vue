@@ -82,11 +82,11 @@
 
             <!-- Photo -->
             <Transition :name="transitionName" mode="out-in">
-              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center px-3 sm:px-16 py-20 sm:py-4">
+              <div :key="currentIndex" class="w-full h-full flex flex-col items-center justify-center sm:px-16 sm:py-4">
                 <img
                   :src="images[currentIndex].public_url"
                   :alt="images[currentIndex].caption || ''"
-                  class="max-w-full max-h-full object-contain"
+                  class="sm:max-w-full sm:max-h-full sm:object-contain w-full h-full object-cover"
                 />
                 <p
                   v-if="images[currentIndex].caption"
@@ -274,18 +274,23 @@ watch(
       currentIndex.value = props.startIndex || 0;
       images.value = [];
       open();
+      if (import.meta.client) document.body.style.overflow = "hidden";
       await nextTick();
       await loadImages();
       await nextTick();
       scrollThumbIntoView(currentIndex.value);
     } else {
       close();
+      if (import.meta.client) document.body.style.overflow = "";
     }
   },
   { immediate: true }
 );
 
-onUnmounted(() => { images.value = []; });
+onUnmounted(() => {
+  images.value = [];
+  if (import.meta.client) document.body.style.overflow = "";
+});
 </script>
 
 <style scoped>
