@@ -158,35 +158,44 @@
                         <IconLucid name="Trash2" size="xs" />
                       </button>
                     </div>
+                    <!-- Bouton ajout inline -->
+                    <label
+                      :for="'gallery-upload-' + gallery.id"
+                      class="h-24 rounded-xl border-2 border-dashed border-dark/15
+                             flex flex-col items-center justify-center gap-1
+                             text-dark/30 cursor-pointer
+                             hover:border-dark/30 hover:text-dark/50
+                             transition-all"
+                    >
+                      <IconLucid
+                        v-if="uploading === gallery.id"
+                        name="Loader2"
+                        size="sm"
+                        class="animate-spin"
+                      />
+                      <IconLucid v-else name="Plus" size="sm" />
+                    </label>
                   </div>
 
                 </div>
 
-                <p
-                  v-else
-                  class="text-sm text-dark/40 text-center py-3"
-                >
-                  {{ t("dashboard.galleries_no_images") }}
-                </p>
-
-                <!-- Upload button -->
+                <!-- État vide : bouton centré -->
                 <label
+                  v-else
                   :for="'gallery-upload-' + gallery.id"
-                  class="flex items-center justify-center gap-2
-                         px-4 py-2 rounded-full border-2
-                         border-dashed border-dark/15 text-sm
+                  class="flex flex-col items-center justify-center gap-2 py-8
+                         rounded-xl border-2 border-dashed border-dark/15
                          text-dark/40 cursor-pointer
-                         transition-all hover:border-dark/30
-                         hover:text-dark/60"
+                         hover:border-dark/30 hover:text-dark/60 transition-all"
                 >
                   <IconLucid
                     v-if="uploading === gallery.id"
                     name="Loader2"
-                    size="xs"
+                    size="sm"
                     class="animate-spin"
                   />
-                  <IconLucid v-else name="Plus" size="xs" />
-                  {{ t("dashboard.galleries_add_image") }}
+                  <IconLucid v-else name="Plus" size="sm" />
+                  <span class="text-sm">{{ t("dashboard.galleries_add_image") }}</span>
                 </label>
                 <input
                   :id="'gallery-upload-' + gallery.id"
