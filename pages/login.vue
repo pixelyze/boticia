@@ -25,7 +25,7 @@
           <h1 class="font-heading text-3xl text-dark">Mon Espace</h1>
         </div>
 
-        <h2 class="font-heading text-3xl text-dark mb-2">Ravie de vous retrouver</h2>
+        <h2 class="font-heading text-xl md:text-3xl text-dark mb-2">Ravie de vous retrouver</h2>
         <p class="text-gray-500 text-sm mb-8 leading-relaxed">
           Utilisez l'adresse email de votre demande de devis pour recevoir un lien de connexion.
         </p>
@@ -42,7 +42,7 @@
             required
           />
           <Button type="submit" variant="primary" :loading="loading" class="w-full">
-            Recevoir mon lien de connexion
+            Recevoir le lien
           </Button>
         </form>
 
