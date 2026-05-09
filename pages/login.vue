@@ -1,20 +1,29 @@
 <template>
-  <div class="min-h-screen bg-cream-light flex items-center justify-center px-6">
-    <div class="max-w-md w-full">
-      <!-- Logo -->
-      <div class="text-center mb-8">
-        <img
-          src="/logo-boticia.png"
-          alt="Boticia"
-          class="h-32 mx-auto mb-6"
-        />
-        <h1 class="text-4xl font-bold text-dark mb-3">Espace client</h1>
-        <p class="text-dark/50 text-sm leading-relaxed max-w-xs mx-auto">
-          Réservé aux clientes ayant soumis une demande de devis. Connectez-vous avec l'adresse email utilisée lors de votre demande.
-        </p>
-      </div>
+  <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
 
-      <div class="bg-white rounded-3xl shadow-sm p-8">
+    <!-- Colonne gauche -->
+    <div class="bg-cream-light flex flex-col items-center justify-center px-10 py-16 text-center">
+      <img src="/logo-boticia.png" alt="Boticia" class="h-28 mb-8" />
+      <h1 class="font-heading text-4xl md:text-5xl text-dark mb-4">Mon Espace</h1>
+      <p class="text-dark/50 text-sm leading-relaxed max-w-xs">
+        L'espace réservé aux clientes Boticia — suivez l'avancement de votre projet floral en toute simplicité.
+      </p>
+      <div class="mt-10">
+        <Button variant="ghost" icon="ArrowLeft" to="/">
+          Retour à l'accueil
+        </Button>
+      </div>
+    </div>
+
+    <!-- Colonne droite -->
+    <div class="bg-white flex flex-col items-center justify-center px-8 py-16">
+      <div class="w-full max-w-sm">
+
+        <h2 class="text-2xl font-bold text-dark mb-1">Connexion</h2>
+        <p class="text-dark/50 text-sm mb-8 leading-relaxed">
+          Utilisez l'adresse email de votre demande de devis pour recevoir un lien de connexion.
+        </p>
+
         <!-- Magic Link Form -->
         <form v-if="!sent" @submit.prevent="handleLogin" class="space-y-4">
           <Input
@@ -26,18 +35,12 @@
             variant="soft"
             required
           />
-
-          <Button
-            type="submit"
-            variant="primary"
-            :loading="loading"
-            class="w-full"
-          >
+          <Button type="submit" variant="primary" :loading="loading" class="w-full">
             Recevoir mon lien de connexion
           </Button>
         </form>
 
-        <!-- Success Message -->
+        <!-- Success -->
         <div v-else class="text-center py-4">
           <div class="text-4xl mb-4">📬</div>
           <h2 class="text-xl font-bold text-dark mb-2">Email envoyé !</h2>
@@ -46,36 +49,25 @@
             <span class="font-bold text-dark">{{ email }}</span>.
             Vérifiez votre boîte de réception.
           </p>
-          <Button
-            variant="ghost"
-            @click="sent = false"
-          >
-            Renvoyer un lien
-          </Button>
+          <Button variant="ghost" @click="sent = false">Renvoyer un lien</Button>
         </div>
 
-        <!-- Error Message -->
+        <!-- Error -->
         <div v-if="error" class="mt-4">
-          <InfoNote variant="warning">
-            {{ error }}
-          </InfoNote>
+          <InfoNote variant="warning">{{ error }}</InfoNote>
         </div>
-      </div>
 
-      <!-- Back to Home + CTA devis -->
-      <div class="mt-6 text-center space-y-2">
-        <div>
+        <!-- CTA devis -->
+        <div class="mt-8 pt-6 border-t border-dark/10 text-center">
+          <p class="text-dark/40 text-xs mb-2">Pas encore cliente ?</p>
           <Button variant="ghost" icon="MoveRight" :to="localePath('/devis')">
-            Pas encore cliente ? Faire une demande de devis
+            Faire une demande de devis
           </Button>
         </div>
-        <div>
-          <Button variant="ghost" icon="ArrowLeft" to="/">
-            Retour à l'accueil
-          </Button>
-        </div>
+
       </div>
     </div>
+
   </div>
 </template>
 
