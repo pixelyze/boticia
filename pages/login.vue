@@ -19,7 +19,7 @@
     <div class="bg-white flex flex-col items-center justify-center px-8 py-16">
       <div class="w-full max-w-sm">
 
-        <h2 class="text-2xl font-bold text-dark mb-1">Connexion</h2>
+        <h2 class="text-2xl font-bold text-dark mb-1">Ravie de vous retrouver</h2>
         <p class="text-dark/50 text-sm mb-8 leading-relaxed">
           Utilisez l'adresse email de votre demande de devis pour recevoir un lien de connexion.
         </p>
