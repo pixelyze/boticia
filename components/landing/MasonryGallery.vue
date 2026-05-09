@@ -10,79 +10,192 @@
       </div>
     </div>
 
-    <!-- Bento rows -->
     <div class="px-5 sm:px-10">
-      <div class="max-w-6xl mx-auto space-y-4">
-        <!-- Row 1 : wide + square -->
-        <div
-          v-if="displayImages[0]"
-          class="flex flex-col sm:flex-row gap-4"
-        >
-          <button
-            class="group cursor-pointer block sm:flex-[2] min-w-0"
-            @click="openLightbox(0)"
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row gap-4">
+
+        <!-- Bento principal (2 colonnes, 3 lignes) -->
+        <div class="flex-[3] space-y-4">
+          <!-- Row 1 : wide + portrait -->
+          <div
+            v-if="mainImages[0]"
+            class="flex flex-col sm:flex-row gap-4"
           >
-            <div
-              class="relative w-full h-full min-h-[250px]
-                     rounded-[1.5rem] overflow-hidden"
+            <button
+              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              @click="openLightbox(0)"
             >
-              <img
-                :src="displayImages[0].public_url"
-                :alt="displayImages[0].caption || $t('portfolio.photo_alt')"
-                loading="lazy"
-                class="absolute inset-0 w-full h-full object-cover
-                       group-hover:scale-[1.03]
-                       transition-transform duration-700 ease-out"
-              />
               <div
-                class="absolute inset-0 bg-dark/0
-                       group-hover:bg-dark/8
-                       transition-colors duration-500"
-              />
-            </div>
-          </button>
-          <button
-            v-if="displayImages[1]"
-            class="group cursor-pointer block sm:flex-[1] min-w-0"
-            @click="openLightbox(1)"
+                class="relative w-full h-full min-h-[250px]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="mainImages[0].public_url"
+                  :alt="mainImages[0].caption || $t('portfolio.photo_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+            <button
+              v-if="mainImages[1]"
+              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              @click="openLightbox(1)"
+            >
+              <div
+                class="relative aspect-[3/4]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="mainImages[1].public_url"
+                  :alt="mainImages[1].caption || $t('portfolio.photo_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+          </div>
+
+          <!-- Row 2 : portrait + wide -->
+          <div
+            v-if="mainImages[2]"
+            class="flex flex-col sm:flex-row gap-4"
           >
-            <div
-              class="relative aspect-[3/4]
-                     rounded-[1.5rem] overflow-hidden"
+            <button
+              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              @click="openLightbox(2)"
             >
-              <img
-                :src="displayImages[1].public_url"
-                :alt="displayImages[1].caption || $t('portfolio.photo_alt')"
-                loading="lazy"
-                class="absolute inset-0 w-full h-full object-cover
-                       group-hover:scale-[1.03]
-                       transition-transform duration-700 ease-out"
-              />
               <div
-                class="absolute inset-0 bg-dark/0
-                       group-hover:bg-dark/8
-                       transition-colors duration-500"
-              />
-            </div>
-          </button>
+                class="relative aspect-[3/4]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="mainImages[2].public_url"
+                  :alt="mainImages[2].caption || $t('portfolio.photo_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+            <button
+              v-if="mainImages[3]"
+              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              @click="openLightbox(3)"
+            >
+              <div
+                class="relative w-full h-full min-h-[250px]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="mainImages[3].public_url"
+                  :alt="mainImages[3].caption || $t('portfolio.photo_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+          </div>
+
+          <!-- Row 3 : wide + portrait -->
+          <div
+            v-if="mainImages[4]"
+            class="flex flex-col sm:flex-row gap-4"
+          >
+            <button
+              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              @click="openLightbox(4)"
+            >
+              <div
+                class="relative w-full h-full min-h-[250px]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="mainImages[4].public_url"
+                  :alt="mainImages[4].caption || $t('portfolio.photo_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+            <button
+              v-if="mainImages[5]"
+              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              @click="openLightbox(5)"
+            >
+              <div
+                class="relative aspect-[3/4]
+                       rounded-[1.5rem] overflow-hidden"
+              >
+                <img
+                  :src="mainImages[5].public_url"
+                  :alt="mainImages[5].caption || $t('portfolio.photo_alt')"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover
+                         group-hover:scale-[1.03]
+                         transition-transform duration-700 ease-out"
+                />
+                <div
+                  class="absolute inset-0 bg-dark/0
+                         group-hover:bg-dark/8
+                         transition-colors duration-500"
+                />
+              </div>
+            </button>
+          </div>
         </div>
 
-        <!-- Row 2 : square + wide -->
+        <!-- 3ème colonne : petits portraits (desktop uniquement) -->
         <div
-          v-if="displayImages[2]"
-          class="flex flex-col sm:flex-row gap-4"
+          v-if="sideImages.length > 0"
+          class="hidden sm:flex flex-[1] flex-col gap-4"
         >
           <button
-            class="group cursor-pointer block sm:flex-[1] min-w-0"
-            @click="openLightbox(2)"
+            v-for="(img, i) in sideImages"
+            :key="img.id"
+            class="group cursor-pointer block flex-1 min-w-0"
+            @click="openLightbox(6 + i)"
           >
             <div
-              class="relative aspect-[3/4]
+              class="relative w-full h-full min-h-[100px]
                      rounded-[1.5rem] overflow-hidden"
             >
               <img
-                :src="displayImages[2].public_url"
-                :alt="displayImages[2].caption || $t('portfolio.photo_alt')"
+                :src="img.public_url"
+                :alt="img.caption || $t('portfolio.photo_alt')"
                 loading="lazy"
                 class="absolute inset-0 w-full h-full object-cover
                        group-hover:scale-[1.03]
@@ -93,95 +206,17 @@
                        group-hover:bg-dark/8
                        transition-colors duration-500"
               />
-            </div>
-          </button>
-          <button
-            v-if="displayImages[3]"
-            class="group cursor-pointer block sm:flex-[2] min-w-0"
-            @click="openLightbox(3)"
-          >
-            <div
-              class="relative w-full h-full min-h-[250px]
-                     rounded-[1.5rem] overflow-hidden"
-            >
-              <img
-                :src="displayImages[3].public_url"
-                :alt="displayImages[3].caption || $t('portfolio.photo_alt')"
-                loading="lazy"
-                class="absolute inset-0 w-full h-full object-cover
-                       group-hover:scale-[1.03]
-                       transition-transform duration-700 ease-out"
-              />
+              <!-- "+N" overlay sur la dernière image -->
               <div
-                class="absolute inset-0 bg-dark/0
-                       group-hover:bg-dark/8
-                       transition-colors duration-500"
-              />
-            </div>
-          </button>
-        </div>
-
-        <!-- Row 3 : wide + square -->
-        <div
-          v-if="displayImages[4]"
-          class="flex flex-col sm:flex-row gap-4"
-        >
-          <button
-            class="group cursor-pointer block sm:flex-[2] min-w-0"
-            @click="openLightbox(4)"
-          >
-            <div
-              class="relative w-full h-full min-h-[250px]
-                     rounded-[1.5rem] overflow-hidden"
-            >
-              <img
-                :src="displayImages[4].public_url"
-                :alt="displayImages[4].caption || $t('portfolio.photo_alt')"
-                loading="lazy"
-                class="absolute inset-0 w-full h-full object-cover
-                       group-hover:scale-[1.03]
-                       transition-transform duration-700 ease-out"
-              />
-              <div
-                class="absolute inset-0 bg-dark/0
-                       group-hover:bg-dark/8
-                       transition-colors duration-500"
-              />
-            </div>
-          </button>
-          <button
-            v-if="displayImages[5]"
-            class="group cursor-pointer block sm:flex-[1] min-w-0"
-            @click="openLightbox(5)"
-          >
-            <div
-              class="relative aspect-[3/4]
-                     rounded-[1.5rem] overflow-hidden"
-            >
-              <img
-                :src="displayImages[5].public_url"
-                :alt="displayImages[5].caption || $t('portfolio.photo_alt')"
-                loading="lazy"
-                class="absolute inset-0 w-full h-full object-cover
-                       group-hover:scale-[1.03]
-                       transition-transform duration-700 ease-out"
-              />
-              <div
-                class="absolute inset-0 bg-dark/0
-                       group-hover:bg-dark/8
-                       transition-colors duration-500"
-              />
-              <!-- "+N" overlay -->
-              <div
-                v-if="remainingCount > 0"
+                v-if="i === sideImages.length - 1 && remainingCount > 0"
                 class="absolute inset-0 bg-dark/40
                        flex items-center justify-center
                        group-hover:bg-dark/50
                        transition-colors duration-500"
               >
                 <span
-                  class="text-cream font-heading text-5xl
-                         md:text-7xl font-medium"
+                  class="text-cream font-heading text-4xl
+                         md:text-5xl font-medium"
                 >
                   +{{ remainingCount }}
                 </span>
@@ -189,6 +224,7 @@
             </div>
           </button>
         </div>
+
       </div>
     </div>
 
@@ -215,29 +251,29 @@ const openLightbox = (index) => {
   lightboxOpen.value = true;
 };
 
-// Place images in their exact bento_slot position (1-6 → index 0-5)
-// Fill empty slots with remaining images
-const displayImages = computed(() => {
-  const result = new Array(6).fill(null);
+// Place images in slots 1-9 → indices 0-8
+const allDisplayImages = computed(() => {
+  const result = new Array(9).fill(null);
   const used = new Set();
-  // Place slotted images at their exact position
   for (const img of images.value) {
-    if (img.bento_slot >= 1 && img.bento_slot <= 6) {
+    if (img.bento_slot >= 1 && img.bento_slot <= 9) {
       result[img.bento_slot - 1] = img;
       used.add(img.id);
     }
   }
-  // Fill empty positions with remaining images
   const rest = images.value.filter((img) => !used.has(img.id));
   let restIdx = 0;
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 9; i++) {
     if (!result[i] && restIdx < rest.length) {
       result[i] = rest[restIdx++];
     }
   }
   return result.filter(Boolean);
 });
-const remainingCount = computed(() => Math.max(0, images.value.length - 6));
+
+const mainImages = computed(() => allDisplayImages.value.slice(0, 6));
+const sideImages = computed(() => allDisplayImages.value.slice(6, 9));
+const remainingCount = computed(() => Math.max(0, images.value.length - 9));
 
 const { data: galleryData } = await useFetch("/api/galleries/portfolio");
 if (galleryData.value?.data) {
