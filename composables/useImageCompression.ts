@@ -14,7 +14,7 @@ interface CompressOptions {
 }
 
 const DEFAULTS: Required<CompressOptions> = {
-  maxSizeMB: 3, // Safe margin under Vercel's 4.5 MB body limit
+  maxSizeMB: 2, // Safe margin under Vercel's 4.5 MB body limit
   maxWidthOrHeight: 2560, // Retina-friendly, server will still resize to 1920
 };
 
