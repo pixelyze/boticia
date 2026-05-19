@@ -202,5 +202,13 @@ export default defineNuxtConfig({
     "/*/confirm": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
     "/*/dashboard/**": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
     "/*/admin/**": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
+    // Redirects des anciennes URLs Shopify → homepage (301 pour Google)
+    "/blogs/**": { redirect: { to: "/", statusCode: 301 } },
+    "/pages/**": { redirect: { to: "/", statusCode: 301 } },
+    "/collections/**": { redirect: { to: "/", statusCode: 301 } },
+    "/products/**": { redirect: { to: "/", statusCode: 301 } },
+    // Coming-soon : noindex (page temporaire, pas à indexer)
+    "/coming-soon": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
+    "/*/coming-soon": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
   },
 });
