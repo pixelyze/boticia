@@ -119,6 +119,26 @@ const categoryLabel = (cat: Category) => {
 
 const releases = [
   {
+    date: "19 mai 2026",
+    items: [
+      {
+        category: "seo" as Category,
+        title: "Suppression des anciennes pages dans Google",
+        description: "Les anciennes pages de l'ancien site (blogs, collections, pages produits) redirigent maintenant vers l'accueil. Google va progressivement les retirer de ses résultats.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Upload de grandes photos corrigé",
+        description: "Les photos de plus de 2 MB sont automatiquement compressées avant l'envoi — les grosses photos de smartphone (20 MB) passent maintenant sans erreur.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Galerie Événements dans le dashboard",
+        description: "La galerie Événements apparaît maintenant dans votre espace galeries, après Ateliers, pour pouvoir y ajouter et gérer vos photos.",
+      },
+    ],
+  },
+  {
     date: "9 mai 2026",
     items: [
       {
