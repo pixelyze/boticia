@@ -52,9 +52,9 @@ async function sendEmailDev(opts: SendEmailOptions): Promise<boolean> {
 }
 
 async function sendEmail(opts: SendEmailOptions): Promise<boolean> {
-  const isDev = process.env.NODE_ENV !== "production";
+  const hasResendKey = !!process.env.RESEND_API_KEY;
 
-  if (isDev) {
+  if (!hasResendKey) {
     return sendEmailDev(opts);
   }
 

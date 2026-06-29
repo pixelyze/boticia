@@ -73,23 +73,25 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Notify admin
+    // Notify admin — must be awaited on serverless (Vercel kills the function on response)
     const coupleName = body.partner2_name
       ? `${body.partner1_name} & ${body.partner2_name}`
       : body.partner1_name;
     const baseUrl = process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
-    sendNewQuoteNotification({
-      coupleName,
-      email: body.email,
-      phone: body.phone,
-      serviceType: body.service_type,
-      weddingDate: body.wedding_date,
-      meetingDate: body.meeting_date,
-      meetingTime: body.meeting_time,
-      dashboardUrl: `${baseUrl}/fr/dashboard/quotes/${quote.id}`,
-    }).catch((err) =>
-      console.error("Error sending admin notification:", err)
-    );
+    try {
+      await sendNewQuoteNotification({
+        coupleName,
+        email: body.email,
+        phone: body.phone,
+        serviceType: body.service_type,
+        weddingDate: body.wedding_date,
+        meetingDate: body.meeting_date,
+        meetingTime: body.meeting_time,
+        dashboardUrl: `${baseUrl}/fr/dashboard/quotes/${quote.id}`,
+      });
+    } catch (err) {
+      console.error("Error sending admin notification:", err);
+    }
 
     return {
       success: true,
