@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  vite: { logLevel: 'warn' }, // calme le verbiage Vite en dev (garde warn + erreurs)
   // Auto-import des composants sans préfixe de dossier
   components: [
     {
@@ -66,6 +67,14 @@ export default defineNuxtConfig({
         {
           name: "apple-mobile-web-app-status-bar-style",
           content: "black-translucent",
+        },
+      ],
+
+      script: [
+        {
+          src: "https://analytics.banditstudio.click/script.js",
+          "data-website-id": "8dea2e30-d340-4a71-a0b7-0a7cdc37650c",
+          defer: true,
         },
       ],
 
