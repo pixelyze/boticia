@@ -1526,6 +1526,10 @@ const handleSubmit = async () => {
     }
 
     submitted.value = true;
+    // Umami : conversion "demande de devis envoyée" (best-effort, ne bloque jamais)
+    (window as any).umami?.track?.("devis-envoye", {
+      service_type: form.service_type,
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
   } catch {
     errors.generic = t("quote_form.error_generic");
