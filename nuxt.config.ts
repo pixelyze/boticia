@@ -40,6 +40,7 @@ export default defineNuxtConfig({
           content: "Atelier de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
         },
         { property: "og:type", content: "website" },
+        { property: "og:site_name", content: "Boticia" },
         {
           property: "og:url",
           content: process.env.NUXT_PUBLIC_SITE_URL || "https://boticia.fr",
