@@ -17,6 +17,24 @@ export type QuoteRequestStatus =
   | "completed"
   | "cancelled";
 
+/**
+ * ATTENTION : ces clés ne correspondent plus aux montants qu'elles nomment.
+ *
+ * Les tranches ont été relevées (commit a75759b) sans renommer les clés,
+ * qui sont stockées telles quelles en base. La correspondance réelle est :
+ *
+ *   lt_2500   ->  3 000 – 5 000 €
+ *   lt_4000   ->  5 000 – 8 000 €
+ *   lt_10000  ->  8 000 € et plus
+ *
+ * L'affichage est correct partout, car il passe par les libellés i18n
+ * (`quote_form.budget_<clé>`). Le piège ne concerne que la lecture directe
+ * de la base : un export ou une requête SQL sur `budget` induit en erreur.
+ *
+ * Au prochain changement de tarif, renommer en clés neutres (budget_1,
+ * budget_2, budget_3) — migration SQL + type + 3 locales + le badge de
+ * `pages/dashboard/quotes/index.vue`, à déployer d'un seul tenant.
+ */
 export type BudgetRange =
   | "lt_2500"
   | "lt_4000"
