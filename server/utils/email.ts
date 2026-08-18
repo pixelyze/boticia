@@ -130,7 +130,7 @@ export async function sendProposalNotification(
   });
 }
 
-const ADMIN_EMAIL = "laetitia@boticia.fr";
+export const ADMIN_EMAIL = "laetitia@boticia.fr";
 const DEV_EMAIL = "brutalstudio.click@gmail.com";
 
 /**

@@ -107,11 +107,17 @@ const handleLogin = async () => {
   error.value = "";
 
   try {
+    // La destination demandée (ex : une fiche devis) doit traverser le lien
+    // magique, sinon on retombe sur l'accueil du dashboard après connexion.
+    const target = safeRedirectPath(route.query.redirect);
+    const confirmUrl = `${window.location.origin}/${locale.value}/confirm`;
+    const emailRedirectTo = target
+      ? `${confirmUrl}?redirect=${encodeURIComponent(target)}`
+      : confirmUrl;
+
     const { error: signInError } = await supabase.auth.signInWithOtp({
       email: email.value,
-      options: {
-        emailRedirectTo: `${window.location.origin}/${locale.value}/confirm`,
-      },
+      options: { emailRedirectTo },
     });
 
     if (signInError) {

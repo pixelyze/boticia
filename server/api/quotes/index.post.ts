@@ -5,7 +5,8 @@
 
 import { createQuoteRequest } from "~/server/utils/quotes";
 import type { CreateQuoteRequestInput } from "~/server/utils/quotes-types";
-import { sendNewQuoteNotification } from "~/server/utils/email";
+import { sendNewQuoteNotification, ADMIN_EMAIL } from "~/server/utils/email";
+import { generateMagicLink } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<CreateQuoteRequestInput>(event);
@@ -78,6 +79,25 @@ export default defineEventHandler(async (event) => {
       ? `${body.partner1_name} & ${body.partner2_name}`
       : body.partner1_name;
     const baseUrl = process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
+    const quotePath = `/fr/dashboard/quotes/${quote.id}`;
+
+    // Le CTA embarque un lien magique pour que l'admin ouvre la fiche
+    // directement depuis sa boîte mail, sans reconnexion. Il passe par
+    // /confirm : la session doit être établie avant d'atteindre une page
+    // protégée, sinon le middleware éjecte vers le login.
+    let ctaUrl = `${baseUrl}${quotePath}`;
+    try {
+      const { link } = await generateMagicLink(
+        ADMIN_EMAIL,
+        `${baseUrl}/fr/confirm?redirect=${encodeURIComponent(quotePath)}`
+      );
+      // Sans lien magique on garde le lien nu : l'email part quand même,
+      // elle devra juste se connecter.
+      if (link) ctaUrl = link;
+    } catch (err) {
+      console.error("Error generating admin magic link:", err);
+    }
+
     try {
       await sendNewQuoteNotification({
         coupleName,
@@ -87,7 +107,7 @@ export default defineEventHandler(async (event) => {
         weddingDate: body.wedding_date,
         meetingDate: body.meeting_date,
         meetingTime: body.meeting_time,
-        dashboardUrl: `${baseUrl}/fr/dashboard/quotes/${quote.id}`,
+        dashboardUrl: ctaUrl,
       });
     } catch (err) {
       console.error("Error sending admin notification:", err);

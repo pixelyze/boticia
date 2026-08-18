@@ -6,7 +6,7 @@
         {{ error ? 'Erreur de connexion' : 'Connexion en cours...' }}
       </h1>
       <p v-if="error" class="text-dark/60 mb-6">{{ error }}</p>
-      <Button v-if="error" variant="primary" to="/login">
+      <Button v-if="error" variant="primary" :to="retryLink">
         Réessayer
       </Button>
     </div>
@@ -21,9 +21,26 @@ definePageMeta({
 
 const supabase = useSupabaseClient();
 const router = useRouter();
+const route = useRoute();
 const { locale } = useI18n();
+const localePath = useLocalePath();
 
 const error = ref("");
+
+// Destination demandée avant la connexion (ex : la fiche devis du lien
+// magique). Validée pour éviter toute redirection hors du site.
+const redirectTarget = computed(() =>
+  safeRedirectPath(route.query.redirect)
+);
+
+// Si le lien magique est expiré, on renvoie vers la connexion en gardant la
+// destination : après login elle atterrit sur la fiche, pas sur l'accueil.
+const retryLink = computed(() => {
+  const login = localePath("/login");
+  return redirectTarget.value
+    ? `${login}?redirect=${encodeURIComponent(redirectTarget.value)}`
+    : login;
+});
 
 async function redirectByRole(email: string) {
   try {
@@ -35,7 +52,9 @@ async function redirectByRole(email: string) {
     });
 
     if (roleData.role === "admin") {
-      await router.replace(`/${locale.value}/dashboard`);
+      await router.replace(
+        redirectTarget.value || `/${locale.value}/dashboard`
+      );
     } else if (roleData.role === "client") {
       await router.replace(`/${locale.value}/mon-projet`);
     } else {
