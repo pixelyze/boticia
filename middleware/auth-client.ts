@@ -6,13 +6,14 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
   if (process.server) return;
 
+  const localePath = useLocalePath();
   const user = useSupabaseUser();
 
   if (!user.value) {
     const redirectTo = to.fullPath;
 
     return navigateTo({
-      path: "/login",
+      path: localePath("/login"),
       query: { redirect: redirectTo },
     });
   }

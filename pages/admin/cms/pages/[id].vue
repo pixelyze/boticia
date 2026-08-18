@@ -15,7 +15,7 @@
             <Button
               variant="ghost"
               icon="ArrowLeft"
-              to="/admin/cms"
+              :to="localePath('/admin/cms')"
             >
               Retour
             </Button>
@@ -178,7 +178,7 @@
         <p class="text-dark/60 mb-6">
           Cette page n'existe pas ou a été supprimée.
         </p>
-        <Button variant="primary" to="/admin/cms">
+        <Button variant="primary" :to="localePath('/admin/cms')">
           Retour aux Pages
         </Button>
       </Card>
@@ -306,6 +306,7 @@ definePageMeta({
 
 const route = useRoute();
 const router = useRouter();
+const localePath = useLocalePath();
 const cms = useCms();
 
 // State

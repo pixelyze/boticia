@@ -4,7 +4,7 @@
       <!-- Header -->
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-4">
-          <Button variant="ghost" icon="ArrowLeft" to="/admin/cms">
+          <Button variant="ghost" icon="ArrowLeft" :to="localePath('/admin/cms')">
             Retour
           </Button>
 
@@ -162,6 +162,7 @@ definePageMeta({
 });
 
 const { getConfigs, upsertConfig } = useCms();
+const localePath = useLocalePath();
 
 // State
 const configs = ref<CmsConfig[]>([]);

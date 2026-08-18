@@ -240,6 +240,7 @@ definePageMeta({
 const { getPages, createPage, deletePage, publishPage, unpublishPage } =
   useCms();
 const supabase = useSupabaseClient();
+const localePath = useLocalePath();
 
 // State
 const pages = ref<CmsPage[]>([]);
@@ -329,7 +330,7 @@ const createNewPage = async () => {
       await loadPages();
 
       // Redirect to editor
-      navigateTo(`/admin/cms/pages/${page.id}`);
+      navigateTo(localePath(`/admin/cms/pages/${page.id}`));
     }
   } catch (error) {
     console.error("Error creating page:", error);
@@ -427,7 +428,7 @@ const formatDate = (date: string) => {
 // Logout
 const handleLogout = async () => {
   await supabase.auth.signOut();
-  navigateTo("/admin/login");
+  navigateTo(localePath("/admin/login"));
 };
 
 // Watch filters

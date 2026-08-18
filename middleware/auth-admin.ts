@@ -6,11 +6,12 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
   if (process.server) return;
 
+  const localePath = useLocalePath();
   const user = useSupabaseUser();
 
   if (!user.value) {
     return navigateTo({
-      path: "/login",
+      path: localePath("/login"),
       query: { redirect: to.fullPath },
     });
   }
@@ -24,13 +25,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     });
 
     if (role === "client") {
-      return navigateTo("/mon-projet");
+      return navigateTo(localePath("/mon-projet"));
     }
     if (role !== "admin") {
-      return navigateTo("/login");
+      return navigateTo(localePath("/login"));
     }
   } catch (err) {
     console.error("Error checking admin role:", err);
-    return navigateTo("/");
+    return navigateTo(localePath("/"));
   }
 });
