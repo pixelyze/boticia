@@ -20,9 +20,15 @@ export default defineEventHandler(async (event) => {
       .from('profiles')
       .select('role, full_name')
       .eq('email', normalizedEmail)
-      .single();
+      .maybeSingle();
 
-    if (!error && data && data.role === 'admin') {
+    // Un echec de lecture ne doit jamais etre renvoye comme role 'user' :
+    // cela retrograde silencieusement un admin en visiteur.
+    if (error) {
+      throw error;
+    }
+
+    if (data && data.role === 'admin') {
       return {
         email,
         role: 'admin',
@@ -54,11 +60,9 @@ export default defineEventHandler(async (event) => {
     };
   } catch (err) {
     console.error('Error getting profile:', err);
-    return {
-      email,
-      role: 'user',
-      isAdmin: false,
-      fullName: null,
-    };
+    throw createError({
+      statusCode: 503,
+      message: 'Role lookup failed',
+    });
   }
 });
