@@ -560,7 +560,6 @@
     "section_alerts": "アラート",
     "todo_waiting": "{name} · {days}日前の依頼",
     "todo_with_meeting": "{name} · {days}日前の依頼 · 打ち合わせまで{meeting}日",
-    "todo_more": "他{count}件を見る",
     "quotes_filter_all": "すべて",
     "quotes_filter_new": "新規依頼",
     "quotes_filter_contacted": "連絡済み",

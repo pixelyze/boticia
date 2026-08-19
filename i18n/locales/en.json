@@ -560,7 +560,6 @@
     "section_alerts": "Alerts",
     "todo_waiting": "{name} · requested {days} d ago",
     "todo_with_meeting": "{name} · requested {days} d ago · meeting in {meeting} d",
-    "todo_more": "See {count} more",
     "quotes_filter_all": "All",
     "quotes_filter_new": "New request",
     "quotes_filter_contacted": "Contacted",

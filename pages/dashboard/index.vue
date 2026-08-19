@@ -97,7 +97,7 @@
 
               <!-- À traiter : les demandes qui attendent une réponse -->
               <div
-                v-if="todoVisible.length > 0"
+                v-if="todoQuotes.length > 0"
                 class="mt-6 flex flex-col gap-2"
               >
                 <div class="flex items-center justify-between mb-1">
@@ -112,7 +112,7 @@
                 </div>
 
                 <button
-                  v-for="item in todoVisible"
+                  v-for="item in todoQuotes"
                   :key="item.id"
                   class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all bg-cream-dark hover:bg-cream text-dark"
                   @click="
@@ -132,13 +132,6 @@
                   />
                 </button>
 
-                <NuxtLink
-                  v-if="todoRemaining > 0"
-                  :to="localePath('/dashboard/quotes') + '?filter=new'"
-                  class="self-end px-5 py-2.5 rounded-full bg-cream-dark text-sm font-semibold text-dark/60 hover:text-dark/80 transition-all"
-                >
-                  {{ t("dashboard.todo_more", { count: todoRemaining }) }}
-                </NuxtLink>
               </div>
 
               <!-- Alerts -->
@@ -307,8 +300,6 @@ const quoteName = (q: QuoteRequest) =>
     ? `${q.partner1_name} & ${q.partner2_name}`
     : q.partner1_name;
 
-const TODO_LIMIT = 3;
-
 // Au-delà de 90 jours sans réponse, l'affaire est probablement close :
 // la relance n'apporte plus rien et occupe une place dans la liste.
 const STALE_MAX_DAYS = 90;
@@ -345,11 +336,6 @@ const todoQuotes = computed(() =>
       if (b.meetingIn !== null) return 1;
       return b.waitingDays - a.waitingDays;
     })
-);
-
-const todoVisible = computed(() => todoQuotes.value.slice(0, TODO_LIMIT));
-const todoRemaining = computed(() =>
-  Math.max(0, todoQuotes.value.length - TODO_LIMIT)
 );
 
 const todoLabel = (t0: (typeof todoQuotes.value)[number]) =>
