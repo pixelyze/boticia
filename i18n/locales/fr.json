@@ -741,7 +741,8 @@
     "file_revision_on": "Révision demandée le {date}",
     "file_awaiting": "En attente de consultation",
     "file_draft": "Brouillon",
-    "alert_awaiting_reply": "{name} · mariage dans {days} j, devis sans réponse"
+    "alert_awaiting_reply": "{name} · mariage dans {days} j, devis sans réponse",
+    "alert_quote_not_sent": "{name} · devis déposé mais jamais envoyé à la cliente"
   },
   "client": {
     "page_title": "Mon projet",

@@ -357,10 +357,34 @@ const alerts = computed(() => {
     if (!q.wedding_date) continue;
 
     const days = daysUntil(q.wedding_date);
-    if (days < 0 || days > ALERT_WEDDING_DAYS) continue;
+    if (days < 0) continue;
+
+    const proposals = q.project_proposals || [];
+    if (proposals.length === 0) continue;
+
+    // Un devis déposé sans que le bouton "Envoyer" ait été cliqué : la
+    // cliente n'a rien reçu. C'est une action de Laetitia qui manque, pas
+    // une réponse de la cliente — d'où une alerte distincte, non
+    // conditionnée à la proximité du mariage.
+    const sent =
+      q.status === "quote_sent" ||
+      q.status === "signed";
+
+    if (!sent) {
+      result.push({
+        id: q.id,
+        days,
+        message: t("dashboard.alert_quote_not_sent", {
+          name: quoteName(q),
+        }),
+      });
+      continue;
+    }
+
+    if (days > ALERT_WEDDING_DAYS) continue;
 
     // Sans réponse = la cliente n'a ni validé ni demandé de révision.
-    const awaiting = (q.project_proposals || []).some(
+    const awaiting = proposals.some(
       (p) => p.status === "pending" || p.status === "viewed"
     );
     if (!awaiting) continue;

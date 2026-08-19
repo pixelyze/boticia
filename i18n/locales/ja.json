@@ -741,7 +741,8 @@
     "file_revision_on": "{date} に修正依頼",
     "file_awaiting": "未閲覧",
     "file_draft": "下書き",
-    "alert_awaiting_reply": "{name} · 挙式まで{days}日、見積もり未回答"
+    "alert_awaiting_reply": "{name} · 挙式まで{days}日、見積もり未回答",
+    "alert_quote_not_sent": "{name} · 見積もりは登録済みですが未送信です"
   },
   "client": {
     "page_title": "マイプロジェクト",

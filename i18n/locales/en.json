@@ -741,7 +741,8 @@
     "file_revision_on": "Revision requested on {date}",
     "file_awaiting": "Not viewed yet",
     "file_draft": "Draft",
-    "alert_awaiting_reply": "{name} · wedding in {days} d, quote unanswered"
+    "alert_awaiting_reply": "{name} · wedding in {days} d, quote unanswered",
+    "alert_quote_not_sent": "{name} · quote uploaded but never sent to the client"
   },
   "client": {
     "page_title": "My project",
