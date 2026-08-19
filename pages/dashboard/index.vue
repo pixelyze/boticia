@@ -95,26 +95,26 @@
                 </button>
               </div>
 
-              <!-- À traiter : les demandes qui attendent une réponse -->
+              <!-- Agenda : un dossier n'avance qu'après son rendez-vous -->
               <div
-                v-if="todoQuotes.length > 0"
+                v-if="upcomingMeetings.length > 0"
                 class="mt-6 flex flex-col gap-2"
               >
                 <div class="flex items-center justify-between mb-1">
                   <span
                     class="text-xs font-medium uppercase tracking-wider text-dark/50"
                   >
-                    {{ t("dashboard.section_todo") }}
+                    {{ t("dashboard.section_meetings") }}
                   </span>
                   <span class="text-xs font-medium text-dark/50">
-                    {{ todoQuotes.length }}
+                    {{ upcomingMeetings.length }}
                   </span>
                 </div>
 
                 <button
-                  v-for="item in todoQuotes"
+                  v-for="item in upcomingMeetings"
                   :key="item.id"
-                  class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all bg-cream-dark hover:bg-cream text-dark"
+                  class="flex items-start gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all bg-cream-dark hover:bg-cream text-dark"
                   @click="
                     navigateTo(
                       localePath('/dashboard/quotes/' + item.id)
@@ -122,16 +122,20 @@
                   "
                 >
                   <span
-                    class="w-2 h-2 rounded-full shrink-0 bg-yellow-400"
+                    class="w-2 h-2 rounded-full shrink-0 bg-yellow-400 mt-1.5"
                   ></span>
-                  <span>{{ todoLabel(item) }}</span>
+                  <span class="flex flex-col gap-0.5">
+                    <span class="font-medium">{{ item.name }}</span>
+                    <span class="text-dark/60">
+                      {{ meetingLabel(item) }}
+                    </span>
+                  </span>
                   <IconLucid
                     name="ChevronRight"
                     size="xs"
-                    class="ml-auto shrink-0 opacity-40"
+                    class="ml-auto shrink-0 opacity-40 mt-1"
                   />
                 </button>
-
               </div>
 
               <!-- Alerts -->
@@ -213,7 +217,7 @@ definePageMeta({
   middleware: ['auth-admin'],
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const user = useSupabaseUser();
 const router = useRouter();
@@ -305,50 +309,49 @@ const quoteName = (q: QuoteRequest) =>
 const STALE_MAX_DAYS = 90;
 
 /**
- * Demandes au statut "new" : ce qui attend une réponse.
+ * Rendez-vous à venir.
  *
- * Elles n'apparaissaient nulle part sur cet écran, alors que ce sont les
- * plus actionnables — seul le compteur de la pastille les signalait.
+ * Un dossier ne peut pas avancer avant son rendez-vous : ce bloc est donc
+ * un agenda, pas une file de travail. Le filtre porte sur la date du
+ * rendez-vous plutôt que sur le statut, pour rester juste entre le moment
+ * où un rendez-vous passe et le passage du cron le lendemain matin.
  */
-const todoQuotes = computed(() =>
+const upcomingMeetings = computed(() =>
   quotes.value
-    .filter((q) => q.status === "new")
-    .map((q) => {
-      const meetingIn = q.meeting_date ? daysUntil(q.meeting_date) : null;
-      return {
-        id: q.id,
-        name: quoteName(q),
-        waitingDays: daysSince(q.created_at),
-        // Un RDV au-delà d'un mois n'aide pas à prioriser aujourd'hui.
-        meetingIn:
-          meetingIn !== null && meetingIn >= 0 && meetingIn <= 30
-            ? meetingIn
-            : null,
-      };
-    })
-    .sort((a, b) => {
-      // Un RDV imminent prime ; sinon celle qui attend depuis le plus
-      // longtemps passe devant.
-      if (a.meetingIn !== null && b.meetingIn !== null) {
-        return a.meetingIn - b.meetingIn;
-      }
-      if (a.meetingIn !== null) return -1;
-      if (b.meetingIn !== null) return 1;
-      return b.waitingDays - a.waitingDays;
-    })
+    .filter(
+      (q) =>
+        q.meeting_date &&
+        q.status !== "completed" &&
+        q.status !== "cancelled" &&
+        daysUntil(q.meeting_date) >= 0
+    )
+    .map((q) => ({
+      id: q.id,
+      name: quoteName(q),
+      date: q.meeting_date as string,
+      time: q.meeting_time || null,
+      inDays: daysUntil(q.meeting_date as string),
+    }))
+    .sort((a, b) => a.inDays - b.inDays)
 );
 
-const todoLabel = (t0: (typeof todoQuotes.value)[number]) =>
-  t0.meetingIn !== null
-    ? t("dashboard.todo_with_meeting", {
-        name: t0.name,
-        days: t0.waitingDays,
-        meeting: t0.meetingIn,
-      })
-    : t("dashboard.todo_waiting", {
-        name: t0.name,
-        days: t0.waitingDays,
-      });
+const formatMeetingDate = (iso: string) =>
+  new Date(iso).toLocaleDateString(locale.value, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
+const meetingLabel = (m: (typeof upcomingMeetings.value)[number]) => {
+  const params = {
+    date: formatMeetingDate(m.date),
+    time: m.time || "",
+    days: m.inDays,
+  };
+  if (m.inDays === 0) return t("dashboard.meeting_today", params);
+  if (m.inDays === 1) return t("dashboard.meeting_tomorrow", params);
+  return t("dashboard.meeting_in_days", params);
+};
 
 const alerts = computed(() => {
   const result: {
