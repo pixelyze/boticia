@@ -132,17 +132,13 @@
                   />
                 </button>
 
-                <Button
+                <NuxtLink
                   v-if="todoRemaining > 0"
-                  variant="ghost"
-                  rightIcon="ChevronRight"
-                  class="self-end"
-                  :to="
-                    localePath('/dashboard/quotes') + '?filter=new'
-                  "
+                  :to="localePath('/dashboard/quotes') + '?filter=new'"
+                  class="self-end px-5 py-2.5 rounded-full bg-cream-dark text-sm font-semibold text-dark/60 hover:text-dark/80 transition-all"
                 >
                   {{ t("dashboard.todo_more", { count: todoRemaining }) }}
-                </Button>
+                </NuxtLink>
               </div>
 
               <!-- Alerts -->
