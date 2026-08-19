@@ -135,6 +135,9 @@ const handleMagicLink = async () => {
     const { error: magicError } = await supabase.auth.signInWithOtp({
       email: magicEmail.value,
       options: {
+        // Aucun admin ne s'auto-inscrit : sans ça, toute adresse saisie
+        // ici se voyait créer un compte.
+        shouldCreateUser: false,
         emailRedirectTo: `${window.location.origin}${redirectTo}`,
       },
     });

@@ -278,3 +278,33 @@ export async function sendMagicLinkEmail(
     html,
   });
 }
+
+/**
+ * Send a login link, on demand from the login page.
+ *
+ * Wording stays neutral : this email reaches clients and admins alike,
+ * and may reach someone who did not ask for it.
+ */
+export async function sendLoginLinkEmail(
+  email: string,
+  magicLink: string
+): Promise<boolean> {
+  const html = renderWelcome({
+    logoUrl: LOGO_URL,
+    title: "Votre lien de connexion",
+    greeting: "Bonjour,",
+    message:
+      "Voici votre lien de connexion à votre espace Boticia. " +
+      "Il est personnel et n'est utilisable qu'une seule fois.<br/><br/>" +
+      "Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.",
+    ctaText: "Me connecter",
+    ctaUrl: magicLink,
+    footerText: "Boticia",
+  });
+
+  return sendEmail({
+    to: email,
+    subject: "Votre lien de connexion — Boticia",
+    html,
+  });
+}

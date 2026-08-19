@@ -49,11 +49,11 @@
         <!-- Success -->
         <div v-else class="text-center py-4">
           <div class="text-4xl mb-4">📬</div>
-          <h2 class="font-heading text-2xl text-dark mb-2">Email envoyé !</h2>
+          <h2 class="font-heading text-2xl text-dark mb-2">Vérifiez votre boîte mail</h2>
           <p class="text-gray-500 text-sm mb-6">
-            Un lien de connexion a été envoyé à
-            <span class="font-semibold text-dark">{{ email }}</span>.
-            Vérifiez votre boîte de réception.
+            Si <span class="font-semibold text-dark">{{ email }}</span>
+            correspond à un compte Boticia, vous recevrez un lien de
+            connexion dans quelques instants.
           </p>
           <Button variant="ghost" @click="sent = false">Renvoyer un lien</Button>
         </div>
@@ -90,7 +90,6 @@ definePageMeta({
   ssr: false,
 });
 
-const supabase = useSupabaseClient();
 const route = useRoute();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
@@ -107,29 +106,22 @@ const handleLogin = async () => {
   error.value = "";
 
   try {
-    // La destination demandée (ex : une fiche devis) doit traverser le lien
-    // magique, sinon on retombe sur l'accueil du dashboard après connexion.
-    const target = safeRedirectPath(route.query.redirect);
-    const confirmUrl = `${window.location.origin}/${locale.value}/confirm`;
-    const emailRedirectTo = target
-      ? `${confirmUrl}?redirect=${encodeURIComponent(target)}`
-      : confirmUrl;
-
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-      email: email.value,
-      options: { emailRedirectTo },
+    // L'envoi passe par le serveur : signInWithOtp() créait un compte pour
+    // n'importe quelle adresse saisie ici. La destination demandée (ex : une
+    // fiche devis) est transmise pour traverser le lien magique.
+    await $fetch("/api/auth/request-login", {
+      method: "POST",
+      body: {
+        email: email.value,
+        redirect: safeRedirectPath(route.query.redirect) || undefined,
+        locale: locale.value,
+      },
     });
-
-    if (signInError) {
-      console.error("Supabase OTP error:", signInError);
-      error.value = signInError.message;
-      return;
-    }
 
     sent.value = true;
   } catch (err: any) {
     console.error("Login error:", err);
-    error.value = err.message || "Erreur lors de l'envoi du lien";
+    error.value = "Erreur lors de l'envoi du lien";
   } finally {
     loading.value = false;
   }
