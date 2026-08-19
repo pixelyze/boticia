@@ -132,17 +132,17 @@
                   />
                 </button>
 
-                <button
+                <Button
                   v-if="todoRemaining > 0"
-                  class="text-xs text-dark/50 hover:text-dark text-right pr-1 pt-1 transition-colors"
-                  @click="
-                    navigateTo(
-                      localePath('/dashboard/quotes') + '?filter=new'
-                    )
+                  variant="ghost"
+                  rightIcon="ChevronRight"
+                  class="self-end"
+                  :to="
+                    localePath('/dashboard/quotes') + '?filter=new'
                   "
                 >
                   {{ t("dashboard.todo_more", { count: todoRemaining }) }}
-                </button>
+                </Button>
               </div>
 
               <!-- Alerts -->
