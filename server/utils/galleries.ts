@@ -48,7 +48,9 @@ export async function getGalleryBySlug(
       .select("*")
       .eq("slug", slug)
       .eq("is_published", true)
-      .single();
+      // maybeSingle() : une galerie inexistante ou non publiée est un cas
+      // normal (URL obsolète), pas une erreur à journaliser.
+      .maybeSingle();
 
     if (error) {
       console.error(

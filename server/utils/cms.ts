@@ -598,7 +598,10 @@ export async function getConfigByKey(
       query = query.eq("locale", locale);
     }
 
-    const { data, error } = await query.single();
+    // maybeSingle() : une config absente est un cas normal (upsertConfig
+    // s'en sert pour choisir entre insert et update, et l'endpoint en fait
+    // un 404). single() en faisait une erreur journalisée.
+    const { data, error } = await query.maybeSingle();
 
     if (error) {
       console.error("Error getting config:", error.message);
