@@ -28,18 +28,33 @@ export function toProxyUrl(supabasePublicUrl: string): string {
   return supabasePublicUrl.replace(`${supabaseUrl}/storage/v1`, "/api/storage");
 }
 
+/**
+ * Build a magic link pointing at our own /confirm page.
+ *
+ * We deliberately do NOT return Supabase's `action_link`. That link sends
+ * the tokens back in the URL fragment (implicit grant), but the browser
+ * client comes from @supabase/ssr, which hardcodes `flowType: 'pkce'` —
+ * auth-js then rejects the fragment with "Not a valid PKCE flow url" and
+ * the session is silently dropped.
+ *
+ * Passing `hashed_token` to `verifyOtp()` on the page works whatever the
+ * flow type, and keeps the session in cookies.
+ *
+ * @param redirectTo full URL of the /confirm page handling the token
+ */
 export async function generateMagicLink(email: string, redirectTo?: string): Promise<{ link: string | null; error: string | null }> {
   try {
     const supabase = getSupabase()
 
     await createOrGetAuthUser(email)
 
+    const confirmUrl =
+      redirectTo || `${process.env.NUXT_PUBLIC_SITE_URL}/fr/confirm`
+
     const { data, error } = await supabase.auth.admin.generateLink({
       type: 'magiclink',
       email,
-      options: {
-        redirectTo: redirectTo || process.env.NUXT_PUBLIC_SITE_URL + '/dashboard',
-      },
+      options: { redirectTo: confirmUrl },
     })
 
     if (error) {
@@ -47,7 +62,16 @@ export async function generateMagicLink(email: string, redirectTo?: string): Pro
       return { link: null, error: error.message }
     }
 
-    return { link: data.properties?.action_link || null, error: null }
+    const hashedToken = data.properties?.hashed_token
+    if (!hashedToken) {
+      console.error('Error generating magic link: no hashed_token returned')
+      return { link: null, error: 'No token returned' }
+    }
+
+    const separator = confirmUrl.includes('?') ? '&' : '?'
+    const link = `${confirmUrl}${separator}token_hash=${encodeURIComponent(hashedToken)}&type=magiclink`
+
+    return { link, error: null }
   } catch (err) {
     console.error('Error generateMagicLink:', err)
     return { link: null, error: 'Internal error' }

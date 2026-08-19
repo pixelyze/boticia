@@ -23,7 +23,9 @@ export default defineEventHandler(async (event) => {
   try {
     const siteUrl =
       process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
-    const redirectTo = `${siteUrl}/fr/mon-projet`;
+    // Le jeton doit être consommé par /confirm, qui route ensuite la
+    // cliente vers son espace projet selon son rôle.
+    const redirectTo = `${siteUrl}/fr/confirm`;
 
     const { link, error } = await generateMagicLink(
       email,

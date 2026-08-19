@@ -66,8 +66,40 @@ async function redirectByRole(email: string) {
   }
 }
 
+/**
+ * Consomme le jeton du lien magique.
+ *
+ * Le lien porte un `token_hash` plutôt que les jetons en fragment d'URL :
+ * le client vient de @supabase/ssr, qui impose `flowType: 'pkce'` et fait
+ * rejeter tout callback implicite par auth-js. verifyOtp() fonctionne quel
+ * que soit le flux.
+ */
+async function consumeTokenHash(): Promise<boolean> {
+  const tokenHash = route.query.token_hash;
+  if (typeof tokenHash !== "string" || !tokenHash) return false;
+
+  const type = route.query.type === "recovery" ? "recovery" : "magiclink";
+
+  const { data, error: verifyError } = await supabase.auth.verifyOtp({
+    token_hash: tokenHash,
+    type,
+  });
+
+  if (verifyError || !data.session?.user) {
+    console.error("verifyOtp failed:", verifyError);
+    error.value =
+      "Lien expiré ou invalide. Veuillez en demander un nouveau.";
+    return true;
+  }
+
+  await redirectByRole(data.session.user.email || "");
+  return true;
+}
+
 onMounted(async () => {
   try {
+    if (await consumeTokenHash()) return;
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(

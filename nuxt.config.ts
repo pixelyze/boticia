@@ -169,11 +169,9 @@ export default defineNuxtConfig({
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     },
-    clientOptions: {
-      auth: {
-        flowType: "implicit",
-      },
-    },
+    // Pas de clientOptions.auth.flowType ici : @supabase/ssr force "pkce"
+    // dans createBrowserClient, la valeur était donc sans effet. Les liens
+    // magiques passent par verifyOtp(), insensible au flux.
   },
 
   // Runtime config for environment variables
