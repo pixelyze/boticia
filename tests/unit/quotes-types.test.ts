@@ -15,16 +15,17 @@ describe("quotes-types", () => {
   });
 
   it("QuoteRequestStatus couvre tous les statuts du pipeline", () => {
+    // L'envoi du moodboard n'est plus une étape : il est porté par
+    // moodboard_sent_at sur le dossier.
     const statuses: QuoteRequestStatus[] = [
       "new",
       "contacted",
-      "moodboard_sent",
       "quote_sent",
       "signed",
       "completed",
       "cancelled",
     ];
-    expect(statuses).toHaveLength(7);
+    expect(statuses).toHaveLength(6);
   });
 
   it("BudgetRange couvre les tranches definies", () => {

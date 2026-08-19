@@ -8,10 +8,14 @@
 
 export type ServiceType = "mariage" | "evenement" | "atelier";
 
+/**
+ * L'envoi du moodboard n'est pas une étape : c'est un fait porté par
+ * `moodboard_sent_at`. Un dossier reste "contacted" que le moodboard soit
+ * parti ou non, ce qui permet de distinguer les deux d'un coup d'œil.
+ */
 export type QuoteRequestStatus =
   | "new"
   | "contacted"
-  | "moodboard_sent"
   | "quote_sent"
   | "signed"
   | "completed"
@@ -92,6 +96,8 @@ export interface QuoteRequest {
   admin_notes?: string;
   portal_enabled: boolean;
   moodboard_note?: string;
+  /** Date d'envoi du moodboard. Absent = pas encore envoyé. */
+  moodboard_sent_at?: string | null;
   locale: string;
   kanban_position: number;
   created_at: string;
@@ -121,6 +127,7 @@ export interface UpdateQuoteRequestInput {
   admin_notes?: string;
   portal_enabled?: boolean;
   moodboard_note?: string;
+  moodboard_sent_at?: string | null;
   meeting_date?: string;
   meeting_time?: string;
   kanban_position?: number;

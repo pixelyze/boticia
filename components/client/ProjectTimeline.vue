@@ -28,7 +28,6 @@ const props = defineProps<{
 const STATUS_ORDER: QuoteRequestStatus[] = [
   "new",
   "contacted",
-  "moodboard_sent",
   "quote_sent",
   "signed",
   "completed",

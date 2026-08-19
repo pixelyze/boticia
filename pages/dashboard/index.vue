@@ -274,7 +274,6 @@ onMounted(() => {
 const pipelineStatuses = [
   { status: "new", labelKey: "dashboard.quotes_filter_new", dotColor: "bg-yellow-400" },
   { status: "contacted", labelKey: "dashboard.quotes_filter_contacted", dotColor: "bg-purple-400" },
-  { status: "moodboard_sent", labelKey: "dashboard.quotes_filter_moodboard_sent", dotColor: "bg-blue-400" },
   { status: "quote_sent", labelKey: "dashboard.quotes_filter_quote_sent", dotColor: "bg-orange-400" },
   { status: "signed", labelKey: "dashboard.quotes_filter_signed", dotColor: "bg-green-400" },
   { status: "completed", labelKey: "dashboard.quotes_filter_completed", dotColor: "bg-green-600" },

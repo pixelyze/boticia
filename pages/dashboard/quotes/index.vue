@@ -131,9 +131,18 @@
               @click="navigateTo(localePath('/dashboard/quotes/' + quote.id))"
             >
               <div class="flex items-start justify-between mb-3">
-                <Tag :variant="statusVariant(quote.status)">
-                  {{ t(`dashboard.quote_status_${quote.status}`) }}
-                </Tag>
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <Tag :variant="statusVariant(quote.status)">
+                    {{ t(`dashboard.quote_status_${quote.status}`) }}
+                  </Tag>
+                  <Tag
+                    v-if="quote.moodboard_sent_at"
+                    variant="info"
+                    icon="Palette"
+                  >
+                    {{ t("dashboard.moodboard_sent") }}
+                  </Tag>
+                </div>
                 <IconLucid
                   name="ArrowRight"
                   size="sm"
@@ -255,10 +264,19 @@
                     <!-- Alert badges -->
                     <div
                       v-if="
-                        isStale(quote) || isUrgent(quote)
+                        isStale(quote) ||
+                        isUrgent(quote) ||
+                        quote.moodboard_sent_at
                       "
                       class="flex flex-wrap gap-1.5 mt-2"
                     >
+                      <Tag
+                        v-if="quote.moodboard_sent_at"
+                        variant="info"
+                        icon="Palette"
+                      >
+                        {{ t("dashboard.moodboard_sent") }}
+                      </Tag>
                       <Tag
                         v-if="isStale(quote)"
                         variant="error"
@@ -430,10 +448,6 @@ const statusFilters = computed(() => [
     value: "contacted",
   },
   {
-    label: t("dashboard.quotes_filter_moodboard_sent"),
-    value: "moodboard_sent",
-  },
-  {
     label: t("dashboard.quotes_filter_quote_sent"),
     value: "quote_sent",
   },
@@ -459,7 +473,6 @@ const filteredQuotes = computed(() => {
 const KANBAN_STATUSES: QuoteRequestStatus[] = [
   "new",
   "contacted",
-  "moodboard_sent",
   "quote_sent",
   "signed",
   "completed",
@@ -484,7 +497,6 @@ const statusVariant = (
   const map: Record<QuoteRequestStatus, string> = {
     new: "warning",
     contacted: "info",
-    moodboard_sent: "info",
     quote_sent: "selection",
     signed: "success",
     completed: "completed",

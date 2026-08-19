@@ -176,7 +176,6 @@ useHead({
 const statuses = computed(() => [
   { key: "new", dot: "bg-yellow-400", label: t("guide.status_new"), desc: t("guide.status_new_desc"), email: true },
   { key: "contacted", dot: "bg-blue-400", label: t("guide.status_contacted"), desc: t("guide.status_contacted_desc"), email: false },
-  { key: "moodboard_sent", dot: "bg-fuchsia-400", label: t("guide.status_moodboard"), desc: t("guide.status_moodboard_desc"), email: true },
   { key: "quote_sent", dot: "bg-orange-400", label: t("guide.status_quote"), desc: t("guide.status_quote_desc"), email: true },
   { key: "signed", dot: "bg-green-400", label: t("guide.status_signed"), desc: t("guide.status_signed_desc"), email: false },
   { key: "completed", dot: "bg-green-600", label: t("guide.status_completed"), desc: t("guide.status_completed_desc"), email: false },

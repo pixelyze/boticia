@@ -381,17 +381,17 @@
                   @click="handleSendMoodboard"
                   :disabled="moodboardItems.length === 0 || sendingMoodboard"
                   class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40"
-                  :class="quote.status === 'moodboard_sent' && moodboardItems.length > 0
+                  :class="quote.moodboard_sent_at && moodboardItems.length > 0
                     ? 'bg-green-50 text-green-600 border-2 border-green-200'
                     : 'bg-dark text-cream hover:bg-dark/80'"
                 >
                   <IconLucid
-                    :name="quote.status === 'moodboard_sent' && moodboardItems.length > 0 ? 'Check' : sendingMoodboard ? 'Loader2' : 'Send'"
+                    :name="quote.moodboard_sent_at && moodboardItems.length > 0 ? 'Check' : sendingMoodboard ? 'Loader2' : 'Send'"
                     size="xs"
                     :class="sendingMoodboard ? 'animate-spin' : ''"
                   />
                   {{
-                    quote.status === 'moodboard_sent' && moodboardItems.length > 0
+                    quote.moodboard_sent_at && moodboardItems.length > 0
                       ? $t("dashboard.moodboard_sent")
                       : $t("dashboard.moodboard_send")
                   }}
@@ -960,7 +960,6 @@ const statusDotColor = (status: string) => {
   const map: Record<string, string> = {
     new: "bg-yellow-500",
     contacted: "bg-blue-500",
-    moodboard_sent: "bg-fuchsia-500",
     quote_sent: "bg-gray-500",
     signed: "bg-green-500",
     completed: "bg-green-700",
@@ -1056,6 +1055,20 @@ const copilotInsight = computed(() => {
         ],
       };
     }
+    // Le moodboard n'étant plus une étape, c'est sa date d'envoi qui
+    // détermine la prochaine action une fois le rendez-vous passé.
+    if (q.moodboard_sent_at) {
+      return {
+        message: t("dashboard.copilot_moodboard_sent", g),
+        actions: [
+          {
+            label: t("dashboard.copilot_action_proposal"),
+            section: "project",
+            icon: "FileText",
+          },
+        ],
+      };
+    }
     return {
       message: t("dashboard.copilot_contacted_meeting_past", g),
       actions: [
@@ -1063,19 +1076,6 @@ const copilotInsight = computed(() => {
           label: t("dashboard.copilot_action_status"),
           section: "project",
           icon: "Flag",
-        },
-      ],
-    };
-  }
-
-  if (s === "moodboard_sent") {
-    return {
-      message: t("dashboard.copilot_moodboard_sent", g),
-      actions: [
-        {
-          label: t("dashboard.copilot_action_proposal"),
-          section: "project",
-          icon: "FileText",
         },
       ],
     };
@@ -1198,7 +1198,6 @@ const statusIcon = (status: string) => {
   const map: Record<string, string> = {
     new: "Sparkles",
     contacted: "Phone",
-    moodboard_sent: "Palette",
     quote_sent: "Send",
     signed: "BadgeCheck",
     completed: "CheckCircle",
@@ -1211,7 +1210,6 @@ const statusIconBg = (status: string) => {
   const map: Record<string, string> = {
     new: "bg-yellow-500",
     contacted: "bg-blue-500",
-    moodboard_sent: "bg-fuchsia-500",
     quote_sent: "bg-gray-500",
     signed: "bg-green-500",
     completed: "bg-green-700",
@@ -1232,10 +1230,6 @@ const statusOptions = computed(() => [
   {
     label: t("dashboard.quote_status_contacted"),
     value: "contacted",
-  },
-  {
-    label: t("dashboard.quote_status_moodboard_sent"),
-    value: "moodboard_sent",
   },
   {
     label: t("dashboard.quote_status_quote_sent"),
@@ -1404,11 +1398,14 @@ const handleSendMoodboard = async () => {
   if (!quote.value || moodboardItems.value.length === 0) return;
   sendingMoodboard.value = true;
   try {
+    // Le statut ne bouge plus : on horodate l'envoi, ce qui déclenche
+    // l'email côté serveur.
+    const sentAt = new Date().toISOString();
     await adminFetch(`/api/quotes/${quoteId}`, {
       method: "PATCH",
-      body: { status: "moodboard_sent" },
+      body: { moodboard_sent_at: sentAt },
     });
-    quote.value.status = "moodboard_sent" as any;
+    quote.value.moodboard_sent_at = sentAt;
     fetchActivityLog();
   } catch (err) {
     console.error("Error sending moodboard:", err);
@@ -1663,13 +1660,14 @@ const handleMoodboardUpload = async (rawFile: File) => {
     });
     if (res.data) {
       moodboardItems.value.push(res.data);
-      // Reset status if moodboard was already sent (content changed)
-      if (quote.value?.status === "moodboard_sent") {
+      // Le contenu a changé depuis l'envoi : on efface la date pour
+      // signaler qu'il faut renvoyer le moodboard.
+      if (quote.value?.moodboard_sent_at) {
         await adminFetch(`/api/quotes/${quoteId}`, {
           method: "PATCH",
-          body: { status: "contacted" },
+          body: { moodboard_sent_at: null },
         });
-        quote.value.status = "contacted" as any;
+        quote.value.moodboard_sent_at = null;
       }
     }
   } catch (err) {
@@ -1713,16 +1711,16 @@ const handleMoodboardDelete = async (id: string) => {
     moodboardItems.value = moodboardItems.value.filter(
       (i) => i.id !== id
     );
-    // Reset status if moodboard was already sent
+    // Plus aucune image : le moodboard envoyé n'a plus d'objet.
     if (
-      quote.value?.status === "moodboard_sent" &&
+      quote.value?.moodboard_sent_at &&
       moodboardItems.value.length === 0
     ) {
       await adminFetch(`/api/quotes/${quoteId}`, {
         method: "PATCH",
-        body: { status: "contacted" },
+        body: { moodboard_sent_at: null },
       });
-      quote.value.status = "contacted" as any;
+      quote.value.moodboard_sent_at = null;
     }
     fetchActivityLog();
   } catch (err) {

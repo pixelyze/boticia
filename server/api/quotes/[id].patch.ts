@@ -48,6 +48,12 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    const coupleName = existing.partner2_name
+      ? `${existing.partner1_name} & ${existing.partner2_name}`
+      : existing.partner1_name;
+    const locale = existing.locale || "fr";
+    const portalBase = `${process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001"}/${locale}/mon-projet`;
+
     // Log activity for status changes
     if (body.status && body.status !== existing.status) {
       await addQuoteActivity(id, "status_changed", {
@@ -55,31 +61,34 @@ export default defineEventHandler(async (event) => {
         to: body.status,
       });
 
-      // Send email notifications on specific status changes
-      const coupleName = existing.partner2_name
-        ? `${existing.partner1_name} & ${existing.partner2_name}`
-        : existing.partner1_name;
-      const locale = existing.locale || "fr";
-      const portalBase = `${process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001"}/${locale}/mon-projet`;
+      if (body.status === "quote_sent") {
+        // await obligatoire : Vercel interrompt la fonction dès la réponse
+        // envoyée, une promesse non attendue ne partirait jamais.
+        try {
+          await sendProposalNotification(
+            existing.email,
+            coupleName,
+            `${portalBase}/proposition`
+          );
+        } catch (err) {
+          console.error("Error sending proposal email:", err);
+        }
+      }
+    }
 
-      if (body.status === "moodboard_sent") {
-        sendMoodboardNotification(
+    // L'envoi du moodboard n'est plus un changement de statut : il se
+    // déclenche au passage de moodboard_sent_at de vide à renseigné.
+    if (body.moodboard_sent_at && !existing.moodboard_sent_at) {
+      await addQuoteActivity(id, "moodboard_sent", {});
+
+      try {
+        await sendMoodboardNotification(
           existing.email,
           coupleName,
           `${portalBase}/moodboard`
-        ).catch((err) =>
-          console.error("Error sending moodboard email:", err)
         );
-      }
-
-      if (body.status === "quote_sent") {
-        sendProposalNotification(
-          existing.email,
-          coupleName,
-          `${portalBase}/proposition`
-        ).catch((err) =>
-          console.error("Error sending proposal email:", err)
-        );
+      } catch (err) {
+        console.error("Error sending moodboard email:", err);
       }
     }
 
