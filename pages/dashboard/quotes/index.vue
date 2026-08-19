@@ -165,7 +165,10 @@
                   v-if="quote.wedding_date"
                   class="flex items-center gap-1"
                 >
-                  <IconLucid name="Calendar" size="xs" />
+                  <IconLucid
+                    :name="serviceIcon(quote.service_type)"
+                    size="xs"
+                  />
                   {{ formatDate(quote.wedding_date) }}
                 </span>
                 <span
@@ -313,7 +316,7 @@
                         class="flex items-center gap-1"
                       >
                         <IconLucid
-                          name="Calendar"
+                          :name="serviceIcon(quote.service_type)"
                           size="xs"
                         />
                         {{
@@ -491,6 +494,18 @@ const kanbanColumns = computed(() =>
 );
 
 // Status tag variant mapping
+// L'icône devant la date porte le type de prestation : la date parle
+// d'elle-même, un calendrier n'ajoutait rien. C'est la seule indication
+// du type sur la carte.
+const serviceIcon = (serviceType?: string) => {
+  const map: Record<string, string> = {
+    mariage: "Heart",
+    evenement: "PartyPopper",
+    atelier: "Flower2",
+  };
+  return map[serviceType || ""] || "Calendar";
+};
+
 const statusVariant = (
   status: QuoteRequestStatus
 ): "default" | "success" | "warning" | "info" | "completed" => {
