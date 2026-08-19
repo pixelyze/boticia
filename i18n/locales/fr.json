@@ -734,7 +734,15 @@
     "philosophy_photo_1_desc": "Image principale (en haut à gauche).",
     "philosophy_photo_2_desc": "Image secondaire (en bas à droite).",
     "philosophy_photo_upload": "Changer la photo",
-    "philosophy_photo_success": "Photo mise à jour !"
+    "philosophy_photo_success": "Photo mise à jour !",
+    "moodboard_resend": "Renvoyer le moodboard",
+    "proposal_resend": "Renvoyer le devis",
+    "file_sent_on": "Envoyé le {date}",
+    "file_viewed_on": "Consulté le {date}",
+    "file_accepted_on": "Accepté le {date}",
+    "file_revision_on": "Révision demandée le {date}",
+    "file_awaiting": "En attente de consultation",
+    "file_draft": "Brouillon"
   },
   "client": {
     "page_title": "Mon projet",

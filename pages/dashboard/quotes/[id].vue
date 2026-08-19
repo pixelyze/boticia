@@ -349,9 +349,14 @@
                   <div
                     v-for="item in moodboardItems"
                     :key="item.id"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-cream/50"
+                    class="flex items-start gap-2.5 px-3 py-2 rounded-lg border"
+                    :class="
+                      quote.moodboard_sent_at
+                        ? 'bg-green-50 border-green-200'
+                        : 'bg-cream/50 border-transparent'
+                    "
                   >
-                    <div class="w-6 h-6 rounded-md overflow-hidden bg-cream shrink-0">
+                    <div class="w-6 h-6 rounded-md overflow-hidden bg-cream shrink-0 mt-0.5">
                       <img
                         v-if="item.type === 'image'"
                         :src="item.public_url"
@@ -362,12 +367,24 @@
                         <IconLucid name="FileText" size="xs" class="text-gray-500" />
                       </div>
                     </div>
-                    <span class="text-sm text-dark/80 truncate flex-1">
-                      {{ item.original_filename }}
+                    <span class="flex-1 min-w-0">
+                      <span class="text-sm text-dark/80 truncate block">
+                        {{ item.original_filename }}
+                      </span>
+                      <span
+                        v-if="quote.moodboard_sent_at"
+                        class="text-xs text-green-700 block"
+                      >
+                        {{
+                          $t("dashboard.file_sent_on", {
+                            date: formatDate(quote.moodboard_sent_at),
+                          })
+                        }}
+                      </span>
                     </span>
                     <button
                       @click="handleMoodboardDelete(item.id)"
-                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0"
+                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0 mt-0.5"
                     >
                       <IconLucid name="X" size="xs" />
                     </button>
@@ -380,19 +397,16 @@
                 <button
                   @click="handleSendMoodboard"
                   :disabled="moodboardItems.length === 0 || sendingMoodboard"
-                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40"
-                  :class="quote.moodboard_sent_at && moodboardItems.length > 0
-                    ? 'bg-green-50 text-green-600 border-2 border-green-200'
-                    : 'bg-dark text-cream hover:bg-dark/80'"
+                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
                 >
                   <IconLucid
-                    :name="quote.moodboard_sent_at && moodboardItems.length > 0 ? 'Check' : sendingMoodboard ? 'Loader2' : 'Send'"
+                    :name="sendingMoodboard ? 'Loader2' : 'Send'"
                     size="xs"
                     :class="sendingMoodboard ? 'animate-spin' : ''"
                   />
                   {{
-                    quote.moodboard_sent_at && moodboardItems.length > 0
-                      ? $t("dashboard.moodboard_sent")
+                    quote.moodboard_sent_at
+                      ? $t("dashboard.moodboard_resend")
                       : $t("dashboard.moodboard_send")
                   }}
                 </button>
@@ -429,17 +443,34 @@
                   <div
                     v-for="prop in proposals"
                     :key="prop.id"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-cream/50"
+                    class="flex items-start gap-2.5 px-3 py-2 rounded-lg border"
+                    :class="
+                      proposalState(prop).green
+                        ? 'bg-green-50 border-green-200'
+                        : 'bg-cream/50 border-transparent'
+                    "
                   >
-                    <div class="w-6 h-6 rounded-md bg-cream flex items-center justify-center shrink-0">
+                    <div class="w-6 h-6 rounded-md bg-cream flex items-center justify-center shrink-0 mt-0.5">
                       <IconLucid name="FileText" size="xs" class="text-gray-500" />
                     </div>
-                    <span class="text-sm text-dark/80 truncate flex-1">
-                      {{ prop.original_filename || prop.title }}
+                    <span class="flex-1 min-w-0">
+                      <span class="text-sm text-dark/80 truncate block">
+                        {{ prop.original_filename || prop.title }}
+                      </span>
+                      <span
+                        class="text-xs block"
+                        :class="
+                          proposalState(prop).green
+                            ? 'text-green-700'
+                            : 'text-dark/40'
+                        "
+                      >
+                        {{ proposalState(prop).label }}
+                      </span>
                     </span>
                     <button
                       @click="handleDeleteProposal(prop.id)"
-                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0"
+                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0 mt-0.5"
                     >
                       <IconLucid name="X" size="xs" />
                     </button>
@@ -452,19 +483,16 @@
                 <button
                   @click="handleSendProposal"
                   :disabled="proposals.length === 0 || sendingProposal"
-                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40"
-                  :class="quote.status === 'quote_sent'
-                    ? 'bg-green-50 text-green-600 border-2 border-green-200'
-                    : 'bg-dark text-cream hover:bg-dark/80'"
+                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
                 >
                   <IconLucid
-                    :name="quote.status === 'quote_sent' ? 'Check' : sendingProposal ? 'Loader2' : 'Send'"
+                    :name="sendingProposal ? 'Loader2' : 'Send'"
                     size="xs"
                     :class="sendingProposal ? 'animate-spin' : ''"
                   />
                   {{
                     quote.status === 'quote_sent'
-                      ? $t("dashboard.proposal_sent")
+                      ? $t("dashboard.proposal_resend")
                       : $t("dashboard.proposal_send")
                   }}
                 </button>
@@ -1240,6 +1268,44 @@ const selectStatus = (value: string) => {
   quote.value.status = value as QuoteRequestStatus;
   onStatusChange(value);
   statusModalOpen.value = false;
+};
+
+/**
+ * État d'un devis, tel que la cliente l'a laissé.
+ *
+ * Le vert est réservé à l'acceptation : c'est le seul état qui mérite
+ * d'attirer l'œil. Attention, le portail ne marque comme consulté que le
+ * devis le plus récent — un devis antérieur reste donc "pending" même
+ * s'il a bien été transmis, d'où le libellé neutre.
+ */
+const proposalState = (p: {
+  status?: string;
+  viewed_at?: string;
+  responded_at?: string;
+}) => {
+  const on = (d?: string) => (d ? formatDate(d) : "");
+  if (p.status === "accepted") {
+    return {
+      green: true,
+      label: t("dashboard.file_accepted_on", { date: on(p.responded_at) }),
+    };
+  }
+  if (p.status === "revision_requested") {
+    return {
+      green: false,
+      label: t("dashboard.file_revision_on", { date: on(p.responded_at) }),
+    };
+  }
+  if (p.status === "viewed") {
+    return {
+      green: false,
+      label: t("dashboard.file_viewed_on", { date: on(p.viewed_at) }),
+    };
+  }
+  if (p.status === "draft") {
+    return { green: false, label: t("dashboard.file_draft") };
+  }
+  return { green: false, label: t("dashboard.file_awaiting") };
 };
 
 // Le pipeline ne se remonte pas : un dossier dont le devis est parti ne

@@ -734,7 +734,15 @@
     "philosophy_photo_1_desc": "Main image (top left).",
     "philosophy_photo_2_desc": "Secondary image (bottom right).",
     "philosophy_photo_upload": "Change photo",
-    "philosophy_photo_success": "Photo updated!"
+    "philosophy_photo_success": "Photo updated!",
+    "moodboard_resend": "Resend moodboard",
+    "proposal_resend": "Resend quote",
+    "file_sent_on": "Sent on {date}",
+    "file_viewed_on": "Viewed on {date}",
+    "file_accepted_on": "Accepted on {date}",
+    "file_revision_on": "Revision requested on {date}",
+    "file_awaiting": "Not viewed yet",
+    "file_draft": "Draft"
   },
   "client": {
     "page_title": "My project",

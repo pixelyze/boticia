@@ -734,7 +734,15 @@
     "philosophy_photo_1_desc": "メイン画像（左上）。",
     "philosophy_photo_2_desc": "サブ画像（右下）。",
     "philosophy_photo_upload": "写真を変更",
-    "philosophy_photo_success": "写真を更新しました！"
+    "philosophy_photo_success": "写真を更新しました！",
+    "moodboard_resend": "ムードボードを再送",
+    "proposal_resend": "見積もりを再送",
+    "file_sent_on": "{date} に送信",
+    "file_viewed_on": "{date} に閲覧",
+    "file_accepted_on": "{date} に承認",
+    "file_revision_on": "{date} に修正依頼",
+    "file_awaiting": "未閲覧",
+    "file_draft": "下書き"
   },
   "client": {
     "page_title": "マイプロジェクト",
