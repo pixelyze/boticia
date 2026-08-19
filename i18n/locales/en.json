@@ -742,7 +742,7 @@
     "file_awaiting": "Not viewed yet",
     "file_draft": "Draft",
     "alert_awaiting_reply": "{name} · wedding in {days} d, quote unanswered",
-    "alert_quote_not_sent": "{name} · quote uploaded but never sent to the client"
+    "alert_quote_not_sent": "{name} · you uploaded the quote but never clicked “Send quote” — the client received nothing"
   },
   "client": {
     "page_title": "My project",

@@ -151,7 +151,7 @@
                 <button
                   v-for="alert in alerts"
                   :key="alert.id"
-                  class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all bg-red-50 text-red-700 hover:bg-red-100"
+                  class="flex items-start gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all bg-red-50 text-red-700 hover:bg-red-100"
                   @click="
                     navigateTo(
                       localePath('/dashboard/quotes/' + alert.id)
@@ -161,13 +161,13 @@
                   <IconLucid
                     name="AlertTriangle"
                     size="sm"
-                    class="shrink-0"
+                    class="shrink-0 mt-0.5"
                   />
-                  <span>{{ alert.message }}</span>
+                  <span class="flex-1 min-w-0">{{ alert.message }}</span>
                   <IconLucid
                     name="ChevronRight"
                     size="xs"
-                    class="ml-auto shrink-0 opacity-40"
+                    class="shrink-0 opacity-40 mt-1"
                   />
                 </button>
               </div>

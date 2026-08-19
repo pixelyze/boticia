@@ -742,7 +742,7 @@
     "file_awaiting": "En attente de consultation",
     "file_draft": "Brouillon",
     "alert_awaiting_reply": "{name} · mariage dans {days} j, devis sans réponse",
-    "alert_quote_not_sent": "{name} · devis déposé mais jamais envoyé à la cliente"
+    "alert_quote_not_sent": "{name} · vous avez déposé le devis mais vous n'avez pas cliqué sur « Envoyer le devis » — la cliente n'a rien reçu"
   },
   "client": {
     "page_title": "Mon projet",
