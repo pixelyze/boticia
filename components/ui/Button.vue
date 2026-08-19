@@ -60,6 +60,7 @@
   <!-- Standard button -->
   <button
     v-else
+    :type="type"
     :disabled="disabled || loading"
     :class="buttonClasses"
     @click="handleClick"
@@ -101,6 +102,10 @@ interface Props {
   href?: string;
   target?: string;
   rel?: string;
+  // Déclaré explicitement : en simple attribut hérité, il n'était pas rendu
+  // côté serveur et provoquait un écart d'hydratation. Sans valeur par
+  // défaut, l'attribut reste omis et le défaut natif du navigateur joue.
+  type?: "button" | "submit" | "reset";
 }
 
 const props = withDefaults(defineProps<Props>(), {

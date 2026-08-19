@@ -61,7 +61,8 @@ const emit = defineEmits<{
   'blur': [event: FocusEvent];
 }>();
 
-const dateId = computed(() => `date-${Math.random().toString(36).substr(2, 9)}`);
+// useId() : identique côté serveur et client, contrairement à Math.random()
+const dateId = useId();
 
 const inputClasses = computed(() => {
   const base = 'w-full h-12 pl-4 pr-10 py-3 border-2 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px] transition-all';

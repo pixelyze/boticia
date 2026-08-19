@@ -57,8 +57,10 @@ const emit = defineEmits<{
   'blur': [event: FocusEvent];
 }>();
 
-// Générer un ID unique pour le label/input
-const inputId = computed(() => `input-${Math.random().toString(36).substr(2, 9)}`);
+// ID unique pour le lien label/input. useId() donne la même valeur au
+// rendu serveur et au rendu client ; Math.random() en donnait deux
+// différentes, ce qui cassait l'association <label for> à l'hydratation.
+const inputId = useId();
 
 // Classes du design system (copiées de espace/index.vue)
 const inputClasses = computed(() => {
