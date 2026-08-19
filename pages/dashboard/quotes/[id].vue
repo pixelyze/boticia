@@ -451,7 +451,7 @@
                 <!-- Send proposal button -->
                 <button
                   @click="handleSendProposal"
-                  :disabled="proposals.length === 0 || sendingProposal || quote.status === 'quote_sent'"
+                  :disabled="proposals.length === 0 || sendingProposal"
                   class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40"
                   :class="quote.status === 'quote_sent'
                     ? 'bg-green-50 text-green-600 border-2 border-green-200'
@@ -759,11 +759,14 @@
         <button
           v-for="opt in statusOptions"
           :key="opt.value"
-          class="flex items-center gap-4 w-full px-4 py-3.5 rounded-2xl border-2 transition-all text-left"
+          class="flex items-center gap-4 w-full px-4 py-3.5 rounded-2xl border-2 transition-all text-left disabled:opacity-40 disabled:cursor-not-allowed"
+          :disabled="isStatusDisabled(opt.value)"
           :class="
             quote?.status === opt.value
               ? 'bg-dark text-cream border-dark'
-              : 'bg-white border-dark/10 hover:border-dark/30'
+              : isStatusDisabled(opt.value)
+                ? 'bg-white border-dark/10'
+                : 'bg-white border-dark/10 hover:border-dark/30'
           "
           @click="selectStatus(opt.value)"
         >
@@ -1237,6 +1240,28 @@ const selectStatus = (value: string) => {
   quote.value.status = value as QuoteRequestStatus;
   onStatusChange(value);
   statusModalOpen.value = false;
+};
+
+// Le pipeline ne se remonte pas : un dossier dont le devis est parti ne
+// peut pas redevenir "nouvelle demande". "Annulé" reste toujours
+// accessible, dans les deux sens.
+const PIPELINE_ORDER = [
+  "new",
+  "contacted",
+  "quote_sent",
+  "signed",
+  "completed",
+];
+
+const isStatusDisabled = (value: string) => {
+  const current = quote.value?.status;
+  if (!current || current === "cancelled" || value === "cancelled") {
+    return false;
+  }
+  const from = PIPELINE_ORDER.indexOf(current);
+  const to = PIPELINE_ORDER.indexOf(value);
+  if (from === -1 || to === -1) return false;
+  return to < from;
 };
 
 const statusOptions = computed(() => [
