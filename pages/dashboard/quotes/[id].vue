@@ -1149,6 +1149,13 @@ const copilotInsight = computed(() => {
     };
   }
 
+  if (s === "cancelled") {
+    return {
+      message: t("dashboard.copilot_cancelled", g),
+      actions: [],
+    };
+  }
+
   return { message: "", actions: [] };
 });
 
@@ -1177,8 +1184,15 @@ let typingInterval: ReturnType<typeof setInterval> | null = null;
 watch(
   () => copilotInsight.value.message,
   (fullText) => {
-    if (!fullText) return;
     if (typingInterval) clearInterval(typingInterval);
+    // Sans texte, la frappe ne démarre jamais : il faut quand même sortir
+    // de l'état "en cours", sinon les boutons restés conditionnés à
+    // !isTyping ne s'affichent plus et la page paraît vide.
+    if (!fullText) {
+      displayedText.value = "";
+      isTyping.value = false;
+      return;
+    }
     displayedText.value = "";
     isTyping.value = true;
     let i = 0;

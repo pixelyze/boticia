@@ -667,6 +667,7 @@
     "copilot_signed_no_moodboard": "{greeting} {name}! {couple}'s client portal is active. Start building their moodboard.",
     "copilot_signed_no_proposal": "{greeting} {name}! Consider creating a detailed proposal for {couple}'s floral project.",
     "copilot_completed": "{greeting} {name}! {couple}'s project is complete. Congratulations!",
+    "copilot_cancelled": "{greeting} {name}. {couple}'s project was cancelled. The file stays available if you need it.",
     "copilot_action_contact": "Contact",
     "copilot_action_schedule": "Schedule meeting",
     "copilot_action_moodboard": "Moodboard",

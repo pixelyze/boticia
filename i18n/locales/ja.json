@@ -667,6 +667,7 @@
     "copilot_signed_no_moodboard": "{greeting} {name}！{couple} のポータルが有効です。ムードボードを作成しましょう。",
     "copilot_signed_no_proposal": "{greeting} {name}！{couple} のフラワープロジェクトに詳細な提案を作成しましょう。",
     "copilot_completed": "{greeting} {name}！{couple} のプロジェクトが完了しました。おめでとうございます！",
+    "copilot_cancelled": "{greeting} {name}。{couple} のプロジェクトはキャンセルされました。必要な場合はいつでも確認できます。",
     "copilot_action_contact": "連絡する",
     "copilot_action_schedule": "打ち合わせ予約",
     "copilot_action_moodboard": "ムードボード",

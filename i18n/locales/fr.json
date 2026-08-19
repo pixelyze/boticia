@@ -667,6 +667,7 @@
     "copilot_signed_no_moodboard": "{greeting} {name} ! L'espace client de {couple} est actif. Commencez à construire leur moodboard.",
     "copilot_signed_no_proposal": "{greeting} {name} ! Pensez à créer une proposition détaillée pour le projet floral de {couple}.",
     "copilot_completed": "{greeting} {name} ! Le projet de {couple} est terminé. Félicitations !",
+    "copilot_cancelled": "{greeting} {name}. Le projet de {couple} a été annulé. Le dossier reste consultable si vous en avez besoin.",
     "copilot_action_contact": "Contacter",
     "copilot_action_schedule": "Planifier RDV",
     "copilot_action_moodboard": "Moodboard",
