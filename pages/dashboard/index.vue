@@ -95,11 +95,66 @@
                 </button>
               </div>
 
+              <!-- À traiter : les demandes qui attendent une réponse -->
+              <div
+                v-if="todoVisible.length > 0"
+                class="mt-6 flex flex-col gap-2"
+              >
+                <div class="flex items-center justify-between mb-1">
+                  <span
+                    class="text-xs font-medium uppercase tracking-wider text-dark/50"
+                  >
+                    {{ t("dashboard.section_todo") }}
+                  </span>
+                  <span class="text-xs font-medium text-dark/50">
+                    {{ todoQuotes.length }}
+                  </span>
+                </div>
+
+                <button
+                  v-for="item in todoVisible"
+                  :key="item.id"
+                  class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all bg-cream-dark hover:bg-cream text-dark"
+                  @click="
+                    navigateTo(
+                      localePath('/dashboard/quotes/' + item.id)
+                    )
+                  "
+                >
+                  <span
+                    class="w-2 h-2 rounded-full shrink-0 bg-yellow-400"
+                  ></span>
+                  <span>{{ todoLabel(item) }}</span>
+                  <IconLucid
+                    name="ChevronRight"
+                    size="xs"
+                    class="ml-auto shrink-0 opacity-40"
+                  />
+                </button>
+
+                <button
+                  v-if="todoRemaining > 0"
+                  class="text-xs text-dark/50 hover:text-dark text-right pr-1 pt-1 transition-colors"
+                  @click="
+                    navigateTo(
+                      localePath('/dashboard/quotes') + '?filter=new'
+                    )
+                  "
+                >
+                  {{ t("dashboard.todo_more", { count: todoRemaining }) }}
+                </button>
+              </div>
+
               <!-- Alerts -->
               <div
                 v-if="alerts.length > 0"
-                class="mt-5 flex flex-col gap-2"
+                class="mt-6 flex flex-col gap-2"
               >
+                <span
+                  class="text-xs font-medium uppercase tracking-wider text-dark/50 mb-1"
+                >
+                  {{ t("dashboard.section_alerts") }}
+                </span>
                 <button
                   v-for="alert in alerts"
                   :key="alert.id"
@@ -256,22 +311,86 @@ const quoteName = (q: QuoteRequest) =>
     ? `${q.partner1_name} & ${q.partner2_name}`
     : q.partner1_name;
 
+const TODO_LIMIT = 3;
+
+// Au-delà de 90 jours sans réponse, l'affaire est probablement close :
+// la relance n'apporte plus rien et occupe une place dans la liste.
+const STALE_MAX_DAYS = 90;
+
+/**
+ * Demandes au statut "new" : ce qui attend une réponse.
+ *
+ * Elles n'apparaissaient nulle part sur cet écran, alors que ce sont les
+ * plus actionnables — seul le compteur de la pastille les signalait.
+ */
+const todoQuotes = computed(() =>
+  quotes.value
+    .filter((q) => q.status === "new")
+    .map((q) => {
+      const meetingIn = q.meeting_date ? daysUntil(q.meeting_date) : null;
+      return {
+        id: q.id,
+        name: quoteName(q),
+        waitingDays: daysSince(q.created_at),
+        // Un RDV au-delà d'un mois n'aide pas à prioriser aujourd'hui.
+        meetingIn:
+          meetingIn !== null && meetingIn >= 0 && meetingIn <= 30
+            ? meetingIn
+            : null,
+      };
+    })
+    .sort((a, b) => {
+      // Un RDV imminent prime ; sinon celle qui attend depuis le plus
+      // longtemps passe devant.
+      if (a.meetingIn !== null && b.meetingIn !== null) {
+        return a.meetingIn - b.meetingIn;
+      }
+      if (a.meetingIn !== null) return -1;
+      if (b.meetingIn !== null) return 1;
+      return b.waitingDays - a.waitingDays;
+    })
+);
+
+const todoVisible = computed(() => todoQuotes.value.slice(0, TODO_LIMIT));
+const todoRemaining = computed(() =>
+  Math.max(0, todoQuotes.value.length - TODO_LIMIT)
+);
+
+const todoLabel = (t0: (typeof todoQuotes.value)[number]) =>
+  t0.meetingIn !== null
+    ? t("dashboard.todo_with_meeting", {
+        name: t0.name,
+        days: t0.waitingDays,
+        meeting: t0.meetingIn,
+      })
+    : t("dashboard.todo_waiting", {
+        name: t0.name,
+        days: t0.waitingDays,
+      });
+
 const alerts = computed(() => {
   const result: {
     id: string;
     type: "stale" | "urgent";
     message: string;
+    days: number;
   }[] = [];
 
   for (const q of quotes.value) {
-    // Stale: quote_sent for > 7 days
-    if (q.status === "quote_sent" && daysSince(q.updated_at) > 7) {
+    // Stale: quote_sent between 7 and STALE_MAX_DAYS days ago
+    const staleDays = daysSince(q.updated_at);
+    if (
+      q.status === "quote_sent" &&
+      staleDays > 7 &&
+      staleDays <= STALE_MAX_DAYS
+    ) {
       result.push({
         id: q.id,
         type: "stale",
+        days: staleDays,
         message: t("dashboard.alert_stale", {
           name: quoteName(q),
-          days: daysSince(q.updated_at),
+          days: staleDays,
         }),
       });
     }
@@ -286,6 +405,7 @@ const alerts = computed(() => {
         result.push({
           id: q.id,
           type: "urgent",
+          days,
           message: t("dashboard.alert_urgent", {
             name: quoteName(q),
             days,
@@ -295,10 +415,12 @@ const alerts = computed(() => {
     }
   }
 
-  // Sort: stale first, then by urgency (fewer days = more urgent)
+  // Tri par échéance réelle. L'ancien tri plaçait les relances en tête,
+  // ce qui faisait passer un devis de 113 jours — probablement mort —
+  // devant un mariage dans 47 jours.
   result.sort((a, b) => {
-    if (a.type !== b.type) return a.type === "stale" ? -1 : 1;
-    return 0;
+    if (a.type !== b.type) return a.type === "urgent" ? -1 : 1;
+    return a.days - b.days;
   });
 
   return result.slice(0, 3);
