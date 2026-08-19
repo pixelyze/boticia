@@ -44,9 +44,11 @@ export async function getQuoteRequests(
   filters?: { status?: string }
 ): Promise<QuoteRequest[]> {
   try {
+    // L'état des devis est joint : le dashboard en a besoin pour repérer
+    // les propositions restées sans réponse.
     let query = getSupabase()
       .from("quote_requests")
-      .select("*");
+      .select("*, project_proposals(status)");
 
     if (filters?.status) {
       query = query.eq("status", filters.status);

@@ -554,8 +554,6 @@
     "quotes_no_new": "新しいリクエストはありません。",
     "pipeline_title": "見積もり一覧",
     "pipeline_empty": "まだ見積もりはありません。",
-    "alert_stale": "{name} · {days}日前に見積もり送付済み",
-    "alert_urgent": "{name} · 挙式まで{days}日",
     "section_meetings": "今後の打ち合わせ",
     "section_alerts": "アラート",
     "meeting_today": "{date} {time} · 本日",
@@ -742,7 +740,8 @@
     "file_accepted_on": "{date} に承認",
     "file_revision_on": "{date} に修正依頼",
     "file_awaiting": "未閲覧",
-    "file_draft": "下書き"
+    "file_draft": "下書き",
+    "alert_awaiting_reply": "{name} · 挙式まで{days}日、見積もり未回答"
   },
   "client": {
     "page_title": "マイプロジェクト",

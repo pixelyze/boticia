@@ -151,12 +151,7 @@
                 <button
                   v-for="alert in alerts"
                   :key="alert.id"
-                  class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all"
-                  :class="
-                    alert.type === 'stale'
-                      ? 'bg-red-50 text-red-700 hover:bg-red-100'
-                      : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100'
-                  "
+                  class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm text-left transition-all bg-red-50 text-red-700 hover:bg-red-100"
                   @click="
                     navigateTo(
                       localePath('/dashboard/quotes/' + alert.id)
@@ -164,11 +159,7 @@
                   "
                 >
                   <IconLucid
-                    :name="
-                      alert.type === 'stale'
-                        ? 'AlertTriangle'
-                        : 'Clock'
-                    "
+                    name="AlertTriangle"
                     size="sm"
                     class="shrink-0"
                   />
@@ -303,10 +294,6 @@ const quoteName = (q: QuoteRequest) =>
     ? `${q.partner1_name} & ${q.partner2_name}`
     : q.partner1_name;
 
-// Au-delà de 90 jours sans réponse, l'affaire est probablement close :
-// la relance n'apporte plus rien et occupe une place dans la liste.
-const STALE_MAX_DAYS = 90;
-
 /**
  * Rendez-vous à venir.
  *
@@ -352,61 +339,43 @@ const meetingLabel = (m: (typeof upcomingMeetings.value)[number]) => {
   return t("dashboard.meeting_in_days", params);
 };
 
+/**
+ * Alertes : un devis parti dont la cliente n'a pas répondu, alors que le
+ * mariage approche.
+ *
+ * Les alertes précédentes portaient sur le calendrier seul ("mariage dans
+ * 47 jours") et se déclenchaient donc aussi bien sur un dossier en règle
+ * que sur un dossier à l'abandon. Une alerte doit nommer un problème.
+ */
+const ALERT_WEDDING_DAYS = 60;
+
 const alerts = computed(() => {
-  const result: {
-    id: string;
-    type: "stale" | "urgent";
-    message: string;
-    days: number;
-  }[] = [];
+  const result: { id: string; message: string; days: number }[] = [];
 
   for (const q of quotes.value) {
-    // Stale: quote_sent between 7 and STALE_MAX_DAYS days ago
-    const staleDays = daysSince(q.updated_at);
-    if (
-      q.status === "quote_sent" &&
-      staleDays > 7 &&
-      staleDays <= STALE_MAX_DAYS
-    ) {
-      result.push({
-        id: q.id,
-        type: "stale",
-        days: staleDays,
-        message: t("dashboard.alert_stale", {
-          name: quoteName(q),
-          days: staleDays,
-        }),
-      });
-    }
-    // Urgent: wedding in < 60 days
-    if (
-      q.wedding_date &&
-      q.status !== "completed" &&
-      q.status !== "cancelled"
-    ) {
-      const days = daysUntil(q.wedding_date);
-      if (days > 0 && days < 60) {
-        result.push({
-          id: q.id,
-          type: "urgent",
-          days,
-          message: t("dashboard.alert_urgent", {
-            name: quoteName(q),
-            days,
-          }),
-        });
-      }
-    }
+    if (q.status === "completed" || q.status === "cancelled") continue;
+    if (!q.wedding_date) continue;
+
+    const days = daysUntil(q.wedding_date);
+    if (days < 0 || days > ALERT_WEDDING_DAYS) continue;
+
+    // Sans réponse = la cliente n'a ni validé ni demandé de révision.
+    const awaiting = (q.project_proposals || []).some(
+      (p) => p.status === "pending" || p.status === "viewed"
+    );
+    if (!awaiting) continue;
+
+    result.push({
+      id: q.id,
+      days,
+      message: t("dashboard.alert_awaiting_reply", {
+        name: quoteName(q),
+        days,
+      }),
+    });
   }
 
-  // Tri par échéance réelle. L'ancien tri plaçait les relances en tête,
-  // ce qui faisait passer un devis de 113 jours — probablement mort —
-  // devant un mariage dans 47 jours.
-  result.sort((a, b) => {
-    if (a.type !== b.type) return a.type === "urgent" ? -1 : 1;
-    return a.days - b.days;
-  });
-
+  result.sort((a, b) => a.days - b.days);
   return result.slice(0, 3);
 });
 

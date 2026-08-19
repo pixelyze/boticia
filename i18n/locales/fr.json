@@ -554,8 +554,6 @@
     "quotes_no_new": "Aucune nouvelle demande.",
     "pipeline_title": "Mes devis",
     "pipeline_empty": "Aucun devis pour le moment.",
-    "alert_stale": "{name} · devis envoyé il y a {days} jours",
-    "alert_urgent": "{name} · mariage dans {days} jours",
     "section_meetings": "Vos prochains rendez-vous",
     "section_alerts": "Alertes",
     "meeting_today": "{date} à {time} · aujourd'hui",
@@ -742,7 +740,8 @@
     "file_accepted_on": "Accepté le {date}",
     "file_revision_on": "Révision demandée le {date}",
     "file_awaiting": "En attente de consultation",
-    "file_draft": "Brouillon"
+    "file_draft": "Brouillon",
+    "alert_awaiting_reply": "{name} · mariage dans {days} j, devis sans réponse"
   },
   "client": {
     "page_title": "Mon projet",

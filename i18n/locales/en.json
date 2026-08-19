@@ -554,8 +554,6 @@
     "quotes_no_new": "No new requests.",
     "pipeline_title": "My quotes",
     "pipeline_empty": "No quotes yet.",
-    "alert_stale": "{name} · quote sent {days} days ago",
-    "alert_urgent": "{name} · wedding in {days} days",
     "section_meetings": "Your upcoming meetings",
     "section_alerts": "Alerts",
     "meeting_today": "{date} at {time} · today",
@@ -742,7 +740,8 @@
     "file_accepted_on": "Accepted on {date}",
     "file_revision_on": "Revision requested on {date}",
     "file_awaiting": "Not viewed yet",
-    "file_draft": "Draft"
+    "file_draft": "Draft",
+    "alert_awaiting_reply": "{name} · wedding in {days} d, quote unanswered"
   },
   "client": {
     "page_title": "My project",

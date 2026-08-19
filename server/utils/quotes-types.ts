@@ -98,6 +98,8 @@ export interface QuoteRequest {
   moodboard_note?: string;
   /** Date d'envoi du moodboard. Absent = pas encore envoyé. */
   moodboard_sent_at?: string | null;
+  /** Joint par getQuoteRequests, pour repérer les devis sans réponse. */
+  project_proposals?: { status: string }[];
   locale: string;
   kanban_position: number;
   created_at: string;
