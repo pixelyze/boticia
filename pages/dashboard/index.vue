@@ -2,7 +2,7 @@
   <div class="flex-1 flex flex-col bg-white">
     <!-- Loading -->
     <div v-if="!user" class="py-12 md:py-16">
-      <div class="px-10">
+      <div class="px-4 md:px-10">
         <div class="animate-pulse">
           <div class="h-7 bg-gray-200 rounded w-48 mb-2"></div>
           <div class="h-4 bg-gray-100 rounded w-32 mb-8"></div>
@@ -16,9 +16,9 @@
     <!-- Authenticated dashboard -->
     <template v-else>
       <section class="py-6 md:py-8">
-        <div class="px-10">
+        <div class="px-4 md:px-10">
           <!-- Welcome -->
-          <div class="mb-10 copilot-fade-in copilot-fade-in-1">
+          <div class="mb-6 md:mb-10 copilot-fade-in copilot-fade-in-1">
             <h1 class="text-2xl md:text-3xl font-bold">
               {{ greeting }}, {{ userDisplayName }}
             </h1>
@@ -27,15 +27,15 @@
 
           <!-- Pipeline résumé -->
           <div
-            class="rounded-[2rem] bg-cream/50 p-8 md:p-10 mb-8 copilot-fade-in copilot-fade-in-2"
+            class="rounded-[2rem] bg-cream/50 p-5 md:p-10 mb-8 copilot-fade-in copilot-fade-in-2"
           >
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-2xl md:text-3xl font-bold">
+            <div class="flex items-center justify-between gap-3 mb-6">
+              <h2 class="text-xl md:text-3xl font-bold min-w-0">
                 {{ t("dashboard.pipeline_title") }}
               </h2>
               <button
                 @click="navigateTo(localePath('/dashboard/quotes'))"
-                class="px-5 py-2.5 rounded-full bg-cream-dark text-sm font-semibold text-dark/60 hover:text-dark/80 transition-all"
+                class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-full bg-cream-dark text-sm font-semibold text-dark/60 hover:text-dark/80 transition-all"
               >
                 {{ t("dashboard.quotes_see_all") }}
               </button>
