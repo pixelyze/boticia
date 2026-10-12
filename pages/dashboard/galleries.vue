@@ -29,8 +29,9 @@
           >
             <!-- Header -->
             <div
-              class="flex items-center justify-between px-5
-                     py-4 bg-cream/50"
+              class="flex flex-col items-start gap-3 px-5 py-4
+                     bg-cream/50 sm:flex-row sm:items-center
+                     sm:justify-between"
             >
               <div>
                 <h3 class="font-heading text-base text-dark">
@@ -49,7 +50,7 @@
               <div class="flex items-center gap-3">
                 <span
                   v-if="imageCounts[gallery.id]"
-                  class="text-sm text-dark/40"
+                  class="text-sm text-dark/40 whitespace-nowrap"
                 >
                   {{ imageCounts[gallery.id] }}
                   {{ t("dashboard.galleries_images") }}
@@ -88,7 +89,10 @@
               </div>
 
               <template v-else>
-                <div v-if="galleryImages[gallery.id]?.length" class="flex gap-4 items-start">
+                <div
+                  v-if="galleryImages[gallery.id]?.length"
+                  class="flex flex-col sm:flex-row gap-4 items-start"
+                >
 
                   <!-- Bento layout reference -->
                   <div class="shrink-0 p-3 rounded-xl bg-cream/50 border border-dark/10">
@@ -146,7 +150,10 @@
                   </div>
 
                   <!-- Photo grid -->
-                  <div class="flex-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                  <div
+                    class="w-full flex-1 grid grid-cols-3 sm:grid-cols-4
+                           md:grid-cols-5 gap-2"
+                  >
                     <div
                       v-for="img in galleryImages[gallery.id]"
                       :key="img.id"
@@ -168,7 +175,7 @@
                                border-2"
                         :class="img.bento_slot
                           ? 'border-cream'
-                          : 'border-transparent opacity-0 group-hover:opacity-70'"
+                          : 'border-transparent opacity-70 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-70'"
                       >
                         <option value="">–</option>
                         <option v-for="n in 9" :key="n" :value="n">{{ n }}</option>
@@ -179,7 +186,8 @@
                         class="absolute top-1 right-1 w-6 h-6
                                rounded-full bg-dark/60 text-cream
                                flex items-center justify-center
-                               opacity-0 group-hover:opacity-100
+                               [@media(hover:hover)]:opacity-0
+                               [@media(hover:hover)]:group-hover:opacity-100
                                transition-opacity"
                       >
                         <IconLucid name="Trash2" size="xs" />
