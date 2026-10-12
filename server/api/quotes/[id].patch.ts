@@ -68,7 +68,8 @@ export default defineEventHandler(async (event) => {
           await sendProposalNotification(
             existing.email,
             coupleName,
-            `${portalBase}/proposition`
+            `${portalBase}/proposition`,
+            locale
           );
         } catch (err) {
           console.error("Error sending proposal email:", err);
@@ -85,7 +86,8 @@ export default defineEventHandler(async (event) => {
         await sendMoodboardNotification(
           existing.email,
           coupleName,
-          `${portalBase}/moodboard`
+          `${portalBase}/moodboard`,
+          locale
         );
       } catch (err) {
         console.error("Error sending moodboard email:", err);

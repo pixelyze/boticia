@@ -65,6 +65,10 @@ export interface MoodboardItem {
   description?: string;
   sort_order: number;
   uploaded_by?: string;
+  /** Date d'envoi de sa version. Absent = en préparation. */
+  sent_at?: string | null;
+  /** Version du moodboard dont fait partie l'élément (1, 2…). */
+  version?: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -106,6 +110,12 @@ export interface ProjectProposal {
   responded_at?: string;
   client_comment?: string;
   created_by?: string;
+  /** Date d'envoi à la cliente. Absent = brouillon en préparation. */
+  sent_at?: string | null;
+  /** Numéro de version, attribué à l'envoi (1, 2…). */
+  version?: number | null;
+  /** Date d'envoi de la version suivante. Absent = version en cours. */
+  superseded_at?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -139,4 +149,7 @@ export interface UpdateProposalInput {
   viewed_at?: string;
   responded_at?: string;
   client_comment?: string;
+  sent_at?: string;
+  version?: number;
+  superseded_at?: string;
 }

@@ -4,7 +4,7 @@
  */
 
 import { requireAdmin } from "~/server/utils/serverAuth";
-import { addQuoteActivity } from "~/server/utils/quotes";
+import { getSupabase } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
   await requireAdmin(event);
@@ -28,11 +28,22 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    await addQuoteActivity(id, "note_added", {
-      text: body.text.trim(),
-    });
+    // Insertion directe (et non addQuoteActivity, qui avale les erreurs) :
+    // l'enregistrement en temps réel a besoin de l'id pour les mises à
+    // jour suivantes, et d'une vraie erreur si l'écriture échoue.
+    const { data, error } = await getSupabase()
+      .from("quote_activity_log")
+      .insert({
+        quote_id: id,
+        action: "note_added",
+        details: { text: body.text.trim() },
+      })
+      .select("id")
+      .single();
 
-    return { success: true };
+    if (error) throw new Error(error.message);
+
+    return { success: true, data };
   } catch (err: any) {
     if (err.statusCode) {
       throw err;

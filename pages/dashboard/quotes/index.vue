@@ -15,7 +15,7 @@
               :class="
                 viewMode === 'list'
                   ? 'bg-dark text-cream'
-                  : 'bg-cream text-dark/60 hover:text-dark'
+                  : 'bg-cream text-gray-500 hover:text-dark'
               "
               @click="viewMode = 'list'"
             >
@@ -27,7 +27,7 @@
               :class="
                 viewMode === 'kanban'
                   ? 'bg-dark text-cream'
-                  : 'bg-cream text-dark/60 hover:text-dark'
+                  : 'bg-cream text-gray-500 hover:text-dark'
               "
               @click="viewMode = 'kanban'"
             >
@@ -59,7 +59,7 @@
           <IconLucid
             name="Loader2"
             size="lg"
-            class="animate-spin mx-auto text-dark/30"
+            class="animate-spin mx-auto text-gray-300"
           />
           <p class="text-dark/40 mt-4">{{ t("common.loading") }}</p>
         </div>
@@ -90,7 +90,7 @@
           <IconLucid
             name="Inbox"
             size="lg"
-            class="mx-auto text-dark/20 mb-4"
+            class="mx-auto text-gray-300 mb-4"
           />
           <p class="text-dark/40">
             {{ t("dashboard.quotes_empty") }}
@@ -106,7 +106,7 @@
             <IconLucid
               name="Inbox"
               size="lg"
-              class="mx-auto text-dark/20 mb-4"
+              class="mx-auto text-gray-300 mb-4"
             />
             <p class="text-dark/40">
               {{ t("dashboard.quotes_empty_filtered") }}
@@ -269,7 +269,9 @@
                       v-if="
                         isStale(quote) ||
                         isUrgent(quote) ||
-                        quote.moodboard_sent_at
+                        quote.moodboard_sent_at ||
+                        isProposalSent(quote) ||
+                        isRevisionRequested(quote)
                       "
                       class="flex flex-wrap gap-1.5 mt-2"
                     >
@@ -279,6 +281,24 @@
                         icon="Palette"
                       >
                         {{ t("dashboard.moodboard_sent") }}
+                      </Tag>
+                      <Tag
+                        v-if="isProposalSent(quote)"
+                        variant="info"
+                        icon="FileText"
+                      >
+                        {{ t("dashboard.proposal_sent") }}
+                      </Tag>
+                      <Tag
+                        v-if="isRevisionRequested(quote)"
+                        variant="warning"
+                        icon="MessageSquare"
+                      >
+                        {{
+                          t(
+                            "dashboard.proposal_status_revision_requested"
+                          )
+                        }}
                       </Tag>
                       <Tag
                         v-if="isStale(quote)"
@@ -472,13 +492,15 @@ const filteredQuotes = computed(() => {
   );
 });
 
-// Kanban columns (excludes cancelled)
+// Kanban columns — "Annulé" en dernier : sans elle, un dossier annulé
+// disparaissait du pipeline.
 const KANBAN_STATUSES: QuoteRequestStatus[] = [
   "new",
   "contacted",
   "quote_sent",
   "signed",
   "completed",
+  "cancelled",
 ];
 
 const kanbanColumns = computed(() =>
@@ -537,8 +559,20 @@ const daysUntil = (dateStr: string) => {
   );
 };
 
+// Devis parti = un devis est déposé et la demande est passée en
+// "Devis envoyé" (ou au-delà, une fois le projet confirmé).
+const isProposalSent = (q: QuoteRequest) =>
+  (q.status === "quote_sent" || q.status === "signed") &&
+  (q.project_proposals || []).some((p) => p.status !== "draft");
+
+// Compté depuis l'envoi du devis : updated_at bouge à chaque note ou
+// moodboard et remettait le compteur à zéro. Vieux dossiers sans envoi
+// journalisé : on retombe sur updated_at. Pas de relance si la cliente a
+// demandé une modification : elle a répondu, la main est à Laetitia.
 const isStale = (q: QuoteRequest) =>
-  q.status === "quote_sent" && daysSince(q.updated_at) > 7;
+  q.status === "quote_sent" &&
+  !isRevisionRequested(q) &&
+  daysSince(q.quote_sent_at || q.updated_at) > 7;
 
 const isUrgent = (q: QuoteRequest) =>
   q.wedding_date !== undefined &&
@@ -707,6 +741,11 @@ const onDrop = async (
 
   // Optimistic update: positions and status
   quote.status = target.status as QuoteRequestStatus;
+  // Le serveur journalise l'envoi ; sans ça, "Relance" se calculerait sur
+  // l'ancienne date de modification jusqu'au rechargement.
+  if (target.status === "quote_sent" && oldStatus !== target.status) {
+    quote.quote_sent_at = new Date().toISOString();
+  }
   const items: {
     id: string;
     kanban_position: number;

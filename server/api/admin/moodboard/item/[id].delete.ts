@@ -8,7 +8,6 @@ import {
   getMoodboardItemById,
   deleteMoodboardItem,
 } from "~/server/utils/client-portal";
-import { addQuoteActivity } from "~/server/utils/quotes";
 import { getSupabase } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
@@ -32,11 +31,27 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Delete from storage if it's a file
+    // Un élément envoyé fait partie d'une version figée du moodboard.
+    if (item.sent_at) {
+      throw createError({
+        statusCode: 409,
+        message: "Cet élément a été envoyé : il ne peut plus être supprimé",
+      });
+    }
+
+    // Par prudence, on n'efface le fichier que s'il n'est plus référencé par
+    // aucun autre élément (une version envoyée pourrait l'utiliser).
     if (item.storage_path) {
-      await getSupabase()
-        .storage.from("project-moodboard")
-        .remove([item.storage_path]);
+      const { count } = await getSupabase()
+        .from("project_moodboard_items")
+        .select("id", { count: "exact", head: true })
+        .eq("storage_path", item.storage_path)
+        .neq("id", item.id);
+      if (!count) {
+        await getSupabase()
+          .storage.from("project-moodboard")
+          .remove([item.storage_path]);
+      }
     }
 
     const deleted = await deleteMoodboardItem(id);
@@ -47,11 +62,6 @@ export default defineEventHandler(async (event) => {
         message: "Failed to delete moodboard item",
       });
     }
-
-    // Log activity
-    await addQuoteActivity(item.quote_id, "moodboard_removed", {
-      filename: item.original_filename,
-    });
 
     return { success: true };
   } catch (err: any) {

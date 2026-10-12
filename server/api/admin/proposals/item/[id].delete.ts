@@ -31,6 +31,15 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    // Un devis envoyé fait partie de l'historique : il se remplace par
+    // une nouvelle version, il ne se supprime pas.
+    if (proposal.sent_at) {
+      throw createError({
+        statusCode: 409,
+        message: "Ce devis a été envoyé : il ne peut plus être supprimé",
+      });
+    }
+
     // Delete from storage if it has a file
     if (proposal.storage_path) {
       await getSupabase()

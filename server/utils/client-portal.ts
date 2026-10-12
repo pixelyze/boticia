@@ -171,6 +171,20 @@ export async function getMoodboardByQuoteId(
 }
 
 /**
+ * Dernière version envoyée du moodboard : ce que voit la cliente.
+ * Les éléments en préparation (sent_at NULL) restent invisibles.
+ */
+export async function getLatestSentMoodboard(
+  quoteId: string
+): Promise<MoodboardItem[]> {
+  const items = (await getMoodboardByQuoteId(quoteId)).filter(
+    (i) => i.sent_at
+  );
+  const latest = Math.max(0, ...items.map((i) => i.version || 0));
+  return items.filter((i) => (i.version || 0) === latest);
+}
+
+/**
  * Create a moodboard item
  */
 export async function createMoodboardItem(
@@ -280,6 +294,19 @@ export async function getProposalsByQuoteId(
     console.error("Error:", err);
     return [];
   }
+}
+
+/**
+ * Dernière version envoyée du devis : celle que voit la cliente et à
+ * laquelle elle répond. Les brouillons restent invisibles.
+ */
+export async function getLatestSentProposal(
+  quoteId: string
+): Promise<ProjectProposal | null> {
+  const sent = (await getProposalsByQuoteId(quoteId))
+    .filter((p) => p.sent_at)
+    .sort((a, b) => (b.sent_at || "").localeCompare(a.sent_at || ""));
+  return sent[0] || null;
 }
 
 /**

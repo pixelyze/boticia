@@ -141,7 +141,7 @@
                   class="w-10 h-10 rounded-full bg-cream-dark
                     flex items-center justify-center
                     hover:bg-dark hover:text-cream
-                    transition-all text-dark/60"
+                    transition-all text-gray-500"
                   :aria-label="t('dashboard.copilot_title')"
                   @click="activeSection = 'copilot'"
                 >
@@ -176,7 +176,23 @@
                         </div>
                         <IconLucid name="ChevronRight" size="xs" class="text-gray-400 shrink-0" />
                       </button>
+                      <!-- Rendez-vous passé : un fait, plus un créneau à déplacer -->
+                      <div
+                        v-if="isMeetingPast"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white w-full"
+                      >
+                        <div class="w-7 h-7 rounded-full bg-cream flex items-center justify-center shrink-0">
+                          <IconLucid name="CalendarCheck" size="xs" class="text-gray-400" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <span class="text-xs text-dark/40 block">{{ t("dashboard.quote_detail_meeting_past") }}</span>
+                          <span class="text-sm block text-dark font-medium">
+                            {{ formatDate(quote.meeting_date!) + (quote.meeting_time ? ` — ${quote.meeting_time}` : "") }}
+                          </span>
+                        </div>
+                      </div>
                       <button
+                        v-else
                         class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dark/10 bg-white hover:bg-cream transition-all w-full text-left"
                         @click="scheduleModalOpen = true"
                       >
@@ -317,9 +333,9 @@
               </div>
 
               <!-- Moodboard + Devis -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
               <!-- Moodboard section -->
-              <div class="rounded-xl border-2 border-dark/10 p-4">
+              <div class="rounded-xl border-2 border-dark/10 p-4 flex flex-col">
                 <div class="flex items-center justify-between mb-3">
                   <h3 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
                     Moodboard
@@ -327,7 +343,7 @@
                   <button
                     @click="triggerMoodboardUpload"
                     :disabled="uploadingMoodboard"
-                    class="text-sm text-dark/60 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
+                    class="text-sm text-gray-500 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
                   >
                     <IconLucid
                       :name="uploadingMoodboard ? 'Loader2' : 'Plus'"
@@ -344,21 +360,17 @@
                   class="hidden"
                   @change="handleMoodboardFileChange"
                 />
-                <!-- Mini-list -->
-                <div v-if="moodboardItems.length > 0" class="space-y-2 mb-3">
+                <!-- En préparation seulement : une version envoyée vit dans
+                     la timeline, figée. -->
+                <div v-if="draftMoodboardItems.length > 0" class="space-y-2 mb-3">
                   <div
-                    v-for="item in moodboardItems"
+                    v-for="item in draftMoodboardItems"
                     :key="item.id"
-                    class="flex items-start gap-2.5 px-3 py-2 rounded-lg border"
-                    :class="
-                      quote.moodboard_sent_at
-                        ? 'bg-green-50 border-green-200'
-                        : 'bg-cream/50 border-transparent'
-                    "
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg border bg-cream/50 border-transparent"
                   >
-                    <div class="w-6 h-6 rounded-md overflow-hidden bg-cream shrink-0 mt-0.5">
+                    <div class="w-6 h-6 rounded-md overflow-hidden bg-cream shrink-0">
                       <img
-                        v-if="item.type === 'image'"
+                        v-if="item.item_type === 'image'"
                         :src="item.public_url"
                         :alt="item.original_filename"
                         class="w-full h-full object-cover"
@@ -369,35 +381,41 @@
                     </div>
                     <span class="flex-1 min-w-0">
                       <span class="text-sm text-dark/80 truncate block">
-                        {{ item.original_filename }}
-                      </span>
-                      <span
-                        v-if="quote.moodboard_sent_at"
-                        class="text-xs text-green-700 block"
-                      >
-                        {{
-                          $t("dashboard.file_sent_on", {
-                            date: formatDate(quote.moodboard_sent_at),
-                          })
-                        }}
+                        {{ item.original_filename || item.title }}
                       </span>
                     </span>
-                    <button
+                    <Button
+                      v-if="pendingDelete === `mb-${item.id}`"
+                      type="button"
+                      icon="Trash2"
+                      class="!px-3 !py-1 text-xs !bg-red-600 !text-white
+                        !border-red-600 hover:!bg-red-700 shrink-0"
                       @click="handleMoodboardDelete(item.id)"
-                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0 mt-0.5"
+                    >
+                      {{ t("common.delete_confirm") }}
+                    </Button>
+                    <button
+                      v-else
+                      @click="askDelete(`mb-${item.id}`)"
+                      :aria-label="t('common.delete')"
+                      class="text-gray-300 hover:text-red-500 transition-colors shrink-0"
                     >
                       <IconLucid name="X" size="xs" />
                     </button>
                   </div>
                 </div>
                 <p v-else class="text-sm text-dark/40 mb-3">
-                  {{ $t("dashboard.moodboard_empty") }}
+                  {{
+                    moodboardVersions.length
+                      ? $t("dashboard.moodboard_new_version_hint")
+                      : $t("dashboard.moodboard_empty")
+                  }}
                 </p>
                 <!-- Send moodboard button -->
                 <button
                   @click="handleSendMoodboard"
-                  :disabled="moodboardItems.length === 0 || sendingMoodboard"
-                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
+                  :disabled="draftMoodboardItems.length === 0 || sendingMoodboard"
+                  class="mt-auto w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
                 >
                   <IconLucid
                     :name="sendingMoodboard ? 'Loader2' : 'Send'"
@@ -405,15 +423,17 @@
                     :class="sendingMoodboard ? 'animate-spin' : ''"
                   />
                   {{
-                    quote.moodboard_sent_at
-                      ? $t("dashboard.moodboard_resend")
+                    moodboardVersions.length
+                      ? $t("dashboard.send_version", {
+                          version: moodboardVersions.length + 1,
+                        })
                       : $t("dashboard.moodboard_send")
                   }}
                 </button>
               </div>
 
               <!-- Devis section -->
-              <div class="rounded-xl border-2 border-dark/10 p-4">
+              <div class="rounded-xl border-2 border-dark/10 p-4 flex flex-col">
                 <div class="flex items-center justify-between mb-3">
                   <h3 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
                     {{ $t("dashboard.proposal_title") }}
@@ -421,7 +441,7 @@
                   <button
                     @click="triggerProposalUpload"
                     :disabled="uploadingProposal"
-                    class="text-sm text-dark/60 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
+                    class="text-sm text-gray-500 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
                   >
                     <IconLucid
                       :name="uploadingProposal ? 'Loader2' : 'Plus'"
@@ -438,52 +458,57 @@
                   class="hidden"
                   @change="handleProposalFileChange"
                 />
-                <!-- Mini-list -->
-                <div v-if="proposals.length > 0" class="space-y-2 mb-3">
+                <!-- En préparation seulement : un devis envoyé vit dans la
+                     timeline, figé (il ne se supprime plus). -->
+                <div v-if="draftProposals.length > 0" class="space-y-2 mb-3">
                   <div
-                    v-for="prop in proposals"
+                    v-for="prop in draftProposals"
                     :key="prop.id"
-                    class="flex items-start gap-2.5 px-3 py-2 rounded-lg border"
-                    :class="
-                      proposalState(prop).green
-                        ? 'bg-green-50 border-green-200'
-                        : 'bg-cream/50 border-transparent'
-                    "
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg border bg-cream/50 border-transparent"
                   >
-                    <div class="w-6 h-6 rounded-md bg-cream flex items-center justify-center shrink-0 mt-0.5">
+                    <div class="w-6 h-6 rounded-md bg-cream flex items-center justify-center shrink-0">
                       <IconLucid name="FileText" size="xs" class="text-gray-500" />
                     </div>
                     <span class="flex-1 min-w-0">
                       <span class="text-sm text-dark/80 truncate block">
                         {{ prop.original_filename || prop.title }}
                       </span>
-                      <span
-                        class="text-xs block"
-                        :class="
-                          proposalState(prop).green
-                            ? 'text-green-700'
-                            : 'text-dark/40'
-                        "
-                      >
-                        {{ proposalState(prop).label }}
+                      <span class="text-xs block text-dark/40">
+                        {{ $t("dashboard.file_draft") }}
                       </span>
                     </span>
-                    <button
+                    <Button
+                      v-if="pendingDelete === `prop-${prop.id}`"
+                      type="button"
+                      icon="Trash2"
+                      class="!px-3 !py-1 text-xs !bg-red-600 !text-white
+                        !border-red-600 hover:!bg-red-700 shrink-0"
                       @click="handleDeleteProposal(prop.id)"
-                      class="text-dark/30 hover:text-red-500 transition-colors shrink-0 mt-0.5"
+                    >
+                      {{ t("common.delete_confirm") }}
+                    </Button>
+                    <button
+                      v-else
+                      @click="askDelete(`prop-${prop.id}`)"
+                      :aria-label="t('common.delete')"
+                      class="text-gray-300 hover:text-red-500 transition-colors shrink-0"
                     >
                       <IconLucid name="X" size="xs" />
                     </button>
                   </div>
                 </div>
                 <p v-else class="text-sm text-dark/40 mb-3">
-                  {{ $t("dashboard.proposal_empty") }}
+                  {{
+                    sentProposals.length
+                      ? $t("dashboard.proposal_new_version_hint")
+                      : $t("dashboard.proposal_empty")
+                  }}
                 </p>
                 <!-- Send proposal button -->
                 <button
                   @click="handleSendProposal"
-                  :disabled="proposals.length === 0 || sendingProposal"
-                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
+                  :disabled="draftProposals.length === 0 || sendingProposal"
+                  class="mt-auto w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
                 >
                   <IconLucid
                     :name="sendingProposal ? 'Loader2' : 'Send'"
@@ -491,10 +516,40 @@
                     :class="sendingProposal ? 'animate-spin' : ''"
                   />
                   {{
-                    quote.status === 'quote_sent'
-                      ? $t("dashboard.proposal_resend")
+                    sentProposals.length
+                      ? $t("dashboard.send_version", {
+                          version: sentProposals.length + 1,
+                        })
                       : $t("dashboard.proposal_send")
                   }}
+                </button>
+              </div>
+
+              <!-- Note interne : même design que Moodboard et Devis -->
+              <div class="rounded-xl border-2 border-dark/10 p-4 flex flex-col">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
+                    {{ $t("dashboard.internal_note_title") }}
+                  </h3>
+                </div>
+                <p class="flex items-start gap-2 text-sm text-dark/40 mb-3">
+                  <IconLucid name="EyeOff" size="xs" class="text-gray-400 shrink-0 mt-0.5" />
+                  {{ $t("dashboard.internal_note_hint") }}
+                </p>
+                <p
+                  v-if="noteSaved"
+                  class="flex items-center gap-2 text-sm text-green-600 mb-3"
+                  role="status"
+                >
+                  <IconLucid name="Check" size="xs" class="text-green-600" />
+                  {{ $t("dashboard.note_saved") }}
+                </p>
+                <button
+                  @click="showNotePanel = true"
+                  class="mt-auto w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-dark text-cream hover:bg-dark/80"
+                >
+                  <IconLucid name="NotebookPen" size="xs" />
+                  {{ $t("dashboard.timeline_note_label") }}
                 </button>
               </div>
               </div>
@@ -554,11 +609,11 @@
                 >
                 <div
                   ref="timelineScroll"
-                  class="h-full overflow-y-auto space-y-3 pb-28"
+                  class="h-full overflow-y-auto space-y-3 pb-4"
                 >
                   <!-- Empty -->
                   <div
-                    v-if="activityLog.length === 0"
+                    v-if="timelineItems.length === 0"
                     class="py-8 text-center"
                   >
                     <IconLucid
@@ -570,15 +625,18 @@
                       {{ t("dashboard.timeline_empty") }}
                     </p>
                   </div>
-                  <!-- Activity log entries -->
+                  <!-- Timeline : journal + documents envoyés, par date -->
+                  <template
+                    v-for="item in timelineItems"
+                    :key="item.key"
+                  >
                   <div
-                    v-for="entry in activityLog"
-                    :key="entry.id"
+                    v-if="item.kind === 'activity'"
                     class="px-3 py-2.5 rounded-xl border border-dark/10"
                   >
                     <!-- Note with menu -->
                     <div
-                      v-if="entry.action === 'note_added'"
+                      v-if="item.entry.action === 'note_added'"
                       class="relative"
                     >
                       <div class="flex items-start gap-2.5 pr-8">
@@ -593,15 +651,15 @@
                         </div>
                         <div class="flex-1 min-w-0">
                           <!-- Edit mode -->
-                          <div v-if="editingNoteId === entry.id">
+                          <div v-if="editingNoteId === item.entry.id">
                             <textarea
                               v-model="editingNoteText"
-                              class="w-full text-sm text-dark/80 bg-cream rounded-lg px-3 py-2 border border-dark/10 focus:outline-none focus:border-dark/30 resize-none"
+                              class="w-full text-sm text-dark/80 bg-white rounded-lg px-3 py-2 border-2 border-gray-200 focus:outline-none focus:border-gray-400 resize-none"
                               rows="3"
                             />
                             <div class="flex gap-2 mt-2">
                               <button
-                                @click="saveEditNote(entry.id)"
+                                @click="saveEditNote(item.entry.id)"
                                 class="text-xs text-green-600 font-medium"
                               >
                                 {{ t("common.save") }}
@@ -616,11 +674,11 @@
                           </div>
                           <!-- Display mode -->
                           <div v-else>
-                            <p class="text-sm text-dark/80 leading-snug">
-                              {{ entry.details?.text }}
+                            <p class="text-sm text-dark/80 leading-snug whitespace-pre-line">
+                              {{ item.entry.details?.text }}
                             </p>
                             <p class="text-[11px] text-dark/40 mt-1">
-                              {{ formatRelativeDate(entry.created_at) }}
+                              {{ formatRelativeDate(item.entry.created_at) }}
                             </p>
                           </div>
                         </div>
@@ -629,11 +687,11 @@
                       <div class="absolute top-0 right-0">
                         <button
                           @click="
-                            noteMenuOpen === entry.id
+                            noteMenuOpen === item.entry.id
                               ? (noteMenuOpen = null)
-                              : (noteMenuOpen = entry.id)
+                              : (noteMenuOpen = item.entry.id)
                           "
-                          class="w-7 h-7 rounded-full flex items-center justify-center text-dark/30 hover:text-dark/60 hover:bg-cream transition-all"
+                          class="w-7 h-7 rounded-full flex items-center justify-center text-gray-300 hover:text-gray-500 hover:bg-cream transition-all"
                         >
                           <IconLucid
                             name="MoreHorizontal"
@@ -642,17 +700,26 @@
                         </button>
                         <!-- Dropdown -->
                         <div
-                          v-if="noteMenuOpen === entry.id"
+                          v-if="noteMenuOpen === item.entry.id"
                           class="absolute right-0 top-8 bg-white rounded-xl shadow-lg border border-dark/10 py-1 z-10 min-w-[120px]"
                         >
                           <button
-                            @click="startEditNote(entry)"
+                            @click="startEditNote(item.entry)"
                             class="w-full text-left px-4 py-2 text-sm text-dark/70 hover:bg-cream transition-colors"
                           >
                             {{ t("common.edit") }}
                           </button>
+                          <!-- Deux temps : « Supprimer » puis « Confirmer » -->
                           <button
-                            @click="deleteActivity(entry.id)"
+                            v-if="pendingDelete === `note-${item.entry.id}`"
+                            @click="deleteActivity(item.entry.id)"
+                            class="w-full text-left px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors"
+                          >
+                            {{ t("dashboard.delete_confirm_note") }}
+                          </button>
+                          <button
+                            v-else
+                            @click="askDelete(`note-${item.entry.id}`)"
                             class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-cream transition-colors"
                           >
                             {{ t("common.delete") }}
@@ -670,40 +737,139 @@
                         class="w-6 h-6 rounded-lg bg-cream flex items-center justify-center shrink-0 mt-0.5"
                       >
                         <IconLucid
-                          :name="activityIcon(entry.action)"
+                          :name="activityIcon(item.entry.action)"
                           size="xs"
                           class="text-gray-500"
                         />
                       </div>
                       <div class="flex-1 min-w-0">
                         <p class="text-sm text-dark/80 leading-tight">
-                          {{ activityLabel(entry) }}
+                          {{ activityLabel(item.entry) }}
                         </p>
                         <p class="text-[11px] text-dark/40 mt-0.5">
-                          {{ formatRelativeDate(entry.created_at) }}
+                          {{ formatRelativeDate(item.entry.created_at) }}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                </div>
-                <!-- Compose bar (floating) -->
-                <div class="absolute bottom-0 left-0 right-0">
-                  <div class="rounded-2xl bg-cream-light p-3">
-                    <button
-                      @click="showNotePanel = true"
-                      class="flex items-center gap-2.5 w-full px-3.5 py-2.5 rounded-xl bg-white text-left hover:bg-cream active:bg-cream-dark transition-all"
-                    >
+                  <!-- Devis envoyé : figé, avec la réponse de la cliente -->
+                  <div
+                    v-else-if="item.kind === 'proposal'"
+                    class="px-3 py-2.5 rounded-xl border"
+                    :class="
+                      item.proposal.superseded_at
+                        ? 'border-dark/10 bg-gray-50'
+                        : 'border-dark/20'
+                    "
+                  >
+                    <div class="flex items-start gap-2.5">
                       <div
-                        class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-green-100 text-green-600"
+                        class="w-6 h-6 rounded-lg bg-cream flex items-center justify-center shrink-0 mt-0.5"
                       >
-                        <IconLucid name="NotebookPen" size="xs" />
+                        <IconLucid name="FileText" size="xs" class="text-gray-500" />
                       </div>
-                      <span class="text-sm text-dark/60">
-                        {{ $t("dashboard.timeline_note_label") }}
-                      </span>
-                    </button>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm text-dark leading-tight">
+                          {{
+                            t("dashboard.timeline_proposal_sent", {
+                              version: item.proposal.version || 1,
+                            })
+                          }}
+                        </p>
+                        <a
+                          v-if="item.proposal.public_url"
+                          :href="item.proposal.public_url"
+                          target="_blank"
+                          rel="noopener"
+                          class="text-sm text-dark underline truncate block mt-1"
+                        >
+                          {{ item.proposal.original_filename || item.proposal.title }}
+                        </a>
+                        <p
+                          v-if="item.proposal.superseded_at"
+                          class="text-xs text-gray-500 mt-1"
+                        >
+                          {{ t("dashboard.timeline_superseded") }}
+                        </p>
+                        <p
+                          v-else
+                          class="text-xs mt-1"
+                          :class="
+                            proposalState(item.proposal).green
+                              ? 'text-green-700'
+                              : 'text-gray-600'
+                          "
+                        >
+                          {{ proposalState(item.proposal).label }}
+                        </p>
+                        <p
+                          v-if="item.proposal.client_comment"
+                          class="text-xs text-dark bg-cream rounded-lg px-2.5 py-2 mt-1.5"
+                        >
+                          « {{ item.proposal.client_comment }} »
+                        </p>
+                        <p class="text-[11px] text-dark/40 mt-1">
+                          {{ formatRelativeDate(item.date) }}
+                        </p>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Version de moodboard envoyée : figée -->
+                  <div
+                    v-else-if="item.kind === 'moodboard'"
+                    class="px-3 py-2.5 rounded-xl border"
+                    :class="
+                      item.superseded
+                        ? 'border-dark/10 bg-gray-50'
+                        : 'border-dark/20'
+                    "
+                  >
+                    <div class="flex items-start gap-2.5">
+                      <div
+                        class="w-6 h-6 rounded-lg bg-cream flex items-center justify-center shrink-0 mt-0.5"
+                      >
+                        <IconLucid name="Palette" size="xs" class="text-gray-500" />
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm text-dark leading-tight">
+                          {{
+                            t("dashboard.timeline_moodboard_sent", {
+                              version: item.version,
+                              count: item.items.length,
+                            })
+                          }}
+                        </p>
+                        <div class="flex gap-1.5 mt-1.5">
+                          <div
+                            v-for="mi in item.items.slice(0, 4)"
+                            :key="mi.id"
+                            class="w-10 h-10 rounded-md overflow-hidden bg-cream flex items-center justify-center"
+                          >
+                            <img
+                              v-if="mi.item_type === 'image'"
+                              :src="mi.public_url"
+                              :alt="mi.original_filename"
+                              class="w-full h-full object-cover"
+                            />
+                            <IconLucid v-else name="FileText" size="xs" class="text-gray-500" />
+                          </div>
+                        </div>
+                        <p
+                          v-if="item.superseded"
+                          class="text-xs text-gray-500 mt-1"
+                        >
+                          {{ t("dashboard.timeline_superseded") }}
+                        </p>
+                        <p class="text-[11px] text-dark/40 mt-1">
+                          {{ formatRelativeDate(item.date) }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  </template>
+
                 </div>
                 </div>
               </div>
@@ -750,26 +916,57 @@
     <BaseModal
       :isOpen="showNotePanel"
       :title="t('dashboard.timeline_note_label')"
-      :showCloseButton="true"
-      :closeButtonText="t('common.close')"
-      @close="showNotePanel = false"
+      :showCloseButton="false"
+      showCloseIcon
+      @close="closeNotePanel"
     >
-      <div>
+      <!-- Comme une page de traitement de texte : pas de cadre, le champ
+           occupe l'espace et la ligne reste à une largeur de lecture. -->
+      <div class="max-w-2xl mx-auto">
         <textarea
           v-model="newNoteText"
           :placeholder="t('dashboard.timeline_note_placeholder')"
-          class="w-full h-32 px-4 py-3 rounded-xl border-0 bg-cream-light focus:outline-none focus:ring-2 focus:ring-dark/10 transition-all resize-none text-dark"
+          :aria-label="t('dashboard.timeline_note_label')"
+          class="w-full min-h-[50vh] p-0 border-0 bg-transparent
+            focus:outline-none resize-none text-lg leading-relaxed text-dark
+            placeholder:text-gray-400"
           autofocus
         />
-        <div class="mt-4">
-          <Button
-            variant="primary"
-            icon="Send"
-            :loading="sendingNote"
-            :disabled="!newNoteText.trim()"
-            @click="sendNote"
+        <!-- La note s'enregistre pendant la frappe ; « Terminé » (ou la
+             croix, Échap…) ferme la page. -->
+        <div
+          class="mt-4 pt-4 border-t border-gray-200 flex flex-col gap-4
+            sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p
+            v-if="noteError"
+            class="text-sm text-red-600"
+            role="alert"
           >
-            {{ t("dashboard.timeline_note_send") }}
+            {{ t("dashboard.note_save_error") }}
+          </p>
+          <p
+            v-else
+            class="flex items-center gap-2 text-sm text-gray-500"
+            aria-live="polite"
+          >
+            <IconLucid
+              :name="noteStatus === 'saving' ? 'Loader2' : 'Check'"
+              size="xs"
+              class="text-gray-500"
+              :class="{ 'animate-spin': noteStatus === 'saving' }"
+            />
+            {{ t(`dashboard.note_status_${noteStatus}`) }}
+          </p>
+          <Button
+            type="button"
+            variant="primary"
+            icon="Check"
+            class="w-full sm:w-auto justify-center shrink-0"
+            :loading="sendingNote"
+            @click="closeNotePanel"
+          >
+            {{ t("dashboard.note_done") }}
           </Button>
         </div>
       </div>
@@ -812,7 +1009,7 @@
               :class="
                 quote?.status === opt.value
                   ? 'text-cream'
-                  : 'text-dark/50'
+                  : 'text-gray-400'
               "
             />
           </div>
@@ -909,6 +1106,109 @@ const proposalFileInput = ref<HTMLInputElement | null>(null);
 const uploadingProposal = ref(false);
 const sendingMoodboard = ref(false);
 const sendingProposal = ref(false);
+
+// ── Préparation vs envoyé ─────────────────────────────────────────────
+// Les blocs Moodboard et Devis ne montrent que ce qui est en préparation ;
+// ce qui est envoyé est figé et vit dans la timeline, version par version.
+const draftMoodboardItems = computed(() =>
+  moodboardItems.value.filter((i) => !i.sent_at)
+);
+const draftProposals = computed(() =>
+  proposals.value.filter((p) => !p.sent_at)
+);
+const sentProposals = computed(() =>
+  proposals.value.filter((p) => p.sent_at)
+);
+
+const moodboardVersions = computed(() => {
+  const byVersion = new Map<number, MoodboardItem[]>();
+  for (const item of moodboardItems.value) {
+    if (!item.sent_at) continue;
+    const v = item.version || 1;
+    byVersion.set(v, [...(byVersion.get(v) || []), item]);
+  }
+  return [...byVersion.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([version, items]) => ({
+      version,
+      items,
+      sentAt: items[0].sent_at as string,
+    }));
+});
+
+type TimelineItem =
+  | { kind: "activity"; key: string; date: string; entry: QuoteActivityLog }
+  | { kind: "proposal"; key: string; date: string; proposal: ProjectProposal }
+  | {
+      kind: "moodboard";
+      key: string;
+      date: string;
+      version: number;
+      items: MoodboardItem[];
+      superseded: boolean;
+    };
+
+const timelineItems = computed<TimelineItem[]>(() => {
+  const proposalTimes = sentProposals.value.map((p) =>
+    new Date(p.sent_at as string).getTime()
+  );
+  const hasMoodboardVersion = moodboardVersions.value.length > 0;
+
+  const activities = activityLog.value
+    .filter((entry) => {
+      // Doublons des cartes documents : le passage en "Devis envoyé" fait
+      // au même moment qu'un envoi de devis, et les anciennes entrées
+      // "moodboard envoyé" (avant les versions).
+      if (
+        entry.action === "status_changed" &&
+        entry.details?.to === "quote_sent"
+      ) {
+        const at = new Date(entry.created_at).getTime();
+        if (proposalTimes.some((t) => Math.abs(t - at) < 5 * 60_000)) {
+          return false;
+        }
+      }
+      if ((entry.action as string) === "moodboard_sent" && hasMoodboardVersion) {
+        return false;
+      }
+      return true;
+    })
+    .map(
+      (entry): TimelineItem => ({
+        kind: "activity",
+        key: `a-${entry.id}`,
+        date: entry.created_at,
+        entry,
+      })
+    );
+
+  const documents: TimelineItem[] = [
+    ...sentProposals.value.map(
+      (proposal): TimelineItem => ({
+        kind: "proposal",
+        key: `p-${proposal.id}`,
+        date: proposal.sent_at as string,
+        proposal,
+      })
+    ),
+    ...moodboardVersions.value.map(
+      (v, i, all): TimelineItem => ({
+        kind: "moodboard",
+        key: `m-${v.version}`,
+        date: v.sentAt,
+        version: v.version,
+        items: v.items,
+        superseded: i < all.length - 1,
+      })
+    ),
+  ];
+
+  // Plus récent en haut, comme le journal.
+  return [...activities, ...documents].sort((a, b) =>
+    b.date.localeCompare(a.date)
+  );
+});
+
 const showNotePanel = ref(false);
 const newNoteText = ref("");
 const sendingNote = ref(false);
@@ -971,9 +1271,15 @@ const openCalendarEvent = () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
+// Rendez-vous passé = date + heure du créneau dépassées (heure locale).
+// Sans heure lisible, on attend la fin de la journée.
 const isMeetingPast = computed(() => {
   if (!quote.value?.meeting_date) return false;
-  const meeting = new Date(quote.value.meeting_date);
+  const [y, m, d] = quote.value.meeting_date.split("-").map(Number);
+  const time = quote.value.meeting_time?.match(/(\d{1,2})\s*[h:]\s*(\d{2})?/);
+  const meeting = time
+    ? new Date(y, m - 1, d, Number(time[1]), Number(time[2] || 0))
+    : new Date(y, m - 1, d, 23, 59);
   return meeting.getTime() < Date.now();
 });
 
@@ -1427,20 +1733,100 @@ const fetchActivityLog = async () => {
   }
 };
 
-// Send note
-const sendNote = async () => {
-  if (!newNoteText.value.trim()) return;
+// Note interne enregistrée en temps réel : créée dès les premiers mots,
+// puis mise à jour pendant la frappe (après une courte pause). Fermer la
+// modale termine la note ; la suivante repartira d'une page blanche.
+const noteSaved = ref(false);
+const noteError = ref(false);
+const noteStatus = ref<"idle" | "saving" | "saved">("idle");
+const draftNoteId = ref<string | null>(null);
+let lastSavedText = "";
+let noteSaveTimer: ReturnType<typeof setTimeout> | undefined;
+let noteSavedTimer: ReturnType<typeof setTimeout> | undefined;
+// Les envois passent l'un après l'autre : jamais deux créations.
+let noteSaveChain: Promise<void> = Promise.resolve();
+
+const writeNote = async () => {
+  const text = newNoteText.value.trim();
+  if (text === lastSavedText) return;
+  noteStatus.value = "saving";
+  try {
+    if (!text && draftNoteId.value) {
+      // Texte effacé : la note vide disparaît de la frise.
+      await adminFetch(
+        `/api/quotes/${quoteId}/activity/${draftNoteId.value}`,
+        { method: "DELETE" }
+      );
+      draftNoteId.value = null;
+    } else if (text && !draftNoteId.value) {
+      const res = await adminFetch<{ data: { id: string } }>(
+        `/api/quotes/${quoteId}/notes`,
+        { method: "POST", body: { text } }
+      );
+      draftNoteId.value = res.data.id;
+    } else if (text) {
+      await adminFetch(
+        `/api/quotes/${quoteId}/activity/${draftNoteId.value}`,
+        { method: "PATCH", body: { text } }
+      );
+    }
+    lastSavedText = text;
+    noteError.value = false;
+    noteStatus.value = "saved";
+  } catch (err) {
+    console.error("Error saving note:", err);
+    noteError.value = true;
+    noteStatus.value = "idle";
+  }
+};
+
+const saveNoteNow = () => {
+  clearTimeout(noteSaveTimer);
+  noteSaveChain = noteSaveChain.then(writeNote);
+  return noteSaveChain;
+};
+
+watch(newNoteText, () => {
+  if (!showNotePanel.value) return;
+  clearTimeout(noteSaveTimer);
+  noteSaveTimer = setTimeout(saveNoteNow, 800);
+});
+
+// Onglet fermé alors que les derniers mots ne sont pas encore partis :
+// on lance l'envoi et le navigateur demande confirmation avant de quitter.
+const guardUnsavedNote = (e: BeforeUnloadEvent) => {
+  if (newNoteText.value.trim() === lastSavedText) return;
+  saveNoteNow();
+  e.preventDefault();
+};
+onMounted(() => window.addEventListener("beforeunload", guardUnsavedNote));
+onBeforeUnmount(() =>
+  window.removeEventListener("beforeunload", guardUnsavedNote)
+);
+
+const closeNotePanel = async () => {
+  if (sendingNote.value) return;
+  showNotePanel.value = false;
   sendingNote.value = true;
   try {
-    await adminFetch(`/api/quotes/${quoteId}/notes`, {
-      method: "POST",
-      body: { text: newNoteText.value.trim() },
-    });
+    await saveNoteNow();
+    if (noteError.value) {
+      // Dernière version pas enregistrée : on rouvre, texte intact.
+      await nextTick();
+      showNotePanel.value = true;
+      return;
+    }
+    const hadNote = !!draftNoteId.value;
+    draftNoteId.value = null;
+    lastSavedText = "";
     newNoteText.value = "";
-    showNotePanel.value = false;
+    noteStatus.value = "idle";
     await fetchActivityLog();
-  } catch (err) {
-    console.error("Error sending note:", err);
+    if (hadNote) {
+      noteSaved.value = true;
+      clearTimeout(noteSavedTimer);
+      noteSavedTimer = setTimeout(() => (noteSaved.value = false), 4000);
+    }
   } finally {
     sendingNote.value = false;
   }
@@ -1470,7 +1856,19 @@ const saveEditNote = async (id: string) => {
 };
 
 // Delete activity
+// Suppression en deux temps : le premier clic arme le bouton (rouge,
+// « Supprimer ? »), le second supprime. Sans second clic, il se désarme
+// au bout de 4 s — une suppression ne part jamais d'un clic distrait.
+const pendingDelete = ref<string | null>(null);
+let pendingDeleteTimer: ReturnType<typeof setTimeout> | undefined;
+const askDelete = (key: string) => {
+  pendingDelete.value = key;
+  clearTimeout(pendingDeleteTimer);
+  pendingDeleteTimer = setTimeout(() => (pendingDelete.value = null), 4000);
+};
+
 const deleteActivity = async (id: string) => {
+  pendingDelete.value = null;
   noteMenuOpen.value = null;
   try {
     await adminFetch(
@@ -1498,19 +1896,18 @@ const handleMoodboardFileChange = async (event: Event) => {
   input.value = "";
 };
 
-// Send moodboard: change status + log activity
+// Envoyer le moodboard en préparation : il devient une version figée
+// (le serveur envoie l'email à la cliente).
 const handleSendMoodboard = async () => {
-  if (!quote.value || moodboardItems.value.length === 0) return;
+  if (!quote.value || draftMoodboardItems.value.length === 0) return;
   sendingMoodboard.value = true;
   try {
-    // Le statut ne bouge plus : on horodate l'envoi, ce qui déclenche
-    // l'email côté serveur.
-    const sentAt = new Date().toISOString();
-    await adminFetch(`/api/quotes/${quoteId}`, {
-      method: "PATCH",
-      body: { moodboard_sent_at: sentAt },
-    });
-    quote.value.moodboard_sent_at = sentAt;
+    const res = await adminFetch<{
+      success: boolean;
+      data: { version: number; sent_at: string };
+    }>(`/api/admin/moodboard/${quoteId}/send`, { method: "POST" });
+    quote.value.moodboard_sent_at = res.data.sent_at;
+    await fetchPortalData();
     fetchActivityLog();
   } catch (err) {
     console.error("Error sending moodboard:", err);
@@ -1519,16 +1916,19 @@ const handleSendMoodboard = async () => {
   }
 };
 
-// Send proposal: change status + log activity
+// Envoyer le devis en préparation : il devient une version figée, la
+// précédente est marquée remplacée (le serveur gère statut et email).
 const handleSendProposal = async () => {
-  if (!quote.value || proposals.value.length === 0) return;
+  if (!quote.value || draftProposals.value.length === 0) return;
   sendingProposal.value = true;
   try {
-    await adminFetch(`/api/quotes/${quoteId}`, {
-      method: "PATCH",
-      body: { status: "quote_sent" },
+    await adminFetch(`/api/admin/proposals/${quoteId}/send`, {
+      method: "POST",
     });
-    quote.value.status = "quote_sent" as any;
+    if (!["quote_sent", "signed", "completed"].includes(quote.value.status)) {
+      quote.value.status = "quote_sent" as any;
+    }
+    await fetchPortalData();
     fetchActivityLog();
   } catch (err) {
     console.error("Error sending proposal:", err);
@@ -1551,7 +1951,6 @@ const handleProposalFileChange = async (event: Event) => {
     const formData = new FormData();
     formData.append("title", file.name.replace(/\.pdf$/i, ""));
     formData.append("description", "");
-    formData.append("status", "pending");
     formData.append("file", file);
 
     const res = await adminFetch<{
@@ -1763,17 +2162,9 @@ const handleMoodboardUpload = async (rawFile: File) => {
       method: "POST",
       body: formData,
     });
+    // Nouvel élément = en préparation ; la version envoyée reste intacte.
     if (res.data) {
       moodboardItems.value.push(res.data);
-      // Le contenu a changé depuis l'envoi : on efface la date pour
-      // signaler qu'il faut renvoyer le moodboard.
-      if (quote.value?.moodboard_sent_at) {
-        await adminFetch(`/api/quotes/${quoteId}`, {
-          method: "PATCH",
-          body: { moodboard_sent_at: null },
-        });
-        quote.value.moodboard_sent_at = null;
-      }
     }
   } catch (err) {
     console.error("Error uploading moodboard:", err);
@@ -1809,25 +2200,16 @@ const handleMoodboardAddLink = async (
 
 // Moodboard delete item
 const handleMoodboardDelete = async (id: string) => {
+  pendingDelete.value = null;
   try {
     await adminFetch(`/api/admin/moodboard/item/${id}`, {
       method: "DELETE",
     });
+    // Seuls les éléments en préparation se suppriment (le serveur refuse
+    // un élément envoyé) : la version envoyée n'est pas touchée.
     moodboardItems.value = moodboardItems.value.filter(
       (i) => i.id !== id
     );
-    // Plus aucune image : le moodboard envoyé n'a plus d'objet.
-    if (
-      quote.value?.moodboard_sent_at &&
-      moodboardItems.value.length === 0
-    ) {
-      await adminFetch(`/api/quotes/${quoteId}`, {
-        method: "PATCH",
-        body: { moodboard_sent_at: null },
-      });
-      quote.value.moodboard_sent_at = null;
-    }
-    fetchActivityLog();
   } catch (err) {
     console.error("Error deleting moodboard item:", err);
   }
@@ -1877,6 +2259,7 @@ const handleCreateProposal = async (data: {
 
 // Proposal delete
 const handleDeleteProposal = async (id: string) => {
+  pendingDelete.value = null;
   try {
     await adminFetch(`/api/admin/proposals/item/${id}`, {
       method: "DELETE",

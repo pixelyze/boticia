@@ -72,6 +72,38 @@ export type WorkshopTypeKey =
   | "terrarium"
   | "seasonal";
 
+// Valeurs acceptées par l'API (mêmes listes que le formulaire pages/devis.vue)
+export const FLORAL_NEED_KEYS: FloralNeedKey[] = [
+  "bridal_bouquet",
+  "bridesmaid_bouquet",
+  "boutonnieres",
+  "ceremony_arch",
+  "ceremony_aisle",
+  "table_centerpieces",
+  "table_runner",
+  "welcome_sign",
+  "cocktail_decor",
+  "cake_flowers",
+  "hair_flowers",
+  "venue_entrance",
+];
+
+export const EVENT_NEED_KEYS: EventNeedKey[] = [
+  "scenographie",
+  "corner_floral",
+  "suspended_installations",
+  "stage_decor",
+  "table_decor",
+  "welcome_compositions",
+];
+
+export const WORKSHOP_TYPE_KEYS: WorkshopTypeKey[] = [
+  "bouquet_composition",
+  "wreath",
+  "terrarium",
+  "seasonal",
+];
+
 // ========================================
 // QUOTE REQUEST
 // ========================================
@@ -99,7 +131,16 @@ export interface QuoteRequest {
   /** Date d'envoi du moodboard. Absent = pas encore envoyé. */
   moodboard_sent_at?: string | null;
   /** Joint par getQuoteRequests, pour repérer les devis sans réponse. */
-  project_proposals?: { status: string }[];
+  project_proposals?: {
+    status: string;
+    created_at: string;
+    sent_at?: string | null;
+  }[];
+  /**
+   * Calculé par getQuoteRequests : dernier passage au statut "quote_sent",
+   * d'après le journal d'activité. Absent = jamais journalisé.
+   */
+  quote_sent_at?: string | null;
   locale: string;
   kanban_position: number;
   created_at: string;
@@ -145,6 +186,8 @@ export type QuoteActivityAction =
   | "meeting_scheduled"
   | "portal_toggled"
   | "moodboard_added"
+  | "moodboard_sent"
+  | "moodboard_removed"
   | "proposal_created"
   | "note_added";
 

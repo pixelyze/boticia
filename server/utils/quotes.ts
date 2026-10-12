@@ -45,10 +45,15 @@ export async function getQuoteRequests(
 ): Promise<QuoteRequest[]> {
   try {
     // L'état des devis est joint : le dashboard en a besoin pour repérer
-    // les propositions restées sans réponse.
+    // les propositions restées sans réponse. Les changements de statut
+    // datent l'envoi du devis (updated_at bouge à chaque note).
     let query = getSupabase()
       .from("quote_requests")
-      .select("*, project_proposals(status)");
+      // Une seule chaîne littérale : Supabase en déduit le type du résultat.
+      .select(
+        "*, project_proposals(status, created_at, sent_at), quote_activity_log(details, created_at)"
+      )
+      .eq("quote_activity_log.action", "status_changed");
 
     if (filters?.status) {
       query = query.eq("status", filters.status);
@@ -63,7 +68,21 @@ export async function getQuoteRequests(
       return [];
     }
 
-    return data || [];
+    return (data || []).map(({ quote_activity_log: log, ...quote }) => {
+      // Date du dernier envoi : celle du devis le plus récemment envoyé
+      // (une V2 relance le compteur), à défaut le journal d'activité.
+      const proposalSentAt = (quote.project_proposals || [])
+        .map((p: any) => p.sent_at as string | null)
+        .filter(Boolean)
+        .sort()
+        .pop();
+      const logSentAt = (log || [])
+        .filter((entry: any) => entry.details?.to === "quote_sent")
+        .map((entry: any) => entry.created_at as string)
+        .sort()
+        .pop();
+      return { ...quote, quote_sent_at: proposalSentAt ?? logSentAt ?? null };
+    });
   } catch (err) {
     console.error("Error:", err);
     return [];

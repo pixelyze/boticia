@@ -36,9 +36,6 @@ export default defineEventHandler(async (event) => {
     const amountField = formData.find(
       (f) => f.name === "total_amount_cents"
     );
-    const statusField = formData.find(
-      (f) => f.name === "status"
-    );
     const file = formData.find((f) => f.name === "file");
 
     const title = titleField?.data?.toString();
@@ -99,8 +96,9 @@ export default defineEventHandler(async (event) => {
       total_amount_cents: amountField?.data
         ? parseInt(amountField.data.toString(), 10)
         : undefined,
-      status:
-        (statusField?.data?.toString() as any) || "draft",
+      // Toujours un brouillon : la cliente ne le voit qu'après l'envoi
+      // (POST /api/admin/proposals/:quoteId/send), qui le fige en version.
+      status: "draft",
       created_by: user.id,
       ...fileData,
     });

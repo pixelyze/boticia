@@ -33,6 +33,15 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    // Un devis envoyé est figé : un changement passe par une nouvelle
+    // version.
+    if (existing.sent_at) {
+      throw createError({
+        statusCode: 409,
+        message: "Ce devis a été envoyé : il ne peut plus être modifié",
+      });
+    }
+
     const proposal = await updateProposal(id, body);
 
     if (!proposal) {

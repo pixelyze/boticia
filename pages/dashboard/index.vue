@@ -46,7 +46,7 @@
               <IconLucid
                 name="Loader2"
                 size="lg"
-                class="animate-spin mx-auto text-dark/30"
+                class="animate-spin mx-auto text-gray-300"
               />
             </div>
 
@@ -58,7 +58,7 @@
               <IconLucid
                 name="Inbox"
                 size="lg"
-                class="mx-auto text-dark/20 mb-4"
+                class="mx-auto text-gray-300 mb-4"
               />
               <p class="text-dark/40">
                 {{ t("dashboard.pipeline_empty") }}
@@ -133,7 +133,7 @@
                   <IconLucid
                     name="ChevronRight"
                     size="xs"
-                    class="ml-auto shrink-0 opacity-40 mt-1"
+                    class="ml-auto shrink-0 text-gray-400 mt-1"
                   />
                 </button>
               </div>
@@ -167,7 +167,7 @@
                   <IconLucid
                     name="ChevronRight"
                     size="xs"
-                    class="shrink-0 opacity-40 mt-1"
+                    class="shrink-0 text-red-300 mt-1"
                   />
                 </button>
               </div>
@@ -341,7 +341,7 @@ const meetingLabel = (m: (typeof upcomingMeetings.value)[number]) => {
 
 /**
  * Alertes : un devis parti dont la cliente n'a pas répondu, alors que le
- * mariage approche.
+ * mariage approche, ou une cliente qui demande une modification.
  *
  * Les alertes précédentes portaient sur le calendrier seul ("mariage dans
  * 47 jours") et se déclenchaient donc aussi bien sur un dossier en règle
@@ -354,6 +354,20 @@ const alerts = computed(() => {
 
   for (const q of quotes.value) {
     if (q.status === "completed" || q.status === "cancelled") continue;
+
+    // La cliente attend un devis corrigé : toujours signalé, avec ou sans
+    // date de mariage, et en tête de liste (days = -1).
+    if (isRevisionRequested(q)) {
+      result.push({
+        id: q.id,
+        days: -1,
+        message: t("dashboard.alert_revision_requested", {
+          name: quoteName(q),
+        }),
+      });
+      continue;
+    }
+
     if (!q.wedding_date) continue;
 
     const days = daysUntil(q.wedding_date);

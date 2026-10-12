@@ -25,7 +25,7 @@
           <!-- Swipeable area (drag bar + header) -->
           <div
             ref="dragHandleRef"
-            class="flex-shrink-0"
+            class="flex-shrink-0 relative"
             @touchstart="onTouchStart"
             @touchmove.prevent="onTouchMove"
             @touchend="onTouchEnd"
@@ -34,6 +34,19 @@
             <div class="h-12 flex items-center justify-center touch-none">
               <div class="w-12 h-1.5 rounded-full bg-dark/10" />
             </div>
+
+            <!-- Croix de fermeture (optionnelle) : loin du bouton d'action
+                 en bas, pour ne pas le confondre avec « Enregistrer ». -->
+            <Button
+              v-if="showCloseIcon"
+              type="button"
+              icon="X"
+              iconOnly
+              class="!absolute top-3 right-3 md:top-4 md:right-4"
+              :aria-label="$t('common.close')"
+              @touchstart.stop
+              @click="onCancel"
+            />
 
             <!-- Title -->
             <h3
@@ -96,10 +109,12 @@ const props = withDefaults(
     uppercase?: boolean;
     showCloseButton?: boolean;
     closeButtonText?: string;
+    showCloseIcon?: boolean;
   }>(),
   {
     uppercase: false,
     showCloseButton: true,
+    showCloseIcon: false,
   }
 );
 
