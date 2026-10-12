@@ -151,6 +151,71 @@ const releases = [
         title: "Chaque réglage de Personnalisation expliqué",
         description: "Chaque section dit maintenant ce qu'elle modifie et sur quelle page : logo, couleur d'ambiance, photo d'accueil (anciennement « Photo hero ») et photos de la page Événements.",
       },
+      {
+        category: "feature" as Category,
+        title: "Devis et moodboards envoyés : versions conservées",
+        description: "Un devis ou un moodboard envoyé ne peut plus être modifié ni supprimé par erreur : il passe dans l'historique de la fiche. Pour un changement, vous envoyez une nouvelle version (version 2, 3…) et la cliente voit toujours la dernière.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Demande de modification du devis",
+        description: "Quand une cliente demande une modification de son devis, vous recevez un email avec son message, une étiquette « Révision demandée » apparaît dans le suivi des demandes et une alerte s'affiche sur votre tableau de bord.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Suivi des demandes plus clair",
+        description: "Nouvelle étiquette « Devis envoyé » sur les cartes concernées, et nouvelle colonne « Annulé » pour ranger les demandes abandonnées.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Notes internes repensées",
+        description: "Le bloc Note interne est à côté du moodboard et du devis. La note s'écrit comme sur une page blanche et s'enregistre automatiquement pendant que vous tapez : plus rien à valider. Elle reste invisible pour la cliente.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Suppression en deux clics partout",
+        description: "Pour supprimer une photo, un logo, un créneau, une note ou un document, un premier clic affiche « Supprimer ? » en rouge, le second confirme. Un clic distrait ne supprime plus rien.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Rendez-vous passé non modifiable",
+        description: "Une fois l'appel découverte passé, son créneau ne peut plus être modifié par erreur depuis la fiche.",
+      },
+      {
+        category: "design" as Category,
+        title: "Un espace client plus simple pour vos clientes",
+        description: "Tout est réuni sur une seule page qui suit les étapes du projet : inspirations, moodboard puis devis. Un bandeau indique la prochaine étape, le devis s'ouvre d'un bouton et la réponse se donne juste en dessous.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Toute la demande visible par la cliente",
+        description: "Votre cliente retrouve dans « Votre demande » tout ce qu'elle a rempli : date, lieu, budget, appel découverte et prestations.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Vos notes internes protégées",
+        description: "Vos notes internes ne sont plus transmises à l'espace client, même de façon invisible : elles restent strictement privées.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Email de confirmation à la cliente",
+        description: "Après sa demande de devis, la cliente reçoit un email récapitulatif avec la date de l'appel et un accès direct à son espace client, où elle peut ajouter ses photos d'inspiration plus tard.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Emails dans la langue de la cliente",
+        description: "Les emails envoyés aux clientes (confirmation, moodboard, devis, lien de connexion) partent en français, en anglais ou en japonais selon la langue qu'elles ont choisie.",
+      },
+      {
+        category: "content" as Category,
+        title: "Formulaire de devis plus rassurant",
+        description: "À l'étape des photos d'inspiration, la cliente sait qu'elle pourra les ajouter plus tard depuis son espace, avec un bouton « Je les ajouterai plus tard ». Le budget est maintenant demandé pour un mariage.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Suppression des photos d'inspiration sur téléphone",
+        description: "Sur téléphone, le bouton pour retirer une photo d'inspiration ou un logo est maintenant visible sans souris.",
+      },
     ],
   },
   {
