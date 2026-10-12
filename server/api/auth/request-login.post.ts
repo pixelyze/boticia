@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
       );
 
       if (link) {
-        await sendLoginLinkEmail(normalizedEmail, link);
+        await sendLoginLinkEmail(normalizedEmail, link, lang);
       } else {
         console.error("Login link generation failed:", error);
       }

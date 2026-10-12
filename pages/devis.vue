@@ -42,6 +42,29 @@
             </div>
           </div>
 
+          <!-- Espace client : déjà ouvert, l'email contient un lien direct -->
+          <div
+            class="mt-6 rounded-2xl border-2 border-dark/10 px-6 py-5
+              text-left flex flex-col gap-4 md:flex-row md:items-center
+              md:justify-between"
+          >
+            <div>
+              <p class="text-lg font-medium text-dark">
+                {{ t("quote_form.success_portal_title") }}
+              </p>
+              <p class="text-gray-600 mt-1">
+                {{ t("quote_form.success_portal_desc") }}
+              </p>
+            </div>
+            <Button
+              :to="localePath('/login')"
+              icon="LogIn"
+              class="w-full md:w-auto justify-center shrink-0"
+            >
+              {{ t("quote_form.success_portal_cta") }}
+            </Button>
+          </div>
+
           <!-- Process steps -->
           <div
             class="mt-10 rounded-[2rem] border-2 border-dark/10 bg-cream/50 px-8 md:px-12 py-10 text-left"
@@ -440,6 +463,9 @@
                   {{ opt.label }}
                 </button>
               </div>
+              <p v-if="errors.budget" class="text-sm text-red-500">
+                {{ errors.budget }}
+              </p>
               <div class="flex justify-center">
                 <Button
                   variant="primary"
@@ -659,7 +685,7 @@
                 <IconLucid
                   name="ImagePlus"
                   size="lg"
-                  class="mx-auto text-dark/30 mb-3"
+                  class="mx-auto text-gray-300 mb-3"
                 />
                 <p class="text-dark/60 text-sm">
                   {{ t("quote_form.chat_step6_drop") }}
@@ -694,6 +720,16 @@
                 </div>
               </div>
 
+              <!-- Rassure : rien n'est perdu à passer cette étape -->
+              <p class="flex items-start gap-2 text-sm text-gray-600">
+                <IconLucid
+                  name="Clock"
+                  size="xs"
+                  class="text-gray-500 shrink-0 mt-0.5"
+                />
+                {{ t("quote_form.chat_step6_later_hint") }}
+              </p>
+
               <!-- Counter -->
               <p
                 v-if="inspirationFiles.length > 0"
@@ -713,7 +749,10 @@
                 >
                   {{ t("quote_form.chat_next") }}
                 </Button>
+                <!-- Avec des photos, un seul bouton : un « Passer » à côté
+                     laissait croire qu'il annulait les photos ajoutées. -->
                 <Button
+                  v-else
                   variant="ghost"
                   @click="nextStep"
                 >
@@ -1110,6 +1149,7 @@ const errors = reactive({
   email: "",
   phone: "",
   floral_needs: "",
+  budget: "",
   meeting: "",
   generic: "",
 });
@@ -1225,6 +1265,7 @@ const toggleNeed = (key: FloralNeedKey | EventNeedKey) => {
     selectedNeeds.value.add(key);
   }
   errors.floral_needs = "";
+  errors.budget = "";
 };
 
 // Success steps
@@ -1382,6 +1423,7 @@ const validateStep = (step: number): boolean => {
   errors.email = "";
   errors.phone = "";
   errors.floral_needs = "";
+  errors.budget = "";
   errors.meeting = "";
 
   switch (step) {
@@ -1406,6 +1448,13 @@ const validateStep = (step: number): boolean => {
       }
       return valid;
     }
+    case 5:
+      // Budget obligatoire pour un mariage (étape non posée sinon).
+      if (form.service_type === "mariage" && !form.budget) {
+        errors.budget = t("quote_form.error_budget");
+        return false;
+      }
+      return true;
     case 6: {
       if (form.service_type === "atelier") {
         if (!form.workshop_type) {

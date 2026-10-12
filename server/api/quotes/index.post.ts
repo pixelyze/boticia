@@ -4,8 +4,20 @@
  */
 
 import { createQuoteRequest } from "~/server/utils/quotes";
-import type { CreateQuoteRequestInput } from "~/server/utils/quotes-types";
-import { sendNewQuoteNotification, ADMIN_EMAIL } from "~/server/utils/email";
+import type {
+  CreateQuoteRequestInput,
+  WorkshopTypeKey,
+} from "~/server/utils/quotes-types";
+import {
+  FLORAL_NEED_KEYS,
+  EVENT_NEED_KEYS,
+  WORKSHOP_TYPE_KEYS,
+} from "~/server/utils/quotes-types";
+import {
+  sendNewQuoteNotification,
+  sendQuoteConfirmationEmail,
+  ADMIN_EMAIL,
+} from "~/server/utils/email";
 import { generateMagicLink } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
@@ -17,6 +29,44 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       message: "service_type must be mariage, evenement, or atelier",
+    });
+  }
+
+  // Prestations : obligatoires dans le formulaire (étape 6), vérifiées ici
+  // aussi pour qu'un appel direct à l'API ne crée pas de demande vide.
+  if (body.service_type === "atelier") {
+    if (
+      !WORKSHOP_TYPE_KEYS.includes(body.workshop_type as WorkshopTypeKey)
+    ) {
+      throw createError({
+        statusCode: 400,
+        message: "workshop_type is required for an atelier",
+      });
+    }
+  } else {
+    const allowed: string[] =
+      body.service_type === "mariage" ? FLORAL_NEED_KEYS : EVENT_NEED_KEYS;
+    const needs = Array.isArray(body.floral_needs) ? body.floral_needs : [];
+    if (
+      needs.length === 0 ||
+      !needs.every((need) => allowed.includes(need))
+    ) {
+      throw createError({
+        statusCode: 400,
+        message: "floral_needs must list at least one valid service",
+      });
+    }
+  }
+
+  // Budget : obligatoire dans le formulaire pour un mariage (seul type
+  // pour lequel la question est posée).
+  if (
+    body.service_type === "mariage" &&
+    !["lt_2500", "lt_4000", "lt_10000"].includes(body.budget || "")
+  ) {
+    throw createError({
+      statusCode: 400,
+      message: "budget is required for a mariage",
     });
   }
 
@@ -111,6 +161,30 @@ export default defineEventHandler(async (event) => {
       });
     } catch (err) {
       console.error("Error sending admin notification:", err);
+    }
+
+    // Confirmation à la cliente, avec un lien direct vers son espace
+    // (le formulaire lui dit qu'elle pourra y ajouter ses photos).
+    const locale = ["fr", "en", "ja"].includes(body.locale || "")
+      ? body.locale
+      : "fr";
+    try {
+      const { link } = await generateMagicLink(
+        body.email,
+        `${baseUrl}/${locale}/confirm`
+      );
+      await sendQuoteConfirmationEmail({
+        email: body.email,
+        coupleName,
+        serviceType: body.service_type,
+        meetingDate: body.meeting_date,
+        meetingTime: body.meeting_time,
+        portalUrl: link || `${baseUrl}/${locale}/login`,
+        loginUrl: `${baseUrl}/${locale}/login`,
+        locale,
+      });
+    } catch (err) {
+      console.error("Error sending client confirmation:", err);
     }
 
     return {
