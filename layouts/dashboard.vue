@@ -8,10 +8,10 @@
         <div
           class="rounded-full bg-cream-light px-4 md:px-8 py-3 md:py-4 flex items-center justify-between"
         >
-          <button v-if="pageTitle" @click="router.back()" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
+          <button v-if="pageTitle" @click="router.back()" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-gray-500 hover:text-gray-600 transition-all">
             <IconLucid name="ArrowLeft" size="sm" />
           </button>
-          <NuxtLink v-else :to="localePath('/')" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
+          <NuxtLink v-else :to="localePath('/')" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-gray-500 hover:text-gray-600 transition-all">
             <IconLucid name="Home" size="sm" />
           </NuxtLink>
           <div class="text-center">
@@ -25,7 +25,7 @@
           <!-- Settings button -->
           <button
             @click="menuOpen = true"
-            class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all"
+            class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-gray-500 hover:text-gray-600 transition-all"
           >
             <IconLucid name="Settings" size="sm" />
           </button>
@@ -85,7 +85,7 @@
       <!-- Sign out -->
       <button
         @click="handleSignOut"
-        class="w-full flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-cream text-dark/60 text-sm font-semibold hover:bg-cream-dark hover:text-dark transition-colors"
+        class="w-full flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-cream text-gray-500 text-sm font-semibold hover:bg-cream-dark hover:text-dark transition-colors"
       >
         <IconLucid name="LogOut" size="sm" :strokeWidth="2" />
         {{ $t('dashboard.sign_out') }}

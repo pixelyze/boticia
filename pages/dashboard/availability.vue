@@ -22,7 +22,7 @@
             <IconLucid
               name="Loader2"
               size="lg"
-              class="animate-spin mx-auto text-dark/30"
+              class="animate-spin mx-auto text-gray-300"
             />
           </div>
 
@@ -34,7 +34,7 @@
             <IconLucid
               name="CalendarClock"
               size="lg"
-              class="mx-auto text-dark/20 mb-3"
+              class="mx-auto text-gray-300 mb-3"
             />
             <p class="text-dark/40">
               {{ t("availability.no_rules") }}
@@ -54,7 +54,7 @@
                 <IconLucid
                   name="CalendarClock"
                   size="sm"
-                  class="text-dark/50"
+                  class="text-gray-400"
                 />
               </div>
               <div class="flex-1 min-w-0">
@@ -77,16 +77,16 @@
               >
                 {{ rule.is_active ? t("availability.active") : t("availability.inactive") }}
               </button>
-              <button
-                @click="deleteRule(rule.id)"
+              <ConfirmDeleteButton
                 class="w-8 h-8 rounded-full hover:bg-cream-dark flex items-center justify-center transition-all"
+                @confirm="deleteRule(rule.id)"
               >
                 <IconLucid
                   name="Trash2"
                   size="xs"
-                  class="text-dark/30 hover:text-red-500"
+                  class="text-gray-300 hover:text-red-500"
                 />
-              </button>
+              </ConfirmDeleteButton>
             </div>
           </div>
         </div>
@@ -194,7 +194,7 @@
             <IconLucid
               name="Calendar"
               size="lg"
-              class="mx-auto text-dark/20 mb-3"
+              class="mx-auto text-gray-300 mb-3"
             />
             <p class="text-dark/40">
               {{ t("availability.no_exceptions") }}
@@ -254,16 +254,16 @@
                   {{ ex.reason }}
                 </span>
               </div>
-              <button
-                @click="deleteException(ex.id)"
+              <ConfirmDeleteButton
                 class="w-8 h-8 rounded-full hover:bg-cream-dark flex items-center justify-center transition-all"
+                @confirm="deleteException(ex.id)"
               >
                 <IconLucid
                   name="Trash2"
                   size="xs"
-                  class="text-dark/30 hover:text-red-500"
+                  class="text-gray-300 hover:text-red-500"
                 />
-              </button>
+              </ConfirmDeleteButton>
             </div>
           </div>
         </div>

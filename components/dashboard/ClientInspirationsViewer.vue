@@ -17,7 +17,7 @@
       <IconLucid
         name="Loader2"
         size="sm"
-        class="animate-spin mx-auto text-dark/50"
+        class="animate-spin mx-auto text-gray-400"
       />
     </div>
 
@@ -61,7 +61,7 @@
           border-dashed border-dark/10 flex items-center
           justify-center"
       >
-        <IconLucid name="Image" size="sm" class="text-dark/20" />
+        <IconLucid name="Image" size="sm" class="text-gray-300" />
       </div>
     </div>
 

@@ -50,7 +50,7 @@
       <Transition v-bind="contentTransition">
         <div v-if="showModal" class="fixed top-0 inset-x-0 h-14 z-[103] flex items-center justify-between px-4">
           <button
-            class="flex items-center justify-center w-10 h-10 text-white/80 hover:text-white transition-colors"
+            class="flex items-center justify-center w-10 h-10 text-gray-200 hover:text-white transition-colors"
             @click="handleClose"
           >
             <IconLucid name="X" size="md" color="currentColor" />

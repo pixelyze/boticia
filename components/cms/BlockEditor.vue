@@ -60,7 +60,7 @@
             <IconLucid
               name="Inbox"
               size="lg"
-              class="mx-auto mb-4 text-dark/40"
+              class="mx-auto mb-4 text-gray-400"
             />
             <h3 class="text-xl font-bold mb-2">Aucun Bloc</h3>
             <p class="text-dark/60 mb-6">
@@ -101,7 +101,7 @@
           <IconLucid
             name="MousePointerClick"
             size="lg"
-            class="mx-auto mb-3 text-dark/40"
+            class="mx-auto mb-3 text-gray-400"
           />
           <p class="text-sm text-dark/60">
             Sélectionnez un bloc pour modifier ses paramètres

@@ -7,7 +7,7 @@
           <IconLucid
             name="Loader2"
             size="lg"
-            class="animate-spin mx-auto text-dark/30"
+            class="animate-spin mx-auto text-gray-300"
           />
         </div>
 
@@ -33,7 +33,7 @@
                 <IconLucid
                   name="Image"
                   size="lg"
-                  class="text-dark/20"
+                  class="text-gray-300"
                 />
               </div>
 
@@ -98,17 +98,18 @@
                   class="hidden"
                   @change="uploadCover(cat, $event)"
                 />
-                <button
+                <ConfirmDeleteButton
                   v-if="cat.cover_public_url"
-                  @click="deleteCover(cat)"
-                  class="w-10 h-10 rounded-full hover:bg-cream flex items-center justify-center transition-all shrink-0"
+                  position-class="shrink-0"
+                  class="w-10 h-10 rounded-full hover:bg-cream flex items-center justify-center transition-all"
+                  @confirm="deleteCover(cat)"
                 >
                   <IconLucid
                     name="Trash2"
                     size="xs"
-                    class="text-dark/30 hover:text-red-500"
+                    class="text-gray-300 hover:text-red-500"
                   />
-                </button>
+                </ConfirmDeleteButton>
               </div>
 
               <!-- Gallery toggle -->
@@ -129,7 +130,7 @@
                 <IconLucid
                   :name="openGallery === cat.id ? 'ChevronUp' : 'ChevronDown'"
                   size="xs"
-                  class="text-dark/40"
+                  class="text-gray-400"
                 />
               </button>
 
@@ -146,7 +147,7 @@
                   <IconLucid
                     name="Loader2"
                     size="sm"
-                    class="animate-spin mx-auto text-dark/30"
+                    class="animate-spin mx-auto text-gray-300"
                   />
                 </div>
 
@@ -166,12 +167,13 @@
                         :alt="img.original_filename"
                         class="w-full h-full object-cover"
                       />
-                      <button
-                        @click="deleteGalleryImage(cat.id, img.id)"
-                        class="absolute top-1 right-1 w-6 h-6 rounded-full bg-dark/60 text-cream flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      <ConfirmDeleteButton
+                        position-class="absolute top-1 right-1"
+                        class="w-6 h-6 rounded-full bg-dark/60 text-cream flex items-center justify-center [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 transition-opacity"
+                        @confirm="deleteGalleryImage(cat.id, img.id)"
                       >
                         <IconLucid name="Trash2" size="xs" />
-                      </button>
+                      </ConfirmDeleteButton>
                     </div>
                   </div>
 
@@ -186,7 +188,7 @@
                   <!-- Upload gallery image -->
                   <label
                     :for="'gallery-' + cat.id"
-                    class="flex items-center justify-center gap-2 px-4 py-2 rounded-full border-2 border-dashed border-dark/15 text-sm text-dark/40 cursor-pointer transition-all hover:border-dark/30 hover:text-dark/60"
+                    class="flex items-center justify-center gap-2 px-4 py-2 rounded-full border-2 border-dashed border-dark/15 text-sm text-gray-400 cursor-pointer transition-all hover:border-dark/30 hover:text-gray-500"
                   >
                     <IconLucid
                       v-if="uploadingGallery === cat.id"

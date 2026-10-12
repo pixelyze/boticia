@@ -30,7 +30,7 @@
       <IconLucid
         name="Loader2"
         size="sm"
-        class="animate-spin mx-auto text-dark/50"
+        class="animate-spin mx-auto text-gray-400"
       />
     </div>
 
@@ -70,7 +70,7 @@
             </Tag>
             <button
               @click="$emit('delete', proposal.id)"
-              class="text-dark/50 hover:text-red-500
+              class="text-gray-400 hover:text-red-500
                 transition-colors"
             >
               <IconLucid

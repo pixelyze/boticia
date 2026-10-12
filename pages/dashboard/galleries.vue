@@ -7,7 +7,7 @@
           <IconLucid
             name="Loader2"
             size="lg"
-            class="animate-spin mx-auto text-dark/30"
+            class="animate-spin mx-auto text-gray-300"
           />
         </div>
 
@@ -84,7 +84,7 @@
                 <IconLucid
                   name="Loader2"
                   size="sm"
-                  class="animate-spin mx-auto text-dark/30"
+                  class="animate-spin mx-auto text-gray-300"
                 />
               </div>
 
@@ -181,25 +181,26 @@
                         <option v-for="n in 9" :key="n" :value="n">{{ n }}</option>
                       </select>
                       <!-- Delete button -->
-                      <button
-                        @click="deleteImage(gallery.id, img.id)"
-                        class="absolute top-1 right-1 w-6 h-6
+                      <ConfirmDeleteButton
+                        position-class="absolute top-1 right-1"
+                        class="w-6 h-6
                                rounded-full bg-dark/60 text-cream
                                flex items-center justify-center
                                [@media(hover:hover)]:opacity-0
                                [@media(hover:hover)]:group-hover:opacity-100
                                transition-opacity"
+                        @confirm="deleteImage(gallery.id, img.id)"
                       >
                         <IconLucid name="Trash2" size="xs" />
-                      </button>
+                      </ConfirmDeleteButton>
                     </div>
                     <!-- Bouton ajout inline -->
                     <label
                       :for="'gallery-upload-' + gallery.id"
                       class="h-24 rounded-xl border-2 border-dashed border-dark/15
                              flex flex-col items-center justify-center gap-1
-                             text-dark/30 cursor-pointer
-                             hover:border-dark/30 hover:text-dark/50
+                             text-gray-300 cursor-pointer
+                             hover:border-dark/30 hover:text-gray-400
                              transition-all"
                     >
                       <IconLucid
@@ -221,8 +222,8 @@
                   :for="'gallery-upload-' + gallery.id"
                   class="flex flex-col items-center justify-center gap-2 py-8
                          rounded-xl border-2 border-dashed border-dark/15
-                         text-dark/40 cursor-pointer
-                         hover:border-dark/30 hover:text-dark/60 transition-all"
+                         text-gray-400 cursor-pointer
+                         hover:border-dark/30 hover:text-gray-500 transition-all"
                 >
                   <IconLucid
                     v-if="uploading === gallery.id"

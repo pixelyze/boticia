@@ -20,13 +20,13 @@
           <IconLucid
             name="Loader2"
             size="lg"
-            class="animate-spin mx-auto text-dark/30"
+            class="animate-spin mx-auto text-gray-300"
           />
         </div>
 
         <!-- Empty state -->
         <div v-else-if="galleryImages.length === 0" class="py-16 text-center">
-          <IconLucid name="Image" size="lg" class="mx-auto text-dark/20 mb-4" />
+          <IconLucid name="Image" size="lg" class="mx-auto text-gray-300 mb-4" />
           <p class="text-dark/40">{{ $t("creations.empty") }}</p>
         </div>
 

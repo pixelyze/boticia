@@ -75,7 +75,7 @@
 
         <!-- Empty State -->
         <Card v-if="configs.length === 0" variant="muted" class="text-center py-12">
-          <IconLucid name="Settings" size="lg" class="mx-auto mb-4 text-dark/40" />
+          <IconLucid name="Settings" size="lg" class="mx-auto mb-4 text-gray-400" />
           <h3 class="text-xl font-bold mb-2">Aucune configuration</h3>
           <p class="text-dark/60 mb-6">
             Créez votre première configuration

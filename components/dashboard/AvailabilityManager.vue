@@ -130,13 +130,15 @@
           >
             {{ t("availability.save") }}
           </Button>
-          <Button
+          <ConfirmDeleteButton
             v-if="editingRule"
-            variant="ghost"
-            @click="confirmDeleteRule"
+            position-class="self-center"
+            class="px-8 py-3 font-medium rounded-full border-2
+              border-transparent text-dark hover:bg-dark/5 transition-all"
+            @confirm="confirmDeleteRule"
           >
             {{ t("common.delete") }}
-          </Button>
+          </ConfirmDeleteButton>
           <Button
             variant="ghost"
             @click="closeForm"
@@ -216,16 +218,17 @@
               · {{ ex.reason }}
             </span>
           </div>
-          <button
-            @click="deleteException(ex.id)"
-            class="w-6 h-6 rounded-full hover:bg-cream-dark flex items-center justify-center transition-all shrink-0"
+          <ConfirmDeleteButton
+            position-class="shrink-0"
+            class="w-6 h-6 rounded-full hover:bg-cream-dark flex items-center justify-center transition-all"
+            @confirm="deleteException(ex.id)"
           >
             <IconLucid
               name="Trash2"
               size="xs"
               class="text-dark hover:text-red-500"
             />
-          </button>
+          </ConfirmDeleteButton>
         </div>
       </div>
 
@@ -539,7 +542,6 @@ const toggleRule = async (rule: AvailabilityRuleRow) => {
 
 const confirmDeleteRule = async () => {
   if (!editingRule.value) return;
-  if (!confirm(t("availability.delete_confirm"))) return;
   await deleteRule(editingRule.value.id);
   closeForm();
 };

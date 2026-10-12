@@ -158,7 +158,7 @@
               <IconLucid
                 :name="openFaq === i ? 'Minus' : 'Plus'"
                 size="sm"
-                class="text-dark/30 shrink-0"
+                class="text-gray-300 shrink-0"
               />
             </button>
             <div v-if="openFaq === i" class="pb-5">

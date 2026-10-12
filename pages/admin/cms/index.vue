@@ -63,7 +63,7 @@
                 <Tag variant="default">{{ page.locale.toUpperCase() }}</Tag>
               </div>
 
-              <p class="text-dark/60 text-sm mb-2">
+              <p class="text-gray-500 text-sm mb-2">
                 <IconLucid name="Link" size="sm" class="inline mr-1" />
                 {{ page.slug }}
               </p>
@@ -126,7 +126,7 @@
 
       <!-- Empty State -->
       <Card v-else variant="muted" class="text-center py-12">
-        <IconLucid name="FileText" size="lg" class="mx-auto mb-4 text-dark/40" />
+        <IconLucid name="FileText" size="lg" class="mx-auto mb-4 text-gray-400" />
         <h3 class="text-xl font-bold mb-2">Aucune page</h3>
         <p class="text-dark/60 mb-6">
           Créez votre première page pour commencer

@@ -165,7 +165,7 @@
               <IconLucid
                 name="ArrowRight"
                 size="xs"
-                class="text-dark/30"
+                class="text-gray-300"
                 :strokeWidth="1.5"
               />
             </NuxtLink>
@@ -193,7 +193,7 @@
               class="w-full rounded-full border border-dark/15 px-6 py-3.5 text-sm text-dark text-center transition-all flex items-center justify-center gap-2"
               @click="closeMobileMenu"
             >
-              <IconLucid name="User" size="xs" class="text-dark/50" :strokeWidth="1.5" />
+              <IconLucid name="User" size="xs" class="text-gray-400" :strokeWidth="1.5" />
               {{ t("nav.login") }}
             </NuxtLink>
 

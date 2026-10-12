@@ -4,7 +4,7 @@
     <header class="bg-transparent pt-4 pb-4 sticky top-0 z-50">
       <div class="px-10">
         <div class="rounded-full bg-cream-light px-8 py-4 flex items-center justify-between">
-          <NuxtLink :to="localePath('/')" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-dark/60 hover:text-dark/80 transition-all">
+          <NuxtLink :to="localePath('/')" class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center text-gray-500 hover:text-gray-600 transition-all">
             <IconLucid name="ArrowLeft" size="sm" />
           </NuxtLink>
           <span class="font-heading font-medium text-xl tracking-tight text-dark uppercase">

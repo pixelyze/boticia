@@ -17,13 +17,13 @@
         v-else-if="item.item_type === 'pdf'"
         name="FileText"
         size="sm"
-        class="text-dark/60"
+        class="text-gray-500"
       />
       <IconLucid
         v-else
         name="ImageIcon"
         size="sm"
-        class="text-dark/60"
+        class="text-gray-500"
       />
     </div>
 
@@ -48,7 +48,7 @@
     <button
       @click="$emit('delete', item.id)"
       class="w-8 h-8 rounded-full flex items-center
-        justify-center shrink-0 text-dark/40
+        justify-center shrink-0 text-gray-400
         hover:text-red-500 active:text-red-600
         transition-colors"
     >

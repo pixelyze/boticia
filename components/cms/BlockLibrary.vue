@@ -38,7 +38,7 @@
             <p class="text-sm text-dark/60">{{ template.description }}</p>
           </div>
 
-          <IconLucid name="Plus" class="text-dark/40" />
+          <IconLucid name="Plus" class="text-gray-400" />
         </div>
       </Card>
     </div>
@@ -48,7 +48,7 @@
       v-if="filteredTemplates.length === 0"
       class="text-center py-12 text-dark/60"
     >
-      <IconLucid name="Inbox" size="lg" class="mx-auto mb-3 opacity-40" />
+      <IconLucid name="Inbox" size="lg" class="mx-auto mb-3 text-gray-400" />
       <p>Aucun bloc dans cette catégorie</p>
     </div>
 

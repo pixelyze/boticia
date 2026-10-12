@@ -16,7 +16,7 @@
         <IconLucid
           :name="activeIndex === index ? 'Minus' : 'Plus'"
           size="sm"
-          class="text-dark/30 group-hover:text-dark/60 transition-all duration-300 flex-shrink-0"
+          class="text-gray-300 group-hover:text-gray-500 transition-all duration-300 flex-shrink-0"
           :strokeWidth="1.5"
         />
       </button>

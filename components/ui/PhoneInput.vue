@@ -18,7 +18,7 @@
         <IconLucid
           name="ChevronDown"
           size="xs"
-          class="text-dark/40 transition-transform"
+          class="text-gray-400 transition-transform"
           :class="dropdownOpen ? 'rotate-180' : ''"
         />
       </button>

@@ -73,8 +73,8 @@
     <button
       class="w-full flex items-center justify-center gap-2
         py-3 rounded-xl border-2 border-dashed
-        border-gray-200 text-dark/60
-        hover:border-dark/30 hover:text-dark/80
+        border-gray-200 text-gray-500
+        hover:border-dark/30 hover:text-gray-600
         active:bg-cream transition-all"
       :class="uploading ? 'pointer-events-none opacity-60' : ''"
       @click="triggerUpload"

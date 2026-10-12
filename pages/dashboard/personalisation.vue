@@ -43,12 +43,13 @@
                     <IconLucid name="Check" size="xs" class="text-cream" />
                   </span>
                 </button>
-                <button
-                  @click="deleteLogo(logo.path)"
-                  class="absolute -top-2 -left-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                <ConfirmDeleteButton
+                  position-class="absolute -top-2 -left-2"
+                  class="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 transition-opacity"
+                  @confirm="deleteLogo(logo.path)"
                 >
                   <IconLucid name="X" size="xs" class="text-white" />
-                </button>
+                </ConfirmDeleteButton>
               </div>
 
               <!-- Upload slot -->

@@ -26,7 +26,7 @@
 
         <IconLucid
           name="GripVertical"
-          class="text-dark/40 cursor-move flex-shrink-0"
+          class="text-gray-400 cursor-move flex-shrink-0"
         />
 
         <div class="flex-1 min-w-0">
