@@ -119,6 +119,41 @@ const categoryLabel = (cat: Category) => {
 
 const releases = [
   {
+    date: "12 octobre 2026",
+    items: [
+      {
+        category: "fix" as Category,
+        title: "Galeries photos utilisables sur téléphone",
+        description: "Sur mobile, le plan des emplacements s'affiche au-dessus et vos photos sur toute la largeur. Le choix de l'emplacement et la suppression d'une photo sont maintenant visibles sans souris.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Votre logo sur la page de connexion",
+        description: "Le logo choisi dans Personnalisation s'affiche maintenant aussi sur la page de connexion de l'espace client, et plus l'ancien logo.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Les photos du site ne se mélangent plus aux logos",
+        description: "La photo d'accueil et les photos de la page Événements n'apparaissent plus dans la section Logo, et ne peuvent plus être supprimées par erreur depuis celle-ci.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Logo allégé automatiquement",
+        description: "Le logo que vous envoyez est redimensionné et compressé automatiquement : plus besoin de vous soucier de son poids, le site reste rapide.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Envoi de logo plus clair",
+        description: "Les formats acceptés (PNG, JPG, WebP) et la limite de 3 logos sont indiqués. Quand la limite est atteinte ou que le format ne convient pas, un message vous dit quoi faire.",
+      },
+      {
+        category: "content" as Category,
+        title: "Chaque réglage de Personnalisation expliqué",
+        description: "Chaque section dit maintenant ce qu'elle modifie et sur quelle page : logo, couleur d'ambiance, photo d'accueil (anciennement « Photo hero ») et photos de la page Événements.",
+      },
+    ],
+  },
+  {
     date: "19 mai 2026",
     items: [
       {
