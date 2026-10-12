@@ -746,6 +746,7 @@
     "blockquote_success": "Photo updated!",
     "hero_photo_title": "Homepage photo",
     "hero_photo_desc": "The large full-screen photo at the top of the homepage, behind the title.",
+    "hero_photo_missing": "The chosen photo can't be found: the homepage shows the default photo. Choose a new photo to replace it.",
     "hero_photo_upload": "Change photo",
     "hero_photo_success": "Photo updated!",
     "philosophy_photos_title": "Events page photos",
@@ -770,6 +771,7 @@
     "file_draft": "Draft",
     "alert_awaiting_reply": "{name} · wedding in {days} d, quote unanswered",
     "alert_revision_requested": "{name} · asked for changes to the quote",
+    "alert_stale": "{name} · quote sent {days} days ago, still no reply: time to follow up",
     "alert_quote_not_sent": "{name} · you uploaded the quote but never clicked “Send quote” — the client received nothing"
   },
   "client": {

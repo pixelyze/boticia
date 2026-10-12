@@ -746,6 +746,7 @@
     "blockquote_success": "Photo mise à jour !",
     "hero_photo_title": "Photo d'accueil",
     "hero_photo_desc": "La grande photo en plein écran, en haut de la page d'accueil, derrière le titre.",
+    "hero_photo_missing": "La photo choisie est introuvable : la page d'accueil affiche la photo par défaut. Choisissez une nouvelle photo pour la remplacer.",
     "hero_photo_upload": "Changer la photo",
     "hero_photo_success": "Photo mise à jour !",
     "philosophy_photos_title": "Photos de la page Événements",
@@ -770,6 +771,7 @@
     "file_draft": "Brouillon",
     "alert_awaiting_reply": "{name} · mariage dans {days} j, devis sans réponse",
     "alert_revision_requested": "{name} · demande une modification de son devis",
+    "alert_stale": "{name} · devis envoyé il y a {days} jours, toujours sans réponse : pensez à relancer",
     "alert_quote_not_sent": "{name} · vous avez déposé le devis mais vous n'avez pas cliqué sur « Envoyer le devis » — la cliente n'a rien reçu"
   },
   "client": {

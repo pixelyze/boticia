@@ -746,6 +746,7 @@
     "blockquote_success": "写真を更新しました！",
     "hero_photo_title": "トップページの写真",
     "hero_photo_desc": "トップページ上部、タイトルの背後に全画面で表示される大きな写真です。",
+    "hero_photo_missing": "選択した写真が見つかりません。トップページには既定の写真が表示されています。新しい写真を選んでください。",
     "hero_photo_upload": "写真を変更",
     "hero_photo_success": "写真を更新しました！",
     "philosophy_photos_title": "イベントページの写真",
@@ -770,6 +771,7 @@
     "file_draft": "下書き",
     "alert_awaiting_reply": "{name} · 挙式まで{days}日、見積もり未回答",
     "alert_revision_requested": "{name} · 見積もりの修正を依頼しています",
+    "alert_stale": "{name} · {days}日前に見積書を送付、まだ返信がありません。フォローアップをおすすめします",
     "alert_quote_not_sent": "{name} · 見積もりは登録済みですが「見積もりを送信」を押していないため、お客様には届いていません"
   },
   "client": {

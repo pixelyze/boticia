@@ -273,14 +273,6 @@ const pipelineStatuses = [
 const statusCount = (status: string) =>
   quotes.value.filter((q) => q.status === status).length;
 
-const daysSince = (dateStr: string) => {
-  const d = new Date(dateStr);
-  const now = new Date();
-  return Math.floor(
-    (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24)
-  );
-};
-
 const daysUntil = (dateStr: string) => {
   const d = new Date(dateStr);
   const now = new Date();
@@ -340,8 +332,10 @@ const meetingLabel = (m: (typeof upcomingMeetings.value)[number]) => {
 };
 
 /**
- * Alertes : un devis parti dont la cliente n'a pas répondu, alors que le
- * mariage approche, ou une cliente qui demande une modification.
+ * Alertes, par ordre d'importance : une cliente qui demande une
+ * modification, un devis à relancer (même règle que l'étiquette
+ * « Relance » du suivi des demandes), puis un devis sans réponse alors que
+ * le mariage approche.
  *
  * Les alertes précédentes portaient sur le calendrier seul ("mariage dans
  * 47 jours") et se déclenchaient donc aussi bien sur un dossier en règle
@@ -350,7 +344,13 @@ const meetingLabel = (m: (typeof upcomingMeetings.value)[number]) => {
 const ALERT_WEDDING_DAYS = 60;
 
 const alerts = computed(() => {
-  const result: { id: string; message: string; days: number }[] = [];
+  // priority : 0 révision, 1 relance, 2 le reste (trié par date de mariage)
+  const result: {
+    id: string;
+    message: string;
+    days: number;
+    priority: number;
+  }[] = [];
 
   for (const q of quotes.value) {
     if (q.status === "completed" || q.status === "cancelled") continue;
@@ -361,8 +361,23 @@ const alerts = computed(() => {
       result.push({
         id: q.id,
         days: -1,
+        priority: 0,
         message: t("dashboard.alert_revision_requested", {
           name: quoteName(q),
+        }),
+      });
+      continue;
+    }
+
+    if (isQuoteStale(q)) {
+      const since = daysSinceQuoteSent(q);
+      result.push({
+        id: q.id,
+        days: -since,
+        priority: 1,
+        message: t("dashboard.alert_stale", {
+          name: quoteName(q),
+          days: since,
         }),
       });
       continue;
@@ -388,6 +403,7 @@ const alerts = computed(() => {
       result.push({
         id: q.id,
         days,
+        priority: 2,
         message: t("dashboard.alert_quote_not_sent", {
           name: quoteName(q),
         }),
@@ -406,6 +422,7 @@ const alerts = computed(() => {
     result.push({
       id: q.id,
       days,
+      priority: 2,
       message: t("dashboard.alert_awaiting_reply", {
         name: quoteName(q),
         days,
@@ -413,8 +430,8 @@ const alerts = computed(() => {
     });
   }
 
-  result.sort((a, b) => a.days - b.days);
-  return result.slice(0, 3);
+  result.sort((a, b) => a.priority - b.priority || a.days - b.days);
+  return result.slice(0, 5);
 });
 
 useHead({

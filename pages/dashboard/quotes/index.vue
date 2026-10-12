@@ -543,13 +543,6 @@ const statusVariant = (
 };
 
 // Alert helpers
-const daysSince = (dateStr: string) => {
-  const d = new Date(dateStr);
-  const now = new Date();
-  return Math.floor(
-    (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24)
-  );
-};
 
 const daysUntil = (dateStr: string) => {
   const d = new Date(dateStr);
@@ -569,10 +562,7 @@ const isProposalSent = (q: QuoteRequest) =>
 // moodboard et remettait le compteur à zéro. Vieux dossiers sans envoi
 // journalisé : on retombe sur updated_at. Pas de relance si la cliente a
 // demandé une modification : elle a répondu, la main est à Laetitia.
-const isStale = (q: QuoteRequest) =>
-  q.status === "quote_sent" &&
-  !isRevisionRequested(q) &&
-  daysSince(q.quote_sent_at || q.updated_at) > 7;
+const isStale = isQuoteStale;
 
 const isUrgent = (q: QuoteRequest) =>
   q.wedding_date !== undefined &&
