@@ -707,6 +707,8 @@
     "galleries_no_images": "No photos",
     "galleries_add_image": "Add photos",
     "bento_layout": "Page layout slots",
+    "creations_tips_title": "Not every photo suits this gallery",
+    "creations_tips_body": "On the “Our creations” page, each photo is cropped automatically to portrait, square or landscape depending on its place in the mosaic. Choose sharp, well-lit photos with the subject centred and some space around it: they'll look good whatever the crop. Avoid dark or blurry photos, or ones where the subject touches the edges.",
     "galleries_empty": "No galleries created",
     "view_list": "List",
     "view_kanban": "Pipeline",

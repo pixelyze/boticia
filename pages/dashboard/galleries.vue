@@ -76,6 +76,25 @@
 
             <!-- Images grid -->
             <div class="p-5">
+              <!-- Nos créations : la page recadre chaque photo dans une
+                   forme imposée par sa position, d'où ces conseils. -->
+              <div
+                v-if="!usesBentoSlots(gallery.slug)"
+                class="flex items-start gap-3 rounded-xl bg-cream/50
+                  px-4 py-3 mb-4 text-sm text-gray-600"
+              >
+                <IconLucid
+                  name="Info"
+                  size="sm"
+                  class="text-gray-500 shrink-0 mt-0.5"
+                />
+                <div>
+                  <p class="font-medium text-dark mb-1">
+                    {{ t("dashboard.creations_tips_title") }}
+                  </p>
+                  <p>{{ t("dashboard.creations_tips_body") }}</p>
+                </div>
+              </div>
               <!-- Loading images -->
               <div
                 v-if="loadingImages === gallery.id"

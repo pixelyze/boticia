@@ -707,6 +707,8 @@
     "galleries_no_images": "Aucune photo",
     "galleries_add_image": "Ajouter des photos",
     "bento_layout": "Emplacements sur la page",
+    "creations_tips_title": "Toutes les photos ne conviennent pas à cette galerie",
+    "creations_tips_body": "Sur la page « Nos créations », chaque photo est recadrée automatiquement en portrait, en carré ou en paysage selon sa place dans la mosaïque. Choisissez des photos nettes, bien lumineuses, avec le sujet centré et un peu d'espace autour : elles resteront belles quel que soit le recadrage. Évitez les photos sombres, floues ou dont le sujet touche les bords.",
     "galleries_empty": "Aucune galerie créée",
     "view_list": "Liste",
     "view_kanban": "Pipeline",
