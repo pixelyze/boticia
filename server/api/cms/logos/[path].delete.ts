@@ -5,6 +5,7 @@
 
 import { getSupabase } from "~/server/utils/supabase";
 import { serverSupabaseUser } from "#supabase/server";
+import { getSitePhotoPaths } from "~/server/utils/site-photos";
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -20,6 +21,15 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       message: "Logo path is required",
+    });
+  }
+
+  // Garde-fou : une photo utilisée sur le site ne se supprime pas d'ici.
+  const sitePhotos = await getSitePhotoPaths();
+  if (sitePhotos.has(path)) {
+    throw createError({
+      statusCode: 409,
+      message: "Cette image est utilisée comme photo du site",
     });
   }
 

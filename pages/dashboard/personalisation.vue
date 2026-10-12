@@ -13,7 +13,11 @@
 
           <!-- Logo -->
           <div>
-            <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.logo_title') }}</h2>
+            <h2 class="font-heading text-lg text-dark mb-1">{{ $t('dashboard.logo_title') }}</h2>
+            <p class="text-dark/60 text-sm">{{ $t('dashboard.logo_desc') }}</p>
+            <p class="text-dark/40 text-sm mb-4">
+              {{ $t('dashboard.logo_rules', { max: MAX_LOGOS }) }}
+            </p>
             <div class="flex items-center gap-4 flex-wrap">
               <!-- Default logo -->
               <button
@@ -49,7 +53,7 @@
 
               <!-- Upload slot -->
               <button
-                v-if="uploadedLogos.length < 3"
+                v-if="uploadedLogos.length < MAX_LOGOS"
                 @click="fileInput?.click()"
                 :disabled="uploading"
                 class="w-28 h-28 rounded-[1.5rem] border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all"
@@ -65,15 +69,22 @@
                 </template>
               </button>
 
-              <input ref="fileInput" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden" @change="handleUpload" />
+              <input ref="fileInput" type="file" :accept="LOGO_TYPES.join(',')" class="hidden" @change="handleUpload" />
             </div>
+            <p
+              v-if="uploadedLogos.length >= MAX_LOGOS"
+              class="text-dark/50 text-sm mt-3"
+            >
+              {{ $t('dashboard.logo_limit_reached', { max: MAX_LOGOS }) }}
+            </p>
             <p v-if="uploadError" class="text-red-500 text-sm mt-3">{{ uploadError }}</p>
             <p v-if="uploadSuccess" class="text-green-600 text-sm mt-3">{{ uploadSuccess }}</p>
           </div>
 
           <!-- Thème -->
           <div>
-            <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.theme_title') }}</h2>
+            <h2 class="font-heading text-lg text-dark mb-1">{{ $t('dashboard.theme_title') }}</h2>
+            <p class="text-dark/60 text-sm mb-4">{{ $t('dashboard.theme_desc') }}</p>
             <div class="flex items-center gap-3 flex-wrap">
               <button
                 v-for="color in themeColors"
@@ -105,7 +116,7 @@
                 <img :src="heroImage" alt="Photo hero" class="w-full h-full object-cover" />
               </div>
               <div>
-                <p class="text-dark/40 text-sm mb-3">{{ $t('dashboard.hero_photo_desc') }}</p>
+                <p class="text-dark/60 text-sm mb-3">{{ $t('dashboard.hero_photo_desc') }}</p>
                 <label class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all">
                   <IconLucid v-if="uploadingHero" name="Loader2" size="xs" class="animate-spin" />
                   <IconLucid v-else name="Upload" size="xs" />
@@ -119,7 +130,8 @@
 
           <!-- Photos Notre approche (Événements) -->
           <div>
-            <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.philosophy_photos_title') }}</h2>
+            <h2 class="font-heading text-lg text-dark mb-1">{{ $t('dashboard.philosophy_photos_title') }}</h2>
+            <p class="text-dark/60 text-sm mb-4">{{ $t('dashboard.philosophy_photos_desc') }}</p>
             <div class="flex flex-wrap gap-6">
               <div class="flex items-center gap-4">
                 <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
@@ -190,7 +202,10 @@ async function selectThemeColor(color: ThemeColor) {
   }
 }
 
-// Logo
+// Logo — mêmes règles que server/api/cms/logos/upload.post.ts
+const MAX_LOGOS = 3;
+const LOGO_TYPES = ["image/png", "image/jpeg", "image/webp"];
+const { t } = useI18n();
 const { logo: siteLogoRef, setLogo: setSiteLogoGlobal } = useSiteLogo();
 const fileInput = ref<HTMLInputElement | null>(null);
 const uploading = ref(false);
@@ -233,9 +248,16 @@ async function handleUpload(event: Event) {
   const rawFile = input.files?.[0];
   if (!rawFile) return;
 
-  uploading.value = true;
   uploadError.value = "";
   uploadSuccess.value = "";
+
+  if (!LOGO_TYPES.includes(rawFile.type)) {
+    uploadError.value = t("dashboard.logo_format_error");
+    input.value = "";
+    return;
+  }
+
+  uploading.value = true;
 
   try {
     const file = await compress(rawFile);
@@ -298,6 +320,7 @@ async function handleHeroUpload(event: Event) {
     const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("kind", "photo");
     const uploadRes = await $fetch<{ success: boolean; data: { path: string; url: string } }>("/api/cms/logos/upload", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
@@ -361,6 +384,7 @@ async function handlePhilosophyUpload(
     const file = await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("kind", "photo");
     const uploadRes = await $fetch<{ success: boolean; data: { path: string; url: string } }>("/api/cms/logos/upload", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
