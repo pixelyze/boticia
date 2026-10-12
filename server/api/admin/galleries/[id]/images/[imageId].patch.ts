@@ -6,6 +6,8 @@
 import { requireAdmin } from "~/server/utils/serverAuth";
 import { updateGalleryImage } from "~/server/utils/galleries";
 
+const BENTO_SLOTS = 9;
+
 export default defineEventHandler(async (event) => {
   await requireAdmin(event);
 
@@ -23,10 +25,15 @@ export default defineEventHandler(async (event) => {
 
   if ("bento_slot" in body) {
     const slot = body.bento_slot;
-    if (slot !== null && (slot < 1 || slot > 6)) {
+    // 9 emplacements, comme la grille de l'accueil (BentoGallery) et le
+    // sélecteur du dashboard : la limite à 6 rejetait les cases 7 à 9.
+    if (
+      slot !== null &&
+      (!Number.isInteger(slot) || slot < 1 || slot > BENTO_SLOTS)
+    ) {
       throw createError({
         statusCode: 400,
-        message: "bento_slot must be 1-6 or null",
+        message: `bento_slot must be 1-${BENTO_SLOTS} or null`,
       });
     }
     update.bento_slot = slot;

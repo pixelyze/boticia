@@ -95,7 +95,10 @@
                 >
 
                   <!-- Bento layout reference -->
-                  <div class="shrink-0 p-3 rounded-xl bg-cream/50 border border-dark/10">
+                  <div
+                    v-if="usesBentoSlots(gallery.slug)"
+                    class="shrink-0 p-3 rounded-xl bg-cream/50 border border-dark/10"
+                  >
                     <p class="text-xs text-dark/40 mb-2 font-semibold uppercase tracking-wide">
                       {{ t("dashboard.bento_layout") }}
                     </p>
@@ -166,6 +169,7 @@
                       />
                       <!-- Bento slot selector -->
                       <select
+                        v-if="usesBentoSlots(gallery.slug)"
                         :value="img.bento_slot || ''"
                         @change="setBentoSlot(gallery.id, img.id, $event)"
                         class="absolute bottom-1 left-1 w-8 h-8
@@ -300,6 +304,10 @@ const slugToPage: Record<string, string> = {
 
 const galleryUrl = (slug: string) => slugToPage[slug] || `/${slug}`;
 
+// La page « Nos créations » affiche toutes les photos à la suite : elle
+// n'utilise pas les 9 emplacements. On masque donc le plan et les numéros.
+const usesBentoSlots = (slug: string) => slug !== "creations";
+
 const fetchGalleries = async () => {
   loading.value = true;
   try {
@@ -307,8 +315,8 @@ const fetchGalleries = async () => {
       success: boolean;
       data: Gallery[];
     }>("/api/admin/galleries");
-    // Tri : portfolio (homepage) en premier
-    const order = ["portfolio", "creations", "wedding", "workshops", "events"];
+    // Tri : « Nos créations » (la galerie principale) en premier
+    const order = ["creations", "portfolio", "wedding", "workshops", "events"];
     galleries.value = res.data.sort((a, b) => {
       const ia = order.indexOf(a.slug);
       const ib = order.indexOf(b.slug);
@@ -464,6 +472,10 @@ const setBentoSlot = async (
     }
   } catch (err) {
     console.error("Error setting bento slot:", err);
+    // Le choix n'a pas été enregistré : le sélecteur reprend la vraie
+    // valeur au lieu de faire croire que c'est fait.
+    const img = galleryImages[galleryId]?.find((i) => i.id === imageId);
+    select.value = img?.bento_slot ? String(img.bento_slot) : "";
   }
 };
 
