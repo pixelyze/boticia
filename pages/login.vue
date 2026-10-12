@@ -3,7 +3,7 @@
 
     <!-- Colonne gauche (desktop uniquement) -->
     <div class="hidden md:flex bg-cream-light flex-col items-center justify-center px-10 py-16 text-center">
-      <img src="/logo-boticia.png" alt="Boticia" class="h-28 mb-8" />
+      <img :src="logo" alt="Boticia" class="h-28 mb-8" />
       <h1 class="font-heading text-4xl text-dark mb-4">Mon Espace</h1>
       <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
         L'espace réservé aux clientes Boticia — suivez l'avancement de votre projet floral en toute simplicité.
@@ -21,7 +21,7 @@
 
         <!-- Logo mobile uniquement -->
         <div class="md:hidden text-center mb-8">
-          <img src="/logo-boticia.png" alt="Boticia" class="h-20 mx-auto mb-4" />
+          <img :src="logo" alt="Boticia" class="h-20 mx-auto mb-4" />
           <h1 class="font-heading text-3xl text-dark">Mon Espace</h1>
         </div>
 
@@ -93,6 +93,7 @@ definePageMeta({
 const route = useRoute();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
+const { logo } = useSiteLogo();
 
 // State
 const email = ref("");
