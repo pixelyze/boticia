@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
         meeting_time: body.time,
       })
       .eq("id", quoteRequest.id)
-      .select()
+      // Seulement le créneau : la fiche contient les notes internes.
+      .select("meeting_date, meeting_time")
       .single();
 
     if (error) {

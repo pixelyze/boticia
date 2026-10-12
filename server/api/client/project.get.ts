@@ -6,31 +6,36 @@
 import { requireClient } from "~/server/utils/serverAuth";
 import {
   countInspirations,
-  getMoodboardByQuoteId,
-  getProposalsByQuoteId,
+  getLatestSentMoodboard,
+  getLatestSentProposal,
 } from "~/server/utils/client-portal";
 
 export default defineEventHandler(async (event) => {
   const { quoteRequest } = await requireClient(event);
 
   try {
-    const [inspirationCount, moodboard, proposals] =
+    const [inspirationCount, moodboard, latestProposal] =
       await Promise.all([
         countInspirations(quoteRequest.id),
-        getMoodboardByQuoteId(quoteRequest.id),
-        getProposalsByQuoteId(quoteRequest.id),
+        getLatestSentMoodboard(quoteRequest.id),
+        getLatestSentProposal(quoteRequest.id),
       ]);
+
+    // Les notes internes de Laëtitia ne doivent jamais partir chez la
+    // cliente (elles seraient lisibles dans l'onglet réseau).
+    const { admin_notes, kanban_position, ...quote } = quoteRequest;
 
     return {
       success: true,
       data: {
-        quote: quoteRequest,
+        quote,
         counts: {
           inspirations: inspirationCount,
           moodboard: moodboard.length,
-          proposals: proposals.length,
+          proposals: latestProposal ? 1 : 0,
         },
-        latestProposal: proposals[0] || null,
+        // Ce que voit la cliente : dernières versions envoyées.
+        latestProposal,
       },
     };
   } catch (err) {

@@ -19,9 +19,14 @@
       </div>
     </template>
 
-    <!-- PDF -->
+    <!-- PDF : carré comme les photos, contenu centré, toute la carte
+         ouvre le document (souvent le livre floral lui-même). -->
     <template v-else-if="item.item_type === 'pdf'">
-      <div class="p-6 flex flex-col items-center gap-3">
+      <div
+        class="aspect-square p-6 flex flex-col items-center justify-center
+          gap-3 text-center cursor-pointer"
+        @click="openFile"
+      >
         <div
           class="w-14 h-14 rounded-full bg-cream flex items-center
             justify-center"
@@ -32,18 +37,17 @@
             class="text-gray-400"
           />
         </div>
-        <p class="text-sm font-medium text-dark text-center">
+        <p class="text-sm font-medium text-dark break-words max-w-full">
           {{ item.title || item.original_filename }}
         </p>
-        <a
-          :href="item.public_url"
-          target="_blank"
-          rel="noopener"
-          class="text-sm text-dark/60 underline
-            hover:text-dark transition-colors"
+        <Button
+          type="button"
+          icon="ExternalLink"
+          class="!px-5 !py-2 text-sm"
+          @click.stop="openFile"
         >
-          {{ $t("client.moodboard_download") }}
-        </a>
+          {{ $t("client.moodboard_open") }}
+        </Button>
       </div>
     </template>
 
@@ -80,11 +84,18 @@
 <script setup lang="ts">
 import type { MoodboardItem } from "~/server/utils/client-portal-types";
 
-defineProps<{
+const props = defineProps<{
   item: MoodboardItem;
 }>();
 
 defineEmits<{
   (e: "preview", item: MoodboardItem): void;
 }>();
+
+// Ouvre le PDF dans un nouvel onglet (lecture, impression, téléchargement).
+const openFile = () => {
+  if (props.item.public_url) {
+    window.open(props.item.public_url, "_blank", "noopener");
+  }
+};
 </script>

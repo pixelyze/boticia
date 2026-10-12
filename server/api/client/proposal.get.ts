@@ -5,7 +5,7 @@
 
 import { requireClient } from "~/server/utils/serverAuth";
 import {
-  getProposalsByQuoteId,
+  getLatestSentProposal,
   updateProposal,
 } from "~/server/utils/client-portal";
 
@@ -13,16 +13,9 @@ export default defineEventHandler(async (event) => {
   const { quoteRequest } = await requireClient(event);
 
   try {
-    const proposals = await getProposalsByQuoteId(
-      quoteRequest.id
-    );
-
-    // Only show non-draft proposals to client
-    const visible = proposals.filter(
-      (p) => p.status !== "draft"
-    );
-
-    const latest = visible[0] || null;
+    // Dernière version envoyée : brouillons et versions remplacées
+    // restent invisibles pour la cliente.
+    const latest = await getLatestSentProposal(quoteRequest.id);
 
     // Mark as viewed if pending
     if (latest && latest.status === "pending") {

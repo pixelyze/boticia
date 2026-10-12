@@ -6,6 +6,13 @@
         <h3 class="font-heading text-lg font-medium text-dark">
           {{ proposal.title }}
         </h3>
+        <!-- Mention discrète dès qu'il y a eu plusieurs envois -->
+        <p
+          v-if="(proposal.version || 1) > 1"
+          class="text-xs text-gray-600 mt-0.5"
+        >
+          {{ $t("client.document_version", { version: proposal.version }) }}
+        </p>
         <p
           v-if="proposal.description"
           class="text-sm text-dark/60 mt-1"
@@ -18,51 +25,21 @@
       </Tag>
     </div>
 
-    <!-- Amount -->
-    <div
-      v-if="proposal.total_amount_cents"
-      class="flex items-center gap-3 mb-4"
-    >
-      <div
-        class="w-9 h-9 rounded-full bg-cream flex items-center
-          justify-center shrink-0"
-      >
-        <IconLucid
-          name="BadgeEuro"
-          size="sm"
-          class="text-gray-400"
-        />
-      </div>
-      <span class="text-dark font-medium text-lg">
-        {{ formatAmount(proposal.total_amount_cents) }}
-      </span>
-    </div>
+    <!-- Pas de montant ici : il est saisi à la main et peut diverger du PDF,
+         qui reste la seule référence pour la cliente. -->
 
-    <!-- PDF download -->
-    <div
+    <!-- PDF : vrai bouton (pleine largeur sur mobile) plutôt qu'un lien
+         texte ; le nom de fichier interne n'apporte rien à la cliente. -->
+    <Button
       v-if="proposal.public_url"
-      class="flex items-center gap-3 mb-4"
+      :href="proposal.public_url"
+      target="_blank"
+      rel="noopener"
+      icon="FileText"
+      class="w-full sm:w-auto justify-center mb-4"
     >
-      <div
-        class="w-9 h-9 rounded-full bg-cream flex items-center
-          justify-center shrink-0"
-      >
-        <IconLucid
-          name="FileText"
-          size="sm"
-          class="text-gray-400"
-        />
-      </div>
-      <a
-        :href="proposal.public_url"
-        target="_blank"
-        rel="noopener"
-        class="text-dark underline hover:text-dark/70
-          transition-colors"
-      >
-        {{ proposal.original_filename || $t("client.proposal_download_pdf") }}
-      </a>
-    </div>
+      {{ $t("client.proposal_view_pdf") }}
+    </Button>
 
     <!-- Client comment if revision requested -->
     <div
@@ -78,6 +55,11 @@
       <p class="text-sm text-dark">
         {{ proposal.client_comment }}
       </p>
+    </div>
+
+    <!-- Pied de carte : la réponse au devis, dans le même bloc -->
+    <div v-if="$slots.default" class="border-t-2 border-dark/10 mt-6 pt-6">
+      <slot />
     </div>
   </div>
 </template>
@@ -99,11 +81,4 @@ const statusVariant = computed(() => {
   };
   return (map[props.proposal.status] || "default") as any;
 });
-
-const formatAmount = (cents: number) => {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-  }).format(cents / 100);
-};
 </script>

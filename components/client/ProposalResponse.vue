@@ -1,5 +1,6 @@
 <template>
-  <div class="rounded-[1.5rem] border-2 border-dark/10 p-6">
+  <!-- Sans cadre : s'affiche en pied de la carte du devis (ProposalCard) -->
+  <div>
     <h3
       class="font-heading text-sm text-dark/50
         uppercase tracking-wider mb-4"

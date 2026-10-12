@@ -4,13 +4,14 @@
  */
 
 import { requireClient } from "~/server/utils/serverAuth";
-import { getMoodboardByQuoteId } from "~/server/utils/client-portal";
+import { getLatestSentMoodboard } from "~/server/utils/client-portal";
 
 export default defineEventHandler(async (event) => {
   const { quoteRequest } = await requireClient(event);
 
   try {
-    const items = await getMoodboardByQuoteId(quoteRequest.id);
+    // La cliente ne voit que la dernière version envoyée.
+    const items = await getLatestSentMoodboard(quoteRequest.id);
 
     return {
       success: true,
