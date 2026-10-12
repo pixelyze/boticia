@@ -1,0 +1,23 @@
+[env]
+PORT = "3020"
+NODE_NO_WARNINGS = "1"    # silence les ExperimentalWarning / deprecations Node en dev
+# Liens des emails locaux (connexion, notifications) vers le bon port.
+# Prime sur .env (localhost:3001, ancien port pm2).
+NUXT_PUBLIC_SITE_URL = "http://localhost:{{env.PORT}}"
+
+[tasks.dev]
+description = "Lance Nuxt en dev sur le port du projet (3020)"
+run = "npm run dev -- --port $PORT"
+
+[tasks.supabase]
+description = "Démarre Supabase local (base + Mailpit) et affiche les emails reçus — à laisser ouvert"
+run = """
+supabase start
+echo ""
+echo "Mailpit (emails locaux) : http://127.0.0.1:54324  —  ouvrir : mise run mail"
+docker logs -f --tail 0 supabase_inbucket_boticia
+"""
+
+[tasks.mail]
+description = "Ouvre Mailpit, la boîte où arrivent tous les emails envoyés en local"
+run = "open http://127.0.0.1:54324"
