@@ -3,8 +3,10 @@
     <!-- Background image with parallax feel -->
     <div class="absolute inset-0">
       <img
+        ref="heroImg"
         :src="imageUrl"
         alt="Boticia"
+        @error="imageFailed = true"
         fetchpriority="high"
         class="w-full h-full object-cover scale-110 hero-zoom"
       />
@@ -70,8 +72,18 @@ const defaultImage = "/bouquet_mariee_boticia._1.webp";
 const { data: configData } = await useFetch("/api/cms/config", {
   params: { key: "hero_image" },
 });
+// Si la photo choisie est introuvable (fichier supprimé), on retombe sur
+// la photo par défaut plutôt que sur un fond vide.
+const imageFailed = ref(false);
+const heroImg = ref(null);
 const imageUrl = computed(() => {
+  if (imageFailed.value) return defaultImage;
   return configData.value?.data?.value?.url || defaultImage;
+});
+// Rendu serveur : l'image peut avoir échoué avant que Vue n'écoute l'erreur.
+onMounted(() => {
+  const img = heroImg.value;
+  if (img && img.complete && img.naturalWidth === 0) imageFailed.value = true;
 });
 </script>
 

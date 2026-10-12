@@ -114,10 +114,14 @@
             <h2 class="font-heading text-lg text-dark mb-4">{{ $t('dashboard.hero_photo_title') }}</h2>
             <div class="flex items-center gap-4">
               <div class="w-28 h-28 rounded-[1.5rem] border-2 border-dark/15 bg-cream overflow-hidden shrink-0">
-                <img :src="heroImage" alt="Photo hero" class="w-full h-full object-cover" />
+                <img :src="heroMissing ? '/bouquet_mariee_boticia._1.webp' : heroImage" :alt="$t('dashboard.hero_photo_title')" class="w-full h-full object-cover" @error="heroMissing = true" />
               </div>
               <div>
                 <p class="text-dark/60 text-sm mb-3">{{ $t('dashboard.hero_photo_desc') }}</p>
+                <p v-if="heroMissing" class="flex items-start gap-2 text-red-600 text-sm mb-3" role="alert">
+                  <IconLucid name="AlertTriangle" size="xs" class="text-red-600 shrink-0 mt-0.5" />
+                  {{ $t('dashboard.hero_photo_missing') }}
+                </p>
                 <label class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark text-cream text-sm font-semibold cursor-pointer hover:bg-dark/80 transition-all">
                   <IconLucid v-if="uploadingHero" name="Loader2" size="xs" class="animate-spin" />
                   <IconLucid v-else name="Upload" size="xs" />
@@ -298,6 +302,9 @@ async function deleteLogo(path: string) {
 const heroImage = ref("/bouquet_mariee_boticia._1.webp");
 const uploadingHero = ref(false);
 const heroSuccess = ref(false);
+// Fichier de la photo introuvable : la page d'accueil affiche la photo par
+// défaut ; on le dit ici pour qu'elle en choisisse une nouvelle.
+const heroMissing = ref(false);
 
 async function fetchHeroImage() {
   try {
@@ -334,6 +341,7 @@ async function handleHeroUpload(event: Event) {
         body: { key: "hero_image", category: "homepage", value: { url: uploadRes.data.url } },
       });
       heroImage.value = uploadRes.data.url;
+      heroMissing.value = false;
       heroSuccess.value = true;
       setTimeout(() => { heroSuccess.value = false; }, 3000);
     }
