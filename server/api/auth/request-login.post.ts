@@ -13,6 +13,7 @@
 import { getSupabase, generateMagicLink } from "~/server/utils/supabase";
 import { getQuoteByClientEmail } from "~/server/utils/client-portal";
 import { sendLoginLinkEmail } from "~/server/utils/email";
+import { isAdmin } from "~/server/utils/adminAuth";
 import { safeRedirectPath } from "~/utils/safeRedirect";
 
 const LOCALES = ["fr", "en", "ja"];
@@ -65,7 +66,12 @@ export default defineEventHandler(async (event) => {
       );
 
       if (link) {
-        await sendLoginLinkEmail(normalizedEmail, link, lang);
+        await sendLoginLinkEmail(
+          normalizedEmail,
+          link,
+          lang,
+          await isAdmin(normalizedEmail)
+        );
       } else {
         console.error("Login link generation failed:", error);
       }

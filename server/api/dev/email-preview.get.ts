@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
       ctaText: "Voir mon moodboard",
       ctaUrl: `${portalUrl}/moodboard`,
       footerText: "Boticia — Atelier de design floral",
+      note: "",
     });
   } else if (template === "new-quote") {
     subject = "Nouvelle demande de Clémentine Vallet — Boticia";
@@ -42,6 +43,7 @@ export default defineEventHandler(async (event) => {
       ctaText: "Voir la demande",
       ctaUrl: "http://localhost:3001/fr/dashboard/quotes/123",
       footerText: "Boticia — Notification admin",
+      note: "",
     });
   } else if (template === "proposal") {
     subject = "Votre devis floral est disponible — Boticia";
@@ -55,6 +57,7 @@ export default defineEventHandler(async (event) => {
       ctaText: "Consulter mon devis",
       ctaUrl: `${portalUrl}/proposition`,
       footerText: "Boticia — Atelier de design floral",
+      note: "",
     });
   }
 

@@ -5,10 +5,35 @@
 import { Resend } from "resend";
 import { createTransport } from "nodemailer";
 import { renderWelcome } from "~/server/emails/compiled";
+import type { WelcomeData } from "~/server/emails/compiled";
+import { getConfigByKey } from "~/server/utils/cms";
 
-const LOGO_URL = process.env.NUXT_PUBLIC_SITE_URL
-  ? `${process.env.NUXT_PUBLIC_SITE_URL}/logo-boticia.png`
-  : "http://localhost:3001/logo-boticia.png";
+const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3020";
+const DEFAULT_LOGO_URL = `${SITE_URL}/logo-boticia.png`;
+
+/**
+ * The logo chosen in Personnalisation, as an absolute URL (mail clients
+ * can't resolve relative paths). Falls back to the default logo.
+ */
+async function getEmailLogoUrl(): Promise<string> {
+  const config = await getConfigByKey("site_logo");
+  const url = (config?.value as { url?: string } | null)?.url;
+  if (!url) return DEFAULT_LOGO_URL;
+  if (url.startsWith("https://") || url.startsWith("http://")) return url;
+  if (url.startsWith("/")) return `${SITE_URL}${url}`;
+  return DEFAULT_LOGO_URL;
+}
+
+/** Shared client email layout, with the site logo and an optional note. */
+async function renderClientEmail(
+  data: Omit<WelcomeData, "logoUrl" | "note"> & { note?: string }
+): Promise<string> {
+  return renderWelcome({
+    ...data,
+    logoUrl: await getEmailLogoUrl(),
+    note: data.note ?? "",
+  });
+}
 
 let resend: Resend | null = null;
 
@@ -117,8 +142,9 @@ const CLIENT_EMAIL = {
         "photos d'inspiration à tout moment, puis y retrouver votre " +
         "moodboard et votre devis.",
       expiry: (url: string) =>
-        "Le bouton ci-dessous vous connecte directement pendant une heure. " +
-        `Ensuite, connectez-vous depuis ${url} avec cette adresse email.`,
+        "Le bouton ci-dessus vous connecte directement pendant 24 heures. " +
+        `Ensuite, vous pourrez vous connecter à tout moment depuis ${url} ` +
+        "avec cette adresse email.",
       cta: "Accéder à mon espace",
       dateLocale: "fr-FR",
     },
@@ -137,10 +163,23 @@ const CLIENT_EMAIL = {
       title: "Votre lien de connexion",
       greeting: "Bonjour,",
       message:
-        "Voici votre lien de connexion à votre espace Boticia. " +
-        "Il est personnel et n'est utilisable qu'une seule fois.<br/><br/>" +
-        "Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.",
-      cta: "Me connecter",
+        "Votre espace Boticia vous attend : votre projet floral, vos " +
+        "inspirations et vos échanges avec Laëtitia, tout est réuni au même " +
+        "endroit.",
+      note:
+        "Ce lien reste valable 24 heures. Passé ce délai, vous pourrez en " +
+        "demander un nouveau en un clic depuis la page de connexion.<br/><br/>" +
+        "Vous n'avez rien demandé ? Rien à faire, vous pouvez simplement " +
+        "ignorer ce message.",
+      cta: "Accéder à mon espace",
+    },
+    loginAdmin: {
+      title: "Votre lien de connexion",
+      greeting: "Bonjour Laëtitia,",
+      message:
+        "Votre tableau de bord Boticia vous attend : demandes de devis, " +
+        "clientes, moodboards et galeries, tout est prêt.",
+      cta: "Ouvrir mon tableau de bord",
     },
   },
   en: {
@@ -176,8 +215,9 @@ const CLIENT_EMAIL = {
         "Your client space is already open: you can add your inspiration " +
         "photos at any time, and later find your moodboard and your quote there.",
       expiry: (url: string) =>
-        "The button below signs you in directly for one hour. " +
-        `After that, sign in from ${url} with this email address.`,
+        "The button above signs you in directly for 24 hours. " +
+        `After that, you can sign in at any time from ${url} ` +
+        "with this email address.",
       cta: "Go to my client space",
       dateLocale: "en-GB",
     },
@@ -196,10 +236,22 @@ const CLIENT_EMAIL = {
       title: "Your sign-in link",
       greeting: "Hello,",
       message:
-        "Here is your link to sign in to your Boticia space. " +
-        "It is personal and can only be used once.<br/><br/>" +
-        "If you didn't request it, simply ignore this email.",
-      cta: "Sign in",
+        "Your Boticia space is waiting for you: your floral project, your " +
+        "inspirations and your exchanges with Laëtitia, all in one place.",
+      note:
+        "This link stays valid for 24 hours. After that, you can request a " +
+        "new one in one click from the sign-in page.<br/><br/>" +
+        "Didn't ask for anything? No need to do anything, you can simply " +
+        "ignore this message.",
+      cta: "Go to my space",
+    },
+    loginAdmin: {
+      title: "Your sign-in link",
+      greeting: "Hello Laëtitia,",
+      message:
+        "Your Boticia dashboard is waiting for you: quote requests, " +
+        "clients, moodboards and galleries, everything is ready.",
+      cta: "Open my dashboard",
     },
   },
   ja: {
@@ -235,8 +287,8 @@ const CLIENT_EMAIL = {
         "マイページはすでにご利用いただけます。インスピレーション写真をいつでも追加でき、" +
         "のちほどムードボードやお見積書もご確認いただけます。",
       expiry: (url: string) =>
-        "下のボタンから1時間のあいだ直接ログインできます。" +
-        `それ以降は ${url} からこのメールアドレスでログインしてください。`,
+        "上のボタンから24時間のあいだ直接ログインできます。" +
+        `それ以降も ${url} からこのメールアドレスでいつでもログインいただけます。`,
       cta: "マイページへ",
       dateLocale: "ja-JP",
     },
@@ -255,10 +307,21 @@ const CLIENT_EMAIL = {
       title: "ログイン用リンク",
       greeting: "こんにちは。",
       message:
-        "Boticia マイページへのログイン用リンクをお送りします。" +
-        "このリンクはお客様専用で、一度のみご利用いただけます。<br/><br/>" +
-        "お心当たりのない場合は、このメールを破棄してください。",
-      cta: "ログイン",
+        "Boticia マイページでお待ちしております。フラワープロジェクト、" +
+        "インスピレーション、Laëtitiaとのやりとりをすべて一か所でご確認いただけます。",
+      note:
+        "このリンクは24時間有効です。期限が過ぎた場合も、ログインページから" +
+        "ワンクリックで新しいリンクをお受け取りいただけます。<br/><br/>" +
+        "お心当たりのない場合は、何もせずにこのメッセージを破棄してください。",
+      cta: "マイページへ",
+    },
+    loginAdmin: {
+      title: "ログイン用リンク",
+      greeting: "Laëtitia 様",
+      message:
+        "Boticia ダッシュボードの準備ができています。お見積りのご依頼、" +
+        "お客様、ムードボード、ギャラリーをご確認いただけます。",
+      cta: "ダッシュボードを開く",
     },
   },
 };
@@ -273,8 +336,7 @@ export async function sendMoodboardNotification(
   locale?: string
 ): Promise<boolean> {
   const tx = CLIENT_EMAIL[clientLocale(locale)];
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: tx.moodboard.title,
     greeting: tx.greeting(escapeHtml(coupleName)),
     message: tx.moodboard.message,
@@ -300,8 +362,7 @@ export async function sendProposalNotification(
   locale?: string
 ): Promise<boolean> {
   const tx = CLIENT_EMAIL[clientLocale(locale)];
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: tx.proposal.title,
     greeting: tx.greeting(escapeHtml(coupleName)),
     message: tx.proposal.message,
@@ -349,8 +410,7 @@ export async function sendNewQuoteNotification(data: {
     details += `<strong>RDV souhaité :</strong> ${data.meetingDate}${data.meetingTime ? ` à ${data.meetingTime}` : ""}<br/>`;
   }
 
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: "Nouvelle demande de devis",
     greeting: `Bonjour Laetitia,`,
     message:
@@ -408,15 +468,14 @@ export async function sendQuoteConfirmationEmail(data: {
     meeting = `${c.meeting(when)}<br/><br/>`;
   }
 
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: c.title,
     greeting: tx.greeting(escapeHtml(data.coupleName)),
     message:
       `${c.thanks(service)}<br/><br/>` +
       meeting +
-      `${c.portal}<br/><br/>` +
-      `<small>${c.expiry(data.loginUrl)}</small>`,
+      c.portal,
+    note: c.expiry(data.loginUrl),
     ctaText: c.cta,
     ctaUrl: data.portalUrl,
     footerText: tx.footer,
@@ -443,8 +502,7 @@ export async function sendRevisionRequestNotification(data: {
       escapeHtml(data.comment.trim()).replace(/\n/g, "<br/>")
     : "";
 
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: "Modification de devis demandée",
     greeting: `Bonjour Laetitia,`,
     message:
@@ -485,8 +543,7 @@ export async function sendFeedbackNotification(data: {
     minute: "2-digit",
   });
 
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: `Feedback — ${typeLabel}`,
     greeting: "Nouveau feedback reçu",
     message:
@@ -516,8 +573,7 @@ export async function sendChatNotification(data: {
   message: string;
   chatUrl: string;
 }): Promise<boolean> {
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: "Nouveau message",
     greeting: `${data.senderName} vous a écrit :`,
     message: `<em>"${data.message.replace(/\n/g, "<br/>")}"</em>`,
@@ -543,8 +599,7 @@ export async function sendMagicLinkEmail(
   locale?: string
 ): Promise<boolean> {
   const tx = CLIENT_EMAIL[clientLocale(locale)];
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
+  const html = await renderClientEmail({
     title: tx.invite.title,
     greeting: tx.greeting(escapeHtml(coupleName)),
     message: tx.invite.message,
@@ -563,21 +618,23 @@ export async function sendMagicLinkEmail(
 /**
  * Send a login link, on demand from the login page.
  *
- * Wording stays neutral : this email reaches clients and admins alike,
- * and may reach someone who did not ask for it.
+ * Clients and the admin get their own wording. It stays reassuring : no
+ * security warning, the "not you?" line sits in the small note.
  */
 export async function sendLoginLinkEmail(
   email: string,
   magicLink: string,
-  locale?: string
+  locale?: string,
+  admin = false
 ): Promise<boolean> {
   const tx = CLIENT_EMAIL[clientLocale(locale)];
-  const html = renderWelcome({
-    logoUrl: LOGO_URL,
-    title: tx.login.title,
-    greeting: tx.login.greeting,
-    message: tx.login.message,
-    ctaText: tx.login.cta,
+  const text = admin ? tx.loginAdmin : tx.login;
+  const html = await renderClientEmail({
+    title: text.title,
+    greeting: text.greeting,
+    message: text.message,
+    note: tx.login.note,
+    ctaText: text.cta,
     ctaUrl: magicLink,
     footerText: "Boticia",
   });
