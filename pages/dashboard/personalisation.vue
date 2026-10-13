@@ -209,7 +209,7 @@ async function selectThemeColor(color: ThemeColor) {
 
 // Logo — mêmes règles que server/api/cms/logos/upload.post.ts
 const MAX_LOGOS = 3;
-const LOGO_TYPES = ["image/png", "image/jpeg", "image/webp"];
+const LOGO_TYPES = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
 const { t } = useI18n();
 const { logo: siteLogoRef, setLogo: setSiteLogoGlobal } = useSiteLogo();
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -265,7 +265,8 @@ async function handleUpload(event: Event) {
   uploading.value = true;
 
   try {
-    const file = await compress(rawFile);
+    // Un SVG part tel quel : le serveur le convertit en PNG.
+    const file = rawFile.type === "image/svg+xml" ? rawFile : await compress(rawFile);
     const formData = new FormData();
     formData.append("file", file);
     const result = await $fetch<{ success: boolean; data: { path: string; url: string } }>("/api/cms/logos/upload", {

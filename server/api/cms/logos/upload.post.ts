@@ -5,12 +5,13 @@
 
 import { getSupabase } from "~/server/utils/supabase";
 import { serverSupabaseUser } from "#supabase/server";
-import { compressImage } from "~/server/utils/image-compress";
+import { compressImage, rasterizeLogo } from "~/server/utils/image-compress";
 import { listLogoFiles } from "~/server/utils/site-photos";
 
 // Mêmes règles que pages/dashboard/personalisation.vue
 const MAX_LOGOS = 3;
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"];
+const SVG_TYPE = "image/svg+xml";
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 
 export default defineEventHandler(async (event) => {
@@ -43,12 +44,16 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Pas de SVG : servi depuis boticia.fr via /api/storage, un SVG peut
-  // embarquer du JavaScript exécuté sur le domaine du site.
-  if (!ALLOWED_TYPES.includes(file.type || "")) {
+  // SVG accepté pour les logos seulement, et jamais stocké tel quel :
+  // servi depuis boticia.fr via /api/storage, un SVG peut embarquer du
+  // JavaScript exécuté sur le domaine du site. Il est converti en PNG.
+  const isSvg = !isPhoto && file.type === SVG_TYPE;
+  if (!isSvg && !ALLOWED_TYPES.includes(file.type || "")) {
     throw createError({
       statusCode: 400,
-      message: "Format non accepté. Utilisez PNG, JPG ou WebP.",
+      message: isPhoto
+        ? "Format non accepté. Utilisez PNG, JPG ou WebP."
+        : "Format non accepté. Utilisez PNG, JPG, WebP ou SVG.",
     });
   }
 
@@ -71,13 +76,18 @@ export default defineEventHandler(async (event) => {
   // Le logo s'affiche à ~100px de haut : 512px de large suffit (Retina
   // inclus). Une photo du site reste en pleine largeur (1920px, comme les
   // galeries).
-  const { data: body, mimeType: contentType, ext } = await compressImage(
-    file.data,
-    {
-      maxWidth: isPhoto ? 1920 : 512,
-      quality: isPhoto ? 80 : 85,
-    }
-  );
+  let converted;
+  try {
+    converted = isPhoto
+      ? await compressImage(file.data, { maxWidth: 1920, quality: 80 })
+      : await rasterizeLogo(file.data, isSvg);
+  } catch {
+    throw createError({
+      statusCode: 400,
+      message: "Image illisible. Vérifiez le fichier et réessayez.",
+    });
+  }
+  const { data: body, mimeType: contentType, ext } = converted;
   const fileName = isPhoto
     ? `photos/photo-${Date.now()}.${ext}`
     : `logo-${Date.now()}.${ext}`;
