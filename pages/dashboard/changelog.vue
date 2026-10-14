@@ -119,6 +119,56 @@ const categoryLabel = (cat: Category) => {
 
 const releases = [
   {
+    date: "14 octobre 2026",
+    items: [
+      {
+        category: "fix" as Category,
+        title: "Votre tableau de bord mieux protégé",
+        description: "Les réglages du site, les logos et le contenu ne peuvent plus être modifiés que par vous, une fois connectée. Une cliente connectée à son espace n'y a pas accès, et personne ne peut savoir qui est cliente de Boticia.",
+      },
+      {
+        category: "design" as Category,
+        title: "Des emails plus soignés sur téléphone",
+        description: "Les emails envoyés à vos clientes ne collent plus aux bords de l'écran sur mobile, et affichent le logo choisi dans Personnalisation.",
+      },
+      {
+        category: "content" as Category,
+        title: "Un email de connexion plus chaleureux",
+        description: "Le lien de connexion n'a plus l'air d'une alerte de sécurité : il invite la cliente à retrouver son projet. Vous recevez votre propre version, qui ouvre votre tableau de bord.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Lien de connexion valable 24 heures",
+        description: "Vos clientes ont maintenant une journée entière pour cliquer sur le lien reçu par email, au lieu d'une heure.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Logo au format SVG",
+        description: "Vous pouvez envoyer votre logo en SVG dans Personnalisation. Il est converti automatiquement pour s'afficher net partout, emails compris.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Les relances à faire sur l'accueil",
+        description: "Les devis envoyés depuis plus de 7 jours sans réponse apparaissent dans les alertes de l'accueil du tableau de bord, comme dans le suivi des demandes.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Photo d'accueil toujours affichée",
+        description: "Si la photo d'accueil est introuvable, le site affiche la photo par défaut au lieu d'une image cassée, et Personnalisation vous prévient pour la remplacer.",
+      },
+      {
+        category: "fix" as Category,
+        title: "Emplacements 7 à 9 des galeries",
+        description: "Les photos placées sur les emplacements 7, 8 et 9 d'une galerie sont maintenant bien enregistrées.",
+      },
+      {
+        category: "design" as Category,
+        title: "« Nos créations » en tête des galeries",
+        description: "La galerie « Nos créations » apparaît en premier, sans plan d'emplacements, avec des conseils pour choisir des photos bien cadrées et lumineuses.",
+      },
+    ],
+  },
+  {
     date: "12 octobre 2026",
     items: [
       {
