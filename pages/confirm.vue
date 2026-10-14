@@ -1,16 +1,40 @@
 <template>
-  <div class="min-h-screen bg-cream flex items-center justify-center px-6">
-    <div class="text-center">
-      <div class="text-4xl mb-4">{{ error ? '❌' : '⏳' }}</div>
-      <h1 class="text-2xl font-bold text-dark mb-2">
-        {{ error ? 'Erreur de connexion' : 'Connexion en cours...' }}
+  <AuthSplit>
+    <!-- Erreur : lien expiré, déjà utilisé ou sans projet -->
+    <template v-if="error">
+      <div
+        class="w-14 h-14 rounded-full bg-cream-light flex items-center justify-center mb-6"
+      >
+        <IconLucid name="AlertCircle" class="w-6 h-6 text-dark" />
+      </div>
+      <h1
+        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
+      >
+        {{ $t("confirm_page.error_title") }}
       </h1>
-      <p v-if="error" class="text-dark/60 mb-6">{{ error }}</p>
-      <Button v-if="error" variant="primary" :to="retryLink">
-        Réessayer
+      <p class="text-dark/70 leading-relaxed mb-8">{{ error }}</p>
+      <Button variant="primary" :to="retryLink" class="w-full justify-center">
+        {{ $t("confirm_page.retry") }}
       </Button>
-    </div>
-  </div>
+    </template>
+
+    <!-- Connexion en cours -->
+    <template v-else>
+      <div
+        class="w-14 h-14 rounded-full bg-cream-light flex items-center justify-center mb-6"
+      >
+        <IconLucid name="Loader2" class="w-6 h-6 text-dark animate-spin" />
+      </div>
+      <h1
+        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
+      >
+        {{ $t("confirm_page.loading_title") }}
+      </h1>
+      <p class="text-dark/70 leading-relaxed">
+        {{ $t("confirm_page.loading_text") }}
+      </p>
+    </template>
+  </AuthSplit>
 </template>
 
 <script setup lang="ts">
@@ -22,7 +46,7 @@ definePageMeta({
 const supabase = useSupabaseClient();
 const router = useRouter();
 const route = useRoute();
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
 
 const error = ref("");
@@ -58,8 +82,7 @@ async function redirectByRole(email: string) {
     } else if (roleData.role === "client") {
       await router.replace(`/${locale.value}/mon-projet`);
     } else {
-      error.value =
-        "Aucun projet trouvé pour cette adresse email.";
+      error.value = t("confirm_page.no_project");
     }
   } catch {
     await router.replace(`/${locale.value}/dashboard`);
@@ -87,8 +110,7 @@ async function consumeTokenHash(): Promise<boolean> {
 
   if (verifyError || !data.session?.user) {
     console.error("verifyOtp failed:", verifyError);
-    error.value =
-      "Lien expiré ou invalide. Veuillez en demander un nouveau.";
+    error.value = t("confirm_page.expired");
     return true;
   }
 
@@ -123,12 +145,12 @@ onMounted(async () => {
 
     setTimeout(() => {
       if (!error.value) {
-        error.value =
-          "Lien expiré ou invalide. Veuillez en demander un nouveau.";
+        error.value = t("confirm_page.expired");
       }
     }, 5000);
   } catch (err: any) {
-    error.value = err.message || "Erreur inattendue";
+    console.error("Confirm error:", err);
+    error.value = t("confirm_page.unexpected");
   }
 });
 </script>

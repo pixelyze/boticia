@@ -298,6 +298,30 @@
     "gallery_close": "Fermer",
     "gallery_empty": "Aucune image dans cette galerie"
   },
+  "login_page": {
+    "eyebrow": "Espace Boticia",
+    "back": "Retour à l'accueil",
+    "title": "Ravie de vous retrouver",
+    "intro": "Indiquez l'adresse email de votre demande de devis : nous vous envoyons un lien pour vous connecter, sans mot de passe.",
+    "email_label": "Adresse email",
+    "email_placeholder": "votre{'@'}email.com",
+    "submit": "Recevoir mon lien",
+    "sent_title": "Vérifiez votre boîte mail",
+    "sent_message": "Si {email} correspond à un compte Boticia, un lien de connexion vous attend dans quelques instants. Il reste valable 24 heures.",
+    "resend": "Renvoyer un lien",
+    "error": "L'envoi du lien n'a pas abouti. Réessayez dans un instant.",
+    "not_client": "Pas encore cliente ?",
+    "quote_cta": "Faire une demande de devis"
+  },
+  "confirm_page": {
+    "loading_title": "Connexion en cours…",
+    "loading_text": "Nous ouvrons votre espace, un instant.",
+    "error_title": "Ce lien ne fonctionne plus",
+    "expired": "Il a expiré ou a déjà été utilisé. Demandez-en un nouveau : il arrive en quelques secondes.",
+    "no_project": "Nous n'avons trouvé aucun projet associé à cette adresse email.",
+    "unexpected": "Une erreur inattendue est survenue. Demandez un nouveau lien pour réessayer.",
+    "retry": "Recevoir un nouveau lien"
+  },
   "auth": {
     "form_title": "Accéder à mon espace",
     "email_label": "Adresse email",

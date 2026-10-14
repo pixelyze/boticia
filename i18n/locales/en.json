@@ -298,6 +298,30 @@
     "gallery_close": "Close",
     "gallery_empty": "No images in this gallery"
   },
+  "login_page": {
+    "eyebrow": "Boticia space",
+    "back": "Back to home",
+    "title": "Lovely to see you again",
+    "intro": "Enter the email address of your quote request: we'll send you a link to sign in, no password needed.",
+    "email_label": "Email address",
+    "email_placeholder": "your{'@'}email.com",
+    "submit": "Get my link",
+    "sent_title": "Check your inbox",
+    "sent_message": "If {email} matches a Boticia account, a sign-in link will reach you in a few moments. It stays valid for 24 hours.",
+    "resend": "Send another link",
+    "error": "The link couldn't be sent. Please try again in a moment.",
+    "not_client": "Not a client yet?",
+    "quote_cta": "Request a quote"
+  },
+  "confirm_page": {
+    "loading_title": "Signing you in…",
+    "loading_text": "We're opening your space, just a moment.",
+    "error_title": "This link no longer works",
+    "expired": "It has expired or has already been used. Request a new one: it arrives in a few seconds.",
+    "no_project": "We couldn't find any project linked to this email address.",
+    "unexpected": "Something unexpected went wrong. Request a new link to try again.",
+    "retry": "Get a new link"
+  },
   "auth": {
     "form_title": "Access my space",
     "email_label": "Email address",

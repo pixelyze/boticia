@@ -1,87 +1,91 @@
 <template>
-  <div class="min-h-screen md:h-screen grid grid-cols-1 md:grid-cols-2 md:overflow-hidden">
-
-    <!-- Colonne gauche (desktop uniquement) -->
-    <div class="hidden md:flex bg-cream-light flex-col items-center justify-center px-10 py-16 text-center">
-      <img :src="logo" alt="Boticia" class="h-28 mb-8" />
-      <h1 class="font-heading text-4xl text-dark mb-4">Mon Espace</h1>
-      <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
-        L'espace réservé aux clientes Boticia — suivez l'avancement de votre projet floral en toute simplicité.
+  <AuthSplit>
+    <!-- Magic Link Form -->
+    <template v-if="!sent">
+      <p class="text-xs uppercase tracking-widest text-dark/60 mb-4">
+        {{ $t("login_page.eyebrow") }}
       </p>
-      <div class="mt-10">
-        <Button variant="ghost" icon="ArrowLeft" to="/">
-          Retour à l'accueil
+      <h1
+        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
+      >
+        {{ $t("login_page.title") }}
+      </h1>
+      <p class="text-dark/70 leading-relaxed mb-8">
+        {{ $t("login_page.intro") }}
+      </p>
+
+      <form @submit.prevent="handleLogin" class="space-y-4">
+        <Input
+          v-model="email"
+          type="email"
+          :label="$t('login_page.email_label')"
+          :placeholder="$t('login_page.email_placeholder')"
+          icon="Mail"
+          variant="soft"
+          required
+        />
+        <Button
+          type="submit"
+          variant="primary"
+          :loading="loading"
+          class="w-full justify-center"
+        >
+          {{ $t("login_page.submit") }}
         </Button>
+      </form>
+    </template>
+
+    <!-- Success -->
+    <div v-else>
+      <div
+        class="w-14 h-14 rounded-full bg-cream-light flex items-center justify-center mb-6"
+      >
+        <IconLucid name="MailCheck" class="w-6 h-6 text-dark" />
       </div>
+      <h1
+        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
+      >
+        {{ $t("login_page.sent_title") }}
+      </h1>
+      <i18n-t
+        keypath="login_page.sent_message"
+        tag="p"
+        class="text-dark/70 leading-relaxed mb-8"
+      >
+        <template #email>
+          <span class="font-semibold text-dark break-all">{{ email }}</span>
+        </template>
+      </i18n-t>
+      <Button
+        variant="default"
+        class="w-full justify-center"
+        @click="sent = false"
+      >
+        {{ $t("login_page.resend") }}
+      </Button>
     </div>
 
-    <!-- Colonne droite -->
-    <div class="bg-white flex flex-col items-center justify-center px-8 py-16 min-h-screen md:min-h-0">
-      <div class="w-full max-w-sm">
-
-        <!-- Logo mobile uniquement -->
-        <div class="md:hidden text-center mb-8">
-          <img :src="logo" alt="Boticia" class="h-20 mx-auto mb-4" />
-          <h1 class="font-heading text-3xl text-dark">Mon Espace</h1>
-        </div>
-
-        <h2 class="font-heading text-xl md:text-3xl text-dark mb-2">Ravie de vous retrouver</h2>
-        <p class="text-gray-500 text-sm mb-8 leading-relaxed">
-          Utilisez l'adresse email de votre demande de devis pour recevoir un lien de connexion.
-        </p>
-
-        <!-- Magic Link Form -->
-        <form v-if="!sent" @submit.prevent="handleLogin" class="space-y-4">
-          <Input
-            v-model="email"
-            type="email"
-            label="Adresse email"
-            placeholder="votre@email.com"
-            icon="Mail"
-            variant="soft"
-            required
-          />
-          <Button type="submit" variant="primary" :loading="loading" class="w-full">
-            Recevoir le lien
-          </Button>
-        </form>
-
-        <!-- Success -->
-        <div v-else class="text-center py-4">
-          <div class="text-4xl mb-4">📬</div>
-          <h2 class="font-heading text-2xl text-dark mb-2">Vérifiez votre boîte mail</h2>
-          <p class="text-gray-500 text-sm mb-6">
-            Si <span class="font-semibold text-dark">{{ email }}</span>
-            correspond à un compte Boticia, vous recevrez un lien de
-            connexion dans quelques instants.
-          </p>
-          <Button variant="ghost" @click="sent = false">Renvoyer un lien</Button>
-        </div>
-
-        <!-- Error -->
-        <div v-if="error" class="mt-4">
-          <InfoNote variant="warning">{{ error }}</InfoNote>
-        </div>
-
-        <!-- CTA devis -->
-        <p class="mt-8 text-center text-gray-400 text-sm">
-          Pas encore cliente ?
-          <NuxtLink :to="localePath('/devis')" class="text-gray-600 underline underline-offset-2 hover:text-dark transition-colors">
-            Faire une demande de devis
-          </NuxtLink>
-        </p>
-
-        <!-- Retour accueil mobile -->
-        <div class="md:hidden mt-6 text-center">
-          <Button variant="ghost" icon="ArrowLeft" to="/">
-            Retour à l'accueil
-          </Button>
-        </div>
-
-      </div>
+    <!-- Error -->
+    <div v-if="error" class="mt-4">
+      <InfoNote variant="warning">{{ error }}</InfoNote>
     </div>
 
-  </div>
+    <!-- CTA devis -->
+    <template #footer>
+      <p
+        class="pt-6 border-t border-dark/10 text-sm text-dark/60"
+      >
+        {{ $t("login_page.not_client") }}
+        <Button
+          variant="ghost"
+          :to="localePath('/devis')"
+          class="!p-0 !font-normal text-sm underline underline-offset-4 decoration-dark/30 hover:decoration-dark hover:!bg-transparent"
+        >
+          {{ $t("login_page.quote_cta") }}
+        </Button>
+      </p>
+    </template>
+  </AuthSplit>
 </template>
 
 <script setup lang="ts">
@@ -93,7 +97,6 @@ definePageMeta({
 const route = useRoute();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
-const { logo } = useSiteLogo();
 
 // State
 const email = ref("");
@@ -122,14 +125,14 @@ const handleLogin = async () => {
     sent.value = true;
   } catch (err: any) {
     console.error("Login error:", err);
-    error.value = "Erreur lors de l'envoi du lien";
+    error.value = t("login_page.error");
   } finally {
     loading.value = false;
   }
 };
 
 useHead({
-  title: "Mon Espace - Boticia",
+  title: `${t("nav.login")} - Boticia`,
   meta: [
     {
       key: "description",
