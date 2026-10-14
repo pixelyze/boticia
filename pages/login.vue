@@ -198,12 +198,11 @@ function backToEmail() {
   codeError.value = "";
 }
 
-// Chiffres seulement (le copier-coller peut apporter des espaces) ; le
-// sixième chiffre déclenche la vérification.
+// Chiffres seulement (le copier-coller peut apporter des espaces). La
+// vérification attend le clic sur « Continuer » (ou Entrée).
 function onCodeInput(value: string) {
   code.value = value.replace(/\D/g, "").slice(0, 6);
   codeError.value = "";
-  if (code.value.length === 6) verifyCode();
 }
 
 // Étape 2 : vérifie le code auprès de Supabase, puis redirige selon le rôle.
