@@ -52,8 +52,8 @@
            largeur de lecture. Ici, rien ne part sans « Envoyer ». -->
       <div class="max-w-2xl mx-auto">
         <textarea
-          ref="textareaRef"
           v-model="comment"
+          data-autofocus
           :placeholder="$t('client.proposal_write_placeholder')"
           :aria-label="$t('client.proposal_write')"
           class="w-full min-h-[50vh] p-0 border-0 bg-transparent
@@ -146,13 +146,10 @@ const showConfirm = ref(false);
 const showWrite = ref(false);
 const justSent = ref(false);
 const comment = ref("");
-const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
 function openWrite() {
   showWrite.value = true;
   justSent.value = false;
-  // Après l'animation d'ouverture de la fenêtre
-  setTimeout(() => textareaRef.value?.focus(), 350);
 }
 
 // Un nouveau message enregistré : on vide le champ et on confirme l'envoi.

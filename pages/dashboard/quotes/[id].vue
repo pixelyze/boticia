@@ -899,12 +899,12 @@
       <div class="max-w-2xl mx-auto">
         <textarea
           v-model="newNoteText"
+          data-autofocus
           :placeholder="t('dashboard.timeline_note_placeholder')"
           :aria-label="t('dashboard.timeline_note_label')"
           class="w-full min-h-[50vh] p-0 border-0 bg-transparent
             focus:outline-none resize-none text-lg leading-relaxed text-dark
             placeholder:text-gray-400"
-          autofocus
         />
         <!-- La note s'enregistre pendant la frappe ; « Terminé » (ou la
              croix, Échap…) ferme la page. -->
@@ -1226,6 +1226,7 @@ const timelineItems = computed<TimelineItem[]>(() => {
 });
 
 const showNotePanel = ref(false);
+
 const newNoteText = ref("");
 const sendingNote = ref(false);
 const noteMenuOpen = ref<string | null>(null);

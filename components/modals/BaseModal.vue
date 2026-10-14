@@ -10,6 +10,7 @@
       />
     </Transition>
     <div
+      ref="containerRef"
       class="absolute overflow-hidden"
       :class="
         compact
@@ -19,6 +20,7 @@
     >
       <Transition
         v-bind="contentTransition"
+        @after-enter="resetContainerScroll"
         @after-leave="onTransitionComplete"
       >
         <div
@@ -141,6 +143,19 @@ const {
 } = useModal();
 
 const modalRef = ref<HTMLElement | null>(null);
+const containerRef = ref<HTMLElement | null>(null);
+
+// Un champ qui prend le focus pendant la glissade d'ouverture fait défiler
+// ce conteneur (overflow-hidden) : la fenêtre restait décalée vers le haut.
+// Une fois ouverte, on la remet à sa place.
+// Le champ marqué data-autofocus reçoit le curseur à ce moment-là, sans
+// défilement (à utiliser à la place de l'attribut autofocus).
+const resetContainerScroll = () => {
+  if (containerRef.value) containerRef.value.scrollTop = 0;
+  modalRef.value
+    ?.querySelector<HTMLElement>("[data-autofocus]")
+    ?.focus({ preventScroll: true });
+};
 const dragHandleRef = ref<HTMLElement | null>(null);
 
 // compact : la fenêtre s'ouvre par le bas mais ne prend que la hauteur de
