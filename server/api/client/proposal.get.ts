@@ -8,6 +8,7 @@ import {
   getLatestSentProposal,
   updateProposal,
 } from "~/server/utils/client-portal";
+import { getClientMessages } from "~/server/utils/quotes";
 
 export default defineEventHandler(async (event) => {
   const { quoteRequest } = await requireClient(event);
@@ -30,6 +31,10 @@ export default defineEventHandler(async (event) => {
     return {
       success: true,
       data: latest,
+      // Ses messages « Écrire à Laëtitia » sur cette version.
+      messages: latest
+        ? await getClientMessages(quoteRequest.id, latest.id)
+        : [],
     };
   } catch (err) {
     console.error("Error getting proposal:", err);

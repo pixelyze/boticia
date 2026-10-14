@@ -1,6 +1,8 @@
 /**
  * PATCH /api/client/proposal
- * Client — Accept or request revision on proposal
+ * Client — Accept the proposal, or write to Laëtitia about it ("revision").
+ * Writing can happen as many times as she wants : each message is kept in
+ * the quote's activity log, the proposal keeps the latest one.
  */
 
 import { requireClient } from "~/server/utils/serverAuth";
@@ -10,46 +12,75 @@ import {
 } from "~/server/utils/client-portal";
 import {
   sendRevisionRequestNotification,
+  sendProposalAcceptedNotification,
   ADMIN_EMAIL,
 } from "~/server/utils/email";
 import { generateMagicLink } from "~/server/utils/supabase";
+import {
+  addQuoteActivity,
+  getClientMessages,
+} from "~/server/utils/quotes";
 import type { QuoteRequest } from "~/server/utils/quotes-types";
 
+/** Nom affiché du couple (ou de la cliente seule). */
+function coupleNameOf(quote: QuoteRequest): string {
+  return quote.partner2_name
+    ? `${quote.partner1_name} & ${quote.partner2_name}`
+    : quote.partner1_name;
+}
+
 /**
- * Email à Laetitia, avec un lien magique vers la fiche (comme pour une
- * nouvelle demande). Un échec d'envoi ne doit pas faire échouer la
+ * Lien vers la fiche pour Laëtitia, avec un lien magique (comme pour une
+ * nouvelle demande) : elle l'ouvre depuis sa boîte mail sans se reconnecter.
+ */
+async function adminFicheUrl(quote: QuoteRequest): Promise<string> {
+  const baseUrl =
+    process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
+  const quotePath = `/fr/dashboard/quotes/${quote.id}`;
+
+  try {
+    const { link } = await generateMagicLink(
+      ADMIN_EMAIL,
+      `${baseUrl}/fr/confirm?redirect=${encodeURIComponent(quotePath)}`
+    );
+    if (link) return link;
+  } catch (err) {
+    console.error("Error generating admin magic link:", err);
+  }
+  return `${baseUrl}${quotePath}`;
+}
+
+/**
+ * Emails à Laëtitia. Un échec d'envoi ne doit pas faire échouer la
  * réponse de la cliente, déjà enregistrée.
  */
 async function notifyRevisionRequest(
   quote: QuoteRequest,
   comment: string
 ) {
-  const coupleName = quote.partner2_name
-    ? `${quote.partner1_name} & ${quote.partner2_name}`
-    : quote.partner1_name;
-  const baseUrl =
-    process.env.NUXT_PUBLIC_SITE_URL || "http://localhost:3001";
-  const quotePath = `/fr/dashboard/quotes/${quote.id}`;
-
-  let dashboardUrl = `${baseUrl}${quotePath}`;
-  try {
-    const { link } = await generateMagicLink(
-      ADMIN_EMAIL,
-      `${baseUrl}/fr/confirm?redirect=${encodeURIComponent(quotePath)}`
-    );
-    if (link) dashboardUrl = link;
-  } catch (err) {
-    console.error("Error generating admin magic link:", err);
-  }
-
   try {
     await sendRevisionRequestNotification({
-      coupleName,
+      coupleName: coupleNameOf(quote),
       comment,
-      dashboardUrl,
+      dashboardUrl: await adminFicheUrl(quote),
     });
   } catch (err) {
     console.error("Error sending revision email:", err);
+  }
+}
+
+async function notifyProposalAccepted(
+  quote: QuoteRequest,
+  version?: number | null
+) {
+  try {
+    await sendProposalAcceptedNotification({
+      coupleName: coupleNameOf(quote),
+      version,
+      dashboardUrl: await adminFicheUrl(quote),
+    });
+  } catch (err) {
+    console.error("Error sending acceptance email:", err);
   }
 }
 
@@ -66,6 +97,14 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       message: "Invalid action. Use 'accept' or 'revision'.",
+    });
+  }
+
+  const message = (comment || "").trim();
+  if (action === "revision" && !message) {
+    throw createError({
+      statusCode: 400,
+      message: "A message is required",
     });
   }
 
@@ -96,7 +135,7 @@ export default defineEventHandler(async (event) => {
         : {
             status: "revision_requested" as const,
             responded_at: new Date().toISOString(),
-            client_comment: comment || "",
+            client_comment: message,
           };
 
     const updated = await updateProposal(
@@ -113,13 +152,23 @@ export default defineEventHandler(async (event) => {
 
     // Prévenir Laetitia : sans email, une demande de modification ne se
     // voyait qu'en ouvrant la fiche. await obligatoire sur Vercel.
+    if (action === "accept") {
+      await notifyProposalAccepted(quoteRequest, latest.version);
+    }
+
     if (action === "revision") {
-      await notifyRevisionRequest(quoteRequest, comment || "");
+      await addQuoteActivity(quoteRequest.id, "client_message", {
+        text: message,
+        proposal_id: latest.id,
+        version: latest.version || 1,
+      });
+      await notifyRevisionRequest(quoteRequest, message);
     }
 
     return {
       success: true,
       data: updated,
+      messages: await getClientMessages(quoteRequest.id, latest.id),
     };
   } catch (err: any) {
     if (err.statusCode) throw err;

@@ -51,9 +51,9 @@ export async function getQuoteRequests(
       .from("quote_requests")
       // Une seule chaîne littérale : Supabase en déduit le type du résultat.
       .select(
-        "*, project_proposals(status, created_at, sent_at), quote_activity_log(details, created_at)"
+        "*, project_proposals(id, status, created_at, sent_at), quote_activity_log(action, details, created_at)"
       )
-      .eq("quote_activity_log.action", "status_changed");
+      .in("quote_activity_log.action", ["status_changed", "client_message"]);
 
     if (filters?.status) {
       query = query.eq("status", filters.status);
@@ -77,11 +77,31 @@ export async function getQuoteRequests(
         .sort()
         .pop();
       const logSentAt = (log || [])
-        .filter((entry: any) => entry.details?.to === "quote_sent")
+        .filter(
+          (entry: any) =>
+            entry.action === "status_changed" &&
+            entry.details?.to === "quote_sent"
+        )
         .map((entry: any) => entry.created_at as string)
         .sort()
         .pop();
-      return { ...quote, quote_sent_at: proposalSentAt ?? logSentAt ?? null };
+      // Messages « Écrire à Laëtitia » sur le dernier devis : une nouvelle
+      // version remet le compteur à zéro.
+      const latestProposal = [...(quote.project_proposals || [])].sort(
+        (a: any, b: any) => b.created_at.localeCompare(a.created_at)
+      )[0];
+      const clientMessageCount = latestProposal
+        ? (log || []).filter(
+            (entry: any) =>
+              entry.action === "client_message" &&
+              entry.details?.proposal_id === latestProposal.id
+          ).length
+        : 0;
+      return {
+        ...quote,
+        quote_sent_at: proposalSentAt ?? logSentAt ?? null,
+        client_message_count: clientMessageCount,
+      };
     });
   } catch (err) {
     console.error("Error:", err);
@@ -160,6 +180,32 @@ export async function addQuoteActivity(
   } catch (err) {
     console.error("Error:", err);
   }
+}
+
+/**
+ * Messages « Écrire à Laëtitia » d'une cliente sur une version de devis,
+ * du plus ancien au plus récent.
+ */
+export async function getClientMessages(
+  quoteId: string,
+  proposalId: string
+): Promise<{ text: string; created_at: string }[]> {
+  const { data, error } = await getSupabase()
+    .from("quote_activity_log")
+    .select("details, created_at")
+    .eq("quote_id", quoteId)
+    .eq("action", "client_message")
+    .eq("details->>proposal_id", proposalId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Error getting client messages:", error.message);
+    return [];
+  }
+  return (data || []).map((row: any) => ({
+    text: row.details?.text || "",
+    created_at: row.created_at,
+  }));
 }
 
 /**

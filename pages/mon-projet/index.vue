@@ -98,11 +98,9 @@
               </Button>
             </div>
 
-            <!-- Timeline : la navigation de l'espace client -->
-            <div
-              class="rounded-[1.5rem] border-2
-                border-dark/10 p-4 md:p-8 mb-10"
-            >
+            <!-- Timeline : la navigation de l'espace client. Sans cadre :
+                 ses étapes contiennent déjà leurs propres cartes. -->
+            <div class="mt-4 mb-10">
               <h2
                 class="font-heading text-sm text-gray-600
                   uppercase tracking-wider mb-6"
@@ -130,6 +128,7 @@
                     :proposal="proposal"
                     :accepting="accepting"
                     :requesting="requesting"
+                    :messages="proposalMessages"
                     @accept="handleAccept"
                     @revision="handleRevision"
                   />
@@ -177,6 +176,8 @@ watch(
 const loading = ref(true);
 const project = ref<any>(null);
 const proposal = ref<ProjectProposal | null>(null);
+// Ses messages « Écrire à Laëtitia » sur la version affichée.
+const proposalMessages = ref<{ text: string; created_at: string }[]>([]);
 const inspirationsCount = ref(0);
 const accepting = ref(false);
 const requesting = ref(false);
@@ -368,11 +369,13 @@ const handleRevision = async (comment: string) => {
     const res = await clientFetch<{
       success: boolean;
       data: ProjectProposal;
+      messages: { text: string; created_at: string }[];
     }>("/api/client/proposal", {
       method: "PATCH",
       body: { action: "revision", comment },
     });
     proposal.value = res.data;
+    proposalMessages.value = res.messages || [];
   } catch (err) {
     console.error("Error requesting revision:", err);
   } finally {
@@ -395,12 +398,15 @@ onMounted(async () => {
     // latestProposal du projet : c'est lui qui fait foi pour la cliente.
     const [projectRes, proposalRes] = await Promise.all([
       clientFetch<{ success: boolean; data: any }>("/api/client/project"),
-      clientFetch<{ success: boolean; data: ProjectProposal | null }>(
-        "/api/client/proposal"
-      ),
+      clientFetch<{
+        success: boolean;
+        data: ProjectProposal | null;
+        messages?: { text: string; created_at: string }[];
+      }>("/api/client/proposal"),
     ]);
     project.value = projectRes.data;
     proposal.value = proposalRes.data;
+    proposalMessages.value = proposalRes.messages || [];
     inspirationsCount.value = projectRes.data?.counts.inspirations || 0;
   } catch (err) {
     console.error("Error loading project:", err);

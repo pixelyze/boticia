@@ -132,10 +132,16 @@ export interface QuoteRequest {
   moodboard_sent_at?: string | null;
   /** Joint par getQuoteRequests, pour repérer les devis sans réponse. */
   project_proposals?: {
+    id: string;
     status: string;
     created_at: string;
     sent_at?: string | null;
   }[];
+  /**
+   * Calculé par getQuoteRequests : messages de la cliente sur sa dernière
+   * version de devis (« Écrire à Laëtitia »).
+   */
+  client_message_count?: number;
   /**
    * Calculé par getQuoteRequests : dernier passage au statut "quote_sent",
    * d'après le journal d'activité. Absent = jamais journalisé.
@@ -189,7 +195,8 @@ export type QuoteActivityAction =
   | "moodboard_sent"
   | "moodboard_removed"
   | "proposal_created"
-  | "note_added";
+  | "note_added"
+  | "client_message";
 
 export interface QuoteActivityLog {
   id: string;

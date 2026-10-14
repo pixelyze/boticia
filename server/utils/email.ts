@@ -510,25 +510,58 @@ export async function sendRevisionRequestNotification(data: {
 }): Promise<boolean> {
   const name = escapeHtml(data.coupleName);
   const comment = data.comment.trim()
-    ? `<br/><br/><strong>Sa demande :</strong><br/>` +
+    ? `<br/><br/><strong>Son message :</strong><br/>` +
       escapeHtml(data.comment.trim()).replace(/\n/g, "<br/>")
     : "";
 
   const html = await renderClientEmail({
-    title: "Modification de devis demandée",
-    greeting: `Bonjour Laetitia,`,
+    title: "Nouveau message sur un devis",
+    greeting: `Bonjour Laëtitia,`,
     message:
-      `<strong>${name}</strong> a consulté son devis et demande ` +
-      `des modifications.` +
+      `<strong>${name}</strong> vous a écrit au sujet de son devis.` +
       comment,
-    ctaText: "Voir la demande",
+    ctaText: "Voir la fiche",
     ctaUrl: data.dashboardUrl,
     footerText: "Boticia — Notification admin",
   });
 
   return sendEmail({
     to: ADMIN_EMAIL,
-    subject: `${data.coupleName} demande une modification du devis — Boticia`,
+    subject: `${data.coupleName} vous a écrit au sujet de son devis — Boticia`,
+    html,
+  });
+}
+
+/**
+ * Prévient Laëtitia qu'une cliente a validé son devis. Ton chaleureux :
+ * c'est l'aboutissement de son travail sur la proposition.
+ */
+export async function sendProposalAcceptedNotification(data: {
+  coupleName: string;
+  version?: number | null;
+  dashboardUrl: string;
+}): Promise<boolean> {
+  const name = escapeHtml(data.coupleName);
+  const version = data.version && data.version > 1 ? ` (V${data.version})` : "";
+
+  const html = await renderClientEmail({
+    title: "Un devis vient d'être validé",
+    greeting: "Bonjour Laëtitia,",
+    message:
+      `Belle nouvelle : le devis de <strong>${name}</strong>${version} ` +
+      "vient d'être validé !<br/><br/>" +
+      "Toute l'attention que vous avez mise dans cette proposition a fait " +
+      "mouche. Ce projet floral peut maintenant prendre vie : place à la " +
+      "création, aux fleurs et à tout ce que vous savez faire de plus beau.<br/><br/>" +
+      "Bravo, et belle préparation !",
+    ctaText: "Voir la fiche",
+    ctaUrl: data.dashboardUrl,
+    footerText: "Boticia — Notification admin",
+  });
+
+  return sendEmail({
+    to: ADMIN_EMAIL,
+    subject: `Bonne nouvelle : le devis de ${data.coupleName} est validé — Boticia`,
     html,
   });
 }

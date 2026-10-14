@@ -5,18 +5,10 @@
       v-if="canRespond"
       :accepting="accepting"
       :requesting="requesting"
+      :messages="messages"
       @accept="$emit('accept')"
       @revision="(comment) => $emit('revision', comment)"
     />
-
-    <!-- Après une demande de modification : dire ce qui se passe ensuite -->
-    <p
-      v-else-if="proposal.status === 'revision_requested'"
-      class="flex items-start gap-3 font-medium text-dark"
-    >
-      <IconLucid name="Send" size="sm" class="shrink-0 mt-0.5 text-dark" />
-      {{ t("client.proposal_revision_sent") }}
-    </p>
 
     <p
       v-else-if="proposal.status === 'accepted'"
@@ -41,6 +33,7 @@ const props = defineProps<{
   proposal: ProjectProposal;
   accepting: boolean;
   requesting: boolean;
+  messages: { text: string; created_at: string }[];
 }>();
 
 defineEmits<{
@@ -50,7 +43,9 @@ defineEmits<{
 
 const { t } = useI18n();
 
+// Elle peut écrire à Laëtitia autant de fois qu'elle veut, et valider
+// tant que ce n'est pas fait.
 const canRespond = computed(() =>
-  ["pending", "viewed"].includes(props.proposal.status)
+  ["pending", "viewed", "revision_requested"].includes(props.proposal.status)
 );
 </script>

@@ -41,22 +41,6 @@
       {{ $t("client.proposal_view_pdf") }}
     </Button>
 
-    <!-- Client comment if revision requested -->
-    <div
-      v-if="
-        proposal.status === 'revision_requested' &&
-        proposal.client_comment
-      "
-      class="rounded-xl bg-cream p-4 mt-4"
-    >
-      <p class="text-sm text-dark/50 mb-1">
-        {{ $t("client.proposal_your_comment") }}
-      </p>
-      <p class="text-sm text-dark">
-        {{ proposal.client_comment }}
-      </p>
-    </div>
-
     <!-- Pied de carte : la réponse au devis, dans le même bloc -->
     <div v-if="$slots.default" class="border-t-2 border-dark/10 mt-6 pt-6">
       <slot />

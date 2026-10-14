@@ -122,6 +122,26 @@ const releases = [
     date: "14 octobre 2026",
     items: [
       {
+        category: "feature" as Category,
+        title: "Vos clientes peuvent vous écrire plusieurs fois",
+        description: "Le bouton « Écrire à Laëtitia » remplace « Demander une modification ». Vos clientes peuvent vous écrire autant de fois qu'elles le souhaitent au sujet de leur devis. Chaque message apparaît dans la timeline de la fiche, vous recevez un email à chaque fois, et l'étiquette « 2 messages » vous montre où en est l'échange.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Un email quand un devis est validé",
+        description: "Quand une cliente valide son devis, vous recevez un email pour fêter la bonne nouvelle, avec un lien direct vers sa fiche.",
+      },
+      {
+        category: "design" as Category,
+        title: "Une validation de devis plus claire",
+        description: "Avant de valider, vos clientes voient ce que cela implique, et sont invitées à vous écrire d'abord si elles ont une question.",
+      },
+      {
+        category: "design" as Category,
+        title: "Suppression avec le menu « ⋯ »",
+        description: "Les notes et les fichiers en préparation (moodboard, devis) se suppriment depuis leur menu « ⋯ », en un seul clic, sans confirmation supplémentaire.",
+      },
+      {
         category: "fix" as Category,
         title: "Votre tableau de bord mieux protégé",
         description: "Les réglages du site, les logos et le contenu ne peuvent plus être modifiés que par vous, une fois connectée. Une cliente connectée à son espace n'y a pas accès, et personne ne peut savoir qui est cliente de Boticia.",

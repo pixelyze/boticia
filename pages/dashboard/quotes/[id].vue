@@ -384,24 +384,30 @@
                         {{ item.original_filename || item.title }}
                       </span>
                     </span>
-                    <Button
-                      v-if="pendingDelete === `mb-${item.id}`"
-                      type="button"
-                      icon="Trash2"
-                      class="!px-3 !py-1 text-xs !bg-red-600 !text-white
-                        !border-red-600 hover:!bg-red-700 shrink-0"
-                      @click="handleMoodboardDelete(item.id)"
-                    >
-                      {{ t("common.delete_confirm") }}
-                    </Button>
-                    <button
-                      v-else
-                      @click="askDelete(`mb-${item.id}`)"
-                      :aria-label="t('common.delete')"
-                      class="text-gray-300 hover:text-red-500 transition-colors shrink-0"
-                    >
-                      <IconLucid name="X" size="xs" />
-                    </button>
+                    <!-- Menu « ⋯ » : ouvrir le menu puis « Supprimer » vaut
+                         confirmation, comme pour les notes de la timeline -->
+                    <div class="relative shrink-0" data-file-menu>
+                      <button
+                        type="button"
+                        :aria-label="t('common.more_actions')"
+                        @click="fileMenuOpen = fileMenuOpen === `mb-${item.id}` ? null : `mb-${item.id}`"
+                        class="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-cream transition-all"
+                      >
+                        <IconLucid name="MoreHorizontal" size="xs" />
+                      </button>
+                      <div
+                        v-if="fileMenuOpen === `mb-${item.id}`"
+                        class="absolute right-0 top-8 bg-white rounded-xl shadow-lg border border-dark/10 py-1 z-10 min-w-[120px]"
+                      >
+                        <button
+                          type="button"
+                          @click="handleMoodboardDelete(item.id)"
+                          class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-cream transition-colors"
+                        >
+                          {{ t("common.delete") }}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <p v-else class="text-sm text-dark/40 mb-3">
@@ -477,24 +483,30 @@
                         {{ $t("dashboard.file_draft") }}
                       </span>
                     </span>
-                    <Button
-                      v-if="pendingDelete === `prop-${prop.id}`"
-                      type="button"
-                      icon="Trash2"
-                      class="!px-3 !py-1 text-xs !bg-red-600 !text-white
-                        !border-red-600 hover:!bg-red-700 shrink-0"
-                      @click="handleDeleteProposal(prop.id)"
-                    >
-                      {{ t("common.delete_confirm") }}
-                    </Button>
-                    <button
-                      v-else
-                      @click="askDelete(`prop-${prop.id}`)"
-                      :aria-label="t('common.delete')"
-                      class="text-gray-300 hover:text-red-500 transition-colors shrink-0"
-                    >
-                      <IconLucid name="X" size="xs" />
-                    </button>
+                    <!-- Menu « ⋯ » : ouvrir le menu puis « Supprimer » vaut
+                         confirmation, comme pour les notes de la timeline -->
+                    <div class="relative shrink-0" data-file-menu>
+                      <button
+                        type="button"
+                        :aria-label="t('common.more_actions')"
+                        @click="fileMenuOpen = fileMenuOpen === `prop-${prop.id}` ? null : `prop-${prop.id}`"
+                        class="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-cream transition-all"
+                      >
+                        <IconLucid name="MoreHorizontal" size="xs" />
+                      </button>
+                      <div
+                        v-if="fileMenuOpen === `prop-${prop.id}`"
+                        class="absolute right-0 top-8 bg-white rounded-xl shadow-lg border border-dark/10 py-1 z-10 min-w-[120px]"
+                      >
+                        <button
+                          type="button"
+                          @click="handleDeleteProposal(prop.id)"
+                          class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-cream transition-colors"
+                        >
+                          {{ t("common.delete") }}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <p v-else class="text-sm text-dark/40 mb-3">
@@ -684,7 +696,7 @@
                         </div>
                       </div>
                       <!-- Menu button -->
-                      <div class="absolute top-0 right-0">
+                      <div class="absolute top-0 right-0" data-file-menu>
                         <button
                           @click="
                             noteMenuOpen === item.entry.id
@@ -709,17 +721,10 @@
                           >
                             {{ t("common.edit") }}
                           </button>
-                          <!-- Deux temps : « Supprimer » puis « Confirmer » -->
+                          <!-- Pas de second clic : ouvrir le menu puis
+                               choisir « Supprimer » vaut confirmation -->
                           <button
-                            v-if="pendingDelete === `note-${item.entry.id}`"
                             @click="deleteActivity(item.entry.id)"
-                            class="w-full text-left px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors"
-                          >
-                            {{ t("dashboard.delete_confirm_note") }}
-                          </button>
-                          <button
-                            v-else
-                            @click="askDelete(`note-${item.entry.id}`)"
                             class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-cream transition-colors"
                           >
                             {{ t("common.delete") }}
@@ -745,6 +750,16 @@
                       <div class="flex-1 min-w-0">
                         <p class="text-sm text-dark/80 leading-tight">
                           {{ activityLabel(item.entry) }}
+                        </p>
+                        <!-- Message « Écrire à Laëtitia » de la cliente -->
+                        <p
+                          v-if="
+                            item.entry.action === 'client_message' &&
+                            item.entry.details?.text
+                          "
+                          class="text-xs text-dark bg-cream rounded-lg px-2.5 py-2 mt-1.5 whitespace-pre-line"
+                        >
+                          « {{ item.entry.details.text }} »
                         </p>
                         <p class="text-[11px] text-dark/40 mt-0.5">
                           {{ formatRelativeDate(item.entry.created_at) }}
@@ -803,8 +818,13 @@
                         >
                           {{ proposalState(item.proposal).label }}
                         </p>
+                        <!-- Ancien message unique, d'avant l'historique : les
+                             nouveaux apparaissent chacun dans la timeline -->
                         <p
-                          v-if="item.proposal.client_comment"
+                          v-if="
+                            item.proposal.client_comment &&
+                            !proposalsWithMessages.has(item.proposal.id)
+                          "
                           class="text-xs text-dark bg-cream rounded-lg px-2.5 py-2 mt-1.5"
                         >
                           « {{ item.proposal.client_comment }} »
@@ -1050,6 +1070,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import { useI18n } from "vue-i18n";
+import { useEventListener } from "@vueuse/core";
 import type {
   QuoteRequest,
   QuoteRequestStatus,
@@ -1657,6 +1678,16 @@ const statusOptions = computed(() => [
   },
 ]);
 
+// Devis qui ont des messages dans le journal (« Écrire à Laëtitia »)
+const proposalsWithMessages = computed(
+  () =>
+    new Set(
+      activityLog.value
+        .filter((e) => (e.action as string) === "client_message")
+        .map((e) => e.details?.proposal_id as string)
+    )
+);
+
 // Activity log helpers
 const activityIcon = (action: string) => {
   const map: Record<string, string> = {
@@ -1668,6 +1699,7 @@ const activityIcon = (action: string) => {
     moodboard_added: "ImagePlus",
     moodboard_removed: "Trash2",
     proposal_created: "FileText",
+    client_message: "MessageSquare",
   };
   return map[action] || "Clock";
 };
@@ -1697,6 +1729,10 @@ const activityLabel = (entry: QuoteActivityLog) => {
       return d.title || t("dashboard.proposal_created");
     case "note_added":
       return d.text || "";
+    case "client_message":
+      return d.version
+        ? t("dashboard.activity_client_message_version", { version: d.version })
+        : t("dashboard.activity_client_message");
     default:
       return entry.action;
   }
@@ -1859,16 +1895,19 @@ const saveEditNote = async (id: string) => {
 // Suppression en deux temps : le premier clic arme le bouton (rouge,
 // « Supprimer ? »), le second supprime. Sans second clic, il se désarme
 // au bout de 4 s — une suppression ne part jamais d'un clic distrait.
-const pendingDelete = ref<string | null>(null);
-let pendingDeleteTimer: ReturnType<typeof setTimeout> | undefined;
-const askDelete = (key: string) => {
-  pendingDelete.value = key;
-  clearTimeout(pendingDeleteTimer);
-  pendingDeleteTimer = setTimeout(() => (pendingDelete.value = null), 4000);
-};
+// Menus « ⋯ » des fichiers en préparation (moodboard, devis)
+const fileMenuOpen = ref<string | null>(null);
+
+// Un clic ailleurs referme les menus « ⋯ » (fichiers et notes)
+useEventListener(document, "click", (e: MouseEvent) => {
+  if (!(e.target as HTMLElement).closest("[data-file-menu]")) {
+    fileMenuOpen.value = null;
+    noteMenuOpen.value = null;
+  }
+});
 
 const deleteActivity = async (id: string) => {
-  pendingDelete.value = null;
+  fileMenuOpen.value = null;
   noteMenuOpen.value = null;
   try {
     await adminFetch(
@@ -2200,7 +2239,7 @@ const handleMoodboardAddLink = async (
 
 // Moodboard delete item
 const handleMoodboardDelete = async (id: string) => {
-  pendingDelete.value = null;
+  fileMenuOpen.value = null;
   try {
     await adminFetch(`/api/admin/moodboard/item/${id}`, {
       method: "DELETE",
@@ -2259,7 +2298,7 @@ const handleCreateProposal = async (data: {
 
 // Proposal delete
 const handleDeleteProposal = async (id: string) => {
-  pendingDelete.value = null;
+  fileMenuOpen.value = null;
   try {
     await adminFetch(`/api/admin/proposals/item/${id}`, {
       method: "DELETE",

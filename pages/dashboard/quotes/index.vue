@@ -294,9 +294,12 @@
                         variant="warning"
                         icon="MessageSquare"
                       >
+                        <!-- Au moins 1 : les demandes d'avant l'historique
+                             des messages n'ont pas d'entrée dans le journal -->
                         {{
                           t(
-                            "dashboard.proposal_status_revision_requested"
+                            "dashboard.client_messages",
+                            Math.max(quote.client_message_count || 0, 1)
                           )
                         }}
                       </Tag>
