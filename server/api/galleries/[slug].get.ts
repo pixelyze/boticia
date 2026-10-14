@@ -5,6 +5,7 @@
 
 import { getGalleryImagesBySlug } from "~/server/utils/galleries";
 
+// PUBLIC: public gallery pages
 export default defineEventHandler(async (event) => {
   const slug = getRouterParam(event, "slug");
 

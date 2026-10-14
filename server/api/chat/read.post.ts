@@ -2,7 +2,7 @@
  * POST /api/chat/read
  * Mark messages as read
  */
-import { getAuthenticatedUser } from "~/server/utils/serverAuth";
+import { requireAdmin } from "~/server/utils/serverAuth";
 import { getSupabase } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
@@ -11,10 +11,7 @@ export default defineEventHandler(async (event) => {
   const isDevAccess = body.token && body.token === config.cronSecret;
 
   if (!isDevAccess) {
-    const user = await getAuthenticatedUser(event);
-    if (!user) {
-      throw createError({ statusCode: 401, message: "Authentication required" });
-    }
+    await requireAdmin(event);
   }
 
   // Mark messages from the OTHER sender as read

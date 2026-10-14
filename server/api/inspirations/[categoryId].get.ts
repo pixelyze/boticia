@@ -5,6 +5,7 @@
 
 import { getImagesByCategory } from "~/server/utils/homepage-inspirations";
 
+// PUBLIC: public inspiration pages
 export default defineEventHandler(async (event) => {
   try {
     const categoryId = getRouterParam(event, "categoryId");

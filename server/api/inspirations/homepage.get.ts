@@ -5,6 +5,7 @@
 
 import { getPublishedCategories } from "~/server/utils/homepage-inspirations";
 
+// PUBLIC: public homepage
 export default defineEventHandler(async () => {
   try {
     const categories = await getPublishedCategories();

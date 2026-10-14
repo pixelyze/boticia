@@ -4,8 +4,10 @@
  */
 
 import { getPages } from "~/server/utils/cms";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const query = getQuery(event);
 
   const filters = {

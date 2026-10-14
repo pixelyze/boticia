@@ -4,8 +4,10 @@
  */
 
 import { getPageBySlug } from "~/server/utils/cms";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const slug = getRouterParam(event, "slug");
 
   if (!slug) {

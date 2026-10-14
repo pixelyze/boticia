@@ -2,7 +2,7 @@
  * GET /api/chat
  * Returns chat messages (requires auth or dev token)
  */
-import { getAuthenticatedUser } from "~/server/utils/serverAuth";
+import { requireAdmin } from "~/server/utils/serverAuth";
 import { getSupabase } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
@@ -14,10 +14,7 @@ export default defineEventHandler(async (event) => {
   const isDevAccess = devToken && devToken === config.cronSecret;
 
   if (!isDevAccess) {
-    const user = await getAuthenticatedUser(event);
-    if (!user) {
-      throw createError({ statusCode: 401, message: "Authentication required" });
-    }
+    await requireAdmin(event);
   }
 
   try {

@@ -4,7 +4,7 @@
  */
 
 import { getSupabase } from "~/server/utils/supabase";
-import { serverSupabaseUser } from "#supabase/server";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 import { compressImage, rasterizeLogo } from "~/server/utils/image-compress";
 import { listLogoFiles } from "~/server/utils/site-photos";
 
@@ -15,13 +15,7 @@ const SVG_TYPE = "image/svg+xml";
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event);
-  if (!user) {
-    throw createError({
-      statusCode: 401,
-      message: "Authentication required",
-    });
-  }
+  await requireAdminSession(event);
 
   const formData = await readMultipartFormData(event);
   if (!formData || formData.length === 0) {

@@ -100,6 +100,7 @@ function getBlockedTimeSlots(
     });
 }
 
+// PUBLIC: free call slots shown in the quote form
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);

@@ -10,6 +10,7 @@
 
 import { getSupabase } from "~/server/utils/supabase";
 
+// PUBLIC: Vercel cron, checked against CRON_SECRET
 export default defineEventHandler(async (event) => {
   const cronSecret = process.env.CRON_SECRET;
   const authHeader = getRequestHeader(event, "authorization");

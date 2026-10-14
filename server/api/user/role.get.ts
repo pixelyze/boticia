@@ -1,14 +1,17 @@
 import { getSupabase } from '~/server/utils/supabase';
 import { getQuoteByClientEmail } from '~/server/utils/client-portal';
+import { getSessionEmail } from '~/server/utils/serverAuth';
 
+// PUBLIC: answers only about the signed-in user (401 when signed out)
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
-  const email = query.email as string;
+  // The ?email= sent by older callers is ignored : answering for any
+  // address told anyone who is a Boticia client, and her quote id.
+  const email = await getSessionEmail(event);
 
   if (!email) {
     throw createError({
-      statusCode: 400,
-      message: 'Email required',
+      statusCode: 401,
+      message: 'Authentication required',
     });
   }
 

@@ -5,8 +5,10 @@
  */
 
 import { reorderSections } from "~/server/utils/cms";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const body = await readBody<{ sectionIds: string[] }>(event);
 
   if (!body.sectionIds || !Array.isArray(body.sectionIds)) {

@@ -1,5 +1,6 @@
 import { H3Event, getCookie, getHeader, createError } from 'h3';
 import type { User } from '@supabase/supabase-js';
+import { serverSupabaseUser } from '#supabase/server';
 import { isAdmin } from './adminAuth';
 import { getSupabase as getServiceSupabase } from './supabase';
 import { getQuoteByClientEmail } from './client-portal';
@@ -72,6 +73,46 @@ export async function requireAdmin(event: H3Event): Promise<User> {
   }
 
   return user;
+}
+
+/**
+ * Email of the signed-in user, from a Bearer token (adminFetch) or from
+ * the Supabase session cookie (plain $fetch). Null when signed out.
+ */
+export async function getSessionEmail(event: H3Event): Promise<string | null> {
+  const email = (await getAuthenticatedUser(event))?.email;
+  if (email) return email;
+
+  try {
+    const claims = await serverSupabaseUser(event);
+    return typeof claims?.email === 'string' ? claims.email : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Middleware: Require admin access, by Bearer token or session cookie.
+ * Returns the admin's email.
+ */
+export async function requireAdminSession(event: H3Event): Promise<string> {
+  const email = await getSessionEmail(event);
+
+  if (!email) {
+    throw createError({
+      statusCode: 401,
+      message: 'Authentication required',
+    });
+  }
+
+  if (!(await isAdmin(email))) {
+    throw createError({
+      statusCode: 403,
+      message: 'Admin access required',
+    });
+  }
+
+  return email;
 }
 
 /**

@@ -5,8 +5,10 @@
 
 import { createComponent } from "~/server/utils/cms";
 import type { CreateComponentInput } from "~/server/utils/cms-types";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const body = await readBody<CreateComponentInput>(event);
 
   // Validate required fields

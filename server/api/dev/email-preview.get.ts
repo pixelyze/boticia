@@ -6,6 +6,11 @@
 import { renderWelcome } from "~/server/emails/compiled";
 
 export default defineEventHandler(async (event) => {
+  // DEV-ONLY : outil de développement, invisible en production.
+  if (!import.meta.dev) {
+    throw createError({ statusCode: 404, message: "Not found" });
+  }
+
   const query = getQuery(event);
   const template = (query.template as string) || "moodboard";
 

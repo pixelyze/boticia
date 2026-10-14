@@ -3,12 +3,12 @@
  * Authenticated — Submit feedback (bug, suggestion, question)
  */
 
-import { requireAuth } from "~/server/utils/serverAuth";
+import { requireAdmin } from "~/server/utils/serverAuth";
 import { getSupabase } from "~/server/utils/supabase";
 import { sendFeedbackNotification } from "~/server/utils/email";
 
 export default defineEventHandler(async (event) => {
-  const user = await requireAuth(event);
+  const user = await requireAdmin(event);
   const body = await readBody<{ type: string; message: string }>(event);
 
   // Validate type

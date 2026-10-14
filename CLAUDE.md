@@ -152,6 +152,20 @@ Required closing methods: Escape key, overlay click, close button, swipe down on
 - Semicolons required
 - Line limit: 80 characters
 
+## API Security (IMPORTANT)
+
+Every route in `server/api/` MUST start with an access check:
+- Admin: `await requireAdminSession(event)` (or `requireAdmin` with adminFetch)
+- Client: `await requireClient(event)` — scope queries to her own quote
+- Public (quote form, public reads, cron with `CRON_SECRET`, Stripe webhook
+  with signature): add a `// PUBLIC: <reason>` comment at the top.
+
+NEVER: commented-out auth checks, "TODO auth", setup or test endpoints,
+hardcoded credentials, serving user-uploaded SVG as-is.
+Dev-only routes: `if (!import.meta.dev) throw 404` — mark `// DEV-ONLY`.
+
+`tests/server/api-access.test.ts` fails if a route declares no access level.
+
 ## Code Methodology
 
 1. Only modify code directly relevant to the request

@@ -13,6 +13,7 @@ function getStripe(): Stripe {
   return stripe;
 }
 
+// PUBLIC: Stripe checkout session
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);

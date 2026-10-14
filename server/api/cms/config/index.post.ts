@@ -5,8 +5,10 @@
 
 import { upsertConfig } from "~/server/utils/cms";
 import type { CreateConfigInput } from "~/server/utils/cms-types";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const body = await readBody<CreateConfigInput>(event);
 
   // Validate required fields

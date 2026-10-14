@@ -2,8 +2,7 @@
  * POST /api/chat
  * Send a chat message (requires auth or dev token)
  */
-import { getAuthenticatedUser } from "~/server/utils/serverAuth";
-import { isAdmin } from "~/server/utils/adminAuth";
+import { requireAdmin } from "~/server/utils/serverAuth";
 import { getSupabase } from "~/server/utils/supabase";
 import { sendChatNotification } from "~/server/utils/email";
 
@@ -29,12 +28,9 @@ export default defineEventHandler(async (event) => {
     senderType = "dev";
     senderName = body.sender_name || "Brutal Studio";
   } else {
-    const user = await getAuthenticatedUser(event);
-    if (!user) {
-      throw createError({ statusCode: 401, message: "Authentication required" });
-    }
-    const adminUser = await isAdmin(user.email);
-    senderType = adminUser ? "admin" : "client";
+    // Chat Laëtitia ↔ studio : une cliente connectée n'y écrit pas.
+    const user = await requireAdmin(event);
+    senderType = "admin";
     senderName = user.email?.split("@")[0] || "User";
     // Capitalize first letter
     senderName = senderName.charAt(0).toUpperCase() + senderName.slice(1);

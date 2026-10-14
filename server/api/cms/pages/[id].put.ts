@@ -5,10 +5,10 @@
 
 import { updatePage, getPageById } from "~/server/utils/cms";
 import type { UpdatePageInput } from "~/server/utils/cms-types";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
-  // TODO: Add authentication check
-  // const user = await requireAuth(event);
+  await requireAdminSession(event);
 
   const id = getRouterParam(event, "id");
 

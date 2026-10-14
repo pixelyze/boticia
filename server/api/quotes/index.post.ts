@@ -20,6 +20,7 @@ import {
 } from "~/server/utils/email";
 import { generateMagicLink } from "~/server/utils/supabase";
 
+// PUBLIC: quote request form
 export default defineEventHandler(async (event) => {
   const body = await readBody<CreateQuoteRequestInput>(event);
 

@@ -36,6 +36,7 @@ async function isKnownEmail(email: string): Promise<boolean> {
   return (await getQuoteByClientEmail(email)) !== null;
 }
 
+// PUBLIC: login form, same answer whether the address is known or not
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { email, redirect, locale } = body as {

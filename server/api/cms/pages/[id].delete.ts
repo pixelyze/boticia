@@ -4,10 +4,10 @@
  */
 
 import { deletePage, getPageById } from "~/server/utils/cms";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
-  // TODO: Add authentication check
-  // const user = await requireAuth(event);
+  await requireAdminSession(event);
 
   const id = getRouterParam(event, "id");
 

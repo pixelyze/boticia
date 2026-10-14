@@ -5,8 +5,10 @@
 
 import { getSupabase } from "~/server/utils/supabase";
 import { listLogoFiles } from "~/server/utils/site-photos";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const supabase = getSupabase();
 
   const logos = (await listLogoFiles()).map((f) => {

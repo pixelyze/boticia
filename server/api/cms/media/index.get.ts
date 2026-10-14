@@ -4,8 +4,10 @@
  */
 
 import { getMedia } from "~/server/utils/cms";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   try {
     const media = await getMedia();
 

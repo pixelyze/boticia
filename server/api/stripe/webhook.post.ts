@@ -22,6 +22,7 @@ function getResend(): Resend {
   return resend;
 }
 
+// PUBLIC: Stripe webhook, checked by signature
 export default defineEventHandler(async (event) => {
   const body = await readRawBody(event);
   const signature = getHeader(event, "stripe-signature");

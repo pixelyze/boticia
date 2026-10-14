@@ -5,8 +5,10 @@
 
 import { createSection } from "~/server/utils/cms";
 import type { CreateSectionInput } from "~/server/utils/cms-types";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const body = await readBody<CreateSectionInput>(event);
 
   // Validate required fields

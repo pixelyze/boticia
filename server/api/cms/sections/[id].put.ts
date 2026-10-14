@@ -5,8 +5,10 @@
 
 import { updateSection, getSectionById } from "~/server/utils/cms";
 import type { UpdateSectionInput } from "~/server/utils/cms-types";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const id = getRouterParam(event, "id");
 
   if (!id) {

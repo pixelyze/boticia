@@ -4,8 +4,10 @@
  */
 
 import { deleteSection, getSectionById } from "~/server/utils/cms";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
+  await requireAdminSession(event);
   const id = getRouterParam(event, "id");
 
   if (!id) {

@@ -5,10 +5,10 @@
 
 import { createPage } from "~/server/utils/cms";
 import type { CreatePageInput } from "~/server/utils/cms-types";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 
 export default defineEventHandler(async (event) => {
-  // TODO: Add authentication check
-  // const user = await requireAuth(event);
+  await requireAdminSession(event);
 
   const body = await readBody<CreatePageInput>(event);
 

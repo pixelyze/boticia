@@ -13,6 +13,7 @@ function getStripe(): Stripe {
   return stripe;
 }
 
+// PUBLIC: Stripe success page, by unguessable session id
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);

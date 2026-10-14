@@ -13,6 +13,7 @@ import { getSupabase } from "~/server/utils/supabase";
 
 const MAX_INSPIRATIONS = 5;
 
+// PUBLIC: quote form photos, right after submit (unguessable quote id, 5 max)
 export default defineEventHandler(async (event) => {
   const quoteId = getRouterParam(event, "id");
 

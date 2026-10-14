@@ -4,17 +4,11 @@
  */
 
 import { getSupabase } from "~/server/utils/supabase";
-import { serverSupabaseUser } from "#supabase/server";
+import { requireAdminSession } from "~/server/utils/serverAuth";
 import { getSitePhotoPaths } from "~/server/utils/site-photos";
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event);
-  if (!user) {
-    throw createError({
-      statusCode: 401,
-      message: "Authentication required",
-    });
-  }
+  await requireAdminSession(event);
 
   const path = getRouterParam(event, "path");
   if (!path) {

@@ -5,6 +5,7 @@
 
 import { getConfigs, getConfigByKey } from "~/server/utils/cms";
 
+// PUBLIC: site settings (logo, theme, texts) read by public pages
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
