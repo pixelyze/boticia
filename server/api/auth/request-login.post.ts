@@ -1,6 +1,6 @@
 /**
  * POST /api/auth/request-login
- * Public — Send a login link, but only to an address the site already knows.
+ * Public — Send a sign-in code, only to an address the site already knows.
  *
  * Replaces a direct signInWithOtp() from the browser, which created an
  * account for any address typed into the login form.
@@ -61,15 +61,17 @@ export default defineEventHandler(async (event) => {
 
   try {
     if (await isKnownEmail(normalizedEmail)) {
-      const { link, error } = await generateMagicLink(
+      // Seul le code part par email ; le lien généré avec lui n'est pas
+      // envoyé (generateLink produit les deux à partir du même jeton).
+      const { code, error } = await generateMagicLink(
         normalizedEmail,
         redirectTo
       );
 
-      if (link) {
+      if (code) {
         await sendLoginLinkEmail(
           normalizedEmail,
-          link,
+          code,
           lang,
           await isAdmin(normalizedEmail)
         );

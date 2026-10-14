@@ -9,7 +9,14 @@
         @click="onCancel"
       />
     </Transition>
-    <div class="absolute inset-x-0 top-[32px] bottom-0 overflow-hidden">
+    <div
+      class="absolute overflow-hidden"
+      :class="
+        compact
+          ? 'inset-x-0 bottom-0'
+          : 'inset-x-0 top-[32px] bottom-0'
+      "
+    >
       <Transition
         v-bind="contentTransition"
         @after-leave="onTransitionComplete"
@@ -17,7 +24,7 @@
         <div
           v-if="showModal"
           ref="modalRef"
-          class="bg-white w-full h-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black transform rounded-t-3xl flex flex-col"
+          class="bg-white w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black transform rounded-t-3xl flex flex-col"
           :class="modalClasses"
           role="dialog"
           aria-modal="true"
@@ -73,7 +80,10 @@
 
           <!-- Scrollable content -->
           <div class="flex-grow overflow-y-auto scroll-area">
-            <div class="max-w-6xl mx-auto px-4 md:px-8 py-6 pb-24 space-y-6 text-gray-800">
+            <div
+              class="max-w-6xl mx-auto px-4 md:px-8 py-6 space-y-6 text-gray-800"
+              :class="compact ? 'md:max-w-md pb-8' : 'pb-24'"
+            >
               <slot :close="onCancel" />
 
               <!-- Close button (optional) -->
@@ -110,8 +120,10 @@ const props = withDefaults(
     showCloseButton?: boolean;
     closeButtonText?: string;
     showCloseIcon?: boolean;
+    compact?: boolean;
   }>(),
   {
+    compact: false,
     uppercase: false,
     showCloseButton: true,
     showCloseIcon: false,
@@ -131,7 +143,11 @@ const {
 const modalRef = ref<HTMLElement | null>(null);
 const dragHandleRef = ref<HTMLElement | null>(null);
 
-const modalClasses = computed(() => ({}));
+// compact : la fenêtre s'ouvre par le bas mais ne prend que la hauteur de
+// son contenu (petite confirmation).
+const modalClasses = computed(() =>
+  props.compact ? "max-h-[85dvh]" : "h-full"
+);
 
 const handleCloseModal = () => {
   close();

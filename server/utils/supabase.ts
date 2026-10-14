@@ -42,7 +42,7 @@ export function toProxyUrl(supabasePublicUrl: string): string {
  *
  * @param redirectTo full URL of the /confirm page handling the token
  */
-export async function generateMagicLink(email: string, redirectTo?: string): Promise<{ link: string | null; error: string | null }> {
+export async function generateMagicLink(email: string, redirectTo?: string): Promise<{ link: string | null; code: string | null; error: string | null }> {
   try {
     const supabase = getSupabase()
 
@@ -59,22 +59,26 @@ export async function generateMagicLink(email: string, redirectTo?: string): Pro
 
     if (error) {
       console.error('Error generating magic link:', error.message)
-      return { link: null, error: error.message }
+      return { link: null, code: null, error: error.message }
     }
 
     const hashedToken = data.properties?.hashed_token
     if (!hashedToken) {
       console.error('Error generating magic link: no hashed_token returned')
-      return { link: null, error: 'No token returned' }
+      return { link: null, code: null, error: 'No token returned' }
     }
 
     const separator = confirmUrl.includes('?') ? '&' : '?'
     const link = `${confirmUrl}${separator}token_hash=${encodeURIComponent(hashedToken)}&type=magiclink`
 
-    return { link, error: null }
+    // Le même jeton existe aussi sous forme de code à 6 chiffres : utiliser
+    // l'un invalide l'autre.
+    const code = data.properties?.email_otp || null
+
+    return { link, code, error: null }
   } catch (err) {
     console.error('Error generateMagicLink:', err)
-    return { link: null, error: 'Internal error' }
+    return { link: null, code: null, error: 'Internal error' }
   }
 }
 

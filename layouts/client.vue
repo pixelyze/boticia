@@ -12,7 +12,7 @@
             flex items-center justify-between"
         >
           <NuxtLink
-            to="/"
+            :to="localePath('/')"
             :aria-label="$t('client.back_to_site')"
             :title="$t('client.back_to_site')"
             class="w-10 h-10 rounded-full bg-cream-dark
@@ -34,8 +34,15 @@
               {{ $t("client.space_subtitle") }}
             </span>
           </div>
-          <!-- Spacer to keep center alignment -->
-          <div class="w-10 h-10"></div>
+          <Button
+            variant="ghost"
+            icon="LogOut"
+            icon-only
+            :aria-label="$t('client.sign_out')"
+            :title="$t('client.sign_out')"
+            class="!w-10 !h-10 justify-center !border-0 bg-cream-dark text-gray-500 hover:!bg-cream-dark hover:text-gray-600"
+            @click="signOutOpen = true"
+          />
         </div>
       </div>
     </header>
@@ -45,12 +52,45 @@
       <slot />
     </main>
     <Footer />
+
+    <!-- Confirmation avant déconnexion -->
+    <BaseModal
+      :is-open="signOutOpen"
+      :title="$t('client.sign_out_title')"
+      :show-close-button="false"
+      show-close-icon
+      compact
+      @close="signOutOpen = false"
+    >
+      <p class="text-dark/70 leading-relaxed mb-6">
+        {{ $t("client.sign_out_text") }}
+      </p>
+      <div class="space-y-3">
+        <Button
+          variant="primary"
+          icon="LogOut"
+          class="w-full justify-center"
+          @click="handleSignOut"
+        >
+          {{ $t("client.sign_out_confirm") }}
+        </Button>
+        <Button
+          variant="ghost"
+          class="w-full justify-center"
+          @click="signOutOpen = false"
+        >
+          {{ $t("client.sign_out_cancel") }}
+        </Button>
+      </div>
+    </BaseModal>
   </div>
 </template>
 
 <script setup lang="ts">
 const user = useSupabaseUser();
-const { getClient: getSupabase } = useSupabase();
+// Le client du module @nuxtjs/supabase : c'est lui qui détient la session
+// (cookie). Un client créé à part n'a pas de session et ne déconnecte rien.
+const supabase = useSupabaseClient();
 const localePath = useLocalePath();
 const router = useRouter();
 const { t } = useI18n();
@@ -60,9 +100,10 @@ useSiteTheme();
 
 const coupleNames = ref("");
 
+const signOutOpen = ref(false);
+
 const handleSignOut = async () => {
-  const supabase = getSupabase();
-  if (!supabase) return;
+  signOutOpen.value = false;
   await supabase.auth.signOut();
   router.push(localePath("/"));
 };

@@ -96,7 +96,9 @@
 
 <script setup lang="ts">
 const user = useSupabaseUser();
-const { getClient: getSupabase } = useSupabase();
+// Le client du module @nuxtjs/supabase : c'est lui qui détient la session
+// (cookie). Un client créé à part n'a pas de session et ne déconnecte rien.
+const supabase = useSupabaseClient();
 const localePath = useLocalePath();
 const router = useRouter();
 const route = useRoute();
@@ -110,8 +112,6 @@ useSiteTheme();
 
 const handleSignOut = async () => {
   menuOpen.value = false;
-  const supabase = getSupabase();
-  if (!supabase) return;
   await supabase.auth.signOut();
   router.push(localePath('/'));
 };

@@ -16,6 +16,17 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: "Playfair Display", serif;
   }
+
+  /* Remplissage automatique du navigateur : Chrome teinte le champ en bleu.
+     On le remplace par le crème clair du site (l'ombre interne recouvre la
+     teinte, que le navigateur ne laisse pas modifier directement). */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px rgb(var(--color-cream-light)) inset;
+    -webkit-text-fill-color: theme("colors.dark");
+    caret-color: theme("colors.dark");
+  }
 }
 
 /* ========================================

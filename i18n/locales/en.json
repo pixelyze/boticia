@@ -302,16 +302,21 @@
     "eyebrow": "Boticia space",
     "back": "Back to home",
     "title": "Lovely to see you again",
-    "intro": "Enter the email address of your quote request: we'll send you a link to sign in, no password needed.",
+    "intro": "Enter the email address of your quote request: we'll send you a code to sign in, no password needed.",
     "email_label": "Email address",
     "email_placeholder": "your{'@'}email.com",
-    "submit": "Get my link",
-    "sent_title": "Check your inbox",
-    "sent_message": "If {email} matches a Boticia account, a sign-in link will reach you in a few moments. It stays valid for 24 hours.",
-    "resend": "Send another link",
-    "error": "The link couldn't be sent. Please try again in a moment.",
+    "submit": "Continue",
+    "error": "The code couldn't be sent. Please try again in a moment.",
     "not_client": "Not a client yet?",
-    "quote_cta": "Request a quote"
+    "quote_cta": "Request a quote",
+    "code_title": "Check your inbox",
+    "code_intro": "Enter the 6-digit code sent to",
+    "code_submit": "Continue",
+    "code_invalid": "This code doesn't work. Check it, or request a new one.",
+    "code_placeholder": "Code",
+    "code_resend": "Resend code",
+    "code_resent": "A new code is on its way.",
+    "back_to_email": "Back to email address"
   },
   "confirm_page": {
     "loading_title": "Signing you in…",
@@ -886,7 +891,12 @@
     "meeting_title": "Meeting",
     "meeting_none": "No meeting scheduled",
     "meeting_schedule": "Schedule",
-    "meeting_reschedule": "Reschedule"
+    "meeting_reschedule": "Reschedule",
+    "sign_out": "Sign out",
+    "sign_out_title": "Sign out?",
+    "sign_out_text": "You can come back at any time: just request a code from the sign-in page.",
+    "sign_out_confirm": "Sign me out",
+    "sign_out_cancel": "Stay signed in"
   },
   "planifier": {
     "title": "Schedule a meeting",

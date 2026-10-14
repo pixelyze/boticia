@@ -4,34 +4,22 @@
   >
     <!-- Logo sur fond uni : bandeau en mobile, demi-écran en desktop -->
     <div
-      class="relative bg-cream-light flex items-center justify-center pt-14 pb-8 md:p-16"
+      class="bg-cream-light flex items-center justify-center py-10 md:p-16"
     >
-      <Button
-        variant="ghost"
-        icon="ArrowLeft"
+      <!-- Le logo ramène à l'accueil (comme l'en-tête du site) -->
+      <NuxtLink
         :to="localePath('/')"
-        class="md:!hidden absolute top-3 left-3 !p-2.5 text-sm"
         :aria-label="$t('login_page.back')"
-        icon-only
-      />
-      <img :src="logo" alt="Boticia" class="w-28 md:w-full md:max-w-xs" />
+        class="block w-28 md:w-full md:max-w-xs transition-opacity hover:opacity-80"
+      >
+        <img :src="logo" alt="Boticia" class="w-full" />
+      </NuxtLink>
     </div>
 
     <!-- Contenu -->
     <div
       class="flex-1 flex flex-col px-6 md:px-16 pt-10 pb-8 md:py-10 md:overflow-y-auto"
     >
-      <div class="hidden md:block w-full max-w-sm mx-auto">
-        <Button
-          variant="ghost"
-          icon="ArrowLeft"
-          :to="localePath('/')"
-          class="!px-0 !py-2 text-sm !font-normal text-dark/70 hover:text-dark hover:!bg-transparent"
-        >
-          {{ $t("login_page.back") }}
-        </Button>
-      </div>
-
       <div class="md:flex-1 md:flex md:items-center md:py-10">
         <div class="w-full max-w-sm mx-auto">
           <slot />

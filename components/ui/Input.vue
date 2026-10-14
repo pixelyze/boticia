@@ -65,7 +65,7 @@ const inputId = useId();
 // Classes du design system (copiées de espace/index.vue)
 const inputClasses = computed(() => {
   if (props.variant === 'soft') {
-    const base = 'w-full h-12 px-4 py-3 rounded-xl border-2 bg-white focus:outline-none focus:border-dark/30 transition-all';
+    const base = 'w-full h-12 px-4 py-3 rounded-xl border-2 bg-white focus:outline-none focus:border-dark transition-all';
 
     if (props.disabled) {
       return `${base} border-gray-200 bg-gray-50 cursor-not-allowed opacity-60`;

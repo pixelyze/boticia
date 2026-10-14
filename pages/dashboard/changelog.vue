@@ -138,8 +138,28 @@ const releases = [
       },
       {
         category: "feature" as Category,
-        title: "Lien de connexion valable 24 heures",
-        description: "Vos clientes ont maintenant une journée entière pour cliquer sur le lien reçu par email, au lieu d'une heure.",
+        title: "Connexion avec un code à 6 chiffres",
+        description: "Pour se connecter, vos clientes (et vous) reçoivent un code à 6 chiffres par email, à saisir sur la page de connexion. Plus besoin de cliquer sur un lien : le code fonctionne même si l'email est lu sur un autre appareil. Il reste valable 1 heure.",
+      },
+      {
+        category: "design" as Category,
+        title: "Des pages de connexion plus élégantes",
+        description: "Les pages de connexion reprennent l'univers Boticia : votre logo sur fond crème, des textes plus chaleureux, et une saisie du code pensée pour le téléphone. Le logo ramène à l'accueil du site.",
+      },
+      {
+        category: "feature" as Category,
+        title: "Bouton « Se déconnecter » dans l'espace client",
+        description: "Vos clientes peuvent se déconnecter depuis leur espace, avec une petite confirmation pour éviter un clic par erreur.",
+      },
+      {
+        category: "fix" as Category,
+        title: "La déconnexion fonctionne vraiment",
+        description: "Après « Se déconnecter », on était encore connecté en revenant sur le tableau de bord ou l'espace client. C'est corrigé.",
+      },
+      {
+        category: "content" as Category,
+        title: "Des emails signés de votre nom",
+        description: "Les emails envoyés à vos clientes se terminent maintenant par une signature chaleureuse, « À très bientôt, Laëtitia ».",
       },
       {
         category: "feature" as Category,

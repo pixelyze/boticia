@@ -44,18 +44,13 @@ definePageMeta({
 });
 
 const supabase = useSupabaseClient();
-const router = useRouter();
 const route = useRoute();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const localePath = useLocalePath();
 
 const error = ref("");
 
-// Destination demandée avant la connexion (ex : la fiche devis du lien
-// magique). Validée pour éviter toute redirection hors du site.
-const redirectTarget = computed(() =>
-  safeRedirectPath(route.query.redirect)
-);
+const { redirectTarget, redirectByRole } = useAuthRedirect();
 
 // Si le lien magique est expiré, on renvoie vers la connexion en gardant la
 // destination : après login elle atterrit sur la fiche, pas sur l'accueil.
@@ -66,27 +61,8 @@ const retryLink = computed(() => {
     : login;
 });
 
-async function redirectByRole(email: string) {
-  try {
-    const roleData = await $fetch<{
-      role: string;
-      quoteId?: string;
-    }>("/api/user/role", {
-      params: { email },
-    });
-
-    if (roleData.role === "admin") {
-      await router.replace(
-        redirectTarget.value || `/${locale.value}/dashboard`
-      );
-    } else if (roleData.role === "client") {
-      await router.replace(`/${locale.value}/mon-projet`);
-    } else {
-      error.value = t("confirm_page.no_project");
-    }
-  } catch {
-    await router.replace(`/${locale.value}/dashboard`);
-  }
+async function redirectOrFail() {
+  if (!(await redirectByRole())) error.value = t("confirm_page.no_project");
 }
 
 /**
@@ -114,7 +90,7 @@ async function consumeTokenHash(): Promise<boolean> {
     return true;
   }
 
-  await redirectByRole(data.session.user.email || "");
+  await redirectOrFail();
   return true;
 }
 
@@ -128,7 +104,7 @@ onMounted(async () => {
       async (event, session) => {
         if (event === "SIGNED_IN" && session) {
           subscription.unsubscribe();
-          await redirectByRole(session.user.email || "");
+          await redirectOrFail();
         }
       }
     );
@@ -139,7 +115,7 @@ onMounted(async () => {
 
     if (session?.user) {
       subscription.unsubscribe();
-      await redirectByRole(session.user.email || "");
+      await redirectOrFail();
       return;
     }
 

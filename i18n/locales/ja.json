@@ -302,16 +302,21 @@
     "eyebrow": "Boticia マイページ",
     "back": "トップページへ戻る",
     "title": "おかえりなさいませ",
-    "intro": "お見積りのご依頼時のメールアドレスをご入力ください。パスワード不要のログイン用リンクをお送りします。",
+    "intro": "お見積りのご依頼時のメールアドレスをご入力ください。パスワード不要のログインコードをお送りします。",
     "email_label": "メールアドレス",
     "email_placeholder": "your{'@'}email.com",
-    "submit": "リンクを受け取る",
-    "sent_title": "メールをご確認ください",
-    "sent_message": "{email} が Boticia のアカウントと一致する場合、まもなくログイン用リンクが届きます。リンクは24時間有効です。",
-    "resend": "リンクを再送する",
-    "error": "リンクを送信できませんでした。しばらくしてから再度お試しください。",
+    "submit": "次へ",
+    "error": "コードを送信できませんでした。しばらくしてから再度お試しください。",
     "not_client": "まだご依頼前ですか？",
-    "quote_cta": "お見積りを依頼する"
+    "quote_cta": "お見積りを依頼する",
+    "code_title": "メールをご確認ください",
+    "code_intro": "次のメールアドレスに送信した6桁のコードをご入力ください",
+    "code_submit": "次へ",
+    "code_invalid": "このコードはご利用いただけません。ご確認のうえ、必要に応じて新しいコードをご請求ください。",
+    "code_placeholder": "コード",
+    "code_resend": "コードを再送する",
+    "code_resent": "新しいコードを送信しました。",
+    "back_to_email": "メールアドレスの入力に戻る"
   },
   "confirm_page": {
     "loading_title": "ログインしています…",
@@ -886,7 +891,12 @@
     "meeting_title": "打ち合わせ",
     "meeting_none": "打ち合わせは未設定です",
     "meeting_schedule": "予約する",
-    "meeting_reschedule": "変更する"
+    "meeting_reschedule": "変更する",
+    "sign_out": "ログアウト",
+    "sign_out_title": "ログアウトしますか？",
+    "sign_out_text": "ログインページからコードをご請求いただければ、いつでも戻ることができます。",
+    "sign_out_confirm": "ログアウトする",
+    "sign_out_cancel": "ログインしたままにする"
   },
   "planifier": {
     "title": "打ち合わせを予約",

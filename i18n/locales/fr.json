@@ -302,16 +302,21 @@
     "eyebrow": "Espace Boticia",
     "back": "Retour à l'accueil",
     "title": "Ravie de vous retrouver",
-    "intro": "Indiquez l'adresse email de votre demande de devis : nous vous envoyons un lien pour vous connecter, sans mot de passe.",
+    "intro": "Indiquez l'adresse email de votre demande de devis : nous vous envoyons un code pour vous connecter, sans mot de passe.",
     "email_label": "Adresse email",
     "email_placeholder": "votre{'@'}email.com",
-    "submit": "Recevoir mon lien",
-    "sent_title": "Vérifiez votre boîte mail",
-    "sent_message": "Si {email} correspond à un compte Boticia, un lien de connexion vous attend dans quelques instants. Il reste valable 24 heures.",
-    "resend": "Renvoyer un lien",
-    "error": "L'envoi du lien n'a pas abouti. Réessayez dans un instant.",
+    "submit": "Continuer",
+    "error": "L'envoi du code n'a pas abouti. Réessayez dans un instant.",
     "not_client": "Pas encore cliente ?",
-    "quote_cta": "Faire une demande de devis"
+    "quote_cta": "Faire une demande de devis",
+    "code_title": "Vérifiez votre boîte mail",
+    "code_intro": "Saisissez le code à 6 chiffres envoyé à",
+    "code_submit": "Continuer",
+    "code_invalid": "Ce code ne fonctionne pas. Vérifiez-le, ou demandez-en un nouveau.",
+    "code_placeholder": "Code",
+    "code_resend": "Renvoyer le code",
+    "code_resent": "Un nouveau code vient de partir.",
+    "back_to_email": "Revenir à l'adresse email"
   },
   "confirm_page": {
     "loading_title": "Connexion en cours…",
@@ -886,7 +891,12 @@
     "meeting_title": "Rendez-vous",
     "meeting_none": "Aucun rendez-vous planifié",
     "meeting_schedule": "Planifier",
-    "meeting_reschedule": "Modifier"
+    "meeting_reschedule": "Modifier",
+    "sign_out": "Se déconnecter",
+    "sign_out_title": "Se déconnecter ?",
+    "sign_out_text": "Vous pourrez revenir à tout moment : il suffira de demander un code depuis la page de connexion.",
+    "sign_out_confirm": "Me déconnecter",
+    "sign_out_cancel": "Rester connectée"
   },
   "planifier": {
     "title": "Planifier un rendez-vous",

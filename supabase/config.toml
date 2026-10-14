@@ -210,9 +210,9 @@ secure_password_change = false
 max_frequency = "1s"
 # Number of characters used in the email OTP.
 otp_length = 6
-# Number of seconds before the email OTP expires (max 24 h, used here so
-# clients can open their sign-in link later in the day).
-otp_expiry = 86400
+# Number of seconds before the email OTP expires. 1 h : the same token is
+# also a 6-digit code, which must not stay guessable for long.
+otp_expiry = 3600
 
 # Use a production-ready SMTP server
 # [auth.email.smtp]
