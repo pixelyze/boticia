@@ -84,7 +84,8 @@ export default defineEventHandler(async (event) => {
       quote.email,
       coupleName,
       `${base}/${quote.locale || "fr"}/mon-projet/proposition`,
-      quote.locale
+      quote.locale,
+      proposal.description
     );
   } catch (err) {
     console.error("Error sending proposal email:", err);

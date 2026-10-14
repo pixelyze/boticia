@@ -122,6 +122,7 @@ const clientLocale = (locale?: string): ClientLocale =>
 const CLIENT_EMAIL = {
   fr: {
     greeting: (name: string) => `Bonjour ${name},`,
+    noteLabel: "Le mot de Laëtitia",
     footer: "À très bientôt,<br/>Laëtitia — Boticia",
     moodboard: {
       subject: "Votre moodboard floral est prêt — Boticia",
@@ -196,6 +197,7 @@ const CLIENT_EMAIL = {
   },
   en: {
     greeting: (name: string) => `Hello ${name},`,
+    noteLabel: "A note from Laëtitia",
     footer: "See you very soon,<br/>Laëtitia — Boticia",
     moodboard: {
       subject: "Your floral moodboard is ready — Boticia",
@@ -268,6 +270,7 @@ const CLIENT_EMAIL = {
   },
   ja: {
     greeting: (name: string) => `${name} 様`,
+    noteLabel: "Laëtitiaからのメッセージ",
     footer: "近いうちにお会いできるのを楽しみにしております。<br/>Laëtitia — Boticia",
     moodboard: {
       subject: "フラワームードボードのご用意ができました — Boticia",
@@ -345,13 +348,14 @@ export async function sendMoodboardNotification(
   clientEmail: string,
   coupleName: string,
   portalUrl: string,
-  locale?: string
+  locale?: string,
+  note?: string | null
 ): Promise<boolean> {
   const tx = CLIENT_EMAIL[clientLocale(locale)];
   const html = await renderClientEmail({
     title: tx.moodboard.title,
     greeting: tx.greeting(escapeHtml(coupleName)),
-    message: tx.moodboard.message,
+    message: tx.moodboard.message + renderLaetitiaNote(note, tx.noteLabel),
     ctaText: tx.moodboard.cta,
     ctaUrl: portalUrl,
     footerText: tx.footer,
@@ -365,19 +369,36 @@ export async function sendMoodboardNotification(
 }
 
 /**
+ * Le mot de Laëtitia qui accompagne un moodboard ou un devis, dans un
+ * encadré crème (comme le code de connexion). Rien si le mot est vide.
+ */
+function renderLaetitiaNote(note: string | null | undefined, label: string) {
+  const text = (note || "").trim();
+  if (!text) return "";
+  return (
+    '<div style="margin:24px 0 0;padding:16px 20px;background:#f4f2ee;' +
+    'border-radius:12px;">' +
+    `<div style="font-size:13px;color:#777777;margin-bottom:6px;">${label}</div>` +
+    `<div style="color:#1a1a1a;">${escapeHtml(text).replace(/\n/g, "<br/>")}</div>` +
+    "</div>"
+  );
+}
+
+/**
  * Notify client that quote/proposal is available
  */
 export async function sendProposalNotification(
   clientEmail: string,
   coupleName: string,
   portalUrl: string,
-  locale?: string
+  locale?: string,
+  note?: string | null
 ): Promise<boolean> {
   const tx = CLIENT_EMAIL[clientLocale(locale)];
   const html = await renderClientEmail({
     title: tx.proposal.title,
     greeting: tx.greeting(escapeHtml(coupleName)),
-    message: tx.proposal.message,
+    message: tx.proposal.message + renderLaetitiaNote(note, tx.noteLabel),
     ctaText: tx.proposal.cta,
     ctaUrl: portalUrl,
     footerText: tx.footer,

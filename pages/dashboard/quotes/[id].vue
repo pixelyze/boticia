@@ -340,76 +340,50 @@
                   <h3 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
                     Moodboard
                   </h3>
+                  <!-- Un brouillon à la fois : on le reprend en cliquant
+                       dessus, d'où le bouton désactivé -->
                   <button
-                    @click="triggerMoodboardUpload"
-                    :disabled="uploadingMoodboard"
-                    class="text-sm text-gray-500 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
+                    @click="moodboardModalOpen = true"
+                    :disabled="draftMoodboardItems.length > 0"
+                    class="text-sm text-gray-500 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-40 disabled:hover:text-gray-500"
                   >
-                    <IconLucid
-                      :name="uploadingMoodboard ? 'Loader2' : 'Plus'"
-                      size="xs"
-                      :class="uploadingMoodboard ? 'animate-spin' : ''"
-                    />
-                    {{ $t("dashboard.moodboard_add_file") }}
+                    <IconLucid name="Plus" size="xs" />
+                    {{ $t("dashboard.moodboard_prepare") }}
                   </button>
                 </div>
-                <input
-                  ref="moodboardFileInput"
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp,application/pdf"
-                  class="hidden"
-                  @change="handleMoodboardFileChange"
-                />
                 <!-- En préparation seulement : une version envoyée vit dans
                      la timeline, figée. -->
-                <div v-if="draftMoodboardItems.length > 0" class="space-y-2 mb-3">
-                  <div
-                    v-for="item in draftMoodboardItems"
-                    :key="item.id"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg border bg-cream/50 border-transparent"
-                  >
-                    <div class="w-6 h-6 rounded-md overflow-hidden bg-cream shrink-0">
+                <button
+                  v-if="draftMoodboardItems.length > 0"
+                  type="button"
+                  class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 mb-3 rounded-lg bg-cream/50 hover:bg-cream transition-colors"
+                  @click="moodboardModalOpen = true"
+                >
+                  <div class="flex -space-x-2 shrink-0">
+                    <div
+                      v-for="item in draftMoodboardItems.slice(0, 3)"
+                      :key="item.id"
+                      class="w-7 h-7 rounded-md overflow-hidden bg-cream ring-2 ring-white flex items-center justify-center"
+                    >
                       <img
                         v-if="item.item_type === 'image'"
                         :src="item.public_url"
                         :alt="item.original_filename"
                         class="w-full h-full object-cover"
                       />
-                      <div v-else class="w-full h-full flex items-center justify-center">
-                        <IconLucid name="FileText" size="xs" class="text-gray-500" />
-                      </div>
-                    </div>
-                    <span class="flex-1 min-w-0">
-                      <span class="text-sm text-dark/80 truncate block">
-                        {{ item.original_filename || item.title }}
-                      </span>
-                    </span>
-                    <!-- Menu « ⋯ » : ouvrir le menu puis « Supprimer » vaut
-                         confirmation, comme pour les notes de la timeline -->
-                    <div class="relative shrink-0" data-file-menu>
-                      <button
-                        type="button"
-                        :aria-label="t('common.more_actions')"
-                        @click="fileMenuOpen = fileMenuOpen === `mb-${item.id}` ? null : `mb-${item.id}`"
-                        class="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-cream transition-all"
-                      >
-                        <IconLucid name="MoreHorizontal" size="xs" />
-                      </button>
-                      <div
-                        v-if="fileMenuOpen === `mb-${item.id}`"
-                        class="absolute right-0 top-8 bg-white rounded-xl shadow-lg border border-dark/10 py-1 z-10 min-w-[120px]"
-                      >
-                        <button
-                          type="button"
-                          @click="handleMoodboardDelete(item.id)"
-                          class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-cream transition-colors"
-                        >
-                          {{ t("common.delete") }}
-                        </button>
-                      </div>
+                      <IconLucid v-else name="FileText" size="xs" class="text-gray-500" />
                     </div>
                   </div>
-                </div>
+                  <span class="flex-1 min-w-0">
+                    <span class="text-sm text-dark/80 block">
+                      {{ $t("dashboard.draft_items", draftMoodboardItems.length) }}
+                    </span>
+                    <span class="text-xs block text-dark/40 truncate">
+                      {{ quote?.moodboard_draft_note || $t("dashboard.file_draft") }}
+                    </span>
+                  </span>
+                  <IconLucid name="ChevronRight" size="xs" class="text-gray-400 shrink-0" />
+                </button>
                 <p v-else class="text-sm text-dark/40 mb-3">
                   {{
                     moodboardVersions.length
@@ -419,7 +393,7 @@
                 </p>
                 <!-- Send moodboard button -->
                 <button
-                  @click="handleSendMoodboard"
+                  @click="sendMoodboardDraft(quote?.moodboard_draft_note || '')"
                   :disabled="draftMoodboardItems.length === 0 || sendingMoodboard"
                   class="mt-auto w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
                 >
@@ -444,71 +418,37 @@
                   <h3 class="font-heading text-sm text-dark/60 uppercase tracking-wider">
                     {{ $t("dashboard.proposal_title") }}
                   </h3>
+                  <!-- Un seul devis en préparation : l'envoi n'en part qu'un -->
                   <button
-                    @click="triggerProposalUpload"
-                    :disabled="uploadingProposal"
-                    class="text-sm text-gray-500 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-50"
+                    @click="proposalModalOpen = true"
+                    :disabled="draftProposals.length > 0"
+                    class="text-sm text-gray-500 hover:text-dark flex items-center gap-1 transition-colors disabled:opacity-40 disabled:hover:text-gray-500"
                   >
-                    <IconLucid
-                      :name="uploadingProposal ? 'Loader2' : 'Plus'"
-                      size="xs"
-                      :class="uploadingProposal ? 'animate-spin' : ''"
-                    />
+                    <IconLucid name="Plus" size="xs" />
                     {{ $t("dashboard.proposal_add_file") }}
                   </button>
                 </div>
-                <input
-                  ref="proposalFileInput"
-                  type="file"
-                  accept="application/pdf"
-                  class="hidden"
-                  @change="handleProposalFileChange"
-                />
                 <!-- En préparation seulement : un devis envoyé vit dans la
                      timeline, figé (il ne se supprime plus). -->
-                <div v-if="draftProposals.length > 0" class="space-y-2 mb-3">
-                  <div
-                    v-for="prop in draftProposals"
-                    :key="prop.id"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg border bg-cream/50 border-transparent"
-                  >
-                    <div class="w-6 h-6 rounded-md bg-cream flex items-center justify-center shrink-0">
-                      <IconLucid name="FileText" size="xs" class="text-gray-500" />
-                    </div>
-                    <span class="flex-1 min-w-0">
-                      <span class="text-sm text-dark/80 truncate block">
-                        {{ prop.original_filename || prop.title }}
-                      </span>
-                      <span class="text-xs block text-dark/40">
-                        {{ $t("dashboard.file_draft") }}
-                      </span>
-                    </span>
-                    <!-- Menu « ⋯ » : ouvrir le menu puis « Supprimer » vaut
-                         confirmation, comme pour les notes de la timeline -->
-                    <div class="relative shrink-0" data-file-menu>
-                      <button
-                        type="button"
-                        :aria-label="t('common.more_actions')"
-                        @click="fileMenuOpen = fileMenuOpen === `prop-${prop.id}` ? null : `prop-${prop.id}`"
-                        class="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-cream transition-all"
-                      >
-                        <IconLucid name="MoreHorizontal" size="xs" />
-                      </button>
-                      <div
-                        v-if="fileMenuOpen === `prop-${prop.id}`"
-                        class="absolute right-0 top-8 bg-white rounded-xl shadow-lg border border-dark/10 py-1 z-10 min-w-[120px]"
-                      >
-                        <button
-                          type="button"
-                          @click="handleDeleteProposal(prop.id)"
-                          class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-cream transition-colors"
-                        >
-                          {{ t("common.delete") }}
-                        </button>
-                      </div>
-                    </div>
+                <button
+                  v-if="draftProposal"
+                  type="button"
+                  class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 mb-3 rounded-lg bg-cream/50 hover:bg-cream transition-colors"
+                  @click="proposalModalOpen = true"
+                >
+                  <div class="w-7 h-7 rounded-md bg-cream flex items-center justify-center shrink-0">
+                    <IconLucid name="FileText" size="xs" class="text-gray-500" />
                   </div>
-                </div>
+                  <span class="flex-1 min-w-0">
+                    <span class="text-sm text-dark/80 truncate block">
+                      {{ draftProposal.original_filename || draftProposal.title }}
+                    </span>
+                    <span class="text-xs block text-dark/40 truncate">
+                      {{ draftProposal.description || $t("dashboard.file_draft") }}
+                    </span>
+                  </span>
+                  <IconLucid name="ChevronRight" size="xs" class="text-gray-400 shrink-0" />
+                </button>
                 <p v-else class="text-sm text-dark/40 mb-3">
                   {{
                     sentProposals.length
@@ -518,8 +458,8 @@
                 </p>
                 <!-- Send proposal button -->
                 <button
-                  @click="handleSendProposal"
-                  :disabled="draftProposals.length === 0 || sendingProposal"
+                  @click="sendProposalDraft(draftProposal?.description || '')"
+                  :disabled="!draftProposal || sendingProposal"
                   class="mt-auto w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 bg-dark text-cream hover:bg-dark/80"
                 >
                   <IconLucid
@@ -801,6 +741,13 @@
                         >
                           {{ item.proposal.original_filename || item.proposal.title }}
                         </a>
+                        <!-- Le mot de Laëtitia envoyé avec cette version -->
+                        <p
+                          v-if="item.proposal.description"
+                          class="text-xs text-dark/70 italic mt-1.5 whitespace-pre-line"
+                        >
+                          {{ item.proposal.description }}
+                        </p>
                         <p
                           v-if="item.proposal.superseded_at"
                           class="text-xs text-gray-500 mt-1"
@@ -876,6 +823,13 @@
                             <IconLucid v-else name="FileText" size="xs" class="text-gray-500" />
                           </div>
                         </div>
+                        <!-- Le mot de Laëtitia envoyé avec cette version -->
+                        <p
+                          v-if="moodboardNotes.get(item.version)"
+                          class="text-xs text-dark/70 italic mt-1.5 whitespace-pre-line"
+                        >
+                          {{ moodboardNotes.get(item.version) }}
+                        </p>
                         <p
                           v-if="item.superseded"
                           class="text-xs text-gray-500 mt-1"
@@ -1058,6 +1012,48 @@
       </div>
     </BaseModal>
 
+    <!-- Préparation du devis : le PDF et le mot de Laëtitia -->
+    <DocumentDraftModal
+      :is-open="proposalModalOpen"
+      :title="$t('dashboard.proposal_draft_title')"
+      :files-label="$t('dashboard.proposal_draft_file')"
+      :add-label="$t('dashboard.proposal_draft_add')"
+      :note-placeholder="$t('dashboard.proposal_draft_note_placeholder')"
+      :items="proposalDraftFiles"
+      :initial-note="draftProposal?.description || ''"
+      :next-version="sentProposals.length + 1"
+      accept="application/pdf"
+      :multiple="false"
+      :uploading="uploadingProposal"
+      :sending="sendingProposal"
+      @close="proposalModalOpen = false"
+      @add="(files) => uploadProposalFile(files[0])"
+      @remove="handleDeleteProposal"
+      @save="saveProposalNote"
+      @send="sendProposalDraft"
+    />
+
+    <!-- Préparation du moodboard : les fichiers et le mot de Laëtitia -->
+    <DocumentDraftModal
+      :is-open="moodboardModalOpen"
+      :title="$t('dashboard.moodboard_draft_title')"
+      :files-label="$t('dashboard.moodboard_draft_files')"
+      :add-label="$t('dashboard.moodboard_draft_add')"
+      :note-placeholder="$t('dashboard.moodboard_draft_note_placeholder')"
+      :items="moodboardDraftFiles"
+      :initial-note="quote?.moodboard_draft_note || ''"
+      :next-version="moodboardVersions.length + 1"
+      accept="image/png,image/jpeg,image/webp,application/pdf"
+      multiple
+      :uploading="uploadingMoodboard"
+      :sending="sendingMoodboard"
+      @close="moodboardModalOpen = false"
+      @add="addMoodboardFiles"
+      @remove="handleMoodboardDelete"
+      @save="saveMoodboardNote"
+      @send="sendMoodboardDraft"
+    />
+
     <!-- Schedule modal -->
     <ScheduleModal
       :isOpen="scheduleModalOpen"
@@ -1122,8 +1118,9 @@ const activityLog = ref<QuoteActivityLog[]>([]);
 const loadingActivity = ref(false);
 
 // Timeline compose
-const moodboardFileInput = ref<HTMLInputElement | null>(null);
-const proposalFileInput = ref<HTMLInputElement | null>(null);
+// Fenêtres de préparation (fichiers + mot de Laëtitia pour la cliente)
+const proposalModalOpen = ref(false);
+const moodboardModalOpen = ref(false);
 const uploadingProposal = ref(false);
 const sendingMoodboard = ref(false);
 const sendingProposal = ref(false);
@@ -1137,6 +1134,8 @@ const draftMoodboardItems = computed(() =>
 const draftProposals = computed(() =>
   proposals.value.filter((p) => !p.sent_at)
 );
+// Un seul devis en préparation à la fois (l'envoi n'en part qu'un).
+const draftProposal = computed(() => draftProposals.value[0] || null);
 const sentProposals = computed(() =>
   proposals.value.filter((p) => p.sent_at)
 );
@@ -1192,6 +1191,8 @@ const timelineItems = computed<TimelineItem[]>(() => {
       if ((entry.action as string) === "moodboard_sent" && hasMoodboardVersion) {
         return false;
       }
+      // Affiché sur la carte de la version de moodboard concernée
+      if ((entry.action as string) === "moodboard_note") return false;
       return true;
     })
     .map(
@@ -1678,6 +1679,17 @@ const statusOptions = computed(() => [
   },
 ]);
 
+// Mot de Laëtitia envoyé avec chaque version de moodboard (journal)
+const moodboardNotes = computed(() => {
+  const notes = new Map<number, string>();
+  for (const e of activityLog.value) {
+    if ((e.action as string) === "moodboard_note" && e.details?.version) {
+      notes.set(e.details.version, e.details.text || "");
+    }
+  }
+  return notes;
+});
+
 // Devis qui ont des messages dans le journal (« Écrire à Laëtitia »)
 const proposalsWithMessages = computed(
   () =>
@@ -1922,17 +1934,32 @@ const deleteActivity = async (id: string) => {
   }
 };
 
-// Moodboard file upload from compose bar
-const triggerMoodboardUpload = () => {
-  moodboardFileInput.value?.click();
+// Fichiers choisis dans la fenêtre de préparation du moodboard
+const addMoodboardFiles = async (files: File[]) => {
+  for (const file of files) await handleMoodboardUpload(file);
 };
 
-const handleMoodboardFileChange = async (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
-  await handleMoodboardUpload(file);
-  input.value = "";
+const saveMoodboardNote = async (note: string) => {
+  if (!quote.value) return;
+  try {
+    await adminFetch(`/api/admin/portal/${quoteId}`, {
+      method: "PATCH",
+      body: { moodboard_draft_note: note },
+    });
+    quote.value.moodboard_draft_note = note;
+  } catch (err) {
+    console.error("Error saving moodboard note:", err);
+  }
+};
+
+// Envoi depuis la fenêtre ou le bouton du bloc : le mot est enregistré
+// d'abord, le serveur le joint à la version envoyée.
+const sendMoodboardDraft = async (note: string) => {
+  if ((quote.value?.moodboard_draft_note || "") !== note) {
+    await saveMoodboardNote(note);
+  }
+  await handleSendMoodboard();
+  moodboardModalOpen.value = false;
 };
 
 // Envoyer le moodboard en préparation : il devient une version figée
@@ -1976,15 +2003,9 @@ const handleSendProposal = async () => {
   }
 };
 
-// Proposal PDF upload from compose bar
-const triggerProposalUpload = () => {
-  proposalFileInput.value?.click();
-};
-
-const handleProposalFileChange = async (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file || !quote.value) return;
+// PDF choisi dans la fenêtre de préparation du devis
+const uploadProposalFile = async (file: File) => {
+  if (!quote.value) return;
   uploadingProposal.value = true;
   try {
     const formData = new FormData();
@@ -2006,9 +2027,55 @@ const handleProposalFileChange = async (event: Event) => {
     console.error("Error uploading proposal:", err);
   } finally {
     uploadingProposal.value = false;
-    input.value = "";
   }
 };
+
+const saveProposalNote = async (note: string) => {
+  const draft = draftProposal.value;
+  if (!draft) return;
+  try {
+    const res = await adminFetch<{ success: boolean; data: ProjectProposal }>(
+      `/api/admin/proposals/item/${draft.id}`,
+      { method: "PATCH", body: { description: note } }
+    );
+    const i = proposals.value.findIndex((p) => p.id === draft.id);
+    if (i >= 0 && res.data) proposals.value[i] = res.data;
+  } catch (err) {
+    console.error("Error saving proposal note:", err);
+  }
+};
+
+// Envoi depuis la fenêtre ou le bouton du bloc : le mot est enregistré
+// d'abord, il part avec le devis (espace client et email).
+const sendProposalDraft = async (note: string) => {
+  if (draftProposal.value && (draftProposal.value.description || "") !== note) {
+    await saveProposalNote(note);
+  }
+  await handleSendProposal();
+  proposalModalOpen.value = false;
+};
+
+// Fichiers du brouillon, au format de la fenêtre de préparation
+const proposalDraftFiles = computed(() =>
+  draftProposal.value
+    ? [
+        {
+          id: draftProposal.value.id,
+          name: draftProposal.value.original_filename || draftProposal.value.title,
+          url: draftProposal.value.public_url,
+          isImage: false,
+        },
+      ]
+    : []
+);
+const moodboardDraftFiles = computed(() =>
+  draftMoodboardItems.value.map((i) => ({
+    id: i.id,
+    name: i.original_filename || i.title || "",
+    url: i.public_url,
+    isImage: i.item_type === "image",
+  }))
+);
 
 // Fetch quote by ID
 const loading = ref(true);

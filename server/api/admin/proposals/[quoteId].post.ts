@@ -4,7 +4,10 @@
  */
 
 import { requireAdmin } from "~/server/utils/serverAuth";
-import { createProposal } from "~/server/utils/client-portal";
+import {
+  createProposal,
+  getProposalsByQuoteId,
+} from "~/server/utils/client-portal";
 import { getSupabase } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
@@ -15,6 +18,16 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       message: "Quote ID is required",
+    });
+  }
+
+  // Un seul devis en préparation : l'envoi n'en part qu'un, les autres
+  // resteraient en attente sans que rien ne l'indique.
+  const existing = await getProposalsByQuoteId(quoteId);
+  if (existing.some((p) => !p.sent_at)) {
+    throw createError({
+      statusCode: 409,
+      message: "Un devis est déjà en préparation",
     });
   }
 

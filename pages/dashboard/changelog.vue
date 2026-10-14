@@ -123,6 +123,21 @@ const releases = [
     items: [
       {
         category: "feature" as Category,
+        title: "Un mot pour accompagner votre devis et votre moodboard",
+        description: "« Ajouter » ouvre une fenêtre où vous déposez le devis (ou les images du moodboard) et écrivez un mot pour votre cliente. Il s'affiche dans son espace, sous « Le mot de Laëtitia », et dans l'email qu'elle reçoit. Votre brouillon et votre mot sont gardés jusqu'à l'envoi.",
+      },
+      {
+        category: "design" as Category,
+        title: "Un seul brouillon à la fois",
+        description: "Tant qu'un devis ou un moodboard est en préparation, il suffit de cliquer dessus pour le reprendre : plus de risque d'en préparer deux dont un seul partirait.",
+      },
+      {
+        category: "design" as Category,
+        title: "Une carte de devis plus claire pour vos clientes",
+        description: "Le bouton « Voir le devis » est à côté du titre, l'étiquette n'apparaît que lorsqu'elle est utile (« Message envoyé », « Devis validé »), et vos clientes savent qu'après validation vous revenez vers elles pour le règlement.",
+      },
+      {
+        category: "feature" as Category,
         title: "Vos clientes peuvent vous écrire plusieurs fois",
         description: "Le bouton « Écrire à Laëtitia » remplace « Demander une modification ». Vos clientes peuvent vous écrire autant de fois qu'elles le souhaitent au sujet de leur devis. Chaque message apparaît dans la timeline de la fiche, vous recevez un email à chaque fois, et l'étiquette « 2 messages » vous montre où en est l'échange.",
       },

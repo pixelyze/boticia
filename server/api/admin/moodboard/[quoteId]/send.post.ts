@@ -10,6 +10,7 @@
 import { requireAdmin } from "~/server/utils/serverAuth";
 import { getMoodboardByQuoteId } from "~/server/utils/client-portal";
 import {
+  addQuoteActivity,
   getQuoteRequestById,
   updateQuoteRequest,
 } from "~/server/utils/quotes";
@@ -59,7 +60,17 @@ export default defineEventHandler(async (event) => {
   }
 
   // moodboard_sent_at = date du dernier envoi (étiquette du pipeline).
-  await updateQuoteRequest(quoteId, { moodboard_sent_at: now });
+  // Le mot en préparation devient celui de la version envoyée (vu par la
+  // cliente) ; il est gardé dans le journal pour l'historique de la fiche.
+  const note = (quote.moodboard_draft_note || "").trim();
+  await updateQuoteRequest(quoteId, {
+    moodboard_sent_at: now,
+    moodboard_note: note || null,
+    moodboard_draft_note: null,
+  });
+  if (note) {
+    await addQuoteActivity(quoteId, "moodboard_note", { version, text: note });
+  }
 
   // await obligatoire : Vercel interrompt la fonction dès la réponse.
   const coupleName = quote.partner2_name
@@ -71,7 +82,8 @@ export default defineEventHandler(async (event) => {
       quote.email,
       coupleName,
       `${base}/${quote.locale || "fr"}/mon-projet/moodboard`,
-      quote.locale
+      quote.locale,
+      note
     );
   } catch (err) {
     console.error("Error sending moodboard email:", err);

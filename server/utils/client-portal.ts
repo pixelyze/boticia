@@ -447,6 +447,7 @@ export async function updateQuotePortal(
   input: {
     portal_enabled?: boolean;
     moodboard_note?: string;
+    moodboard_draft_note?: string | null;
   }
 ): Promise<any | null> {
   try {

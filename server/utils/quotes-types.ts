@@ -128,6 +128,8 @@ export interface QuoteRequest {
   admin_notes?: string;
   portal_enabled: boolean;
   moodboard_note?: string;
+  /** Mot de Laëtitia pour le moodboard en préparation (pas encore vu). */
+  moodboard_draft_note?: string | null;
   /** Date d'envoi du moodboard. Absent = pas encore envoyé. */
   moodboard_sent_at?: string | null;
   /** Joint par getQuoteRequests, pour repérer les devis sans réponse. */
@@ -175,7 +177,8 @@ export interface UpdateQuoteRequestInput {
   status?: QuoteRequestStatus;
   admin_notes?: string;
   portal_enabled?: boolean;
-  moodboard_note?: string;
+  moodboard_note?: string | null;
+  moodboard_draft_note?: string | null;
   moodboard_sent_at?: string | null;
   meeting_date?: string;
   meeting_time?: string;
@@ -196,7 +199,8 @@ export type QuoteActivityAction =
   | "moodboard_removed"
   | "proposal_created"
   | "note_added"
-  | "client_message";
+  | "client_message"
+  | "moodboard_note";
 
 export interface QuoteActivityLog {
   id: string;

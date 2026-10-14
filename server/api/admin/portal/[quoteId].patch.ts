@@ -19,15 +19,17 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  const { portal_enabled, moodboard_note } = body as {
+  const { portal_enabled, moodboard_note, moodboard_draft_note } = body as {
     portal_enabled?: boolean;
     moodboard_note?: string;
+    moodboard_draft_note?: string;
   };
 
   try {
     const updated = await updateQuotePortal(quoteId, {
       portal_enabled,
       moodboard_note,
+      moodboard_draft_note,
     });
 
     if (!updated) {

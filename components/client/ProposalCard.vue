@@ -1,45 +1,57 @@
 <template>
   <div class="rounded-[1.5rem] border-2 border-dark/10 p-6">
-    <!-- Header -->
-    <div class="flex items-start justify-between mb-4">
-      <div>
-        <h3 class="font-heading text-lg font-medium text-dark">
+    <!-- En-tête : le titre (nom du PDF) et son statut à gauche, le bouton
+         pour ouvrir le PDF à droite. Libellé court sur mobile. -->
+    <div class="flex items-start justify-between gap-3 mb-4">
+      <div class="min-w-0">
+        <h3 class="font-heading text-lg font-medium text-dark leading-snug">
           {{ proposal.title }}
         </h3>
-        <!-- Mention discrète dès qu'il y a eu plusieurs envois -->
-        <p
-          v-if="(proposal.version || 1) > 1"
-          class="text-xs text-gray-600 mt-0.5"
-        >
-          {{ $t("client.document_version", { version: proposal.version }) }}
-        </p>
-        <p
-          v-if="proposal.description"
-          class="text-sm text-dark/60 mt-1"
-        >
-          {{ proposal.description }}
-        </p>
+        <div class="flex flex-wrap items-center gap-2 mt-1.5">
+          <!-- « En attente » / « Consultée » parlent à Laëtitia, pas à la
+               cliente : l'étiquette ne dit que ce qui la concerne -->
+          <Tag
+            v-if="['revision_requested', 'accepted'].includes(proposal.status)"
+            :variant="statusVariant"
+          >
+            {{ $t(`client.proposal_status_${proposal.status}`) }}
+          </Tag>
+          <!-- Mention discrète dès qu'il y a eu plusieurs envois -->
+          <span
+            v-if="(proposal.version || 1) > 1"
+            class="text-xs text-gray-600"
+          >
+            {{ $t("client.document_version", { version: proposal.version }) }}
+          </span>
+        </div>
       </div>
-      <Tag :variant="statusVariant">
-        {{ $t(`client.proposal_status_${proposal.status}`) }}
-      </Tag>
+      <Button
+        v-if="proposal.public_url"
+        :href="proposal.public_url"
+        target="_blank"
+        rel="noopener"
+        icon="FileText"
+        class="!px-3.5 !py-1.5 text-sm shrink-0"
+        :aria-label="$t('client.proposal_view_pdf_short')"
+      >
+        <span class="sm:hidden">{{ $t("client.proposal_view_short") }}</span>
+        <span class="hidden sm:inline">{{ $t("client.proposal_view_pdf_short") }}</span>
+      </Button>
     </div>
 
     <!-- Pas de montant ici : il est saisi à la main et peut diverger du PDF,
          qui reste la seule référence pour la cliente. -->
 
-    <!-- PDF : vrai bouton (pleine largeur sur mobile) plutôt qu'un lien
-         texte ; le nom de fichier interne n'apporte rien à la cliente. -->
-    <Button
-      v-if="proposal.public_url"
-      :href="proposal.public_url"
-      target="_blank"
-      rel="noopener"
-      icon="FileText"
-      class="w-full sm:w-auto justify-center mb-4"
+    <!-- Le mot de Laëtitia qui accompagne ce devis -->
+    <div
+      v-if="proposal.description"
+      class="rounded-xl bg-cream p-4 mb-4"
     >
-      {{ $t("client.proposal_view_pdf") }}
-    </Button>
+      <p class="text-xs text-dark/60 uppercase tracking-wider mb-1.5">
+        {{ $t("client.laetitia_note") }}
+      </p>
+      <p class="text-dark whitespace-pre-line">{{ proposal.description }}</p>
+    </div>
 
     <!-- Pied de carte : la réponse au devis, dans le même bloc -->
     <div v-if="$slots.default" class="border-t-2 border-dark/10 mt-6 pt-6">
