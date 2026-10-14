@@ -1021,16 +1021,13 @@
       :note-placeholder="$t('dashboard.proposal_draft_note_placeholder')"
       :items="proposalDraftFiles"
       :initial-note="draftProposal?.description || ''"
-      :next-version="sentProposals.length + 1"
       accept="application/pdf"
       :multiple="false"
       :uploading="uploadingProposal"
-      :sending="sendingProposal"
       @close="proposalModalOpen = false"
       @add="(files) => uploadProposalFile(files[0])"
       @remove="handleDeleteProposal"
       @save="saveProposalNote"
-      @send="sendProposalDraft"
     />
 
     <!-- Préparation du moodboard : les fichiers et le mot de Laëtitia -->
@@ -1042,16 +1039,13 @@
       :note-placeholder="$t('dashboard.moodboard_draft_note_placeholder')"
       :items="moodboardDraftFiles"
       :initial-note="quote?.moodboard_draft_note || ''"
-      :next-version="moodboardVersions.length + 1"
       accept="image/png,image/jpeg,image/webp,application/pdf"
       multiple
       :uploading="uploadingMoodboard"
-      :sending="sendingMoodboard"
       @close="moodboardModalOpen = false"
       @add="addMoodboardFiles"
       @remove="handleMoodboardDelete"
       @save="saveMoodboardNote"
-      @send="sendMoodboardDraft"
     />
 
     <!-- Schedule modal -->

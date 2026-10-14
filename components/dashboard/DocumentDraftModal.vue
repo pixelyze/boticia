@@ -1,7 +1,7 @@
 <template>
   <!-- Préparation d'un devis ou d'un moodboard : le(s) fichier(s) et le mot
-       de Laëtitia pour la cliente, puis l'envoi. Même page sans cadre que
-       la prise de notes. -->
+       de Laëtitia pour la cliente. Même page sans cadre que la prise de
+       notes. L'envoi reste un geste à part, depuis la fiche. -->
   <BaseModal
     :is-open="isOpen"
     :title="title"
@@ -111,27 +111,19 @@
       />
 
       <div
-        class="mt-4 pt-4 border-t border-gray-200 flex flex-col gap-3
-          sm:flex-row sm:items-center sm:justify-end"
+        class="mt-4 pt-4 border-t border-gray-200 flex justify-center"
       >
+        <!-- Pas d'envoi ici : la fenêtre prépare, l'envoi se fait depuis le
+             bloc de la fiche (« Envoyer la version… »). -->
         <Button
           type="button"
-          variant="ghost"
+          variant="primary"
+          icon="Check"
+          :disabled="uploading"
           class="w-full sm:w-auto justify-center"
           @click="handleClose"
         >
           {{ t("dashboard.draft_save") }}
-        </Button>
-        <Button
-          type="button"
-          variant="primary"
-          icon="Send"
-          :loading="sending"
-          :disabled="items.length === 0 || uploading"
-          class="w-full sm:w-auto justify-center"
-          @click="emit('send', note.trim())"
-        >
-          {{ t("dashboard.send_version", { version: nextVersion }) }}
         </Button>
       </div>
     </div>
@@ -157,11 +149,9 @@ const props = defineProps<{
   items: DraftFile[];
   /** Mot déjà enregistré pour ce brouillon. */
   initialNote: string;
-  nextVersion: number;
   accept: string;
   multiple: boolean;
   uploading: boolean;
-  sending: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -170,7 +160,6 @@ const emit = defineEmits<{
   (e: "remove", id: string): void;
   /** Le mot à garder avec le brouillon (à la fermeture). */
   (e: "save", note: string): void;
-  (e: "send", note: string): void;
 }>();
 
 const { t } = useI18n();
