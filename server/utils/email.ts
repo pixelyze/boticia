@@ -161,16 +161,6 @@ const CLIENT_EMAIL = {
       cta: "Accéder à mon espace",
       dateLocale: "fr-FR",
     },
-    invite: {
-      subject: "Accédez à votre espace projet — Boticia",
-      title: "Votre espace projet Boticia",
-      message:
-        "Votre espace projet est maintenant disponible. " +
-        "Vous y trouverez votre moodboard, vos propositions et le suivi de votre projet floral.<br/><br/>" +
-        "Cliquez sur le bouton ci-dessous pour accéder à votre espace. Ce lien est personnel et sécurisé.",
-      cta: "Accéder à mon espace",
-      footer: "À très bientôt,<br/>Laëtitia — Boticia",
-    },
     login: {
       subject: "Votre code de connexion — Boticia",
       title: "Votre code de connexion",
@@ -235,16 +225,6 @@ const CLIENT_EMAIL = {
       cta: "Go to my client space",
       dateLocale: "en-GB",
     },
-    invite: {
-      subject: "Access your project space — Boticia",
-      title: "Your Boticia project space",
-      message:
-        "Your project space is now available. " +
-        "You'll find your moodboard, your proposals and the progress of your floral project there.<br/><br/>" +
-        "Click the button below to access your space. This link is personal and secure.",
-      cta: "Go to my space",
-      footer: "See you very soon,<br/>Laëtitia — Boticia",
-    },
     login: {
       subject: "Your sign-in code — Boticia",
       title: "Your sign-in code",
@@ -306,16 +286,6 @@ const CLIENT_EMAIL = {
         `それ以降も ${url} からこのメールアドレスでいつでもログインいただけます。`,
       cta: "マイページへ",
       dateLocale: "ja-JP",
-    },
-    invite: {
-      subject: "プロジェクトページのご案内 — Boticia",
-      title: "Boticia プロジェクトページ",
-      message:
-        "プロジェクトページをご利用いただけるようになりました。" +
-        "ムードボードやご提案、フラワープロジェクトの進行状況をご確認いただけます。<br/><br/>" +
-        "下のボタンからアクセスしてください。このリンクはお客様専用です。",
-      cta: "マイページへ",
-      footer: "近いうちにお会いできるのを楽しみにしております。<br/>Laëtitia — Boticia",
     },
     login: {
       subject: "ログインコード — Boticia",
@@ -711,32 +681,6 @@ export async function sendChatNotification(data: {
   return sendEmail({
     to: DEV_EMAIL,
     subject: `[Boticia Chat] Message de ${data.senderName}`,
-    html,
-  });
-}
-
-/**
- * Send magic link invitation to client
- */
-export async function sendMagicLinkEmail(
-  clientEmail: string,
-  coupleName: string,
-  magicLink: string,
-  locale?: string
-): Promise<boolean> {
-  const tx = CLIENT_EMAIL[clientLocale(locale)];
-  const html = await renderClientEmail({
-    title: tx.invite.title,
-    greeting: tx.greeting(escapeHtml(coupleName)),
-    message: tx.invite.message,
-    ctaText: tx.invite.cta,
-    ctaUrl: magicLink,
-    footerText: tx.invite.footer,
-  });
-
-  return sendEmail({
-    to: clientEmail,
-    subject: tx.invite.subject,
     html,
   });
 }

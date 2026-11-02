@@ -122,6 +122,11 @@ const releases = [
     date: "2 novembre 2026",
     items: [
       {
+        category: "content" as Category,
+        title: "Le guide du tableau de bord est à jour",
+        description: "Le guide décrit le parcours tel qu'il fonctionne aujourd'hui : rendez-vous choisi par la cliente, moodboard et devis préparés avec votre mot, réponses de la cliente, relance automatique. Il liste les 8 emails envoyés et indique quels statuts changent tout seuls.",
+      },
+      {
         category: "feature" as Category,
         title: "Gérez vos avis vous-même",
         description: "Une nouvelle page « Avis » dans votre tableau de bord : ajoutez, modifiez, masquez, supprimez et réordonnez les témoignages de la page d'accueil. Chaque avis a une version française et une version anglaise (facultative) : sans anglais, c'est le français qui s'affiche, et le site japonais montre la version anglaise.",

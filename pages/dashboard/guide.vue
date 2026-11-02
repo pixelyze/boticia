@@ -12,7 +12,7 @@
           </p>
         </div>
 
-        <!-- Pipeline -->
+        <!-- Statuts -->
         <div class="mb-12">
           <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
             <IconLucid name="Flag" size="sm" class="text-gray-500" />
@@ -29,13 +29,13 @@
                 :class="status.dot"
               />
               <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                   <span class="font-semibold text-dark">{{ status.label }}</span>
                   <span
-                    v-if="status.email"
-                    class="text-xs bg-fuchsia-100 text-fuchsia-700 px-2 py-0.5 rounded-full"
+                    class="text-xs px-2 py-0.5 rounded-full"
+                    :class="status.auto ? 'bg-dark text-cream' : 'bg-dark/10 text-dark'"
                   >
-                    {{ t("guide.sends_email") }}
+                    {{ status.auto ? t("guide.auto") : t("guide.manual") }}
                   </span>
                 </div>
                 <p class="text-dark/50 text-sm mt-0.5">{{ status.desc }}</p>
@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <!-- Steps -->
+        <!-- Étapes -->
         <div class="space-y-10">
           <div
             v-for="(step, i) in steps"
@@ -57,8 +57,8 @@
               <h2 class="text-lg font-bold">{{ step.title }}</h2>
             </div>
 
-            <!-- Action -->
             <div class="ml-11 space-y-3">
+              <!-- À faire -->
               <div class="flex items-start gap-2">
                 <IconLucid name="MousePointerClick" size="xs" class="text-gray-400 mt-0.5 shrink-0" />
                 <p class="text-dark/70 text-sm">
@@ -67,7 +67,7 @@
                 </p>
               </div>
 
-              <!-- What happens -->
+              <!-- Ce qui se passe -->
               <div class="flex items-start gap-2">
                 <IconLucid name="Zap" size="xs" class="text-gray-400 mt-0.5 shrink-0" />
                 <div>
@@ -85,21 +85,25 @@
                 </div>
               </div>
 
-              <!-- Email -->
+              <!-- Emails envoyés à cette étape -->
               <div
-                v-if="step.email"
-                class="flex items-start gap-2 bg-fuchsia-50 rounded-xl px-4 py-3"
+                v-if="step.emails.length"
+                class="flex items-start gap-2 bg-cream/60 rounded-xl px-4 py-3"
               >
-                <IconLucid name="Mail" size="xs" class="text-fuchsia-500 mt-0.5 shrink-0" />
-                <div>
-                  <span class="font-semibold text-fuchsia-700 text-sm">{{ t("guide.email_sent") }}</span>
-                  <p class="text-fuchsia-600 text-sm mt-0.5">
-                    {{ t("guide.to") }} : {{ step.email.to }} · {{ t("guide.subject") }} : <em>{{ step.email.subject }}</em>
+                <IconLucid name="Mail" size="xs" class="text-dark mt-0.5 shrink-0" />
+                <div class="min-w-0">
+                  <span class="font-semibold text-dark text-sm">{{ t("guide.emails_sent") }}</span>
+                  <p
+                    v-for="(email, j) in step.emails"
+                    :key="j"
+                    class="text-dark/70 text-sm mt-0.5"
+                  >
+                    {{ t("guide.to") }} {{ email.to }} : <em>{{ email.subject }}</em>
                   </p>
                 </div>
               </div>
 
-              <!-- Client sees -->
+              <!-- Côté cliente -->
               <div
                 v-if="step.clientSees"
                 class="flex items-start gap-2"
@@ -114,13 +118,14 @@
           </div>
         </div>
 
-        <!-- Emails recap -->
-        <div class="mt-12 mb-8">
-          <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <!-- Récapitulatif des emails -->
+        <div class="mt-12">
+          <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
             <IconLucid name="Mail" size="sm" class="text-gray-500" />
             {{ t("guide.emails_title") }}
           </h2>
-          <div class="overflow-hidden rounded-2xl border border-dark/10">
+          <p class="text-sm text-dark/50 mb-4">{{ t("guide.emails_note") }}</p>
+          <div class="overflow-x-auto rounded-2xl border border-dark/10">
             <table class="w-full text-sm">
               <thead>
                 <tr class="bg-cream/50">
@@ -138,16 +143,37 @@
                   <td class="px-4 py-3 text-dark/70">{{ email.when }}</td>
                   <td class="px-4 py-3">
                     <span
-                      class="text-xs px-2 py-0.5 rounded-full"
-                      :class="email.isAdmin ? 'bg-dark/10 text-dark' : 'bg-fuchsia-100 text-fuchsia-700'"
+                      class="text-xs px-2 py-0.5 rounded-full whitespace-nowrap"
+                      :class="email.toYou ? 'bg-dark text-cream' : 'bg-dark/10 text-dark'"
                     >
-                      {{ email.to }}
+                      {{ email.toYou ? t("guide.you") : t("guide.the_client") }}
                     </span>
                   </td>
                   <td class="px-4 py-3 text-dark/60 italic">{{ email.subject }}</td>
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- Les autres pages -->
+        <div class="mt-12 mb-8">
+          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <IconLucid name="LayoutGrid" size="sm" class="text-gray-500" />
+            {{ t("guide.pages_title") }}
+          </h2>
+          <div class="space-y-3">
+            <div
+              v-for="page in pages"
+              :key="page.key"
+              class="flex items-start gap-4 rounded-2xl bg-cream/50 px-5 py-4"
+            >
+              <IconLucid :name="page.icon" size="sm" class="text-dark mt-0.5 shrink-0" />
+              <div>
+                <span class="font-semibold text-dark">{{ page.title }}</span>
+                <p class="text-dark/50 text-sm mt-0.5">{{ page.desc }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -173,70 +199,99 @@ useHead({
   title: t("guide.title") + " - Boticia",
 });
 
+// Statuts proposés sur la fiche (voir statusOptions dans quotes/[id].vue)
+// et ce qui les fait changer.
 const statuses = computed(() => [
-  { key: "new", dot: "bg-yellow-400", label: t("guide.status_new"), desc: t("guide.status_new_desc"), email: true },
-  { key: "contacted", dot: "bg-blue-400", label: t("guide.status_contacted"), desc: t("guide.status_contacted_desc"), email: false },
-  { key: "quote_sent", dot: "bg-orange-400", label: t("guide.status_quote"), desc: t("guide.status_quote_desc"), email: true },
-  { key: "signed", dot: "bg-green-400", label: t("guide.status_signed"), desc: t("guide.status_signed_desc"), email: false },
-  { key: "completed", dot: "bg-green-600", label: t("guide.status_completed"), desc: t("guide.status_completed_desc"), email: false },
-  { key: "cancelled", dot: "bg-red-400", label: t("guide.status_cancelled"), desc: t("guide.status_cancelled_desc"), email: false },
+  { key: "new", dot: "bg-yellow-400", label: t("guide.status_new"), desc: t("guide.status_new_desc"), auto: true },
+  { key: "contacted", dot: "bg-blue-400", label: t("guide.status_contacted"), desc: t("guide.status_contacted_desc"), auto: true },
+  { key: "quote_sent", dot: "bg-orange-400", label: t("guide.status_quote"), desc: t("guide.status_quote_desc"), auto: true },
+  { key: "signed", dot: "bg-green-400", label: t("guide.status_signed"), desc: t("guide.status_signed_desc"), auto: false },
+  { key: "completed", dot: "bg-green-600", label: t("guide.status_completed"), desc: t("guide.status_completed_desc"), auto: false },
+  { key: "cancelled", dot: "bg-red-400", label: t("guide.status_cancelled"), desc: t("guide.status_cancelled_desc"), auto: false },
 ]);
+
+const toYou = () => t("guide.you").toLowerCase();
+const toClient = () => t("guide.the_client").toLowerCase();
 
 const steps = computed(() => [
   {
     title: t("guide.step1_title"),
     action: t("guide.step1_action"),
     happens: [t("guide.step1_h1"), t("guide.step1_h2"), t("guide.step1_h3")],
-    email: { to: "laetitia@boticia.fr", subject: t("guide.step1_email_subject") },
+    emails: [
+      { to: toYou(), subject: t("guide.email1_subject") },
+      { to: toClient(), subject: t("guide.email2_subject") },
+    ],
     clientSees: t("guide.step1_client"),
   },
   {
     title: t("guide.step2_title"),
     action: t("guide.step2_action"),
     happens: [t("guide.step2_h1"), t("guide.step2_h2")],
-    email: null,
+    emails: [],
     clientSees: null,
   },
   {
     title: t("guide.step3_title"),
     action: t("guide.step3_action"),
-    happens: [t("guide.step3_h1"), t("guide.step3_h2")],
-    email: null,
+    happens: [t("guide.step3_h1"), t("guide.step3_h2"), t("guide.step3_h3")],
+    emails: [{ to: toClient(), subject: t("guide.email4_subject") }],
     clientSees: t("guide.step3_client"),
   },
   {
     title: t("guide.step4_title"),
     action: t("guide.step4_action"),
-    happens: [t("guide.step4_h1"), t("guide.step4_h2"), t("guide.step4_h3")],
-    email: null,
+    happens: [t("guide.step4_h1"), t("guide.step4_h2")],
+    emails: [{ to: toClient(), subject: t("guide.email5_subject") }],
     clientSees: t("guide.step4_client"),
   },
   {
     title: t("guide.step5_title"),
     action: t("guide.step5_action"),
-    happens: [t("guide.step5_h1"), t("guide.step5_h2"), t("guide.step5_h3")],
-    email: { to: t("guide.the_client"), subject: "Votre moodboard floral est prêt — Boticia" },
+    happens: [t("guide.step5_h1"), t("guide.step5_h2")],
+    emails: [
+      { to: toYou(), subject: t("guide.email6_subject") },
+      { to: toYou(), subject: t("guide.email7_subject") },
+    ],
     clientSees: t("guide.step5_client"),
   },
   {
     title: t("guide.step6_title"),
     action: t("guide.step6_action"),
-    happens: [t("guide.step6_h1"), t("guide.step6_h2")],
-    email: { to: t("guide.the_client"), subject: "Votre devis floral est disponible — Boticia" },
-    clientSees: t("guide.step6_client"),
+    happens: [t("guide.step6_h1"), t("guide.step6_h2"), t("guide.step6_h3")],
+    emails: [{ to: toYou(), subject: t("guide.email8_subject") }],
+    clientSees: null,
   },
   {
     title: t("guide.step7_title"),
     action: t("guide.step7_action"),
     happens: [t("guide.step7_h1")],
-    email: null,
+    emails: [],
     clientSees: null,
   },
 ]);
 
-const emails = computed(() => [
-  { when: t("guide.email1_when"), to: "Admin", subject: t("guide.email1_subject"), isAdmin: true },
-  { when: t("guide.email2_when"), to: "Client", subject: t("guide.email2_subject"), isAdmin: false },
-  { when: t("guide.email3_when"), to: "Client", subject: t("guide.email3_subject"), isAdmin: false },
+// Les 8 emails automatiques (server/utils/email.ts)
+const emails = computed(() =>
+  [
+    { n: 1, toYou: true },
+    { n: 2, toYou: false },
+    { n: 3, toYou: false },
+    { n: 4, toYou: false },
+    { n: 5, toYou: false },
+    { n: 6, toYou: true },
+    { n: 7, toYou: true },
+    { n: 8, toYou: true },
+  ].map(({ n, toYou }) => ({
+    when: t(`guide.email${n}_when`),
+    subject: t(`guide.email${n}_subject`),
+    toYou,
+  }))
+);
+
+const pages = computed(() => [
+  { key: "galleries", icon: "Images", title: t("guide.pages_galleries"), desc: t("guide.pages_galleries_desc") },
+  { key: "reviews", icon: "MessageSquareQuote", title: t("guide.pages_reviews"), desc: t("guide.pages_reviews_desc") },
+  { key: "settings", icon: "Settings", title: t("guide.pages_settings"), desc: t("guide.pages_settings_desc") },
 ]);
 </script>

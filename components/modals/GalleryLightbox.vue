@@ -38,11 +38,8 @@
         />
       </Transition>
 
-      <!-- States (loading / empty) -->
-      <div v-if="showModal && loading" class="fixed top-0 left-0 right-0 h-[100dvh] z-[102] flex items-center justify-center">
-        <IconLucid name="Loader2" size="lg" color="white" class="animate-spin" />
-      </div>
-      <div v-else-if="showModal && images.length === 0 && !loading" class="fixed top-0 left-0 right-0 h-[100dvh] z-[102] flex items-center justify-center px-6">
+      <!-- State (empty) -->
+      <div v-if="showModal && images.length === 0" class="fixed top-0 left-0 right-0 h-[100dvh] z-[102] flex items-center justify-center px-6">
         <p class="text-white/60 text-center text-lg">{{ $t("stories.gallery_empty") }}</p>
       </div>
 
@@ -117,7 +114,6 @@ import { ref, watch, nextTick, onUnmounted } from "vue";
 import { useEventListener } from "@vueuse/core";
 import { useModal } from "~/composables/useModal";
 import { useModalTransitions } from "~/composables/useModalTransitions";
-import type { HomepageInspirationImage } from "~/server/utils/homepage-inspirations-types";
 
 const { overlayTransition } = useModalTransitions();
 
@@ -133,8 +129,6 @@ const contentTransition = {
 
 const props = defineProps<{
   isOpen: boolean;
-  categorySlug?: string;
-  categoryId?: string;
   items?: { public_url: string; caption?: string; id?: string }[];
   title?: string;
   startIndex?: number;
@@ -144,8 +138,13 @@ const emit = defineEmits<{ (e: "close"): void }>();
 
 const { showModal, isOpen: modalIsOpen, open, close, onTransitionComplete } = useModal();
 
-const loading = ref(false);
-const images = ref<HomepageInspirationImage[]>([]);
+// Images passées par le parent (galeries, créations).
+interface LightboxImage {
+  id: string;
+  public_url: string;
+  caption?: string;
+}
+const images = ref<LightboxImage[]>([]);
 const currentIndex = ref(0);
 const transitionName = ref("slide-left");
 const thumbStripRef = ref<HTMLElement | null>(null);
@@ -236,36 +235,12 @@ useEventListener("keydown", (e: KeyboardEvent) => {
   if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); go(-1); }
 });
 
-const loadImages = async () => {
-  if (props.items && props.items.length > 0) {
-    images.value = props.items.map((item, i) => ({
-      id: item.id || `item-${i}`,
-      category_id: "",
-      filename: "",
-      original_filename: "",
-      mime_type: "image/jpeg",
-      file_size: 0,
-      storage_path: "",
-      public_url: item.public_url,
-      caption: item.caption,
-      sort_order: i,
-      created_at: "",
-      updated_at: "",
-    }));
-    return;
-  }
-  if (!props.categoryId) return;
-  loading.value = true;
-  try {
-    const res = await $fetch<{ success: boolean; data: HomepageInspirationImage[] }>(
-      `/api/inspirations/${props.categoryId}`
-    );
-    images.value = res.data || [];
-  } catch {
-    images.value = [];
-  } finally {
-    loading.value = false;
-  }
+const loadImages = () => {
+  images.value = (props.items ?? []).map((item, i) => ({
+    id: item.id || `item-${i}`,
+    public_url: item.public_url,
+    caption: item.caption,
+  }));
 };
 
 let savedScrollY = 0;

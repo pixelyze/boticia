@@ -1094,8 +1094,6 @@ const savingNotes = ref(false);
 
 // Portal state
 const portalEnabled = ref(true);
-const sendingInvite = ref(false);
-const inviteSent = ref(false);
 const moodboardItems = ref<MoodboardItem[]>([]);
 const moodboardNote = ref("");
 const savingMoodboardNote = ref(false);
@@ -2212,23 +2210,6 @@ const handlePortalToggle = async (value: boolean) => {
   } catch (err) {
     console.error("Error toggling portal:", err);
     portalEnabled.value = !value;
-  }
-};
-
-// Send invite
-const handleSendInvite = async () => {
-  if (!quote.value) return;
-  sendingInvite.value = true;
-  try {
-    await adminFetch("/api/auth/send-magic-link", {
-      method: "POST",
-      body: { email: quote.value.email },
-    });
-    inviteSent.value = true;
-  } catch (err) {
-    console.error("Error sending invite:", err);
-  } finally {
-    sendingInvite.value = false;
   }
 };
 

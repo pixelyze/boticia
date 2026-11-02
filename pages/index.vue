@@ -46,24 +46,6 @@
     <MasonryGallery />
 
     <!-- ==========================================
-         [SECTION-STORIES] — Grille d'histoires / réalisations
-         Padding : py-16 md:py-24 | Background : bg-cream
-         Composant : components/landing/StoriesSection.vue
-         ========================================== -->
-    <!-- [COMP-STORIES] — Section stories
-         [EL-STORIES-TAGLINE] — Tagline | .section-tagline | i18n : stories.tagline
-         [EL-STORIES-TITLE] — Titre H2 | .section-title-lg | i18n : stories.title
-         [EL-STORIES-CARD] — Carte story x6 | rounded-[1.5rem] border-2 border-dark/10 | h-72 md:h-96
-           - Image de fond (story_1 uniquement) ou gradient placeholder
-           - Overlay dégradé : bg-gradient-to-t from-dark/60 via-transparent to-transparent
-           - Label en bas : text-cream text-base font-semibold
-           [STATE-STORIES-CARD-HOVER] — Image scale-105 → scale-100, transition 500ms
-         Data : 6 stories computed, liens vers pages internes
-         Responsive : grid-cols-3 md:grid-cols-6 -->
-    <!-- StoriesSection retiré (remplacé par MasonryGallery) — composant conservé -->
-    <!-- <StoriesSection /> -->
-
-    <!-- ==========================================
          [SECTION-INTRO] — Bloc d'introduction / philosophie
          Padding : py-20 md:py-28 | Background : bg-white
          Composant : components/landing/IntroSection.vue

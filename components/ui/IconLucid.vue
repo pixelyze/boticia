@@ -125,9 +125,11 @@ import {
   ArrowUpRight,
   Pencil,
   MessageSquareQuote,
+  LayoutGrid,
 } from "lucide-vue-next";
 
 const icons = {
+  LayoutGrid,
   Instagram,
   ArrowUpRight,
   Pencil,
