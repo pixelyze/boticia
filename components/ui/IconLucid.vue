@@ -123,11 +123,15 @@ import {
   Users,
   Instagram,
   ArrowUpRight,
+  Pencil,
+  MessageSquareQuote,
 } from "lucide-vue-next";
 
 const icons = {
   Instagram,
   ArrowUpRight,
+  Pencil,
+  MessageSquareQuote,
   AlertCircle,
   AlertTriangle,
   Aperture,

@@ -541,6 +541,41 @@
     "chat_optional": "Optional"
   },
   "dashboard": {
+    "testimonials_limit_reached": "Maximum reached ({max} characters).",
+    "testimonials_too_long_line": "A bit long: it will wrap onto two lines under the review.",
+    "testimonials_too_long_text": "A bit long: on the homepage, every card grows to match this one. Try shortening it.",
+    "testimonials_advice_max": "recommended: up to {max}",
+    "testimonials_advice_range": "recommended: {min} to {max}",
+    "testimonials_count": "{count} characters",
+    "testimonials_context_hint": "The service or the place, in a few words: “Wedding in Provence”, “Workshop in Paris”.",
+    "testimonials_text_hint": "Keep one or two strong sentences, the ones that make people want to book. No need for quotation marks: they are added automatically.",
+    "page_testimonials": "Reviews",
+    "page_testimonials_desc": "Homepage testimonials",
+    "testimonials_title": "Reviews",
+    "testimonials_hint": "Visible reviews appear on the homepage, in this order.",
+    "testimonials_add": "Add a review",
+    "testimonials_empty": "No reviews yet. Add the first one: it will appear on the homepage.",
+    "testimonials_visible": "Visible",
+    "testimonials_hidden": "Hidden",
+    "testimonials_missing_en": "English missing",
+    "testimonials_new": "New review",
+    "testimonials_edit": "Edit review",
+    "testimonials_french": "French",
+    "testimonials_english": "English",
+    "testimonials_english_hint": "Optional. Shown on the English and Japanese versions of the site; if empty, the French is shown. Keep roughly the same length as the French.",
+    "testimonials_text": "Review",
+    "testimonials_author": "Name",
+    "testimonials_author_hint": "First name and initial, like “Sophie M.”: more discreet for your clients.",
+    "testimonials_context": "Detail",
+    "testimonials_context_example_fr": "Mariage en Provence",
+    "testimonials_context_example_en": "Wedding in Provence",
+    "testimonials_publish": "Show on the website",
+    "testimonials_save": "Save",
+    "testimonials_delete": "Delete this review",
+    "testimonials_delete_confirm": "Confirm deletion",
+    "testimonials_move_up": "Move up",
+    "testimonials_move_down": "Move down",
+    "testimonials_error": "Something went wrong. Please try again.",
     "page_title": "My Space",
     "breadcrumb": "My Space",
     "settings": "Settings",
@@ -1104,33 +1139,6 @@
     "tagline": "Testimonials",
     "title": "What they say",
     "prev": "Previous testimonial",
-    "next": "Next testimonial",
-    "items": [
-      {
-        "text": "Laëtitia perfectly captured the universe I envisioned for my wedding. The floral arrangements were strikingly beautiful — elegant and poetic.",
-        "name": "Sophie M.",
-        "location": "Wedding in Provence"
-      },
-      {
-        "text": "Exceptional work for our corporate event. The floral creations truly transformed the space into something magical.",
-        "name": "Marie-Claire D.",
-        "location": "Paris"
-      },
-      {
-        "text": "I attended one of Laëtitia's workshops and left with far more than a bouquet — a genuine passion for floral design.",
-        "name": "Camille R.",
-        "location": "Aix-en-Provence"
-      },
-      {
-        "text": "Flowers that tell a story. Laëtitia has a unique artistic sensibility; every arrangement is a work of art in itself.",
-        "name": "Isabelle T.",
-        "location": "Château Wedding"
-      },
-      {
-        "text": "Professionalism, attentiveness, and creativity — everything you hope to find in a wedding florist. Highly recommended.",
-        "name": "Aurélie B.",
-        "location": "Côte d'Azur"
-      }
-    ]
+    "next": "Next testimonial"
   }
 }

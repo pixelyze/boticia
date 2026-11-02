@@ -541,6 +541,41 @@
     "chat_optional": "Optionnel"
   },
   "dashboard": {
+    "testimonials_limit_reached": "Maximum atteint ({max} caractères).",
+    "testimonials_too_long_line": "Un peu long : le texte passera sur deux lignes sous l'avis.",
+    "testimonials_too_long_text": "C'est un peu long : sur l'accueil, toutes les cartes s'allongent pour s'aligner sur celle-ci. Essayez de raccourcir.",
+    "testimonials_advice_max": "conseillé : {max} maximum",
+    "testimonials_advice_range": "conseillé : {min} à {max}",
+    "testimonials_count": "{count} caractères",
+    "testimonials_context_hint": "Le type de prestation ou le lieu, en quelques mots : « Mariage en Provence », « Atelier à Paris ».",
+    "testimonials_text_hint": "Gardez une ou deux phrases fortes, celles qui donnent envie. Inutile d'ajouter des guillemets : ils s'affichent automatiquement.",
+    "page_testimonials": "Avis",
+    "page_testimonials_desc": "Les témoignages de la page d'accueil",
+    "testimonials_title": "Avis",
+    "testimonials_hint": "Les avis affichés apparaissent sur la page d'accueil, dans cet ordre.",
+    "testimonials_add": "Ajouter un avis",
+    "testimonials_empty": "Aucun avis pour l'instant. Ajoutez le premier : il apparaîtra sur la page d'accueil.",
+    "testimonials_visible": "Affiché",
+    "testimonials_hidden": "Masqué",
+    "testimonials_missing_en": "Anglais manquant",
+    "testimonials_new": "Nouvel avis",
+    "testimonials_edit": "Modifier l'avis",
+    "testimonials_french": "Français",
+    "testimonials_english": "Anglais",
+    "testimonials_english_hint": "Facultatif. Affiché sur les versions anglaise et japonaise du site ; s'il est vide, c'est le français qui s'affiche. Gardez à peu près la même longueur qu'en français.",
+    "testimonials_text": "Avis",
+    "testimonials_author": "Nom",
+    "testimonials_author_hint": "Prénom et initiale du nom, comme « Sophie M. » : c'est plus discret pour vos clientes.",
+    "testimonials_context": "Précision",
+    "testimonials_context_example_fr": "Mariage en Provence",
+    "testimonials_context_example_en": "Wedding in Provence",
+    "testimonials_publish": "Afficher sur le site",
+    "testimonials_save": "Enregistrer",
+    "testimonials_delete": "Supprimer cet avis",
+    "testimonials_delete_confirm": "Confirmer la suppression",
+    "testimonials_move_up": "Monter",
+    "testimonials_move_down": "Descendre",
+    "testimonials_error": "Une erreur est survenue. Réessayez.",
     "page_title": "Mon espace",
     "breadcrumb": "Mon espace",
     "settings": "Paramètres",
@@ -1104,33 +1139,6 @@
     "tagline": "Témoignages",
     "title": "Ce qu'elles disent",
     "prev": "Témoignage précédent",
-    "next": "Témoignage suivant",
-    "items": [
-      {
-        "text": "Laëtitia a su capturer exactement l'univers que j'imaginais pour mon mariage. Les compositions florales étaient d'une beauté rare, élégantes et poétiques.",
-        "name": "Sophie M.",
-        "location": "Mariage en Provence"
-      },
-      {
-        "text": "Un travail exceptionnel pour notre événement d'entreprise. Les créations florales ont transformé l'espace en quelque chose de vraiment magique.",
-        "name": "Marie-Claire D.",
-        "location": "Paris"
-      },
-      {
-        "text": "J'ai participé à un atelier de Laëtitia et j'en suis ressortie avec bien plus qu'un bouquet — une vraie passion pour le design floral.",
-        "name": "Camille R.",
-        "location": "Aix-en-Provence"
-      },
-      {
-        "text": "Des fleurs qui racontent une histoire. Laëtitia a une sensibilité artistique unique, chaque composition est une œuvre en soi.",
-        "name": "Isabelle T.",
-        "location": "Mariage au Château"
-      },
-      {
-        "text": "Professionnalisme, écoute et créativité. Tout ce qu'on espère trouver chez un fleuriste de mariage. Je recommande sans hésitation.",
-        "name": "Aurélie B.",
-        "location": "Côte d'Azur"
-      }
-    ]
+    "next": "Témoignage suivant"
   }
 }
