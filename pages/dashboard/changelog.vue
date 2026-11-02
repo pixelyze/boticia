@@ -119,6 +119,21 @@ const categoryLabel = (cat: Category) => {
 
 const releases = [
   {
+    date: "2 novembre 2026",
+    items: [
+      {
+        category: "feature" as Category,
+        title: "Un rappel pour relancer vos clientes sur WhatsApp",
+        description: "Deux jours après qu'une cliente a ouvert son devis sans y répondre, vous recevez un email le matin avec un bouton « Écrire sur WhatsApp » : le message est déjà écrit, il ne reste qu'à l'envoyer. Un seul rappel par devis, et jamais le week-end (il arrive le lundi).",
+      },
+      {
+        category: "design" as Category,
+        title: "Une petite danse quand un devis est validé",
+        description: "L'email qui vous annonce un devis validé a pris un ton plus festif, avec un GIF pour célébrer.",
+      },
+    ],
+  },
+  {
     date: "14 octobre 2026",
     items: [
       {

@@ -565,16 +565,26 @@ export async function sendProposalAcceptedNotification(data: {
   const name = escapeHtml(data.coupleName);
   const version = data.version && data.version > 1 ? ` (V${data.version})` : "";
 
+  // GIF de la danse de la victoire, servi depuis public/ (URL absolue
+  // obligatoire dans un email). Figé sur sa première image dans
+  // l'ancien Outlook, ce qui reste lisible.
+  const gif =
+    `<img src="${SITE_URL}/images/emails/devis-valide.gif" ` +
+    'alt="Petite danse de la victoire" width="345" ' +
+    'style="display:block;margin:0 auto 24px;width:345px;max-width:100%;' +
+    'height:auto;border:0;border-radius:12px;" />';
+
   const html = await renderClientEmail({
-    title: "Un devis vient d'être validé",
+    title: "Ils ont dit oui !",
     greeting: "Bonjour Laëtitia,",
     message:
-      `Belle nouvelle : le devis de <strong>${name}</strong>${version} ` +
-      "vient d'être validé !<br/><br/>" +
-      "Toute l'attention que vous avez mise dans cette proposition a fait " +
-      "mouche. Ce projet floral peut maintenant prendre vie : place à la " +
-      "création, aux fleurs et à tout ce que vous savez faire de plus beau.<br/><br/>" +
-      "Bravo, et belle préparation !",
+      gif +
+      `<strong>${name}</strong>${version} vient de dire « oui »… ` +
+      "à votre devis !<br/><br/>" +
+      "Petite danse de la victoire autorisée, et même vivement " +
+      "recommandée. Vous pouvez la faire dans l'atelier, personne ne " +
+      "vous juge (enfin, peut-être un peu les pivoines).<br/><br/>" +
+      "Ensuite, place aux fleurs. Bravo !",
     ctaText: "Voir la fiche",
     ctaUrl: data.dashboardUrl,
     footerText: "Boticia — Notification admin",
@@ -582,7 +592,57 @@ export async function sendProposalAcceptedNotification(data: {
 
   return sendEmail({
     to: ADMIN_EMAIL,
-    subject: `Bonne nouvelle : le devis de ${data.coupleName} est validé — Boticia`,
+    subject: `🎉 ${data.coupleName} a dit oui… au devis ! — Boticia`,
+    html,
+  });
+}
+
+/**
+ * Rappel de relance à Laëtitia : la cliente a ouvert son devis il y a deux
+ * jours sans répondre. Le bouton ouvre WhatsApp avec le message déjà écrit ;
+ * sans numéro exploitable, il mène à la fiche.
+ */
+export async function sendProposalFollowupReminder(data: {
+  coupleName: string;
+  isCouple: boolean;
+  openedOn: string;
+  whatsappUrl: string | null;
+  dashboardUrl: string;
+}): Promise<boolean> {
+  const name = escapeHtml(data.coupleName);
+  const opened = data.isCouple
+    ? "ont ouvert leur devis"
+    : "a ouvert son devis";
+
+  // GIF « Il y a quelqu'un ? », fichier d'origine (480 px) affiché en 345 px
+  // comme celui du devis validé : la messagerie le réduit avec lissage.
+  const gif =
+    `<img src="${SITE_URL}/images/emails/devis-relance.gif" ` +
+    'alt="Il y a quelqu\'un ?" width="345" ' +
+    'style="display:block;margin:0 auto 24px;width:345px;max-width:100%;' +
+    'height:auto;border:0;border-radius:12px;" />';
+
+  const html = await renderClientEmail({
+    title: "Il y a quelqu'un ?",
+    greeting: "Bonjour Laëtitia,",
+    message:
+      gif +
+      `<strong>${name}</strong> ${opened} le ${data.openedOn}… ` +
+      "et depuis, plus un bruit. Peut-être une hésitation, peut-être " +
+      "juste l'envie d'un petit signe de votre part.<br/><br/>" +
+      (data.whatsappUrl
+        ? "Un WhatsApp, et le tour est joué : le message est déjà écrit, " +
+          "il ne reste qu'à appuyer sur « Envoyer »."
+        : "Le numéro de téléphone n'a pas pu être lu : retrouvez-le sur " +
+          "la fiche pour lui écrire."),
+    ctaText: data.whatsappUrl ? "Écrire sur WhatsApp" : "Voir la fiche",
+    ctaUrl: data.whatsappUrl ?? data.dashboardUrl,
+    footerText: "Boticia — Notification admin",
+  });
+
+  return sendEmail({
+    to: ADMIN_EMAIL,
+    subject: `📱 Un petit signe pour ${data.coupleName} ? — Boticia`,
     html,
   });
 }
