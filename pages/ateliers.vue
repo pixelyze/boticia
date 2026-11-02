@@ -51,15 +51,37 @@
       </div>
     </section>
 
-    <!-- Workshop gallery — bento layout -->
-    <BentoGallery
-      slug="workshops"
-      :tagline="$t('workshops.gallery_tagline')"
-      :title="$t('workshops.gallery_title')"
-      :alt-text="$t('workshops.gallery_alt')"
-      :lightbox-title="$t('workshops.gallery_title')"
-      bg-class="bg-white"
-    />
+    <!-- Workshop photos — simple grid of 3 (not enough photos for a gallery) -->
+    <section
+      v-if="workshopPhotos.length"
+      class="py-16 md:py-24 bg-white overflow-hidden"
+    >
+      <div class="px-5 sm:px-10 mb-10">
+        <div class="max-w-6xl mx-auto">
+          <span class="section-tagline">
+            {{ $t("workshops.gallery_tagline") }}
+          </span>
+          <h2 class="section-title-lg">{{ $t("workshops.gallery_title") }}</h2>
+        </div>
+      </div>
+
+      <div class="px-5 sm:px-10">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div
+            v-for="photo in workshopPhotos"
+            :key="photo.id"
+            class="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden"
+          >
+            <img
+              :src="photo.public_url"
+              :alt="photo.caption || $t('workshops.gallery_alt')"
+              loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- For whom (Pour qui) -->
     <section class="py-16 md:py-24 bg-cream-light">
@@ -208,6 +230,18 @@ const workshopTypes = computed(() => [
     desc: t("workshops.type_3_desc"),
   },
 ]);
+
+// 3 photos de la galerie « workshops » (gérée depuis le tableau de bord) :
+// d'abord celles placées dans les cases 1 à 3, puis les suivantes.
+const { data: workshopGallery } = await useFetch("/api/galleries/workshops");
+const workshopPhotos = computed(() => {
+  const images = workshopGallery.value?.data ?? [];
+  const slotted = images
+    .filter((img) => img.bento_slot >= 1 && img.bento_slot <= 3)
+    .sort((a, b) => a.bento_slot - b.bento_slot);
+  const others = images.filter((img) => !slotted.includes(img));
+  return [...slotted, ...others].slice(0, 3);
+});
 
 const audiences = computed(() => [
   { icon: "Handshake", label: t("workshops.audience_teambuilding"), desc: t("workshops.audience_teambuilding_desc") },

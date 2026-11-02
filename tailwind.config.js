@@ -1,5 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Les effets de survol (hover:) ne s'appliquent qu'aux appareils avec une
+  // souris : sur téléphone, ils restaient « collés » après un tap.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",

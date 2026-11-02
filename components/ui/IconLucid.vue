@@ -121,9 +121,13 @@ import {
   ChevronLeft,
   MoreHorizontal,
   Users,
+  Instagram,
+  ArrowUpRight,
 } from "lucide-vue-next";
 
 const icons = {
+  Instagram,
+  ArrowUpRight,
   AlertCircle,
   AlertTriangle,
   Aperture,

@@ -15,13 +15,21 @@
       </p>
 
       <form @submit.prevent="handleLogin" class="space-y-4">
+        <!-- Attributs mobiles : iOS/Android proposent l'adresse au-dessus du
+             clavier (autocomplete), sans majuscule ni correction auto. -->
         <Input
           v-model="email"
           type="email"
+          name="email"
           :label="$t('login_page.email_label')"
           :placeholder="$t('login_page.email_placeholder')"
-          icon="Mail"
           variant="soft"
+          autocomplete="email"
+          inputmode="email"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          enterkeyhint="go"
           required
         />
         <Button
@@ -58,6 +66,8 @@
       <p class="font-semibold text-dark break-all mt-1 mb-8">{{ email }}</p>
 
       <form @submit.prevent="verifyCode" class="space-y-3">
+        <!-- Pas de maxlength : un code collé avec espaces (« 123 456 »)
+             serait coupé avant nettoyage. onCodeInput garde 6 chiffres. -->
         <Input
           :model-value="code"
           type="text"
@@ -66,7 +76,6 @@
           variant="soft"
           inputmode="numeric"
           autocomplete="one-time-code"
-          maxlength="6"
           class="!h-14 text-lg tracking-[0.3em] placeholder:tracking-normal"
           :error="codeError"
           @update:model-value="onCodeInput"

@@ -4,7 +4,7 @@
   >
     <!-- Logo sur fond uni : bandeau en mobile, demi-écran en desktop -->
     <div
-      class="bg-cream-light flex items-center justify-center py-10 md:p-16"
+      class="bg-cream-light flex items-center justify-center py-5 md:p-16"
     >
       <!-- Le logo ramène à l'accueil (comme l'en-tête du site) -->
       <NuxtLink

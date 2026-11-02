@@ -131,6 +131,26 @@ const releases = [
         title: "Une petite danse quand un devis est validé",
         description: "L'email qui vous annonce un devis validé a pris un ton plus festif, avec un GIF pour célébrer.",
       },
+      {
+        category: "design" as Category,
+        title: "Un nouveau menu sur mobile",
+        description: "Le bouton « Menu » ouvre une page soignée : vos trois prestations en grand, « Mon Espace », une carte photo pour demander un devis, puis « Qui suis-je ? », la FAQ, la langue et votre Instagram. Tout est pensé pour le pouce.",
+      },
+      {
+        category: "design" as Category,
+        title: "La page Ateliers avec trois photos",
+        description: "La grande galerie laisse place à une grille de trois photos, choisies dans la galerie « Ateliers » de votre tableau de bord (cases 1 à 3 en priorité).",
+      },
+      {
+        category: "design" as Category,
+        title: "Demande de devis plus fluide sur téléphone",
+        description: "La page ne défile plus toute seule à l'arrivée, et le choix de la prestation ou du budget fait avancer la conversation sans bouton « Continuer ».",
+      },
+      {
+        category: "design" as Category,
+        title: "Des cartes plus douces sur l'accueil",
+        description: "Les cartes Mariage, Événement et Atelier passent sur un fond crème, sans bordure grise.",
+      },
     ],
   },
   {

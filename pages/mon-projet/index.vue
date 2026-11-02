@@ -56,7 +56,7 @@
               <Button
                 type="button"
                 icon="FileText"
-                class="w-full md:w-auto justify-center shrink-0"
+                class="w-full md:w-auto justify-center shrink-0 whitespace-nowrap"
                 @click="showRequest = true"
               >
                 {{ t("client.request_open") }}

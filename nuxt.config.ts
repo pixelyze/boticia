@@ -154,7 +154,8 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2025-04-12",
-  devtools: { enabled: true },
+  // Pastille Nuxt DevTools en bas de page : désactivée (inutile ici)
+  devtools: { enabled: false },
 
   // Supabase configuration
   supabase: {

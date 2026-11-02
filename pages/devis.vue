@@ -190,13 +190,13 @@
                 v-for="opt in serviceTypeOptions"
                 :key="opt.value"
                 type="button"
-                class="group w-full flex items-center gap-4 px-5 py-4 rounded-2xl border-2 text-left transition-all duration-200"
+                class="group w-full flex items-center gap-4 px-5 py-4 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
                 :class="
                   form.service_type === opt.value
                     ? 'bg-dark border-dark'
                     : 'bg-white border-dark/10 hover:border-dark/30'
                 "
-                @click="form.service_type = opt.value"
+                @click="chooseAndContinue(() => (form.service_type = opt.value))"
               >
                 <div
                   class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all"
@@ -239,15 +239,6 @@
                   </span>
                 </div>
               </button>
-              <div v-if="form.service_type" class="flex justify-center pt-1">
-                <Button
-                  variant="primary"
-                  rightIcon="MoveRight"
-                  @click="nextStep"
-                >
-                  {{ t("quote_form.chat_next") }}
-                </Button>
-              </div>
             </div>
 
             <!-- Step 2: Name -->
@@ -449,16 +440,13 @@
                   v-for="opt in budgetOptions"
                   :key="opt.value"
                   type="button"
-                  class="h-14 px-6 rounded-2xl border-2 font-medium transition-all duration-200"
+                  class="h-14 px-6 rounded-2xl border-2 font-medium transition-all duration-200 touch-manipulation"
                   :class="
                     form.budget === opt.value
                       ? 'bg-dark text-cream border-dark'
                       : 'bg-cream/30 text-dark/60 border-dark/10 hover:border-dark/30 hover:text-dark'
                   "
-                  @click="
-                    form.budget =
-                      form.budget === opt.value ? '' : opt.value
-                  "
+                  @click="chooseAndContinue(() => (form.budget = opt.value))"
                 >
                   {{ opt.label }}
                 </button>
@@ -466,15 +454,6 @@
               <p v-if="errors.budget" class="text-sm text-red-500">
                 {{ errors.budget }}
               </p>
-              <div class="flex justify-center">
-                <Button
-                  variant="primary"
-                  rightIcon="MoveRight"
-                  @click="nextStep"
-                >
-                  {{ t("quote_form.chat_next") }}
-                </Button>
-              </div>
             </div>
 
             <!-- Step 6: Needs (service-specific) -->
@@ -505,7 +484,7 @@
                         v-for="need in group.needs"
                         :key="need"
                         type="button"
-                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
+                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
                         :class="
                           selectedNeeds.has(need)
                             ? 'bg-dark border-dark'
@@ -565,7 +544,7 @@
                         v-for="need in eventNeeds"
                         :key="need"
                         type="button"
-                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
+                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
                         :class="
                           selectedNeeds.has(need)
                             ? 'bg-dark border-dark'
@@ -611,7 +590,7 @@
                     v-for="ws in workshopTypes"
                     :key="ws"
                     type="button"
-                    class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200"
+                    class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
                     :class="
                       form.workshop_type === ws
                         ? 'bg-dark border-dark'
@@ -1287,7 +1266,12 @@ const formatDisplayDate = (dateStr: string) => {
 };
 
 // ── Scroll to bottom ────────────────────────────────
+// Pas de défilement automatique à l'arrivée sur la page (messages
+// d'accueil) : il ne démarre qu'après la première réponse de la personne.
+const hasAnswered = ref(false);
+
 const scrollToBottom = () => {
+  if (!hasAnswered.value) return;
   nextTick(() => {
     setTimeout(() => {
       scrollAnchor.value?.scrollIntoView({
@@ -1330,6 +1314,7 @@ const addBotMessage = (text: string): Promise<void> => {
 };
 
 const addUserMessage = (text: string) => {
+  hasAnswered.value = true;
   chatMessages.value.push({
     type: "user",
     text,
@@ -1504,6 +1489,21 @@ const nextStep = async () => {
   }
 };
 
+// ── Choix unique : on passe à la suite tout seul ────
+// Le choix s'affiche en noir un court instant (pour qu'on voie ce qui a été
+// retenu), puis la conversation avance. Un second tap pendant ce délai est
+// ignoré.
+let choiceTimer: ReturnType<typeof setTimeout> | null = null;
+
+const chooseAndContinue = (select: () => void) => {
+  if (choiceTimer || isTyping.value) return;
+  select();
+  choiceTimer = setTimeout(() => {
+    choiceTimer = null;
+    nextStep();
+  }, 300);
+};
+
 // ── Handle slot confirmed ───────────────────────────
 const handleSlotConfirmed = (data: {
   date: string;
@@ -1634,6 +1634,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  if (choiceTimer) clearTimeout(choiceTimer);
   inspirationPreviews.value.forEach((url) => URL.revokeObjectURL(url));
 });
 </script>

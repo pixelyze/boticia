@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-screen selection:bg-fuchsia-300 selection:text-fuchsia-900 flex flex-col">
     <Header />
-    <main id="main-content" class="flex-1 pt-32">
+    <!-- Sous l'en-tête fixe : 92 px sur mobile (pas de ligne des langues),
+         128 px dès md. HeroSection compense avec la même valeur négative. -->
+    <main id="main-content" class="flex-1 pt-[92px] md:pt-32">
       <slot />
     </main>
     <Footer class="flex-shrink-0" />

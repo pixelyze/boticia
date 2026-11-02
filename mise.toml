@@ -6,8 +6,17 @@ NODE_NO_WARNINGS = "1"    # silence les ExperimentalWarning / deprecations Node 
 NUXT_PUBLIC_SITE_URL = "http://localhost:{{env.PORT}}"
 
 [tasks.dev]
-description = "Lance Nuxt en dev sur le port du projet (3020)"
-run = "npm run dev -- --port $PORT"
+description = "Lance Nuxt en dev sur le port du projet (3020), visible sur le Wi-Fi avec un QR code à scanner"
+# --public : écoute aussi sur le réseau local (téléphone sur le même Wi-Fi)
+# --qr     : affiche le QR code de l'adresse réseau dans le terminal (mprocs)
+# Supabase vu par le navigateur : adresse réseau du Mac (et non 127.0.0.1),
+# sinon le code de connexion échoue depuis le téléphone. Sans réseau, on
+# retombe sur 127.0.0.1. Prime sur la valeur du .env.
+run = '''
+export NUXT_PUBLIC_SUPABASE_URL="http://$(ipconfig getifaddr en0 || echo 127.0.0.1):54321"
+echo "Supabase (navigateur) : $NUXT_PUBLIC_SUPABASE_URL"
+npm run dev -- --port $PORT --public --qr
+'''
 
 [tasks.supabase]
 description = "Démarre Supabase local (base + Mailpit) et affiche les emails reçus — à laisser ouvert"

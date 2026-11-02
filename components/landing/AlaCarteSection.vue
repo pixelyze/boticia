@@ -22,8 +22,8 @@
         <div
           v-for="(group, index) in groups"
           :key="index"
-          class="px-8 py-10 rounded-[2rem] border-2 border-dark/10
-                 text-center flex flex-col bg-white"
+          class="px-8 py-10 rounded-[2rem] bg-cream-light
+                 text-center flex flex-col"
         >
           <IconLucid
             :name="group.icon"
@@ -40,10 +40,8 @@
               :key="i"
               class="flex items-start gap-3 text-dark/70"
             >
-              <span
-                class="mt-1.5 w-1.5 h-1.5 rounded-full bg-dark/30
-                       shrink-0"
-              />
+              <!-- Petit trait fin à la place de la puce ronde -->
+              <span class="mt-3 w-3 h-px bg-dark/40 shrink-0" />
               <span class="text-base">{{ item }}</span>
             </li>
           </ul>

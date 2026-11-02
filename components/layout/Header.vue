@@ -70,17 +70,25 @@
             </NuxtLink>
           </div>
 
-          <!-- Mobile menu button -->
+          <!-- Mobile menu button : pastille « Menu » + deux traits -->
           <button
             ref="hamburgerBtn"
-            class="md:hidden w-10 h-10 rounded-full flex items-center justify-center transition-colors"
-            :class="isTransparent ? 'bg-cream/10 hover:bg-cream/20 text-cream' : 'bg-dark/5 hover:bg-dark/10 text-dark'"
+            class="md:hidden group h-10 w-[7.5rem] rounded-full border flex items-center justify-center gap-3 transition-colors duration-300"
+            :class="isTransparent ? 'border-cream/30 text-cream hover:bg-cream/10' : 'border-dark/15 text-dark hover:bg-dark/5'"
             @click="openMobileMenu"
             :aria-label="t('common.menu')"
             :aria-expanded="mobileMenuOpen"
             aria-controls="mobile-menu"
           >
-            <IconLucid name="Menu" size="sm" />
+            <span class="text-[11px] font-semibold uppercase tracking-[0.2em]">
+              {{ t("common.menu") }}
+            </span>
+            <span class="flex flex-col items-end gap-[5px]" aria-hidden="true">
+              <span class="block h-[1.5px] w-5 rounded-full bg-current" />
+              <span
+                class="block h-[1.5px] w-3 rounded-full bg-current transition-all duration-300 group-hover:w-5"
+              />
+            </span>
           </button>
         </nav>
         </div>
@@ -124,13 +132,18 @@
           role="dialog"
           aria-modal="true"
           :aria-label="t('common.menu')"
-          class="fixed inset-0 z-[100] bg-cream md:hidden"
+          class="fixed inset-0 z-[100] bg-cream md:hidden flex flex-col overflow-y-auto"
         >
-          <!-- Modal header -->
-          <div class="flex items-center justify-between px-6 py-5">
+          <!-- Modal header : mêmes marges que l'en-tête, selon son état
+               (accueil, défilé…), pour que logo et bouton ne bougent pas. -->
+          <div class="px-4" :class="scrolled ? 'pt-2 pb-2' : 'pt-4 pb-4'">
+          <div
+            class="flex items-center justify-between border-2 border-transparent"
+            :class="isTransparent ? 'py-4 px-4' : 'py-2 px-5'"
+          >
             <NuxtLink
               :to="localePath('/')"
-              class="font-heading font-medium text-2xl tracking-tight text-dark uppercase"
+              class="font-heading font-medium text-xl tracking-tight text-dark uppercase"
               @click="closeMobileMenu"
             >
               Boticia
@@ -138,78 +151,153 @@
             <button
               ref="closeBtn"
               @click="closeMobileMenu"
-              class="p-2 -mr-2"
+              class="h-10 w-[7.5rem] rounded-full border border-dark/15 text-dark flex items-center justify-center gap-3 hover:bg-dark/5 transition-colors"
               :aria-label="t('common.close')"
             >
-              <IconLucid name="X" size="sm" />
+              <span class="text-[11px] font-semibold uppercase tracking-[0.2em]">
+                {{ t("common.close") }}
+              </span>
+              <span class="relative w-4 h-4" aria-hidden="true">
+                <span class="absolute top-1/2 left-0 block h-[1.5px] w-4 rounded-full bg-current rotate-45" />
+                <span class="absolute top-1/2 left-0 block h-[1.5px] w-4 rounded-full bg-current -rotate-45" />
+              </span>
             </button>
           </div>
+          </div>
 
-          <!-- Navigation links -->
-          <nav class="flex flex-col px-6 mt-8">
+          <!-- Navigation links : grands titres -->
+          <nav class="flex flex-col px-6">
             <NuxtLink
               v-for="(link, i) in mobileNavLinks"
               :key="link.key"
               :to="localePath(link.to)"
-              class="flex items-center justify-between py-5 border-b border-dark/10 transition-all duration-300"
-              :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'"
-              :style="{ transitionDelay: `${i * 60}ms` }"
+              class="group flex items-center gap-4 py-3 border-b border-dark/10 transition-all duration-500 ease-out"
+              :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+              :style="{ transitionDelay: `${80 + i * 70}ms` }"
+              :aria-current="isActivePath(link.to) ? 'page' : undefined"
               @click="closeMobileMenu"
             >
               <span
-                class="font-heading text-xl"
-                :class="isActivePath(link.to) ? 'text-dark' : 'text-dark/70'"
+                class="font-heading text-[1.75rem] leading-tight text-dark transition-all duration-300 group-hover:italic"
+                :class="isActivePath(link.to) ? 'italic' : ''"
               >
                 {{ t(link.key) }}
               </span>
               <IconLucid
-                name="ArrowRight"
-                size="xs"
-                class="text-gray-300"
+                name="ArrowUpRight"
+                size="sm"
+                class="ml-auto text-gray-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 :strokeWidth="1.5"
               />
             </NuxtLink>
+
+            <!-- Mon Espace : pleine largeur, icône user -->
+            <div
+              class="pt-3 transition-all duration-500 ease-out"
+              :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+              :style="{ transitionDelay: `${80 + mobileNavLinks.length * 70}ms` }"
+            >
+              <NuxtLink
+                :to="localePath(userSpaceRoute)"
+                class="h-12 w-full rounded-full border border-dark/15 flex items-center justify-center gap-2 text-[15px] font-medium text-dark active:bg-dark/5 hover:bg-dark/5 transition-colors"
+                @click="closeMobileMenu"
+              >
+                <IconLucid name="User" size="sm" class="text-dark" :strokeWidth="1.5" />
+                {{ t("nav.login") }}
+              </NuxtLink>
+            </div>
           </nav>
 
-          <!-- CTA -->
-          <div class="px-6 mt-10">
-            <NuxtLink
-              ref="firstMenuLink"
-              :to="localePath('/devis')"
-              class="block w-full rounded-full bg-dark px-6 py-4 text-base font-medium text-cream text-center transition-all duration-300"
-              :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'"
-              :style="{ transitionDelay: `${mobileNavLinks.length * 60}ms` }"
-              @click="closeMobileMenu"
+          <!-- Carte photo + CTA devis : prend toute la hauteur libre -->
+          <div
+            class="flex-1 flex flex-col px-6 mt-3 transition-all duration-700 ease-out"
+            :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
+            :style="{ transitionDelay: `${160 + mobileNavLinks.length * 70}ms` }"
+          >
+            <!-- Contenu en flux (pas en absolu) : rien ne se chevauche quand
+                 la carte rétrécit. Écrans bas (< 700 px) : on garde le titre
+                 et le bouton, sans la ligne du haut ni la phrase. -->
+            <div
+              class="relative flex-1 min-h-[10rem] rounded-[1.5rem] overflow-hidden p-5 flex flex-col justify-between gap-4"
             >
-              {{ t("nav.quote") }}
-            </NuxtLink>
+              <img
+                src="/bouquet_mariee_boticia._1.webp"
+                alt=""
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-dark/10" />
+              <span
+                class="relative text-[11px] font-semibold uppercase tracking-[0.2em] text-cream/80 [@media(max-height:700px)]:hidden"
+              >
+                {{ t("app.tagline") }}
+              </span>
+              <div class="relative mt-auto">
+                <p class="font-heading text-[1.75rem] leading-tight text-cream">
+                  {{ t("quote_form.tagline") }}
+                </p>
+                <p
+                  class="mt-2 text-[15px] leading-relaxed text-cream/80 [@media(max-height:700px)]:hidden"
+                >
+                  {{ t("quote_form.subtitle") }}
+                </p>
+                <NuxtLink
+                  ref="firstMenuLink"
+                  :to="localePath('/devis')"
+                  class="mt-5 h-12 w-full rounded-full bg-cream flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-[0.15em] text-dark hover:bg-white active:bg-white transition-colors"
+                  @click="closeMobileMenu"
+                >
+                  {{ t("nav.quote") }}
+                  <IconLucid name="ArrowRight" size="xs" class="text-dark" :strokeWidth="2" />
+                </NuxtLink>
+              </div>
+            </div>
           </div>
 
           <!-- Bottom section -->
-          <div class="absolute bottom-0 left-0 right-0 px-6 pb-10">
-            <!-- Mon Espace -->
-            <NuxtLink
-              :to="localePath(userSpaceRoute)"
-              class="w-full rounded-full border border-dark/15 px-6 py-3.5 text-sm text-dark text-center transition-all flex items-center justify-center gap-2"
-              @click="closeMobileMenu"
-            >
-              <IconLucid name="User" size="xs" class="text-gray-400" :strokeWidth="1.5" />
-              {{ t("nav.login") }}
-            </NuxtLink>
-
-            <!-- Language selector -->
-            <div class="flex items-center justify-center gap-6 mt-5">
-              <button
-                v-for="loc in availableLocales"
-                :key="loc.code"
-                @click="switchLocale(loc.code); closeMobileMenu()"
-                :lang="loc.code"
-                :aria-label="loc.label"
-                class="text-sm uppercase tracking-wider transition-colors duration-300"
-                :class="locale === loc.code ? 'text-dark font-semibold' : 'text-dark/35'"
+          <div
+            class="px-6 pt-3 pb-4 transition-opacity duration-700"
+            :class="mobileMenuVisible ? 'opacity-100' : 'opacity-0'"
+            :style="{ transitionDelay: `${240 + mobileNavLinks.length * 70}ms` }"
+          >
+            <!-- Qui suis-je ? + FAQ : sous la carte devis -->
+            <div class="grid grid-cols-2 gap-3">
+              <NuxtLink
+                v-for="link in infoNavLinks"
+                :key="link.key"
+                :to="localePath(link.to)"
+                class="h-12 rounded-full bg-dark/5 flex items-center justify-center text-[15px] font-medium text-dark active:bg-dark/10 hover:bg-dark/10 transition-colors"
+                @click="closeMobileMenu"
               >
-                {{ loc.code }}
-              </button>
+                {{ t(link.key) }}
+              </NuxtLink>
+            </div>
+
+            <!-- Language selector : pastille segmentée -->
+            <div class="flex items-center justify-center gap-3 mt-3">
+              <div class="inline-flex items-center rounded-full bg-dark/5 p-1">
+                <button
+                  v-for="loc in availableLocales"
+                  :key="loc.code"
+                  @click="switchLocale(loc.code); closeMobileMenu()"
+                  :lang="loc.code"
+                  :aria-label="loc.label"
+                  class="h-10 px-5 text-sm uppercase tracking-wider rounded-full transition-all duration-300"
+                  :class="locale === loc.code ? 'bg-white text-dark font-semibold shadow-sm' : 'text-dark/50'"
+                >
+                  {{ loc.code }}
+                </button>
+              </div>
+
+              <!-- Instagram : icône ronde, même hauteur que la pastille -->
+              <a
+                href="https://instagram.com/boticia_"
+                target="_blank"
+                rel="noopener"
+                aria-label="Instagram @boticia_"
+                class="w-12 h-12 rounded-full bg-dark/5 flex items-center justify-center active:bg-dark/10 hover:bg-dark/10 transition-colors"
+              >
+                <IconLucid name="Instagram" size="sm" class="text-dark" :strokeWidth="1.5" />
+              </a>
             </div>
           </div>
         </div>
@@ -282,11 +370,17 @@ const navLinks = [
   { key: "nav.workshops", to: "/ateliers" },
 ];
 
+const infoNavLinks = [
+  { key: "footer.about_link", to: "/about" },
+  { key: "footer.faq_link", to: "/faq" },
+];
+
 const mobileNavLinks = [
   { key: "nav.weddings", to: "/mariages" },
   { key: "nav.events", to: "/evenements" },
   { key: "nav.workshops", to: "/ateliers" },
 ];
+
 
 // Active path detection for mobile menu
 const isActivePath = (path) => {
