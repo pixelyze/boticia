@@ -121,9 +121,13 @@ import {
   ChevronLeft,
   MoreHorizontal,
   Users,
+  Pencil,
+  MessageSquareQuote,
 } from "lucide-vue-next";
 
 const icons = {
+  Pencil,
+  MessageSquareQuote,
   AlertCircle,
   AlertTriangle,
   Aperture,

@@ -1,5 +1,10 @@
 <template>
-  <section class="pt-20 pb-10 md:pt-28 md:pb-12 bg-white overflow-hidden">
+  <!-- Avis gérés par Laëtitia (tableau de bord → Avis). Section masquée
+       tant qu'aucun avis n'est publié. -->
+  <section
+    v-if="testimonials.length"
+    class="pt-20 pb-10 md:pt-28 md:pb-12 bg-white overflow-hidden"
+  >
     <div class="container mx-auto px-6 mb-12">
       <div class="relative text-center">
         <span class="section-tagline">{{ $t('testimonials.tagline') }}</span>
@@ -44,8 +49,8 @@
         <!-- Cartes dupliquées pour boucle infinie -->
         <template v-for="loop in 2" :key="loop">
           <blockquote
-            v-for="(item, index) in testimonials"
-            :key="`${loop}-${index}`"
+            v-for="item in testimonials"
+            :key="`${loop}-${item.id}`"
             class="flex w-[320px] shrink-0 flex-col justify-between rounded-2xl bg-cream/50 p-7 sm:w-[380px]"
           >
             <p class="leading-relaxed text-dark/70 italic">
@@ -71,35 +76,16 @@
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
 
-const testimonials = computed(() => [
-  {
-    text: t("testimonials.items.0.text"),
-    name: t("testimonials.items.0.name"),
-    location: t("testimonials.items.0.location"),
-  },
-  {
-    text: t("testimonials.items.1.text"),
-    name: t("testimonials.items.1.name"),
-    location: t("testimonials.items.1.location"),
-  },
-  {
-    text: t("testimonials.items.2.text"),
-    name: t("testimonials.items.2.name"),
-    location: t("testimonials.items.2.location"),
-  },
-  {
-    text: t("testimonials.items.3.text"),
-    name: t("testimonials.items.3.name"),
-    location: t("testimonials.items.3.location"),
-  },
-  {
-    text: t("testimonials.items.4.text"),
-    name: t("testimonials.items.4.name"),
-    location: t("testimonials.items.4.location"),
-  },
-]);
+// Avis publiés, dans la langue du visiteur (anglais pour le japonais,
+// français si la traduction anglaise manque) : voir /api/testimonials.
+const { locale } = useI18n();
+const { data: testimonialsData } = await useFetch<{
+  data: { id: string; text: string; name: string; location: string | null }[];
+}>("/api/testimonials", {
+  query: { locale },
+});
+const testimonials = computed(() => testimonialsData.value?.data ?? []);
 
 const trackRef = ref<HTMLElement | null>(null);
 const CARD_WIDTH = 405; // largeur carte + gap

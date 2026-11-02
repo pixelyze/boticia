@@ -123,6 +123,11 @@ const releases = [
     items: [
       {
         category: "feature" as Category,
+        title: "Gérez vos avis vous-même",
+        description: "Une nouvelle page « Avis » dans votre tableau de bord : ajoutez, modifiez, masquez, supprimez et réordonnez les témoignages de la page d'accueil. Chaque avis a une version française et une version anglaise (facultative) : sans anglais, c'est le français qui s'affiche, et le site japonais montre la version anglaise.",
+      },
+      {
+        category: "feature" as Category,
         title: "Un rappel pour relancer vos clientes sur WhatsApp",
         description: "Deux jours après qu'une cliente a ouvert son devis sans y répondre, vous recevez un email le matin avec un bouton « Écrire sur WhatsApp » : le message est déjà écrit, il ne reste qu'à l'envoyer. Un seul rappel par devis, et jamais le week-end (il arrive le lundi).",
       },

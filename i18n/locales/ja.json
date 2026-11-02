@@ -541,6 +541,41 @@
     "chat_optional": "任意"
   },
   "dashboard": {
+    "testimonials_limit_reached": "上限に達しました（{max}文字）。",
+    "testimonials_too_long_line": "少し長めです。レビューの下で2行に折り返されます。",
+    "testimonials_too_long_text": "少し長めです。トップページではすべてのカードがこの長さに揃って伸びます。短くしてみてください。",
+    "testimonials_advice_max": "目安：{max}文字まで",
+    "testimonials_advice_range": "目安：{min}〜{max}文字",
+    "testimonials_count": "{count}文字",
+    "testimonials_context_hint": "サービスの種類や場所を短く（例：「Wedding in Provence」）。",
+    "testimonials_text_hint": "印象的な一文か二文に絞りましょう。引用符は自動で付くので不要です。",
+    "page_testimonials": "レビュー",
+    "page_testimonials_desc": "トップページのお客様の声",
+    "testimonials_title": "レビュー",
+    "testimonials_hint": "表示中のレビューは、この順番でトップページに掲載されます。",
+    "testimonials_add": "レビューを追加",
+    "testimonials_empty": "まだレビューはありません。最初のレビューを追加すると、トップページに表示されます。",
+    "testimonials_visible": "表示中",
+    "testimonials_hidden": "非表示",
+    "testimonials_missing_en": "英語なし",
+    "testimonials_new": "新しいレビュー",
+    "testimonials_edit": "レビューを編集",
+    "testimonials_french": "フランス語",
+    "testimonials_english": "英語",
+    "testimonials_english_hint": "任意。英語版と日本語版のサイトに表示されます。空欄の場合はフランス語が表示されます。フランス語とほぼ同じ長さを目安にしてください。",
+    "testimonials_text": "レビュー",
+    "testimonials_author": "お名前",
+    "testimonials_author_hint": "名前と名字の頭文字（例：「Sophie M.」）。お客様のプライバシーに配慮できます。",
+    "testimonials_context": "補足",
+    "testimonials_context_example_fr": "Mariage en Provence",
+    "testimonials_context_example_en": "Wedding in Provence",
+    "testimonials_publish": "サイトに表示する",
+    "testimonials_save": "保存",
+    "testimonials_delete": "このレビューを削除",
+    "testimonials_delete_confirm": "削除を確定",
+    "testimonials_move_up": "上へ",
+    "testimonials_move_down": "下へ",
+    "testimonials_error": "エラーが発生しました。もう一度お試しください。",
     "page_title": "マイページ",
     "breadcrumb": "マイページ",
     "settings": "設定",
@@ -1104,33 +1139,6 @@
     "tagline": "お客様の声",
     "title": "みなさまからのメッセージ",
     "prev": "前の口コミ",
-    "next": "次の口コミ",
-    "items": [
-      {
-        "text": "ラエティシアは私が結婚式に思い描いていた世界を完璧に表現してくれました。フローラルアレンジメントは美しく、エレガントで詩的でした。",
-        "name": "Sophie M.",
-        "location": "プロヴァンスのウェディング"
-      },
-      {
-        "text": "企業イベントのために素晴らしい仕事をしていただきました。フラワーアレンジメントが空間を魔法のような場所に変えてくれました。",
-        "name": "Marie-Claire D.",
-        "location": "パリ"
-      },
-      {
-        "text": "ラエティシアのワークショップに参加し、ブーケ以上のものを持ち帰りました。フローラルデザインへの本物の情熱です。",
-        "name": "Camille R.",
-        "location": "エクス・アン・プロヴァンス"
-      },
-      {
-        "text": "花が物語を語ります。ラエティシアは独自の芸術的感性を持ち、すべてのアレンジメントはそれ自体が芸術作品です。",
-        "name": "Isabelle T.",
-        "location": "シャトーウェディング"
-      },
-      {
-        "text": "プロフェッショナリズム、傾聴、創造性。ウェディングフローリストに求めるすべてが揃っています。強くお勧めします。",
-        "name": "Aurélie B.",
-        "location": "コート・ダジュール"
-      }
-    ]
+    "next": "次の口コミ"
   }
 }

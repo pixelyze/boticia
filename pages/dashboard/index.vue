@@ -174,23 +174,44 @@
             </template>
           </div>
 
-          <!-- Galeries -->
-          <NuxtLink
-            :to="localePath('/dashboard/galleries')"
-            class="rounded-[1.5rem] bg-cream/50 p-6 flex items-center gap-4 transition-all hover:bg-cream group copilot-fade-in copilot-fade-in-2"
-          >
-            <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center shrink-0">
-              <IconLucid name="Images" size="md" class="text-dark" />
-            </div>
-            <div>
-              <span class="font-heading text-base text-dark block">
-                {{ t("dashboard.page_galleries") }}
-              </span>
-              <span class="text-sm text-dark/40">
-                {{ t("dashboard.page_galleries_desc") }}
-              </span>
-            </div>
-          </NuxtLink>
+          <!-- Galeries et Avis, côte à côte -->
+          <div class="grid grid-cols-2 gap-3 md:gap-4 copilot-fade-in copilot-fade-in-2">
+            <!-- Galeries -->
+            <NuxtLink
+              :to="localePath('/dashboard/galleries')"
+              class="rounded-[1.5rem] bg-cream/50 p-5 md:p-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 transition-all hover:bg-cream group"
+            >
+              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center shrink-0">
+                <IconLucid name="Images" size="md" class="text-dark" />
+              </div>
+              <div>
+                <span class="font-heading text-base text-dark block">
+                  {{ t("dashboard.page_galleries") }}
+                </span>
+                <span class="text-sm text-dark/40">
+                  {{ t("dashboard.page_galleries_desc") }}
+                </span>
+              </div>
+            </NuxtLink>
+
+            <!-- Avis de la page d'accueil -->
+            <NuxtLink
+              :to="localePath('/dashboard/avis')"
+              class="rounded-[1.5rem] bg-cream/50 p-5 md:p-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 transition-all hover:bg-cream group"
+            >
+              <div class="w-14 h-14 rounded-2xl bg-cream-dark flex items-center justify-center shrink-0">
+                <IconLucid name="MessageSquareQuote" size="md" class="text-dark" />
+              </div>
+              <div>
+                <span class="font-heading text-base text-dark block">
+                  {{ t("dashboard.page_testimonials") }}
+                </span>
+                <span class="text-sm text-dark/40">
+                  {{ t("dashboard.page_testimonials_desc") }}
+                </span>
+              </div>
+            </NuxtLink>
+          </div>
         </div>
       </section>
     </template>
