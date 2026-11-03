@@ -221,8 +221,9 @@
               class="relative flex-1 min-h-[10rem] rounded-[1.5rem] overflow-hidden p-5 flex flex-col justify-between gap-4"
             >
               <img
-                src="/bouquet_mariee_boticia._1.webp"
+                :src="menuImageFailed ? HERO_DEFAULT_IMAGE : heroImage"
                 alt=""
+                @error="menuImageFailed = true"
                 class="absolute inset-0 w-full h-full object-cover"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-dark/10" />
@@ -316,6 +317,10 @@ const router = useRouter();
 const route = useRoute();
 const user = useSupabaseUser();
 const userRole = ref("");
+
+// Carte devis du menu mobile : même photo que le hero de l'accueil.
+const heroImage = useHeroImage();
+const menuImageFailed = ref(false);
 
 watch(
   user,

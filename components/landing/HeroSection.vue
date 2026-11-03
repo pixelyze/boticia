@@ -68,18 +68,14 @@
 <script setup>
 const localePath = useLocalePath();
 
-const defaultImage = "/bouquet_mariee_boticia._1.webp";
-const { data: configData } = await useFetch("/api/cms/config", {
-  params: { key: "hero_image" },
-});
+const heroImage = useHeroImage();
 // Si la photo choisie est introuvable (fichier supprimé), on retombe sur
 // la photo par défaut plutôt que sur un fond vide.
 const imageFailed = ref(false);
 const heroImg = ref(null);
-const imageUrl = computed(() => {
-  if (imageFailed.value) return defaultImage;
-  return configData.value?.data?.value?.url || defaultImage;
-});
+const imageUrl = computed(() =>
+  imageFailed.value ? HERO_DEFAULT_IMAGE : heroImage.value
+);
 // Rendu serveur : l'image peut avoir échoué avant que Vue n'écoute l'erreur.
 onMounted(() => {
   const img = heroImg.value;
