@@ -171,14 +171,14 @@
               v-for="(link, i) in mobileNavLinks"
               :key="link.key"
               :to="localePath(link.to)"
-              class="group flex items-center gap-4 py-3 border-b border-dark/10 transition-all duration-500 ease-out"
+              class="flex items-center gap-4 py-3 border-b border-dark/10 transition-all duration-500 ease-out"
               :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
               :style="{ transitionDelay: `${80 + i * 70}ms` }"
               :aria-current="isActivePath(link.to) ? 'page' : undefined"
               @click="closeMobileMenu"
             >
               <span
-                class="font-heading text-[1.75rem] leading-tight text-dark transition-all duration-300 group-hover:italic"
+                class="font-heading text-[1.75rem] leading-tight text-dark"
                 :class="isActivePath(link.to) ? 'italic' : ''"
               >
                 {{ t(link.key) }}
@@ -186,7 +186,7 @@
               <IconLucid
                 name="ArrowUpRight"
                 size="sm"
-                class="ml-auto text-gray-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                class="ml-auto text-gray-400"
                 :strokeWidth="1.5"
               />
             </NuxtLink>
@@ -224,16 +224,16 @@
                 :src="menuImageFailed ? HERO_DEFAULT_IMAGE : heroImage"
                 alt=""
                 @error="menuImageFailed = true"
-                class="absolute inset-0 w-full h-full object-cover"
+                class="absolute inset-0 w-full h-full object-cover scale-110"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-dark/10" />
+              <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/60 to-dark/40" />
               <span
                 class="relative text-[11px] font-semibold uppercase tracking-[0.2em] text-cream/80 [@media(max-height:700px)]:hidden"
               >
                 {{ t("app.tagline") }}
               </span>
               <div class="relative mt-auto">
-                <p class="font-heading text-[1.75rem] leading-tight text-cream">
+                <p class="font-heading text-[1.75rem] leading-tight text-cream [text-shadow:0_1px_16px_rgb(0_0_0/0.35)]">
                   {{ t("quote_form.tagline") }}
                 </p>
                 <p
