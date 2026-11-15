@@ -1,35 +1,27 @@
-# Boticia — Atelier de design floral
-# Laëtitia Schaeffer, créatrice florale (Provence · Paris)
+# Boticia
 
-> Boticia est un atelier de design floral spécialisé dans la décoration florale de mariage, la scénographie événementielle et les ateliers d'art floral. Fleurs françaises de saison, en circuit court. Basé en Provence, intervient dans toute la France.
+> Boticia est l'atelier de design floral de Laëtitia Schaeffer, créatrice d'ambiance florale basée en Provence. Décoration florale de mariage, scénographie florale pour les événements et ateliers d'art floral, avec des fleurs de saison. Interventions en Provence, à Paris et dans toute la France.
+
+Fondatrice : Laëtitia Schaeffer, créatrice florale. Le site existe en français, en anglais et en japonais.
 
 ## Services
 
-- Décoration florale de mariage: https://boticia.fr/fr/mariages
-- Scénographie florale événementielle: https://boticia.fr/fr/evenements
-- Ateliers d'art floral: https://boticia.fr/fr/ateliers
-- Demande de devis: https://boticia.fr/fr/devis
+- [Décoration florale de mariage](https://boticia.fr/fr/mariages): bouquet de mariée, cérémonie, réception, formules et prestations à la carte
+- [Scénographie florale événementielle](https://boticia.fr/fr/evenements): événements professionnels et privés
+- [Ateliers d'art floral](https://boticia.fr/fr/ateliers): ateliers créatifs autour des fleurs
+- [Demande de devis](https://boticia.fr/fr/devis): formulaire pour décrire son projet et recevoir une proposition sur mesure
 
 ## À propos
 
-Fondatrice: Laëtitia Schaeffer
-Titre: Floral Designer
-Localisation: Provence-Alpes-Côte d'Azur, France
-Interventions: Provence, Paris, France entière
+- [Qui suis-je ?](https://boticia.fr/fr/about): Laëtitia Schaeffer et sa démarche
+- [Créations](https://boticia.fr/fr/creations): galerie des réalisations
+- [Questions fréquentes](https://boticia.fr/fr/faq): déroulement, tarifs, déplacements
 
-## Contact
+## Optional
 
-Formulaire: https://boticia.fr/fr/devis
-
-## Réseaux
-
-Instagram: https://instagram.com/boticia_
-LinkedIn: https://www.linkedin.com/in/laëtitia-schaeffer-créatrice-florale/
-Facebook: https://www.facebook.com/BoticiaParis/
-Pinterest: https://fr.pinterest.com/Boticia_Paris/
-
-## Langues
-
-Français: https://boticia.fr/fr
-English: https://boticia.fr/en
-日本語: https://boticia.fr/ja
+- [Site en anglais](https://boticia.fr/en)
+- [Site en japonais](https://boticia.fr/ja)
+- [Instagram](https://instagram.com/boticia_)
+- [Facebook](https://www.facebook.com/BoticiaParis/)
+- [Pinterest](https://fr.pinterest.com/Boticia_Paris/)
+- [LinkedIn](https://www.linkedin.com/in/laëtitia-schaeffer-créatrice-florale/)
