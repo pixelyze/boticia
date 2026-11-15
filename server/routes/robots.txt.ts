@@ -3,6 +3,14 @@ export default defineEventHandler((event) => {
   const siteUrl =
     config.public.siteUrl || "https://boticia.fr";
 
+  setResponseHeader(event, "content-type", "text/plain");
+
+  // Demo and previews: block all crawling (duplicate of boticia.fr)
+  const vercelEnv = process.env.VERCEL_ENV;
+  if (vercelEnv && vercelEnv !== "production") {
+    return ["User-agent: *", "Disallow: /"].join("\n");
+  }
+
   const content = [
     "User-agent: *",
     "Allow: /",
@@ -27,6 +35,5 @@ export default defineEventHandler((event) => {
     `Sitemap: ${siteUrl}/sitemap.xml`,
   ].join("\n");
 
-  setResponseHeader(event, "content-type", "text/plain");
   return content;
 });
