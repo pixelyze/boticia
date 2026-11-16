@@ -1179,17 +1179,6 @@
       "c3": "Floral set design",
       "c3_alt": "Boticia floral set design for an event"
     },
-    "subscription": {
-      "label": "Hotels, restaurants, boutiques",
-      "title_1": "floral",
-      "title_2": "subscription",
-      "text": "Each creation brings a unique floral signature, in harmony with the identity of your venue. Together we define your wishes and how often the flowers are renewed, then we create bespoke arrangements of seasonal flowers, delivered and installed.",
-      "f1": "every week",
-      "f2": "every two weeks",
-      "f3": "once a month",
-      "cta": "Request a quote",
-      "image_alt": "Redouté engraving: sweet-scented tulip"
-    },
     "season": {
       "label": "Seasonal flowers",
       "quote": "“We work with seasonal flowers, more than 60% of them grown locally, for unrivalled freshness and quality.”"
@@ -1215,6 +1204,17 @@
       "label": "In their words",
       "quote_open": "“",
       "quote_close": "”"
+    },
+    "weddings": {
+      "label": "Weddings in Provence and Paris",
+      "title_1": "bespoke",
+      "title_2": "weddings",
+      "text": "Personalised floral guidance, from the design of the bridal bouquets to the floral set design, for a bespoke wedding decoration, unique and crafted down to the smallest detail.",
+      "f1": "bridal bouquet",
+      "f2": "ceremony",
+      "f3": "reception",
+      "discover": "Discover our weddings",
+      "image_alt": "Redouté engraving: bouquet of roses and anemones"
     }
   }
 }

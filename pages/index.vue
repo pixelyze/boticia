@@ -12,7 +12,7 @@
     <EditorialServices />
     <EditorialCreations />
     <EditorialTestimonials />
-    <EditorialSubscription />
+    <EditorialWeddings />
     <EditorialClosing />
   </div>
 </template>

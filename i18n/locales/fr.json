@@ -1179,17 +1179,6 @@
       "c3": "Scénographie florale",
       "c3_alt": "Scénographie florale Boticia pour un événement"
     },
-    "subscription": {
-      "label": "Hôtels, restaurants, boutiques",
-      "title_1": "abonnement",
-      "title_2": "floral",
-      "text": "Chaque création apporte une signature florale singulière, en accord avec l'identité de votre établissement. Nous définissons ensemble vos envies et la fréquence de renouvellement, puis réalisons des compositions sur mesure de fleurs de saison, avec livraison et installation.",
-      "f1": "chaque semaine",
-      "f2": "toutes les deux semaines",
-      "f3": "une fois par mois",
-      "cta": "Demander un devis",
-      "image_alt": "Gravure de Redouté : tulipe odorante"
-    },
     "season": {
       "label": "Fleurs de saison",
       "quote": "« Nous travaillons avec des fleurs de saison, cultivées en circuit court à plus de 60 %, pour une fraîcheur et une qualité incomparables. »"
@@ -1215,6 +1204,17 @@
       "label": "Leurs mots",
       "quote_open": "« ",
       "quote_close": " »"
+    },
+    "weddings": {
+      "label": "Mariages en Provence et à Paris",
+      "title_1": "mariage",
+      "title_2": "sur mesure",
+      "text": "Un accompagnement floral personnalisé, de la conception des bouquets de mariée à la scénographie florale, pour une décoration de mariage sur-mesure, singulière et pensée dans les moindres détails.",
+      "f1": "bouquet de mariée",
+      "f2": "cérémonie",
+      "f3": "réception",
+      "discover": "Découvrir les mariages",
+      "image_alt": "Gravure de Redouté : bouquet de roses et d'anémones"
     }
   }
 }
