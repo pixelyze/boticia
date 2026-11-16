@@ -139,6 +139,8 @@ export default defineNuxtConfig({
     families: {
       "Playfair Display": [400, 500, 600, 700, 800, 900],
       "Source Sans 3": [300, 400, 500, 600, 700],
+      // Design « gravure et encre » (accueil)
+      "Source Serif 4": { wght: [400, 700], ital: [400] },
     },
     display: "swap",
     preload: true,

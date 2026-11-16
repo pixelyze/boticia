@@ -4,6 +4,7 @@
     v-if="to"
     :to="to"
     :class="buttonClasses"
+    :aria-label="ariaLabel" :aria-expanded="ariaExpanded" :aria-pressed="ariaPressed"
     @click="handleClick"
   >
     <IconLucid
@@ -16,14 +17,14 @@
       v-else-if="icon"
       :name="icon"
       :size="iconOnly ? 'sm' : 'md'"
-      :strokeWidth="2"
+      :strokeWidth="iconStroke"
     />
     <span v-if="!iconOnly"><slot /></span>
     <IconLucid
       v-if="rightIcon && !iconOnly && !loading"
       :name="rightIcon"
       size="md"
-      :strokeWidth="2"
+      :strokeWidth="iconStroke"
     />
   </NuxtLink>
 
@@ -34,6 +35,7 @@
     :target="target"
     :rel="rel"
     :class="buttonClasses"
+    :aria-label="ariaLabel" :aria-expanded="ariaExpanded" :aria-pressed="ariaPressed"
     @click="handleClick"
   >
     <IconLucid
@@ -46,14 +48,14 @@
       v-else-if="icon"
       :name="icon"
       :size="iconOnly ? 'sm' : 'md'"
-      :strokeWidth="2"
+      :strokeWidth="iconStroke"
     />
     <span v-if="!iconOnly"><slot /></span>
     <IconLucid
       v-if="rightIcon && !iconOnly && !loading"
       :name="rightIcon"
       size="md"
-      :strokeWidth="2"
+      :strokeWidth="iconStroke"
     />
   </a>
 
@@ -63,6 +65,7 @@
     :type="type"
     :disabled="disabled || loading"
     :class="buttonClasses"
+    :aria-label="ariaLabel" :aria-expanded="ariaExpanded" :aria-pressed="ariaPressed"
     @click="handleClick"
   >
     <IconLucid
@@ -75,14 +78,14 @@
       v-else-if="icon"
       :name="icon"
       :size="iconOnly ? 'sm' : 'md'"
-      :strokeWidth="2"
+      :strokeWidth="iconStroke"
     />
     <span v-if="!iconOnly"><slot /></span>
     <IconLucid
       v-if="rightIcon && !iconOnly && !loading"
       :name="rightIcon"
       size="md"
-      :strokeWidth="2"
+      :strokeWidth="iconStroke"
     />
   </button>
 </template>
@@ -97,7 +100,9 @@ interface Props {
   iconOnly?: boolean;
   loading?: boolean;
   loadingText?: string;
-  variant?: "default" | "primary" | "ghost";
+  // "link" : lien éditorial du design « gravure et encre » (italique
+  // souligné + flèche fine, sans fond ni bordure)
+  variant?: "default" | "primary" | "ghost" | "link";
   to?: string;
   href?: string;
   target?: string;
@@ -106,6 +111,11 @@ interface Props {
   // côté serveur et provoquait un écart d'hydratation. Sans valeur par
   // défaut, l'attribut reste omis et le défaut natif du navigateur joue.
   type?: "button" | "submit" | "reset";
+  // Accessibilité : déclarés explicitement, sinon ils n'arrivent pas
+  // jusqu'au vrai bouton (même souci que `type` ci-dessus).
+  ariaLabel?: string;
+  ariaExpanded?: "true" | "false";
+  ariaPressed?: "true" | "false";
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -133,7 +143,21 @@ const layoutClasses = computed(() => {
   return "";
 });
 
-const buttonClasses = computed(() => [
+const iconStroke = computed(() => (props.variant === "link" ? 1.25 : 2));
+
+const buttonClasses = computed(() =>
+  props.variant === "link"
+    ? [
+        "inline-flex items-center gap-3 min-h-[44px] font-editorial italic underline decoration-1 underline-offset-[6px] transition-opacity duration-300",
+        props.disabled || props.loading
+          ? "opacity-40 cursor-not-allowed"
+          : "hover:opacity-70",
+        attrs.class,
+      ]
+    : baseButtonClasses.value
+);
+
+const baseButtonClasses = computed(() => [
   "rounded-full border-2 transition-all duration-300 inline-flex items-center",
   layoutClasses.value,
   isFullWidth.value && props.rightIcon && !props.iconOnly && !props.loading ? "" : "gap-2",

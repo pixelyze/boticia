@@ -1125,5 +1125,91 @@
     "title": "What they say",
     "prev": "Previous testimonial",
     "next": "Next testimonial"
+  },
+  "editorial": {
+    "nav": {
+      "weddings": "weddings",
+      "events": "events",
+      "subscription": "subscription",
+      "studio": "the studio",
+      "quote": "request a quote",
+      "menu_open": "Open menu",
+      "menu_close": "Close menu",
+      "main_label": "Main menu",
+      "languages_label": "Languages"
+    },
+    "hero": {
+      "title_1": "floral",
+      "title_2": "design",
+      "subtitle": "weddings · events & corporate",
+      "tagline": "Floral designs that reflect you, from the bridal bouquet to the full set design, crafted down to the smallest detail.",
+      "scroll": "Discover the studio",
+      "image_alt": "Redouté engraving: giant-flowered Provins rose"
+    },
+    "studio": {
+      "label": "The studio",
+      "text": "A floral studio between Provence and Paris, Boticia creates designs {em}: from the bridal bouquet to the set design, every creation is unique and crafted down to the smallest detail.",
+      "em": "that reflect you",
+      "signature": "Laëtitia Schaeffer, founder"
+    },
+    "services": {
+      "title": "What we do",
+      "discover": "Discover",
+      "weddings_title": "Weddings",
+      "weddings_text": "Bridal bouquet, ceremony, reception: bespoke decoration, unique and crafted down to the smallest detail.",
+      "weddings_alt": "Redouté engraving: tree peony",
+      "events_title": "Events & corporate",
+      "events_text": "Floral set designs for your corporate and private events.",
+      "events_alt": "Redouté engraving: anemones",
+      "subscription_title": "Floral subscription",
+      "subscription_text": "Regularly renewed creations for hotels, restaurants, boutiques and venues.",
+      "subscription_alt": "Redouté engraving: pale iris",
+      "workshops_title": "Workshops",
+      "workshops_text": "Floral art workshops to create with your own hands, with friends or as a team.",
+      "workshops_alt": "Redouté engraving: wild tulip"
+    },
+    "creations": {
+      "title_1": "our",
+      "title_2": "creations",
+      "see_all": "See all creations",
+      "c1": "Bridal bouquet in peach tones",
+      "c1_alt": "Boticia bridal bouquet in peach and white tones",
+      "c2": "Wedding decoration",
+      "c2_alt": "Wedding floral decoration by Boticia",
+      "c3": "Floral set design",
+      "c3_alt": "Boticia floral set design for an event"
+    },
+    "subscription": {
+      "label": "Hotels, restaurants, boutiques",
+      "title_1": "floral",
+      "title_2": "subscription",
+      "text": "Each creation brings a unique floral signature, in harmony with the identity of your venue. Together we define your wishes and how often the flowers are renewed, then we create bespoke arrangements of seasonal flowers, delivered and installed.",
+      "f1": "every week",
+      "f2": "every two weeks",
+      "f3": "once a month",
+      "cta": "Request a quote",
+      "image_alt": "Redouté engraving: sweet-scented tulip"
+    },
+    "season": {
+      "label": "Seasonal flowers",
+      "quote": "“We work with seasonal flowers, more than 60% of them grown locally, for unrivalled freshness and quality.”"
+    },
+    "cta": {
+      "title_1": "let's talk about",
+      "title_2": "your project",
+      "button": "Request a quote",
+      "places": "Provence · Paris · all over France"
+    },
+    "footer": {
+      "tagline": "Floral studio · Provence · Paris",
+      "nav_label": "Footer",
+      "social_label": "Social networks",
+      "faq": "FAQ",
+      "credit": "Illustrations: Pierre-Joseph Redouté, public domain"
+    },
+    "palette": {
+      "label": "Palette",
+      "hint": "Preview, only visible on the demo"
+    }
   }
 }
