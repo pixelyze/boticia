@@ -19,7 +19,6 @@ export const EDITORIAL_PALETTES: EditorialPalette[] = [
   { key: "bleu", name: "Bleu outremer", ground: "#FCF4F3", ink: "#2430C8", circle: "#F8DCE3", tint: "#E8284F", accent: "#C2234A" },
   { key: "bordeaux", name: "Bordeaux", ground: "#FBF4F1", ink: "#7A1F2B", circle: "#F2D6D3", tint: "#C73A4E", accent: "#B0445A" },
   { key: "sauge", name: "Sauge", ground: "#F7F4EC", ink: "#3D5638", circle: "#F1D8C3", tint: "#E0784A", accent: "#A04F28" },
-  { key: "encre", name: "Encre", ground: "#F6F2EC", ink: "#232323", circle: "#F4D3BD", tint: "#E2652B", accent: "#B04A1C" },
 ];
 
 const DEFAULT_KEY = "terracotta";
