@@ -58,7 +58,7 @@ const creations = [
   {
     key: "c2",
     src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_29.jpg",
-    class: "h-[560px] rounded-t-full",
+    class: "h-[460px] rounded-t-full",
   },
   {
     key: "c3",
