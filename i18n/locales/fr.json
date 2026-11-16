@@ -1132,7 +1132,6 @@
       "weddings": "mariages",
       "events": "événements",
       "subscription": "abonnement",
-      "studio": "le studio",
       "quote": "demander un devis",
       "menu_open": "Ouvrir le menu",
       "menu_close": "Fermer le menu",
@@ -1194,7 +1193,8 @@
       "tagline": "Studio floral · Provence · Paris",
       "nav_label": "Pied de page",
       "social_label": "Réseaux sociaux",
-      "faq": "Questions fréquentes"
+      "faq": "Questions fréquentes",
+      "studio": "Le studio"
     },
     "palette": {
       "label": "Palette",

@@ -144,7 +144,6 @@ const links = [
   { to: "/mariages", label: "editorial.nav.weddings" },
   { to: "/evenements", label: "editorial.nav.events" },
   { to: "/evenements", label: "editorial.nav.subscription" },
-  { to: "/about", label: "editorial.nav.studio" },
 ];
 const locales = ["fr", "en", "ja"];
 

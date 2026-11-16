@@ -1132,7 +1132,6 @@
       "weddings": "ウェディング",
       "events": "イベント",
       "subscription": "定期装花",
-      "studio": "スタジオ",
       "quote": "お見積もり",
       "menu_open": "メニューを開く",
       "menu_close": "メニューを閉じる",
@@ -1194,7 +1193,8 @@
       "tagline": "フラワースタジオ · プロヴァンス · パリ",
       "nav_label": "フッター",
       "social_label": "SNS",
-      "faq": "よくある質問"
+      "faq": "よくある質問",
+      "studio": "スタジオ"
     },
     "palette": {
       "label": "パレット",

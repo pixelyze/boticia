@@ -59,7 +59,7 @@ const links = [
   { to: "/mariages", label: "editorial.services.weddings_title" },
   { to: "/evenements", label: "editorial.services.events_title" },
   { to: "/ateliers", label: "editorial.services.workshops_title" },
-  { to: "/about", label: "footer.about_link" },
+  { to: "/about", label: "editorial.footer.studio" },
   { to: "/faq", label: "editorial.footer.faq" },
 ];
 

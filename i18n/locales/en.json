@@ -1132,7 +1132,6 @@
       "weddings": "weddings",
       "events": "events",
       "subscription": "subscription",
-      "studio": "the studio",
       "quote": "request a quote",
       "menu_open": "Open menu",
       "menu_close": "Close menu",
@@ -1194,7 +1193,8 @@
       "tagline": "Floral studio · Provence · Paris",
       "nav_label": "Footer",
       "social_label": "Social networks",
-      "faq": "FAQ"
+      "faq": "FAQ",
+      "studio": "The studio"
     },
     "palette": {
       "label": "Palette",
