@@ -48,7 +48,6 @@
       <NuxtLink :to="localePath('/login')" class="underline underline-offset-2">
         {{ $t("nav.login") }}
       </NuxtLink>
-      <span class="italic">{{ $t("editorial.footer.credit") }}</span>
     </p>
   </footer>
 </template>

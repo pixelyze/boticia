@@ -38,6 +38,7 @@
           {{ t("legal.ip_title") }}
         </h2>
         <p class="body-text">{{ t("legal.ip_text") }}</p>
+        <p class="body-text mt-4">{{ t("legal.ip_credits") }}</p>
       </section>
 
       <!-- Données personnelles -->

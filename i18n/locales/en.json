@@ -383,7 +383,8 @@
     "liability_title": "6. Limitation of Liability",
     "liability_text": "Boticia strives to provide information as accurate as possible on this site. However, it cannot be held responsible for omissions, inaccuracies or failures to update. Photographs shown are non-contractual: floral compositions vary according to season and flower availability.",
     "law_title": "7. Applicable Law",
-    "law_text": "This site and its legal notices are governed by French law. In the event of a dispute, and after an attempt at amicable resolution, French courts shall have sole jurisdiction."
+    "law_text": "This site and its legal notices are governed by French law. In the event of a dispute, and after an attempt at amicable resolution, French courts shall have sole jurisdiction.",
+    "ip_credits": "The botanical illustrations on the home page are plates by Pierre-Joseph Redouté (1759-1840), in the public domain."
   },
   "about": {
     "tagline": "Shall we get to know each other?",
@@ -1193,8 +1194,7 @@
       "tagline": "Floral studio · Provence · Paris",
       "nav_label": "Footer",
       "social_label": "Social networks",
-      "faq": "FAQ",
-      "credit": "Illustrations: Pierre-Joseph Redouté, public domain"
+      "faq": "FAQ"
     },
     "palette": {
       "label": "Palette",
