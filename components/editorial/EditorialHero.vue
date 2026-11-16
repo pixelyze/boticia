@@ -31,23 +31,6 @@
         {{ $t("editorial.hero.tagline") }}
       </p>
 
-      <div
-        aria-hidden="true"
-        class="absolute left-[7%] top-[430px] hidden items-start gap-6 md:flex"
-      >
-        <span class="block h-[130px] w-[1.5px] bg-ed-ink" />
-        <span class="mt-[30px] block h-[130px] w-[1.5px] bg-ed-ink" />
-        <span class="block h-[130px] w-[1.5px] bg-ed-ink" />
-        <span class="mt-[30px] block h-[130px] w-[1.5px] bg-ed-ink" />
-      </div>
-
-      <a
-        href="#studio"
-        :aria-label="$t('editorial.hero.scroll')"
-        class="absolute bottom-10 left-[7%] hidden h-16 w-11 items-end justify-center md:flex"
-      >
-        <svg aria-hidden="true" width="14" height="60" viewBox="0 0 14 60" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 0v58M1 52l6 7 6-7" /></svg>
-      </a>
     </div>
 
     <p
