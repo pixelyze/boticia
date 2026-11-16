@@ -21,7 +21,8 @@ export const EDITORIAL_PALETTES: EditorialPalette[] = [
   { key: "sauge", name: "Sauge", ground: "#F7F4EC", ink: "#3D5638", circle: "#F1D8C3", tint: "#E0784A", accent: "#A04F28" },
 ];
 
-const DEFAULT_KEY = "terracotta";
+// Palette affichée par défaut (avant tout choix dans le sélecteur)
+const DEFAULT_KEY = "bleu";
 
 function hexToRgb(hex: string): string {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -39,7 +40,7 @@ export const useEditorialPalette = () => {
   const palette = computed(
     () =>
       EDITORIAL_PALETTES.find((p) => p.key === cookie.value) ??
-      EDITORIAL_PALETTES[0]
+      EDITORIAL_PALETTES.find((p) => p.key === DEFAULT_KEY)!
   );
 
   const cssVars = computed(() => ({
