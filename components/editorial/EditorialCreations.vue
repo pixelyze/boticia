@@ -53,17 +53,17 @@ const creations = [
   {
     key: "c1",
     src: "/bouquet_mariee_boticia._1.webp",
-    class: "h-[460px] rounded-t-full object-[50%_60%]",
+    class: "h-[360px] md:h-[460px] rounded-t-full object-[50%_60%]",
   },
   {
     key: "c2",
     src: "/images/events/decoration_florale_mariage_sophiethomas_boticia_29.jpg",
-    class: "h-[460px] rounded-t-full",
+    class: "h-[360px] md:h-[460px] rounded-t-full",
   },
   {
     key: "c3",
     src: "/images/events/scenographie-florale-boticia.jpg",
-    class: "h-[460px] rounded-t-full",
+    class: "h-[360px] md:h-[460px] rounded-t-full",
   },
 ];
 </script>
