@@ -53,7 +53,7 @@ const creations = [
   {
     key: "c1",
     src: "/bouquet_mariee_boticia._1.webp",
-    class: "h-[460px] object-[50%_60%]",
+    class: "h-[460px] rounded-t-full object-[50%_60%]",
   },
   {
     key: "c2",
@@ -63,7 +63,7 @@ const creations = [
   {
     key: "c3",
     src: "/images/events/scenographie-florale-boticia.jpg",
-    class: "h-[460px]",
+    class: "h-[460px] rounded-t-full",
   },
 ];
 </script>
