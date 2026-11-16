@@ -1210,6 +1210,11 @@
     "palette": {
       "label": "Palette",
       "hint": "Preview, only visible on the demo"
+    },
+    "testimonials": {
+      "label": "In their words",
+      "quote_open": "“",
+      "quote_close": "”"
     }
   }
 }

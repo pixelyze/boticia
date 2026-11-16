@@ -11,6 +11,7 @@
     <EditorialStudio />
     <EditorialServices />
     <EditorialCreations />
+    <EditorialTestimonials />
     <EditorialSubscription />
     <EditorialClosing />
   </div>

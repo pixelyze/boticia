@@ -1210,6 +1210,11 @@
     "palette": {
       "label": "パレット",
       "hint": "プレビュー（デモのみ表示）"
+    },
+    "testimonials": {
+      "label": "お客様の声",
+      "quote_open": "「",
+      "quote_close": "」"
     }
   }
 }
