@@ -9,10 +9,10 @@
   <div>
     <EditorialHero />
     <EditorialStudio />
+    <EditorialWeddings />
     <EditorialServices />
     <EditorialCreations />
     <EditorialTestimonials />
-    <EditorialWeddings />
     <EditorialClosing />
   </div>
 </template>
