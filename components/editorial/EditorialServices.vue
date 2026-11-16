@@ -17,7 +17,7 @@
       <article
         v-for="(service, index) in services"
         :key="service.key"
-        class="flex flex-col gap-4 border-l-[1.5px] border-ed-ink px-6 pb-2"
+        class="flex flex-col gap-4 border-ed-ink pb-2 md:border-l-[1.5px] md:px-6"
       >
         <EditorialEngraving
           :src="service.image"
