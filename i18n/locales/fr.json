@@ -1215,6 +1215,17 @@
       "f3": "réception",
       "discover": "Découvrir les mariages",
       "image_alt": "Gravure de Redouté : bouquet de roses et d'anémones"
+    },
+    "highlights": {
+      "label": "Galeries",
+      "open": "Ouvrir la galerie",
+      "weddings": "mariages",
+      "events": "événements",
+      "creations": "créations",
+      "workshops": "ateliers",
+      "close": "Fermer la galerie",
+      "prev": "Photo précédente",
+      "next": "Photo suivante"
     }
   }
 }

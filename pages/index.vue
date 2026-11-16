@@ -8,6 +8,7 @@
        ========================================== -->
   <div>
     <EditorialHero />
+    <EditorialHighlights />
     <EditorialStudio />
     <EditorialWeddings />
     <EditorialServices />

@@ -1215,6 +1215,17 @@
       "f3": "reception",
       "discover": "Discover our weddings",
       "image_alt": "Redouté engraving: bouquet of roses and anemones"
+    },
+    "highlights": {
+      "label": "Galleries",
+      "open": "Open the gallery",
+      "weddings": "weddings",
+      "events": "events",
+      "creations": "creations",
+      "workshops": "workshops",
+      "close": "Close the gallery",
+      "prev": "Previous photo",
+      "next": "Next photo"
     }
   }
 }
