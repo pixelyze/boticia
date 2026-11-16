@@ -11,6 +11,7 @@
     <EditorialStudio />
     <EditorialWeddings />
     <EditorialServices />
+    <EditorialSeason />
     <EditorialCreations />
     <EditorialTestimonials />
     <EditorialClosing />
