@@ -1,7 +1,7 @@
 <template>
   <!-- [COMP-EDITORIAL-HIGHLIGHTS] — Galeries « à la une », façon Instagram
        Une rangée de cercles (première photo de chaque galerie, anneau
-       aux couleurs de la palette). Un clic ouvre la visionneuse plein
+       épais à l'encre de la palette, sans effet au survol). Un clic ouvre la visionneuse plein
        écran (EditorialStoryViewer). Galeries gérées depuis
        /dashboard/galleries ; une galerie vide n'a pas de cercle. -->
   <section
@@ -16,11 +16,11 @@
         <Button
           variant="ghost"
           :aria-label="`${$t('editorial.highlights.open')} ${$t(gallery.label)}`"
-          class="group !flex-col !gap-3 !rounded-none !border-0 !p-0 hover:!bg-transparent [&>span]:flex [&>span]:flex-col [&>span]:items-center [&>span]:gap-3"
+          class="!flex-col !gap-3 !rounded-none !border-0 !p-0 hover:!bg-transparent [&>span]:flex [&>span]:flex-col [&>span]:items-center [&>span]:gap-3"
           @click="open(index)"
         >
           <span
-            class="block rounded-full border-[1.5px] border-ed-tint p-[3px] transition-transform duration-300 group-hover:scale-105"
+            class="block rounded-full border-[3px] border-ed-ink p-1"
           >
             <img
               :src="gallery.photos[0].public_url"
