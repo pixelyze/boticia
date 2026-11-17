@@ -383,8 +383,7 @@
     "liability_title": "6. Limitation of Liability",
     "liability_text": "Boticia strives to provide information as accurate as possible on this site. However, it cannot be held responsible for omissions, inaccuracies or failures to update. Photographs shown are non-contractual: floral compositions vary according to season and flower availability.",
     "law_title": "7. Applicable Law",
-    "law_text": "This site and its legal notices are governed by French law. In the event of a dispute, and after an attempt at amicable resolution, French courts shall have sole jurisdiction.",
-    "ip_credits": "The botanical illustrations on the home page are plates by Pierre-Joseph Redouté (1759-1840), in the public domain."
+    "law_text": "This site and its legal notices are governed by French law. In the event of a dispute, and after an attempt at amicable resolution, French courts shall have sole jurisdiction."
   },
   "about": {
     "tagline": "Shall we get to know each other?",
@@ -1126,106 +1125,5 @@
     "title": "What they say",
     "prev": "Previous testimonial",
     "next": "Next testimonial"
-  },
-  "editorial": {
-    "nav": {
-      "weddings": "weddings",
-      "events": "events",
-      "subscription": "subscription",
-      "quote": "request a quote",
-      "menu_open": "Open menu",
-      "menu_close": "Close menu",
-      "main_label": "Main menu",
-      "languages_label": "Languages"
-    },
-    "hero": {
-      "title_1": "floral",
-      "title_2": "designer",
-      "subtitle": "weddings & events · Provence · Paris",
-      "tagline": "Floral designs that reflect you, from the bridal bouquet to the full set design, crafted down to the smallest detail.",
-      "scroll": "Discover the studio",
-      "image_alt": "Redouté engraving: giant-flowered Provins rose"
-    },
-    "studio": {
-      "label": "The studio",
-      "text": "A floral studio between Provence and Paris, Boticia creates designs {em}: from the bridal bouquet to the set design, every creation is unique and crafted down to the smallest detail.",
-      "em": "that reflect you",
-      "signature": "Laëtitia Schaeffer, founder"
-    },
-    "services": {
-      "title": "What we do",
-      "discover": "Discover",
-      "weddings_title": "Weddings",
-      "weddings_text": "Bridal bouquet, ceremony, reception: bespoke decoration, unique and crafted down to the smallest detail.",
-      "weddings_alt": "Redouté engraving: tree peony",
-      "events_title": "Events & corporate",
-      "events_text": "Floral set designs for your corporate and private events.",
-      "events_alt": "Redouté engraving: anemones",
-      "subscription_title": "Floral subscription",
-      "subscription_text": "Regularly renewed creations for hotels, restaurants, boutiques and venues.",
-      "subscription_alt": "Redouté engraving: pale iris",
-      "workshops_title": "Workshops",
-      "workshops_text": "Floral art workshops to create with your own hands, with friends or as a team.",
-      "workshops_alt": "Redouté engraving: wild tulip"
-    },
-    "creations": {
-      "title_1": "our",
-      "title_2": "creations",
-      "see_all": "See all creations",
-      "c1": "Bridal bouquet in peach tones",
-      "c1_alt": "Boticia bridal bouquet in peach and white tones",
-      "c2": "Wedding decoration",
-      "c2_alt": "Wedding floral decoration by Boticia",
-      "c3": "Floral set design",
-      "c3_alt": "Boticia floral set design for an event"
-    },
-    "season": {
-      "label": "Seasonal flowers",
-      "quote": "“We work with seasonal flowers, more than 60% of them grown locally, for unrivalled freshness and quality.”"
-    },
-    "cta": {
-      "title_1": "let's talk about",
-      "title_2": "your project",
-      "button": "Request a quote",
-      "places": "Provence · Paris"
-    },
-    "footer": {
-      "tagline": "Floral studio · Provence · Paris",
-      "nav_label": "Footer",
-      "social_label": "Social networks",
-      "faq": "FAQ",
-      "studio": "The studio"
-    },
-    "palette": {
-      "label": "Palette",
-      "hint": "Preview, only visible on the demo"
-    },
-    "testimonials": {
-      "label": "In their words",
-      "quote_open": "“",
-      "quote_close": "”"
-    },
-    "weddings": {
-      "label": "Weddings in Provence and Paris",
-      "title_1": "bespoke",
-      "title_2": "weddings",
-      "text": "Personalised floral guidance, from the design of the bridal bouquets to the floral set design, for a bespoke wedding decoration, unique and crafted down to the smallest detail.",
-      "f1": "bridal bouquet",
-      "f2": "ceremony",
-      "f3": "reception",
-      "discover": "Discover our weddings",
-      "image_alt": "Redouté engraving: bouquet of roses and anemones"
-    },
-    "highlights": {
-      "label": "Galleries",
-      "open": "Open the gallery",
-      "weddings": "weddings",
-      "events": "events",
-      "creations": "creations",
-      "workshops": "workshops",
-      "close": "Close the gallery",
-      "prev": "Previous photo",
-      "next": "Next photo"
-    }
   }
 }

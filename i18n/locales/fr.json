@@ -383,8 +383,7 @@
     "liability_title": "6. Limitation de responsabilité",
     "liability_text": "Boticia s'efforce de fournir des informations aussi précises que possible sur ce site. Toutefois, elle ne saurait être tenue responsable des omissions, inexactitudes ou défauts de mise à jour. Les photographies présentées sont non contractuelles : les compositions florales varient selon la saison et la disponibilité des fleurs.",
     "law_title": "7. Droit applicable",
-    "law_text": "Le présent site et ses mentions légales sont régis par le droit français. En cas de litige, et après tentative de résolution amiable, les tribunaux français seront seuls compétents.",
-    "ip_credits": "Les illustrations botaniques de la page d'accueil sont des planches de Pierre-Joseph Redouté (1759-1840), dans le domaine public."
+    "law_text": "Le présent site et ses mentions légales sont régis par le droit français. En cas de litige, et après tentative de résolution amiable, les tribunaux français seront seuls compétents."
   },
   "about": {
     "tagline": "Et si on apprenait à se connaître ?",
@@ -1126,106 +1125,5 @@
     "title": "Ce qu'elles disent",
     "prev": "Témoignage précédent",
     "next": "Témoignage suivant"
-  },
-  "editorial": {
-    "nav": {
-      "weddings": "mariages",
-      "events": "événements",
-      "subscription": "abonnement",
-      "quote": "demander un devis",
-      "menu_open": "Ouvrir le menu",
-      "menu_close": "Fermer le menu",
-      "main_label": "Menu principal",
-      "languages_label": "Langues"
-    },
-    "hero": {
-      "title_1": "floral",
-      "title_2": "designer",
-      "subtitle": "mariages & événements · Provence · Paris",
-      "tagline": "Des décors floraux à votre image, du bouquet de mariée à la scénographie, pensés dans les moindres détails.",
-      "scroll": "Découvrir le studio",
-      "image_alt": "Gravure de Redouté : rosier de Provins à fleur gigantesque"
-    },
-    "studio": {
-      "label": "Le studio",
-      "text": "Studio floral entre Provence et Paris, Boticia imagine des décors {em} : du bouquet de mariée à la scénographie, chaque création est singulière et pensée dans les moindres détails.",
-      "em": "à votre image",
-      "signature": "Laëtitia Schaeffer, fondatrice"
-    },
-    "services": {
-      "title": "Nos prestations",
-      "discover": "Découvrir",
-      "weddings_title": "Mariages",
-      "weddings_text": "Bouquet de mariée, cérémonie, réception : une décoration sur mesure, singulière et pensée dans les moindres détails.",
-      "weddings_alt": "Gravure de Redouté : pivoine en arbre",
-      "events_title": "Événements & corporate",
-      "events_text": "Des scénographies florales pour vos événements professionnels et privés.",
-      "events_alt": "Gravure de Redouté : anémones",
-      "subscription_title": "Abonnement floral",
-      "subscription_text": "Des créations renouvelées pour les hôtels, restaurants, boutiques et lieux de réception.",
-      "subscription_alt": "Gravure de Redouté : iris pâle",
-      "workshops_title": "Ateliers",
-      "workshops_text": "Des ateliers d'art floral pour créer de vos mains, entre amis ou en équipe.",
-      "workshops_alt": "Gravure de Redouté : tulipe sauvage"
-    },
-    "creations": {
-      "title_1": "nos",
-      "title_2": "créations",
-      "see_all": "Voir toutes les créations",
-      "c1": "Bouquet de mariée, tons pêche",
-      "c1_alt": "Bouquet de mariée Boticia aux tons pêche et blancs",
-      "c2": "Décoration de mariage",
-      "c2_alt": "Décoration florale d'un mariage par Boticia",
-      "c3": "Scénographie florale",
-      "c3_alt": "Scénographie florale Boticia pour un événement"
-    },
-    "season": {
-      "label": "Fleurs de saison",
-      "quote": "« Nous travaillons avec des fleurs de saison, cultivées en circuit court à plus de 60 %, pour une fraîcheur et une qualité incomparables. »"
-    },
-    "cta": {
-      "title_1": "parlons de",
-      "title_2": "votre projet",
-      "button": "Demander un devis",
-      "places": "Provence · Paris"
-    },
-    "footer": {
-      "tagline": "Studio floral · Provence · Paris",
-      "nav_label": "Pied de page",
-      "social_label": "Réseaux sociaux",
-      "faq": "Questions fréquentes",
-      "studio": "Le studio"
-    },
-    "palette": {
-      "label": "Palette",
-      "hint": "Aperçu, visible seulement sur la démo"
-    },
-    "testimonials": {
-      "label": "Leurs mots",
-      "quote_open": "« ",
-      "quote_close": " »"
-    },
-    "weddings": {
-      "label": "Mariages en Provence et à Paris",
-      "title_1": "mariage",
-      "title_2": "sur mesure",
-      "text": "Un accompagnement floral personnalisé, de la conception des bouquets de mariée à la scénographie florale, pour une décoration de mariage sur-mesure, singulière et pensée dans les moindres détails.",
-      "f1": "bouquet de mariée",
-      "f2": "cérémonie",
-      "f3": "réception",
-      "discover": "Découvrir les mariages",
-      "image_alt": "Gravure de Redouté : bouquet de roses et d'anémones"
-    },
-    "highlights": {
-      "label": "Galeries",
-      "open": "Ouvrir la galerie",
-      "weddings": "mariages",
-      "events": "événements",
-      "creations": "créations",
-      "workshops": "ateliers",
-      "close": "Fermer la galerie",
-      "prev": "Photo précédente",
-      "next": "Photo suivante"
-    }
   }
 }

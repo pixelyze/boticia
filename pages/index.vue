@@ -1,30 +1,127 @@
 <template>
   <!-- ==========================================
-       [PAGE-HOME] — Page d'accueil Boticia, design « gravure et encre »
-       Layout : editorial (cadre fin, palette en variables CSS --ed-*)
-       Gravures : Pierre-Joseph Redouté, domaine public
-         (public/images/redoute/)
-       Textes : i18n editorial.*
+       [PAGE-HOME] — Page d'accueil Boticia
+       Layout : homepage | SSR : oui
+       Tokens CSS utilisés :
+         .hero-title — text-3xl md:text-5xl lg:text-6xl font-medium text-dark
+         .section-tagline — text-base md:text-lg uppercase tracking-[0.3em] text-dark/60
+         .section-title-lg — text-3xl md:text-[2.5rem] font-medium mt-4 text-dark
+         .feature-number — text-base uppercase tracking-[0.2em] text-terracotta
+         .feature-title — font-heading text-2xl md:text-4xl text-dark
+         .feature-description — text-dark/60 text-lg md:text-xl leading-relaxed
+         .step-number — font-heading text-6xl md:text-7xl text-terracotta/20
+         .step-title — font-heading text-2xl md:text-3xl text-dark
+         .step-description — text-dark/60 text-lg md:text-xl leading-relaxed
+         .plan-name — font-heading text-3xl text-dark
+         .plan-price — font-heading text-2xl text-dark
        ========================================== -->
   <div>
-    <EditorialHero />
-    <EditorialHighlights />
-    <EditorialStudio />
-    <EditorialWeddings />
-    <EditorialServices />
-    <EditorialSeason />
-    <EditorialCreations />
-    <EditorialTestimonials />
-    <EditorialClosing />
+
+    <!-- ==========================================
+         [SECTION-HERO] — Bannière principale plein écran
+         Hauteur : h-screen max-h-[900px] | Background : bg-cream
+         Contenu centré : logo + titre H1 + sous-titre italic
+         Composant : components/landing/HeroSection.vue
+         ========================================== -->
+    <!-- [COMP-HERO] — Section hero
+         [EL-HERO-LOGO] — Logo Boticia centré | h-36 md:h-64 lg:h-72 | Source : useSiteLogo()
+         [EL-HERO-TITLE] — H1 titre principal | .hero-title | i18n : hero.title
+         [EL-HERO-SUBTITLE] — Sous-titre italic | font-heading text-base md:text-lg text-terracotta | i18n : hero.subtitle
+         Responsive : Logo plus petit mobile, tailles texte adaptatives -->
+    <HeroSection />
+
+    <!-- ==========================================
+         [SECTION-ALACARTE] — Offre à la carte 3 colonnes
+         Padding : py-20 md:py-28 | Background : bg-white
+         Composant : components/landing/AlaCarteSection.vue
+         ========================================== -->
+    <AlaCarteSection />
+
+    <!-- ==========================================
+         [SECTION-MASONRY] — Galerie portfolio masonry
+         Composant : components/landing/MasonryGallery.vue
+         Data : API /api/galleries/portfolio
+         Géré depuis /dashboard/galleries
+         ========================================== -->
+    <MasonryGallery />
+
+    <!-- ==========================================
+         [SECTION-INTRO] — Bloc d'introduction / philosophie
+         Padding : py-20 md:py-28 | Background : bg-white
+         Composant : components/landing/IntroSection.vue
+         ========================================== -->
+    <!-- [COMP-INTRO] — Section intro
+         [EL-INTRO-TAGLINE] — Tagline | .section-tagline | i18n : intro.tagline
+         [EL-INTRO-TITLE] — Titre H2 | .section-title-lg | i18n : intro.title
+         [EL-INTRO-DESC] — Description | .feature-description | max-w-2xl centré | i18n : intro.description
+         [EL-INTRO-CTA] — Bouton ghost | Composant Button variant="ghost" rightIcon="MoveRight"
+           Lien vers /pricing | i18n : intro.cta -->
+    <IntroSection />
+
+    <!-- ==========================================
+         [SECTION-FEATURES] — Fonctionnalités numérotées
+         Padding : py-20 md:py-28 | Background : bg-cream
+         Composant : components/landing/FeaturesSection.vue
+         ========================================== -->
+    <!-- [COMP-FEATURES] — Section features
+         [EL-FEATURES-TAGLINE] — Tagline | .section-tagline | i18n : features.tagline
+         [EL-FEATURES-TITLE] — Titre H2 | .section-title-lg | i18n : features.title
+         [EL-FEATURES-ITEM] — Feature x3 | max-w-xl | espacement space-y-16 md:space-y-20
+           [EL-FEATURES-NUMBER] — Numéro "01" "02" "03" | .feature-number
+           [EL-FEATURES-ITEM-TITLE] — Titre feature | .feature-title
+           [EL-FEATURES-ITEM-DESC] — Description | .feature-description
+         Data : 3 features computed depuis i18n
+         Responsive : max-w-4xl centré -->
+    <FeaturesSection />
+
+    <!-- ==========================================
+         [SECTION-PROCESS] — Étapes du processus (1-2-3)
+         Padding : py-20 md:py-28 | Background : bg-white
+         Composant : components/landing/ProcessSection.vue
+         ========================================== -->
+    <!-- [COMP-PROCESS] — Section process
+         [EL-PROCESS-TAGLINE] — Tagline | .section-tagline | i18n : process.tagline
+         [EL-PROCESS-TITLE] — Titre H2 | .section-title-lg | i18n : process.title
+         [EL-PROCESS-STEP] — Step x3 | text-center | gap-16 md:gap-8
+           [EL-PROCESS-NUMBER] — Numéro géant | .step-number (terracotta/20)
+           [EL-PROCESS-STEP-TITLE] — Titre step | .step-title
+           [EL-PROCESS-STEP-DESC] — Description | .step-description | max-w-xs centré
+         Data : 3 steps computed depuis i18n
+         Responsive : grid-cols-1 md:grid-cols-3 | max-w-5xl centré -->
+    <ProcessSection />
+
+    <!-- ==========================================
+         [SECTION-WEDDING-INTRO] — Bloc intro mariage
+         Remplace l'ancienne BlockQuote. Même bloc en hero
+         de la page Mariage.
+         Composant : components/landing/WeddingIntroSection.vue
+         ========================================== -->
+    <WeddingIntroSection title-tag="h2" />
+
+    <!-- ==========================================
+         [SECTION-FAQ] — Questions fréquentes (accordéon)
+         Padding : py-20 md:py-28 | Background : bg-white
+         Composant : components/landing/FAQSection.vue
+         ========================================== -->
+    <!-- [COMP-FAQ] — Section FAQ
+         [EL-FAQ-TAGLINE] — Tagline | .section-tagline | i18n : faq.tagline
+         [EL-FAQ-TITLE] — Titre H2 | .section-title-lg | i18n : faq.title
+         [COMP-FAQ-ACCORDION] — Composant FAQ | max-w-5xl centré
+           Props : items (array of { question, answer })
+           Data : 4 questions/réponses depuis i18n (faq.q1-q4, faq.a1-a4)
+         [SLOT-FAQ-ITEMS] — Contenu dynamique i18n | 4 items min -->
+    <TestimonialsMarquee />
+
+    <FAQSection />
+
   </div>
 </template>
 
 <script setup lang="ts">
 // [PAGE-HOME] — Layout : homepage | Head : titre dynamique i18n
 definePageMeta({
-  layout: 'editorial',
+  layout: 'homepage',
   pageTransition: false,
-  layoutTransition: false,
 });
 
 const { t, locale } = useI18n();
@@ -55,7 +152,7 @@ useHead({
     {
       rel: 'preload',
       as: 'image',
-      href: '/images/redoute/rosier-de-provins.webp',
+      href: '/bouquet_mariee_boticia._1.webp',
       fetchpriority: 'high',
     },
   ],

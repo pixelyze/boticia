@@ -20,12 +20,6 @@
     font-family: "Playfair Display", serif;
   }
 
-  /* Design « gravure et encre » (layouts/editorial.vue) : les titres
-     prennent la police du design, pas Playfair. */
-  .font-editorial :is(h1, h2, h3, h4, h5, h6) {
-    font-family: inherit;
-  }
-
   /* Remplissage automatique du navigateur : Chrome teinte le champ en bleu.
      On le remplace par le crème clair du site (l'ombre interne recouvre la
      teinte, que le navigateur ne laisse pas modifier directement). */
