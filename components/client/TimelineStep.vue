@@ -3,10 +3,9 @@
     <!-- Line + dot -->
     <div class="flex flex-col items-center">
       <div
-        class="w-10 h-10 rounded-full border-2 flex items-center
+        class="w-10 h-10 rounded-full border flex items-center
           justify-center shrink-0 transition-colors"
-        :class="
-          completed
+        :class="completed
             ? 'bg-black border-black text-white'
             : active
               ? 'bg-white border-black text-black'
@@ -28,14 +27,14 @@
       </div>
       <div
         v-if="!last"
-        class="w-0.5 flex-1 min-h-[2rem] transition-colors"
-        :class="completed ? 'bg-black' : 'bg-dark/10'"
+        class="w-px flex-1 min-h-[2rem] transition-colors"
+        :class="completed ? 'bg-dark' : 'bg-dark/20'"
       />
     </div>
     <!-- Content -->
     <div class="flex-1 min-w-0" :class="last ? 'pb-0' : 'pb-8'">
       <h3
-        class="font-heading font-medium text-base"
+        class="font-heading text-xl leading-snug"
         :class="completed || active ? 'text-dark' : 'text-gray-500'"
       >
         {{ label }}
@@ -43,8 +42,8 @@
       <!-- Contrastes AA : gray-600 / gray-500 sur blanc (≥ 4,5:1) -->
       <p
         v-if="description"
-        class="text-sm mt-1"
-        :class="completed || active ? 'text-gray-600' : 'text-gray-500'"
+        class="text-[15px] leading-relaxed mt-1"
+        :class="completed || active ? 'text-dark' : 'text-gray-500'"
       >
         {{ description }}
       </p>

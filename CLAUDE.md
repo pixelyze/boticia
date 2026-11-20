@@ -105,12 +105,16 @@ const redirectUrl = `${window.location.origin}/${locale.value}/dashboard/callbac
 | `primary` | Main action (black, with shadow) |
 | `ghost` | Secondary/subtle action (underlined text) |
 | `default` | Standard button (white, black border) |
+| `cta` | Main action on public pages (black pill, spaced capitals, thin Phosphor arrow) |
+| `link` | Secondary action on public pages (spaced capitals, underline, thin arrow) |
 
 **Never create buttons with raw `<button>`, `<a>` or `<NuxtLink>` tags.** Always use the `Button` component.
 
 ## Icons (IMPORTANT)
 
 **Before using an icon, check it is imported in `components/ui/IconLucid.vue`.**
+
+**Decorative icons on public pages** (service and feature lists) use `IconPhosphor` (`components/ui/IconPhosphor.vue`, Phosphor, "light" weight), being rolled out page by page. `IconLucid` stays for functional icons (arrows, plus/minus, close) and the dashboard. Same rule: import the icon AND add it to the `icons` object.
 
 If missing, add it to both the import statement AND the `icons` object.
 
@@ -174,3 +178,25 @@ Dev-only routes: `if (!import.meta.dev) throw 404` — mark `// DEV-ONLY`.
 4. Provide a complete plan with reasoning before making changes
 5. Always use Tailwind color classes for visual consistency
 6. Avoid over-engineering: don't create props/variables for fixed values
+
+## SEO (IMPORTANT)
+
+### Context
+
+Boticia is a floral designer based in Provence and Paris: high-end weddings, corporate events, photo shoots, floral workshops. Clients are French and international (destination weddings).
+
+### Goal
+
+Rank the wedding pages on high-end floral decoration queries in Provence and Paris, in French and English.
+
+### SEO folder
+
+The `seo/` folder contains the SEO work. Read `seo/README.md` before any SEO task.
+
+### Rules
+
+- **ALWAYS update ALL translation files simultaneously** for SEO texts (Title, meta description, H1): `fr.json`, `en.json`, `ja.json`.
+- NEVER invent figures: search volumes, rankings and backlinks come from external tools.
+- If information cannot be found, write "not found".
+- One main keyword per page.
+- Files in `seo/` are written in French, with no em dashes.

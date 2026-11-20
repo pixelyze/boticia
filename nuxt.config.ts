@@ -20,24 +20,24 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: "Boticia — Créatrice d'ambiance florale",
+      title: "Boticia — Studio de design floral",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           key: "description",
           name: "description",
-          content: "Boticia — Atelier de design floral par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
+          content: "Boticia — Studio de design floral par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
         },
         { name: "author", content: "Boticia — Laëtitia Schaeffer" },
         { name: "robots", content: "index, follow" },
         {
           property: "og:title",
-          content: "Boticia — Créatrice d'ambiance florale",
+          content: "Boticia — Studio de design floral",
         },
         {
           property: "og:description",
-          content: "Atelier de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
+          content: "Studio de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
         },
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "Boticia" },
@@ -52,11 +52,11 @@ export default defineNuxtConfig({
         { name: "twitter:card", content: "summary_large_image" },
         {
           name: "twitter:title",
-          content: "Boticia — Créatrice d'ambiance florale",
+          content: "Boticia — Studio de design floral",
         },
         {
           name: "twitter:description",
-          content: "Atelier de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral.",
+          content: "Studio de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral.",
         },
         {
           name: "twitter:image",
@@ -139,6 +139,7 @@ export default defineNuxtConfig({
     families: {
       "Playfair Display": [400, 500, 600, 700, 800, 900],
       "Source Sans 3": [300, 400, 500, 600, 700],
+      "Source Serif 4": { wght: [400, 600], ital: [400] },
     },
     display: "swap",
     preload: true,

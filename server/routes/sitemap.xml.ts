@@ -14,7 +14,7 @@ export default defineEventHandler((event) => {
     { path: "/evenements", priority: "0.9" },
     { path: "/ateliers", priority: "0.9" },
     { path: "/creations", priority: "0.8" },
-    { path: "/about", priority: "0.7" },
+    { path: "/studio", priority: "0.7" },
     { path: "/devis", priority: "0.7" },
     { path: "/faq", priority: "0.6" },
     { path: "/legal", priority: "0.3" },

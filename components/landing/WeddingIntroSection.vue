@@ -49,10 +49,9 @@
               class="w-12 h-12 rounded-xl bg-cream-light
                      flex items-center justify-center shrink-0"
             >
-              <IconLucid
+              <IconPhosphor
                 :name="step.icon"
                 size="md"
-                :stroke-width="2"
                 class="text-dark"
               />
             </div>
@@ -87,7 +86,7 @@ const localePath = useLocalePath();
 
 const steps = computed(() => [
   {
-    icon: "MessageCircle",
+    icon: "ChatCircle",
     title: t("weddings.step_1_title"),
     desc: t("weddings.step_1_desc"),
   },
@@ -97,7 +96,7 @@ const steps = computed(() => [
     desc: t("weddings.step_2_desc"),
   },
   {
-    icon: "Flower2",
+    icon: "FlowerTulip",
     title: t("weddings.step_3_title"),
     desc: t("weddings.step_3_desc"),
   },

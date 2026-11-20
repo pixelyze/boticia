@@ -53,7 +53,7 @@
             :key="`${loop}-${item.id}`"
             class="flex w-[320px] shrink-0 flex-col justify-between rounded-2xl bg-cream/50 p-7 sm:w-[380px]"
           >
-            <p class="leading-relaxed text-dark/70 italic">
+            <p class="para italic">
               « {{ item.text }} »
             </p>
             <footer class="mt-6 flex items-center gap-3 pt-4">
@@ -62,7 +62,7 @@
               </div>
               <div>
                 <p class="text-sm font-medium text-dark">{{ item.name }}</p>
-                <p v-if="item.location" class="text-xs text-dark/50">{{ item.location }}</p>
+                <p v-if="item.location" class="text-xs text-gray-500">{{ item.location }}</p>
               </div>
             </footer>
           </blockquote>

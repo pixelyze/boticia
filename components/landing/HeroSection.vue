@@ -24,41 +24,46 @@
 
     <!-- Content -->
     <div class="relative h-screen max-h-[900px] flex flex-col items-center justify-center px-6">
-      <!-- Title (H1 for SEO, visually the main statement) -->
-      <h1 class="text-center mb-6 overflow-hidden">
+      <!-- Brand name: visually the main statement, but not the H1 -->
+      <p class="text-center mb-6 overflow-hidden">
         <span class="block font-heading text-4xl md:text-6xl lg:text-7xl font-medium text-cream leading-tight uppercase tracking-[0.15em] hero-slide hero-slide-1">
           {{ $t('hero.title') }}
         </span>
-      </h1>
-
-      <!-- Subtitle -->
-      <p class="text-cream/70 text-center text-base md:text-lg tracking-[0.25em] uppercase mb-4 hero-fade hero-fade-1">
-        {{ $t('hero.subtitle') }}
       </p>
+
+      <!-- H1 (SEO): trade + places. On phones the places go on their own
+           line; the " · " stays in the text so the H1 reads the same. -->
+      <h1 class="text-cream [text-shadow:0_1px_12px_rgb(0_0_0/0.45)] text-center text-base md:text-lg tracking-[0.25em] uppercase mb-4 hero-fade hero-fade-1">
+        {{ $t('hero.heading_trade') }}<span class="hidden md:inline">
+          · </span
+        ><br class="md:hidden" />{{ $t('hero.heading_places') }}
+      </h1>
 
       <!-- Decorative line -->
       <div class="w-12 h-[2px] bg-cream/30 mb-4 hero-fade hero-fade-2" />
 
-      <!-- Location -->
-      <p class="text-cream/70 text-center text-base md:text-lg tracking-[0.25em] uppercase mb-10 hero-fade hero-fade-2">
-        {{ $t('hero.location') }}
+      <!-- Line 1 -->
+      <p class="text-cream [text-shadow:0_1px_12px_rgb(0_0_0/0.45)] text-center text-base md:text-lg tracking-[0.25em] uppercase mb-10 hero-fade hero-fade-2">
+        {{ $t('hero.line_1') }}
       </p>
 
       <!-- CTAs -->
-      <div class="flex flex-col sm:flex-row items-center gap-4 hero-fade hero-fade-3">
-        <NuxtLink
+      <div class="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 hero-fade hero-fade-3">
+        <!-- Variantes éditoriales, en clair sur la photo -->
+        <Button
+          variant="cta"
           :to="localePath('/devis')"
-          class="group inline-flex items-center gap-3 px-10 py-4 rounded-full bg-cream text-dark text-base font-semibold hover:bg-white transition-all hover:shadow-lg hover:shadow-cream/20"
+          class="!bg-cream !text-dark hover:!bg-white"
         >
           {{ $t('weddings.cta') }}
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </NuxtLink>
-        <NuxtLink
+        </Button>
+        <Button
+          variant="link"
           :to="localePath('/creations')"
-          class="inline-flex items-center gap-2 text-base text-cream/80 hover:text-cream transition-colors"
+          class="!text-cream !border-cream hover:!border-cream/40"
         >
-          <span class="border-b border-cream/20 hover:border-cream/50 pb-0.5">{{ $t('intro.cta') }}</span>
-        </NuxtLink>
+          {{ $t('intro.cta') }}
+        </Button>
       </div>
     </div>
 

@@ -25,17 +25,19 @@
          ========================================== -->
     <!-- [COMP-HERO] — Section hero
          [EL-HERO-LOGO] — Logo Boticia centré | h-36 md:h-64 lg:h-72 | Source : useSiteLogo()
-         [EL-HERO-TITLE] — H1 titre principal | .hero-title | i18n : hero.title
-         [EL-HERO-SUBTITLE] — Sous-titre italic | font-heading text-base md:text-lg text-terracotta | i18n : hero.subtitle
+         [EL-HERO-TITLE] — Nom Boticia en grand (pas le H1) | i18n : hero.title
+         [EL-HERO-H1] — H1 métier + lieux | i18n : hero.heading_trade + hero.heading_places
+         [EL-HERO-LINE-1] — Ligne 1 « Événements & corporate » | i18n : hero.line_1
          Responsive : Logo plus petit mobile, tailles texte adaptatives -->
     <HeroSection />
 
     <!-- ==========================================
-         [SECTION-ALACARTE] — Offre à la carte 3 colonnes
+         [SECTION-ALACARTE] — Bloc « Décoration florale », 3 cartes, sans bouton
          Padding : py-20 md:py-28 | Background : bg-white
-         Composant : components/landing/AlaCarteSection.vue
+         Composant : components/landing/AlaCarteSectionV2.vue (v1 : AlaCarteSection.vue)
          ========================================== -->
-    <AlaCarteSection />
+    <!-- v1 (cartes beiges) gardée de côté : AlaCarteSection -->
+    <AlaCarteSectionV2 />
 
     <!-- ==========================================
          [SECTION-MASONRY] — Galerie portfolio masonry
@@ -61,18 +63,18 @@
     <!-- ==========================================
          [SECTION-FEATURES] — Fonctionnalités numérotées
          Padding : py-20 md:py-28 | Background : bg-cream
-         Composant : components/landing/FeaturesSection.vue
+         Composant : components/landing/FeaturesSectionV2.vue (v1 : FeaturesSection.vue)
          ========================================== -->
     <!-- [COMP-FEATURES] — Section features
          [EL-FEATURES-TAGLINE] — Tagline | .section-tagline | i18n : features.tagline
          [EL-FEATURES-TITLE] — Titre H2 | .section-title-lg | i18n : features.title
          [EL-FEATURES-ITEM] — Feature x3 | max-w-xl | espacement space-y-16 md:space-y-20
-           [EL-FEATURES-NUMBER] — Numéro "01" "02" "03" | .feature-number
            [EL-FEATURES-ITEM-TITLE] — Titre feature | .feature-title
            [EL-FEATURES-ITEM-DESC] — Description | .feature-description
          Data : 3 features computed depuis i18n
          Responsive : max-w-4xl centré -->
-    <FeaturesSection />
+    <!-- v1 gardée de côté : <FeaturesSection /> -->
+    <FeaturesSectionV2 />
 
     <!-- ==========================================
          [SECTION-PROCESS] — Étapes du processus (1-2-3)
@@ -94,14 +96,14 @@
          [SECTION-WEDDING-INTRO] — Bloc intro mariage
          Remplace l'ancienne BlockQuote. Même bloc en hero
          de la page Mariage.
-         Composant : components/landing/WeddingIntroSection.vue
+         Composant : components/landing/WeddingIntroSectionV2.vue (v1 : WeddingIntroSection.vue)
          ========================================== -->
-    <WeddingIntroSection title-tag="h2" />
+    <WeddingIntroSectionV2 title-tag="h2" />
 
     <!-- ==========================================
          [SECTION-FAQ] — Questions fréquentes (accordéon)
          Padding : py-20 md:py-28 | Background : bg-white
-         Composant : components/landing/FAQSection.vue
+         Composant : components/landing/FAQSectionV2.vue (v1 : FAQSection.vue)
          ========================================== -->
     <!-- [COMP-FAQ] — Section FAQ
          [EL-FAQ-TAGLINE] — Tagline | .section-tagline | i18n : faq.tagline
@@ -110,9 +112,11 @@
            Props : items (array of { question, answer })
            Data : 4 questions/réponses depuis i18n (faq.q1-q4, faq.a1-a4)
          [SLOT-FAQ-ITEMS] — Contenu dynamique i18n | 4 items min -->
-    <TestimonialsMarquee />
+    <!-- v1 gardée de côté (défilement) : <TestimonialsMarquee /> -->
+    <TestimonialsSectionV2 />
 
-    <FAQSection />
+    <!-- v1 gardée de côté : <FAQSection /> -->
+    <FAQSectionV2 />
 
   </div>
 </template>
@@ -188,8 +192,12 @@ useHead({
         priceRange: '€€-€€€',
         currenciesAccepted: 'EUR',
         paymentAccepted: 'Cash, Credit Card, Bank Transfer',
+        // Adresse du studio : identique à l'INPI et à la fiche Google
         address: {
           '@type': 'PostalAddress',
+          streetAddress: '410 rue de Cabrières Haut',
+          postalCode: '13410',
+          addressLocality: 'Lambesc',
           addressRegion: "Provence-Alpes-Côte d'Azur",
           addressCountry: 'FR',
         },

@@ -14,7 +14,7 @@
       v-else-if="proposal.status === 'accepted'"
       class="flex items-start gap-3 font-medium text-green-800"
     >
-      <IconLucid
+      <IconLucid :stroke-width="1.5"
         name="CheckCircle"
         size="sm"
         class="shrink-0 mt-0.5 text-green-600"

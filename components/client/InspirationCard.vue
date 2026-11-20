@@ -1,5 +1,5 @@
 <template>
-  <div class="group relative rounded-2xl overflow-hidden border-2 border-dark/10">
+  <div class="group relative  overflow-hidden border border-dark/20">
     <img
       :src="inspiration.public_url"
       :alt="inspiration.caption || inspiration.original_filename"

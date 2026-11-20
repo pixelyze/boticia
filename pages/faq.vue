@@ -3,7 +3,10 @@
     <!-- Hero -->
     <section class="py-20 md:py-28 bg-cream-light">
       <div class="container mx-auto px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div
+          class="max-w-6xl mx-auto grid grid-cols-1 gap-12 items-start
+                 md:grid-cols-[2fr_3fr] md:gap-20"
+        >
           <!-- Text -->
           <div>
             <span class="section-tagline">
@@ -12,12 +15,11 @@
             <h1 class="section-title-lg">
               {{ $t("faq.title") }}
             </h1>
-            <p class="mt-6 text-dark/70 text-lg leading-relaxed">
+            <p class="para-lead mt-6">
               {{ $t("faq.subtitle") }}
             </p>
             <Button
-              variant="primary"
-              icon="MoveRight"
+              variant="cta"
               :to="localePath('/devis')"
               class="mt-8"
             >
@@ -34,39 +36,36 @@
 
     <!-- FAQ accordion -->
     <section class="py-16 md:py-24 bg-white">
-      <div class="container mx-auto px-6 max-w-5xl">
-        <div class="text-center mb-12">
-          <span class="section-tagline">
-            {{ $t("faq.more_tagline") }}
-          </span>
-          <h2 class="section-title-lg">
-            {{ $t("faq.more_title") }}
-          </h2>
-        </div>
-        <div class="max-w-3xl mx-auto">
+      <div class="container mx-auto px-6">
+        <div
+          class="max-w-6xl mx-auto grid grid-cols-1 gap-12 items-start
+                 md:grid-cols-[2fr_3fr] md:gap-20"
+        >
+          <div>
+            <span class="section-tagline">
+              {{ $t("faq.more_tagline") }}
+            </span>
+            <h2 class="section-title-lg">
+              {{ $t("faq.more_title") }}
+            </h2>
+          </div>
           <FAQ :items="restFaqItems" />
         </div>
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="pb-16 md:pb-24 bg-white">
-      <div class="container mx-auto px-6 max-w-5xl">
-        <div class="max-w-3xl mx-auto">
-          <div class="rounded-[2rem] bg-cream-light px-8 md:px-12 py-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
-            <div class="flex-1 min-w-0 text-center md:text-left">
-              <h2 class="font-heading text-xl md:text-2xl text-dark">
-                {{ $t("faq.cta_title") }}
-              </h2>
-              <p class="text-dark/60 mt-2">
-                {{ $t("faq.cta_desc") }}
-              </p>
-            </div>
-            <Button variant="primary" icon="MoveRight" :to="localePath('/devis')" class="shrink-0">
-              {{ $t("faq.cta_button") }}
-            </Button>
-          </div>
-        </div>
+    <section class="py-16 md:py-24 bg-cream-light">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="section-title-lg mb-4">
+          {{ $t("faq.cta_title") }}
+        </h2>
+        <p class="para-lead mb-8 max-w-xl mx-auto">
+          {{ $t("faq.cta_desc") }}
+        </p>
+        <Button variant="cta" :to="localePath('/devis')">
+          {{ $t("faq.cta_button") }}
+        </Button>
       </div>
     </section>
   </div>

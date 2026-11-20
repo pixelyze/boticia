@@ -3,7 +3,10 @@
     <!-- Hero + Workshop types -->
     <section class="py-20 md:py-28 bg-cream-light">
       <div class="container mx-auto px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div
+          class="max-w-6xl mx-auto grid grid-cols-1 gap-12 items-start
+                 md:grid-cols-[2fr_3fr] md:gap-20"
+        >
           <!-- Text -->
           <div>
             <span class="section-tagline">
@@ -12,41 +15,35 @@
             <h1 class="section-title-lg">
               {{ $t("workshops.title") }}
             </h1>
-            <p class="mt-6 text-dark/70 text-lg leading-relaxed">
+            <p class="para-lead mt-6">
               {{ $t("workshops.intro") }}
             </p>
             <Button
-              variant="primary"
-              icon="MoveRight"
+              variant="cta"
               :to="localePath('/devis')"
               class="mt-8"
             >
               {{ $t("workshops.cta") }}
             </Button>
           </div>
-          <!-- Visual: workshop types -->
-          <div class="space-y-5">
-            <div
+          <!-- Types d'ateliers : liste entre filets -->
+          <ul class="border-t border-dark/20">
+            <li
               v-for="(workshop, i) in workshopTypes"
               :key="i"
-              class="flex items-start gap-4 bg-white rounded-2xl px-6 py-5"
+              class="flex items-start gap-5 py-7 border-b border-dark/20"
             >
-              <div
-                class="w-12 h-12 rounded-xl bg-cream-light flex items-center
-                       justify-center shrink-0"
-              >
-                <IconLucid :name="workshop.icon" size="md" :stroke-width="2" class="text-dark" />
-              </div>
+              <IconPhosphor :name="workshop.icon" size="md" class="text-dark mt-1" />
               <div>
-                <h3 class="font-heading text-lg text-dark mb-1">
+                <h3 class="item-heading mb-2">
                   {{ workshop.title }}
                 </h3>
-                <p class="text-dark/70 leading-relaxed text-base">
+                <p class="para">
                   {{ workshop.desc }}
                 </p>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -70,7 +67,7 @@
           <div
             v-for="photo in workshopPhotos"
             :key="photo.id"
-            class="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden"
+            class="relative aspect-[3/4] overflow-hidden"
           >
             <img
               :src="photo.public_url"
@@ -86,7 +83,10 @@
     <!-- For whom (Pour qui) -->
     <section class="py-16 md:py-24 bg-cream-light">
       <div class="container mx-auto px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div
+          class="max-w-6xl mx-auto grid grid-cols-1 gap-12 items-start
+                 md:grid-cols-[2fr_3fr] md:gap-20"
+        >
           <!-- Text -->
           <div>
             <span class="section-tagline">
@@ -95,30 +95,25 @@
             <h2 class="section-title-lg">
               {{ $t("workshops.audience_title") }}
             </h2>
-            <p class="mt-4 text-dark/70 text-lg leading-relaxed">
+            <p class="para-lead mt-6">
               {{ $t("workshops.audience_desc") }}
             </p>
           </div>
-          <!-- Audience cards -->
-          <div class="grid grid-cols-2 gap-4">
-            <div
+          <!-- Publics : deux colonnes entre filets -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12">
+            <article
               v-for="(audience, i) in audiences"
               :key="i"
-              class="px-5 py-6 rounded-2xl bg-white text-center"
+              class="py-7 border-t border-dark/20"
             >
-              <div
-                class="w-12 h-12 rounded-xl bg-cream-light flex items-center
-                       justify-center mx-auto mb-3"
-              >
-                <IconLucid :name="audience.icon" size="md" :stroke-width="2" class="text-dark" />
-              </div>
-              <h3 class="text-base font-semibold text-dark">
+              <IconPhosphor :name="audience.icon" size="md" class="text-dark mb-4" />
+              <h3 class="item-heading mb-2">
                 {{ audience.label }}
               </h3>
-              <p class="text-dark/70 text-base leading-relaxed mt-2">
+              <p class="para">
                 {{ audience.desc }}
               </p>
-            </div>
+            </article>
           </div>
         </div>
       </div>
@@ -127,13 +122,13 @@
     <!-- CTA -->
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6 text-center">
-        <h2 class="font-heading text-2xl md:text-3xl text-dark mb-4">
+        <h2 class="section-title-lg mb-4">
           {{ $t("workshops.cta_title") }}
         </h2>
-        <p class="text-dark/60 mb-8 text-lg max-w-xl mx-auto">
+        <p class="para-lead mb-8 max-w-xl mx-auto">
           {{ $t("workshops.cta_desc") }}
         </p>
-        <Button variant="primary" icon="MoveRight" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('/devis')">
           {{ $t("workshops.cta") }}
         </Button>
       </div>
@@ -212,7 +207,7 @@ useHead({
 
 const workshopTypes = computed(() => [
   {
-    icon: "Flower2",
+    icon: "FlowerTulip",
 
     title: t("workshops.type_1_title"),
     desc: t("workshops.type_1_desc"),
@@ -246,7 +241,7 @@ const workshopPhotos = computed(() => {
 const audiences = computed(() => [
   { icon: "Handshake", label: t("workshops.audience_teambuilding"), desc: t("workshops.audience_teambuilding_desc") },
   { icon: "Heart", label: t("workshops.audience_evjf"), desc: t("workshops.audience_evjf_desc") },
-  { icon: "PartyPopper", label: t("workshops.audience_birthday"), desc: t("workshops.audience_birthday_desc") },
+  { icon: "Confetti", label: t("workshops.audience_birthday"), desc: t("workshops.audience_birthday_desc") },
   { icon: "Gift", label: t("workshops.audience_private"), desc: t("workshops.audience_private_desc") },
 ]);
 </script>

@@ -27,7 +27,7 @@ export type QuoteRequestStatus =
  * Les tranches ont été relevées (commit a75759b) sans renommer les clés,
  * qui sont stockées telles quelles en base. La correspondance réelle est :
  *
- *   lt_2500   ->  3 000 – 5 000 €
+ *   lt_2500   ->  4 000 – 5 000 € (code historique, libellé aligné sur la FAQ)
  *   lt_4000   ->  5 000 – 8 000 €
  *   lt_10000  ->  8 000 € et plus
  *

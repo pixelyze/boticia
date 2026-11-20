@@ -1,13 +1,13 @@
 <template>
   <div
-    class="min-h-screen flex flex-col bg-white
+    class="min-h-screen flex flex-col bg-white font-body
       selection:bg-fuchsia-300 selection:text-fuchsia-900"
   >
     <!-- Top bar pill -->
     <header class="bg-transparent pt-4 pb-4">
       <div class="px-4 md:px-10">
         <div
-          class="rounded-full bg-cream
+          class="rounded-full bg-cream-light
             px-4 md:px-8 py-3 md:py-4
             flex items-center justify-between"
         >
@@ -15,11 +15,11 @@
             :to="localePath('/')"
             :aria-label="$t('client.back_to_site')"
             :title="$t('client.back_to_site')"
-            class="w-10 h-10 rounded-full bg-cream-dark
-              flex items-center justify-center text-gray-500
-              hover:text-gray-600 transition-all"
+            class="w-10 h-10 rounded-full border border-dark/20
+              flex items-center justify-center text-dark
+              hover:border-dark transition-all"
           >
-            <IconLucid name="ArrowLeft" size="sm" />
+            <IconLucid :stroke-width="1.5" name="ArrowLeft" size="sm" />
           </NuxtLink>
           <div class="text-center">
             <span
@@ -40,7 +40,7 @@
             icon-only
             :aria-label="$t('client.sign_out')"
             :title="$t('client.sign_out')"
-            class="!w-10 !h-10 justify-center !border-0 bg-cream-dark text-gray-500 hover:!bg-cream-dark hover:text-gray-600"
+            class="!w-10 !h-10 justify-center !border !border-dark/20 !text-dark hover:!border-dark hover:!bg-transparent"
             @click="signOutOpen = true"
           />
         </div>
@@ -62,12 +62,12 @@
       compact
       @close="signOutOpen = false"
     >
-      <p class="text-dark/70 leading-relaxed mb-6">
+      <p class="text-dark leading-relaxed mb-6">
         {{ $t("client.sign_out_text") }}
       </p>
-      <div class="space-y-3">
+      <div class="space-y-6">
         <Button
-          variant="primary"
+          variant="cta"
           icon="LogOut"
           class="w-full justify-center"
           @click="handleSignOut"
@@ -75,8 +75,8 @@
           {{ $t("client.sign_out_confirm") }}
         </Button>
         <Button
-          variant="ghost"
-          class="w-full justify-center"
+          variant="link"
+          class="!flex mx-auto w-fit"
           @click="signOutOpen = false"
         >
           {{ $t("client.sign_out_cancel") }}

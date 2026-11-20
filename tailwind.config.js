@@ -33,6 +33,8 @@ export default {
       fontFamily: {
         sans: ["Source Sans 3", "sans-serif"],
         heading: ["Playfair Display", "serif"],
+        // Paragraphs of the public pages (harmonised type scale)
+        body: ['"Source Serif 4"', "Georgia", "serif"],
       },
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="loading" class="py-6">
-      <IconLucid name="Loader2" size="md" class="animate-spin text-gray-400" />
+      <IconLucid :stroke-width="1.5" name="Loader2" size="md" class="animate-spin text-gray-400" />
     </div>
 
     <template v-else>

@@ -10,7 +10,7 @@
           <h1 class="section-title-lg">
             {{ $t("creations.title") }}
           </h1>
-          <p class="mt-4 text-dark/60 max-w-xl mx-auto text-lg">
+          <p class="para-lead mt-5 max-w-xl mx-auto">
             {{ $t("creations.subtitle") }}
           </p>
         </div>
@@ -27,7 +27,7 @@
         <!-- Empty state -->
         <div v-else-if="galleryImages.length === 0" class="py-16 text-center">
           <IconLucid name="Image" size="lg" class="mx-auto text-gray-300 mb-4" />
-          <p class="text-dark/40">{{ $t("creations.empty") }}</p>
+          <p class="para text-gray-500">{{ $t("creations.empty") }}</p>
         </div>
 
         <!-- Masonry gallery -->
@@ -42,7 +42,7 @@
             @click="openLightbox(i)"
           >
             <div
-              class="rounded-2xl overflow-hidden"
+              class="overflow-hidden"
               :class="sizeClass(i)"
             >
               <img
@@ -57,12 +57,11 @@
 
         <!-- CTA -->
         <div class="text-center mt-16">
-          <p class="text-dark/60 mb-6 text-lg">
+          <p class="para-lead mb-6">
             {{ $t("creations.cta_hint") }}
           </p>
           <Button
-            variant="primary"
-            icon="MoveRight"
+            variant="cta"
             :to="localePath('/devis')"
           >
             {{ $t("creations.cta") }}

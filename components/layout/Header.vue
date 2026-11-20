@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-0 left-0 right-0 z-50">
+  <div class="fixed top-0 left-0 right-0 z-50 font-body">
     <!-- Main header -->
     <header class="transition-all duration-500" :class="isHomepage || scrolled ? 'bg-transparent' : 'bg-cream-light'">
       <div class="px-4 md:px-10 transition-all duration-500" :class="scrolled ? 'pt-2 pb-2' : 'pt-4 pb-4'">
@@ -43,9 +43,10 @@
               >
                 Boticia
               </span>
+              <!-- Sous-titre dans la couleur des surtitres (orange vif) -->
               <p
-                class="transition-all duration-500 hidden md:block"
-                :class="isTransparent ? 'text-base mt-1 text-cream/50' : 'text-sm mt-0.5 text-dark/60'"
+                class="transition-all duration-500 hidden md:block text-orange-500"
+                :class="isTransparent ? 'text-base mt-1' : 'text-sm mt-0.5'"
               >
                 {{ t("app.tagline") }}
               </p>
@@ -53,21 +54,16 @@
           </div>
 
           <!-- Right nav -->
-          <div class="hidden md:flex items-center justify-end gap-4">
-            <NuxtLink
+          <div class="hidden md:flex items-center justify-end gap-8">
+            <!-- Devis : discret, simple lien souligné d'un filet fin -->
+            <Button
+              variant="link"
               :to="localePath('/devis')"
-              class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
-              :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
+              class="!text-xs !pb-1 [&_svg]:hidden"
+              :class="isTransparent ? '!text-cream !border-cream hover:!border-cream/40' : 'hover:!border-dark/40'"
             >
               {{ t("nav.quote") }}
-            </NuxtLink>
-            <NuxtLink
-              :to="localePath(userSpaceRoute)"
-              class="px-5 py-2 rounded-full border-2 text-xs font-semibold uppercase tracking-[0.15em] transition-all"
-              :class="isTransparent ? 'border-cream/20 bg-cream/10 text-cream hover:bg-cream/20' : 'border-transparent bg-dark/10 text-dark hover:bg-dark/15'"
-            >
-              {{ t("nav.login") }}
-            </NuxtLink>
+            </Button>
           </div>
 
           <!-- Mobile menu button : pastille « Menu » + deux traits -->
@@ -112,6 +108,16 @@
             </button>
           </div>
 
+          <!-- « Mon espace » : fonction pratique (comme la langue), séparée
+               de la navigation principale ; même pastille que la langue active -->
+          <Button
+            variant="link"
+            :to="localePath(userSpaceRoute)"
+            class="!px-3 !py-1.5 !rounded-full !text-xs !tracking-wider !border-0 [&_svg]:hidden"
+            :class="isTransparent ? '!bg-cream/15 !text-cream hover:!bg-cream/25' : '!bg-dark/10 !text-dark hover:!bg-dark/15'"
+          >
+            {{ t("nav.login") }}
+          </Button>
         </div>
       </div>
     </header>
@@ -132,7 +138,7 @@
           role="dialog"
           aria-modal="true"
           :aria-label="t('common.menu')"
-          class="fixed inset-0 z-[100] bg-cream md:hidden flex flex-col overflow-y-auto"
+          class="fixed inset-0 z-[100] bg-cream md:hidden flex flex-col overflow-y-auto font-body"
         >
           <!-- Modal header : mêmes marges que l'en-tête, selon son état
                (accueil, défilé…), pour que logo et bouton ne bougent pas. -->
@@ -197,14 +203,15 @@
               :class="mobileMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
               :style="{ transitionDelay: `${80 + mobileNavLinks.length * 70}ms` }"
             >
-              <NuxtLink
+              <Button
+                variant="link"
                 :to="localePath(userSpaceRoute)"
-                class="h-12 w-full rounded-full border border-dark/15 flex items-center justify-center gap-2 text-[15px] font-medium text-dark active:bg-dark/5 hover:bg-dark/5 transition-colors"
+                :class="MENU_OUTLINE_BUTTON"
+                class="w-full"
                 @click="closeMobileMenu"
               >
-                <IconLucid name="User" size="sm" class="text-dark" :strokeWidth="1.5" />
                 {{ t("nav.login") }}
-              </NuxtLink>
+              </Button>
             </div>
           </nav>
 
@@ -218,7 +225,7 @@
                  la carte rétrécit. Écrans bas (< 700 px) : on garde le titre
                  et le bouton, sans la ligne du haut ni la phrase. -->
             <div
-              class="relative flex-1 min-h-[10rem] rounded-[1.5rem] overflow-hidden p-5 flex flex-col justify-between gap-4"
+              class="relative flex-1 min-h-[10rem] overflow-hidden p-5 flex flex-col justify-between gap-4"
             >
               <img
                 :src="menuImageFailed ? HERO_DEFAULT_IMAGE : heroImage"
@@ -241,15 +248,15 @@
                 >
                   {{ t("quote_form.subtitle") }}
                 </p>
-                <NuxtLink
+                <Button
                   ref="firstMenuLink"
+                  variant="cta"
                   :to="localePath('/devis')"
-                  class="mt-5 h-12 w-full rounded-full bg-cream flex items-center justify-center gap-2 text-[13px] font-semibold uppercase tracking-[0.15em] text-dark hover:bg-white active:bg-white transition-colors"
+                  class="mt-5 w-full justify-center !bg-cream !text-dark hover:!bg-white"
                   @click="closeMobileMenu"
                 >
                   {{ t("nav.quote") }}
-                  <IconLucid name="ArrowRight" size="xs" class="text-dark" :strokeWidth="2" />
-                </NuxtLink>
+                </Button>
               </div>
             </div>
           </div>
@@ -260,45 +267,52 @@
             :class="mobileMenuVisible ? 'opacity-100' : 'opacity-0'"
             :style="{ transitionDelay: `${240 + mobileNavLinks.length * 70}ms` }"
           >
-            <!-- Qui suis-je ? + FAQ : sous la carte devis -->
-            <div class="grid grid-cols-2 gap-3">
-              <NuxtLink
+            <!-- Le studio + FAQ : boutons à contour fin, côte à côte
+                 (FAQ plus large : son libellé est plus long) -->
+            <div class="grid grid-cols-[2fr_3fr] gap-3">
+              <Button
                 v-for="link in infoNavLinks"
                 :key="link.key"
+                variant="link"
                 :to="localePath(link.to)"
-                class="h-12 rounded-full bg-dark/5 flex items-center justify-center text-[15px] font-medium text-dark active:bg-dark/10 hover:bg-dark/10 transition-colors"
+                :class="MENU_OUTLINE_BUTTON"
+                class="!tracking-[0.08em] [&_svg]:hidden"
                 @click="closeMobileMenu"
               >
                 {{ t(link.key) }}
-              </NuxtLink>
+              </Button>
             </div>
 
-            <!-- Language selector : pastille segmentée -->
-            <div class="flex items-center justify-center gap-3 mt-3">
-              <div class="inline-flex items-center rounded-full bg-dark/5 p-1">
-                <button
+            <!-- Langues + Instagram, sous un filet fin -->
+            <div
+              class="flex items-center justify-between mt-4 pt-4 border-t border-dark/20"
+            >
+              <div class="flex items-center gap-5">
+                <Button
                   v-for="loc in availableLocales"
                   :key="loc.code"
+                  variant="link"
+                  :class="[
+                    '!pb-1 [&_svg]:hidden',
+                    locale === loc.code
+                      ? ''
+                      : '!border-transparent !text-gray-500',
+                  ]"
                   @click="switchLocale(loc.code); closeMobileMenu()"
-                  :lang="loc.code"
-                  :aria-label="loc.label"
-                  class="h-10 px-5 text-sm uppercase tracking-wider rounded-full transition-all duration-300"
-                  :class="locale === loc.code ? 'bg-white text-dark font-semibold shadow-sm' : 'text-dark/50'"
                 >
                   {{ loc.code }}
-                </button>
+                  <span class="sr-only">{{ loc.label }}</span>
+                </Button>
               </div>
-
-              <!-- Instagram : icône ronde, même hauteur que la pastille -->
-              <a
+              <Button
+                variant="link"
                 href="https://instagram.com/boticia_"
                 target="_blank"
                 rel="noopener"
-                aria-label="Instagram @boticia_"
-                class="w-12 h-12 rounded-full bg-dark/5 flex items-center justify-center active:bg-dark/10 hover:bg-dark/10 transition-colors"
+                :class="MENU_TEXT_LINK"
               >
-                <IconLucid name="Instagram" size="sm" class="text-dark" :strokeWidth="1.5" />
-              </a>
+                Instagram
+              </Button>
             </div>
           </div>
         </div>
@@ -309,6 +323,15 @@
 
 <script setup>
 import { useI18n } from "vue-i18n";
+
+// Liens texte du bas du menu mobile : capitales espacées, sans flèche,
+// soulignés seulement quand ils sont actifs (langue choisie)
+// Boutons secondaires du menu mobile (Mon espace, Le studio, FAQ) :
+// pilule à contour fin + flèche, pour qu'on voie que ce sont des boutons
+const MENU_OUTLINE_BUTTON =
+  "h-11 justify-center !px-3 !pb-0 rounded-full border !border-dark/30 !text-[12px] !tracking-[0.12em] whitespace-nowrap hover:!border-dark active:bg-dark/5";
+const MENU_TEXT_LINK =
+  "!border-transparent !pb-1 whitespace-nowrap !tracking-[0.15em] [&_svg]:hidden";
 
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
@@ -376,7 +399,7 @@ const navLinks = [
 ];
 
 const infoNavLinks = [
-  { key: "footer.about_link", to: "/about" },
+  { key: "nav.studio", to: "/studio" },
   { key: "footer.faq_link", to: "/faq" },
 ];
 

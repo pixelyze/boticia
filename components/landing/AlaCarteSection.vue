@@ -9,7 +9,7 @@
         <h2 class="section-title-lg">
           {{ $t("alacarte.title") }}
         </h2>
-        <p class="mt-4 text-dark/60 max-w-xl mx-auto text-lg">
+        <p class="mt-4 text-dark/60 max-w-2xl mx-auto text-lg">
           {{ $t("alacarte.subtitle") }}
         </p>
       </div>
@@ -17,7 +17,7 @@
       <!-- Categories -->
       <div
         class="grid grid-cols-1 md:grid-cols-3 gap-6
-               max-w-5xl mx-auto mb-16"
+               max-w-5xl mx-auto"
       >
         <div
           v-for="(group, index) in groups"
@@ -36,7 +36,7 @@
           </h3>
           <ul class="space-y-3 text-left flex-1">
             <li
-              v-for="(item, i) in group.items.filter(x => x)"
+              v-for="(item, i) in group.items"
               :key="i"
               class="flex items-start gap-3 text-dark/70"
             >
@@ -48,19 +48,6 @@
         </div>
       </div>
 
-      <!-- CTA -->
-      <div class="text-center">
-        <p class="text-dark/60 mb-6 text-lg">
-          {{ $t("alacarte.cta_hint") }}
-        </p>
-        <Button
-          variant="primary"
-          icon="MoveRight"
-          :to="localePath('/devis')"
-        >
-          {{ $t("alacarte.cta") }}
-        </Button>
-      </div>
     </div>
   </section>
 </template>
@@ -69,38 +56,24 @@
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const localePath = useLocalePath();
 
+// Bloc « Décoration florale » : textes de Laëtitia (MODIF SITE, nov. 2026),
+// sans appel à l'action en bas du bloc, à sa demande.
 const groups = computed(() => [
   {
     icon: "Heart",
-    name: t("alacarte.group_personal"),
-    items: [
-      t("alacarte.item_bridal_bouquet"),
-      t("alacarte.item_bridesmaid_bouquet"),
-      t("alacarte.item_boutonnieres"),
-      t("alacarte.item_hair_flowers"),
-    ],
+    name: t("alacarte.wedding_title"),
+    items: [1, 2, 3, 4].map((n) => t(`alacarte.wedding_${n}`)),
   },
   {
     icon: "Flower2",
-    name: t("alacarte.group_ceremony"),
-    items: [
-      t("alacarte.item_ceremony_arch"),
-      t("alacarte.item_ceremony_aisle"),
-      t("alacarte.item_venue_entrance"),
-      t("alacarte.item_welcome_sign"),
-    ],
+    name: t("alacarte.business_title"),
+    items: [1, 2, 3].map((n) => t(`alacarte.business_${n}`)),
   },
   {
     icon: "Sparkles",
-    name: t("alacarte.group_reception"),
-    items: [
-      t("alacarte.item_table_centerpieces"),
-      t("alacarte.item_table_runner"),
-      t("alacarte.item_cocktail_decor"),
-      t("alacarte.item_cake_flowers"),
-    ],
+    name: t("alacarte.workshop_title"),
+    items: [1, 2, 3].map((n) => t(`alacarte.workshop_${n}`)),
   },
 ]);
 </script>

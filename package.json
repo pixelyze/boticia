@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@nuxt/content": "^3.11.2",
+    "@phosphor-icons/vue": "^2.2.1",
     "@supabase/supabase-js": "^2.89.0",
     "@types/node": "^22.14.1",
     "better-sqlite3": "^12.6.2",

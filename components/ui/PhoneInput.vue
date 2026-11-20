@@ -1,16 +1,16 @@
 <template>
   <div class="relative">
     <div
-      class="flex items-center h-14 rounded-2xl border-2 transition-all"
+      class="flex items-center h-14 border transition-all"
       :class="[
-        focused ? 'bg-white border-dark/40' : 'bg-cream/30 border-dark/20',
+        focused ? 'bg-white border-dark' : 'bg-white border-dark/30',
         hasError ? 'border-red-400' : '',
       ]"
     >
       <!-- Country selector -->
       <button
         type="button"
-        class="flex items-center gap-1.5 h-full px-3 border-r border-dark/10 rounded-l-2xl hover:bg-dark/5 transition-colors shrink-0"
+        class="flex items-center gap-1.5 h-full px-3 border-r border-dark/20 hover:bg-dark/5 transition-colors shrink-0"
         @click="dropdownOpen = !dropdownOpen"
       >
         <span class="text-xl leading-none">{{ selectedFlag }}</span>
@@ -40,7 +40,7 @@
     <!-- Dropdown -->
     <div
       v-if="dropdownOpen"
-      class="absolute left-0 top-full mt-1 w-full max-h-52 overflow-y-auto bg-white border border-dark/15 rounded-xl shadow-lg z-50"
+      class="absolute left-0 top-full mt-1 w-full max-h-52 overflow-y-auto bg-white border border-dark/20 shadow-lg z-50"
     >
       <!-- Search -->
       <div class="sticky top-0 bg-white p-2 border-b border-dark/10">
@@ -49,7 +49,7 @@
           v-model="search"
           type="text"
           :placeholder="searchPlaceholder"
-          class="w-full px-3 py-2 text-sm rounded-lg border border-dark/15 outline-none focus:border-dark/30"
+          class="w-full px-3 py-2 text-sm border border-dark/20 outline-none focus:border-dark"
           @keydown.escape="dropdownOpen = false"
         />
       </div>

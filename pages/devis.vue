@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="font-body">
     <!-- Success state -->
     <template v-if="submitted">
       <section class="py-20 md:py-28 bg-white">
@@ -7,25 +7,25 @@
           <div
             class="w-20 h-20 mx-auto mb-8 rounded-full bg-green-50 border-2 border-green-200 flex items-center justify-center"
           >
-            <IconLucid name="Check" size="lg" class="text-green-600" />
+            <IconLucid :stroke-width="1.25" name="Check" size="lg" class="text-green-600" />
           </div>
 
           <h1 class="section-title-lg">
             {{ t("quote_form.success_title") }}
           </h1>
-          <p class="text-dark/60 text-lg md:text-xl mt-4">
+          <p class="para-lead mt-4">
             {{ t("quote_form.success_message") }}
           </p>
 
           <!-- Meeting confirmation -->
           <div
-            class="mt-8 rounded-2xl border-2 border-green-200 bg-green-50 px-6 py-5 text-left"
+            class="mt-8 border border-green-200 bg-green-50 px-6 py-5 text-left"
           >
             <div class="flex items-center gap-4">
               <div
                 class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center shrink-0"
               >
-                <IconLucid
+                <IconLucid :stroke-width="1.25"
                   name="CalendarCheck"
                   size="sm"
                   class="text-green-600"
@@ -44,7 +44,7 @@
 
           <!-- Espace client : déjà ouvert, l'email contient un lien direct -->
           <div
-            class="mt-6 rounded-2xl border-2 border-dark/10 px-6 py-5
+            class="mt-6 border border-dark/10 px-6 py-5
               text-left flex flex-col gap-4 md:flex-row md:items-center
               md:justify-between"
           >
@@ -67,7 +67,7 @@
 
           <!-- Process steps -->
           <div
-            class="mt-10 rounded-[2rem] border-2 border-dark/10 bg-cream/50 px-8 md:px-12 py-10 text-left"
+            class="mt-10 border border-dark/20 bg-cream-light px-8 md:px-12 py-10 text-left"
           >
             <div class="space-y-8">
               <div
@@ -89,7 +89,7 @@
                   <span class="text-dark font-medium text-lg block">
                     {{ step.title }}
                   </span>
-                  <span class="text-fuchsia-500 text-base mt-1 block">
+                  <span class="text-orange-500 text-base mt-1 block">
                     {{ step.desc }}
                   </span>
                 </div>
@@ -98,7 +98,7 @@
           </div>
 
           <div class="mt-12">
-            <Button variant="primary" :to="localePath('/')">
+            <Button variant="cta" :to="localePath('/')">
               {{ t("common.back_to_home") }}
             </Button>
           </div>
@@ -128,16 +128,16 @@
               <!-- Bot message -->
               <template v-if="msg.type === 'bot'">
                 <div
-                  class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center shrink-0 mt-0.5"
+                  class="w-10 h-10 rounded-full border border-dark/20 flex items-center justify-center shrink-0 mt-0.5"
                 >
                   <span
-                    class="font-heading text-lg font-bold text-fuchsia-500 leading-none"
+                    class="font-heading text-lg text-dark leading-none"
                   >B</span>
                 </div>
                 <div
-                  class="bg-cream/60 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
+                  class="bg-cream-light px-5 py-4 max-w-md"
                 >
-                  <p class="text-dark text-lg leading-relaxed">
+                  <p class="para-lead">
                     {{ msg.text }}
                   </p>
                 </div>
@@ -146,9 +146,9 @@
               <!-- User message -->
               <template v-else>
                 <div
-                  class="bg-dark text-cream rounded-2xl rounded-tr-md px-5 py-4 max-w-md"
+                  class="bg-dark text-cream px-5 py-4 max-w-md"
                 >
-                  <p class="text-lg leading-relaxed">
+                  <p class="text-[19px] leading-relaxed">
                     {{ msg.text }}
                   </p>
                 </div>
@@ -161,16 +161,16 @@
               class="flex gap-3 items-start"
             >
               <div
-                class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center shrink-0 mt-0.5"
+                class="w-10 h-10 rounded-full border border-dark/20 flex items-center justify-center shrink-0 mt-0.5"
               >
                 <span
-                  class="font-heading text-lg font-bold text-fuchsia-500 leading-none animate-pulse"
+                  class="font-heading text-lg text-dark leading-none animate-pulse"
                 >B</span>
               </div>
               <div
-                class="bg-cream/60 rounded-2xl rounded-tl-md px-5 py-4 max-w-md"
+                class="bg-cream-light px-5 py-4 max-w-md"
               >
-                <p class="text-dark text-lg leading-relaxed">
+                <p class="para-lead">
                   <span>{{ displayedText }}</span>
                   <span class="copilot-cursor">|</span>
                 </p>
@@ -190,11 +190,11 @@
                 v-for="opt in serviceTypeOptions"
                 :key="opt.value"
                 type="button"
-                class="group w-full flex items-center gap-4 px-5 py-4 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
+                class="group w-full flex items-center gap-4 px-5 py-4 border text-left transition-all duration-200 touch-manipulation"
                 :class="
                   form.service_type === opt.value
                     ? 'bg-dark border-dark'
-                    : 'bg-white border-dark/10 hover:border-dark/30'
+                    : 'bg-white border-dark/20 hover:border-dark'
                 "
                 @click="chooseAndContinue(() => (form.service_type = opt.value))"
               >
@@ -202,17 +202,17 @@
                   class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all"
                   :class="
                     form.service_type === opt.value
-                      ? 'bg-cream/20'
-                      : 'bg-cream'
+                      ? ''
+                      : ''
                   "
                 >
-                  <IconLucid
+                  <IconPhosphor
                     :name="opt.icon"
-                    size="sm"
+                    size="md"
                     :class="
                       form.service_type === opt.value
                         ? 'text-cream'
-                        : 'text-terracotta'
+                        : 'text-dark'
                     "
                   />
                 </div>
@@ -232,7 +232,7 @@
                     :class="
                       form.service_type === opt.value
                         ? 'text-cream/70'
-                        : 'text-dark/50'
+                        : 'text-gray-500'
                     "
                   >
                     {{ opt.desc }}
@@ -245,7 +245,7 @@
             <div v-if="currentStep === 2" class="space-y-4">
               <div>
                 <label
-                  class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                  class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
                 >
                   {{ t("quote_form.name_label") }}
                 </label>
@@ -253,7 +253,7 @@
                   v-model="form.name"
                   type="text"
                   :placeholder="t('quote_form.name_placeholder')"
-                  class="w-full h-14 px-5 rounded-2xl border-2 bg-cream/30 focus:bg-white focus:outline-none transition-all"
+                  class="w-full h-14 px-5 border bg-white focus:outline-none transition-all"
                   :class="
                     errors.name
                       ? 'border-red-400'
@@ -270,7 +270,7 @@
               </div>
               <div class="flex justify-center">
                 <Button
-                  variant="primary"
+                  variant="cta"
                   rightIcon="MoveRight"
                   @click="nextStep"
                 >
@@ -284,7 +284,7 @@
               <div class="space-y-4">
                 <div>
                   <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                    class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
                   >
                     {{ t("quote_form.email_label") }}
                   </label>
@@ -292,7 +292,7 @@
                     v-model="form.email"
                     type="email"
                     :placeholder="t('quote_form.email_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 bg-cream/30 focus:bg-white focus:outline-none transition-all"
+                    class="w-full h-14 px-5 border bg-white focus:outline-none transition-all"
                     :class="
                       errors.email
                         ? 'border-red-400'
@@ -309,7 +309,7 @@
                 </div>
                 <div>
                   <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                    class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
                   >
                     {{ t("quote_form.phone_label") }}
                   </label>
@@ -335,7 +335,7 @@
               </div>
               <div class="flex justify-center">
                 <Button
-                  variant="primary"
+                  variant="cta"
                   rightIcon="MoveRight"
                   @click="nextStep"
                 >
@@ -349,7 +349,7 @@
               <div class="space-y-4">
                 <div>
                   <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                    class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
                   >
                     {{ dateLabelText }}
                     <span class="text-dark/30 normal-case tracking-normal">
@@ -360,14 +360,14 @@
                     v-model="form.wedding_date"
                     type="date"
                     :min="minDate"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    class="w-full h-14 px-5 border border-dark/30 bg-white focus:border-dark focus:outline-none transition-all"
                   />
                 </div>
 
                 <!-- Mariage: venue -->
                 <div v-if="form.service_type === 'mariage' || form.service_type === 'evenement'">
                   <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                    class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
                   >
                     {{ t("quote_form.venue_label") }}
                     <span class="text-dark/30 normal-case tracking-normal">
@@ -378,7 +378,7 @@
                     v-model="form.venue"
                     type="text"
                     :placeholder="t('quote_form.venue_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    class="w-full h-14 px-5 border border-dark/30 bg-white focus:border-dark focus:outline-none transition-all"
                     @keydown.enter="nextStep"
                   />
                 </div>
@@ -386,7 +386,7 @@
                 <!-- Evenement: event type -->
                 <div v-if="form.service_type === 'evenement'">
                   <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                    class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
                   >
                     {{ t("quote_form.event_type_label") }}
                     <span class="text-dark/30 normal-case tracking-normal">
@@ -397,7 +397,7 @@
                     v-model="form.event_type"
                     type="text"
                     :placeholder="t('quote_form.event_type_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    class="w-full h-14 px-5 border border-dark/30 bg-white focus:border-dark focus:outline-none transition-all"
                     @keydown.enter="nextStep"
                   />
                 </div>
@@ -405,7 +405,7 @@
                 <!-- Atelier: guest count -->
                 <div v-if="form.service_type === 'atelier'">
                   <label
-                    class="block text-sm uppercase tracking-[0.15em] text-fuchsia-500 mb-2"
+                    class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
                   >
                     {{ t("quote_form.guest_count_label") }}
                     <span class="text-dark/30 normal-case tracking-normal">
@@ -417,14 +417,14 @@
                     type="number"
                     min="1"
                     :placeholder="t('quote_form.guest_count_placeholder')"
-                    class="w-full h-14 px-5 rounded-2xl border-2 border-dark/20 bg-cream/30 focus:bg-white focus:border-dark/40 focus:outline-none transition-all"
+                    class="w-full h-14 px-5 border border-dark/30 bg-white focus:border-dark focus:outline-none transition-all"
                     @keydown.enter="nextStep"
                   />
                 </div>
               </div>
               <div class="flex justify-center">
                 <Button
-                  variant="primary"
+                  variant="cta"
                   rightIcon="MoveRight"
                   @click="nextStep"
                 >
@@ -440,11 +440,11 @@
                   v-for="opt in budgetOptions"
                   :key="opt.value"
                   type="button"
-                  class="h-14 px-6 rounded-2xl border-2 font-medium transition-all duration-200 touch-manipulation"
+                  class="h-12 px-6 rounded-full border text-[13px] uppercase tracking-[0.15em] transition-all duration-200 touch-manipulation"
                   :class="
                     form.budget === opt.value
                       ? 'bg-dark text-cream border-dark'
-                      : 'bg-cream/30 text-dark/60 border-dark/10 hover:border-dark/30 hover:text-dark'
+                      : 'bg-white text-dark border-dark/30 hover:border-dark'
                   "
                   @click="chooseAndContinue(() => (form.budget = opt.value))"
                 >
@@ -468,13 +468,13 @@
                     <div
                       class="flex items-center gap-2 mb-2"
                     >
-                      <IconLucid
+                      <IconPhosphor
                         :name="group.icon"
                         size="xs"
-                        class="text-terracotta"
+                        class="text-dark"
                       />
                       <span
-                        class="text-xs uppercase tracking-[0.15em] text-dark/40 font-medium"
+                        class="text-xs uppercase tracking-[0.15em] text-gray-500 font-medium"
                       >
                         {{ group.label }}
                       </span>
@@ -484,23 +484,23 @@
                         v-for="need in group.needs"
                         :key="need"
                         type="button"
-                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
+                        class="group w-full flex items-center gap-4 px-5 py-3.5 border text-left transition-all duration-200 touch-manipulation"
                         :class="
                           selectedNeeds.has(need)
                             ? 'bg-dark border-dark'
-                            : 'bg-white border-dark/10 hover:border-dark/30'
+                            : 'bg-white border-dark/20 hover:border-dark'
                         "
                         @click="toggleNeed(need)"
                       >
                         <span
-                          class="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                          class="w-6 h-6 border flex items-center justify-center shrink-0 transition-all duration-200"
                           :class="
                             selectedNeeds.has(need)
                               ? 'bg-cream border-cream'
                               : 'border-dark/20 group-hover:border-dark/40'
                           "
                         >
-                          <IconLucid
+                          <IconLucid :stroke-width="1.25"
                             v-if="selectedNeeds.has(need)"
                             name="Check"
                             size="xs"
@@ -528,13 +528,13 @@
                 <div class="space-y-5">
                   <div>
                     <div class="flex items-center gap-2 mb-2">
-                      <IconLucid
-                        name="Sparkles"
+                      <IconPhosphor
+                        name="Sparkle"
                         size="xs"
-                        class="text-terracotta"
+                        class="text-dark"
                       />
                       <span
-                        class="text-xs uppercase tracking-[0.15em] text-dark/40 font-medium"
+                        class="text-xs uppercase tracking-[0.15em] text-gray-500 font-medium"
                       >
                         {{ t("quote_form.need_group_event") }}
                       </span>
@@ -544,23 +544,23 @@
                         v-for="need in eventNeeds"
                         :key="need"
                         type="button"
-                        class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
+                        class="group w-full flex items-center gap-4 px-5 py-3.5 border text-left transition-all duration-200 touch-manipulation"
                         :class="
                           selectedNeeds.has(need)
                             ? 'bg-dark border-dark'
-                            : 'bg-white border-dark/10 hover:border-dark/30'
+                            : 'bg-white border-dark/20 hover:border-dark'
                         "
                         @click="toggleNeed(need)"
                       >
                         <span
-                          class="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                          class="w-6 h-6 border flex items-center justify-center shrink-0 transition-all duration-200"
                           :class="
                             selectedNeeds.has(need)
                               ? 'bg-cream border-cream'
                               : 'border-dark/20 group-hover:border-dark/40'
                           "
                         >
-                          <IconLucid
+                          <IconLucid :stroke-width="1.25"
                             v-if="selectedNeeds.has(need)"
                             name="Check"
                             size="xs"
@@ -590,16 +590,16 @@
                     v-for="ws in workshopTypes"
                     :key="ws"
                     type="button"
-                    class="group w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl border-2 text-left transition-all duration-200 touch-manipulation"
+                    class="group w-full flex items-center gap-4 px-5 py-3.5 border text-left transition-all duration-200 touch-manipulation"
                     :class="
                       form.workshop_type === ws
                         ? 'bg-dark border-dark'
-                        : 'bg-white border-dark/10 hover:border-dark/30'
+                        : 'bg-white border-dark/20 hover:border-dark'
                     "
                     @click="form.workshop_type = form.workshop_type === ws ? '' : ws"
                   >
                     <span
-                      class="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-200"
+                      class="w-6 h-6 rounded-full border flex items-center justify-center shrink-0 transition-all duration-200"
                       :class="
                         form.workshop_type === ws
                           ? 'bg-cream border-cream'
@@ -633,7 +633,7 @@
               </p>
               <div class="flex justify-center">
                 <Button
-                  variant="primary"
+                  variant="cta"
                   rightIcon="MoveRight"
                   @click="nextStep"
                 >
@@ -647,10 +647,10 @@
               <!-- Drop zone -->
               <div
                 v-if="inspirationFiles.length < MAX_INSPIRATION_FILES"
-                class="relative rounded-2xl border-2 border-dashed border-dark/20 hover:border-dark/40 bg-cream/30 hover:bg-cream/50 transition-all cursor-pointer p-6 text-center"
+                class="relative border border-dashed border-dark/20 hover:border-dark/40 bg-white hover:bg-cream-light transition-all cursor-pointer p-6 text-center"
                 @click="($refs.inspirationInput as HTMLInputElement)?.click()"
-                @dragover.prevent="($event.currentTarget as HTMLElement).classList.add('border-dark/40', 'bg-cream/50')"
-                @dragleave.prevent="($event.currentTarget as HTMLElement).classList.remove('border-dark/40', 'bg-cream/50')"
+                @dragover.prevent="($event.currentTarget as HTMLElement).classList.add('border-dark', 'bg-cream-light')"
+                @dragleave.prevent="($event.currentTarget as HTMLElement).classList.remove('border-dark', 'bg-cream-light')"
                 @drop.prevent="handleInspirationDrop($event)"
               >
                 <input
@@ -661,12 +661,12 @@
                   class="hidden"
                   @change="handleInspirationSelect"
                 />
-                <IconLucid
+                <IconLucid :stroke-width="1.25"
                   name="ImagePlus"
                   size="lg"
                   class="mx-auto text-gray-300 mb-3"
                 />
-                <p class="text-dark/60 text-sm">
+                <p class="text-gray-500 text-sm">
                   {{ t("quote_form.chat_step6_drop") }}
                 </p>
                 <p class="text-dark/30 text-xs mt-1">
@@ -682,7 +682,7 @@
                 <div
                   v-for="(preview, idx) in inspirationPreviews"
                   :key="idx"
-                  class="relative group aspect-square rounded-xl overflow-hidden border-2 border-dark/10"
+                  class="relative group aspect-square overflow-hidden border border-dark/10"
                 >
                   <img
                     :src="preview"
@@ -694,14 +694,14 @@
                     class="absolute top-1 right-1 w-6 h-6 rounded-full bg-dark/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                     @click="removeInspirationFile(idx)"
                   >
-                    <IconLucid name="X" size="xs" />
+                    <IconLucid :stroke-width="1.25" name="X" size="xs" />
                   </button>
                 </div>
               </div>
 
               <!-- Rassure : rien n'est perdu à passer cette étape -->
               <p class="flex items-start gap-2 text-sm text-gray-600">
-                <IconLucid
+                <IconLucid :stroke-width="1.25"
                   name="Clock"
                   size="xs"
                   class="text-gray-500 shrink-0 mt-0.5"
@@ -712,7 +712,7 @@
               <!-- Counter -->
               <p
                 v-if="inspirationFiles.length > 0"
-                class="text-sm text-dark/50 text-center"
+                class="text-sm text-gray-500 text-center"
               >
                 {{ inspirationFiles.length }}/{{ MAX_INSPIRATION_FILES }}
                 {{ t("quote_form.chat_step6_max", { max: MAX_INSPIRATION_FILES }) }}
@@ -722,7 +722,7 @@
               <div class="flex justify-center gap-3">
                 <Button
                   v-if="inspirationFiles.length > 0"
-                  variant="primary"
+                  variant="cta"
                   rightIcon="MoveRight"
                   @click="nextStep"
                 >
@@ -732,7 +732,7 @@
                      laissait croire qu'il annulait les photos ajoutées. -->
                 <Button
                   v-else
-                  variant="ghost"
+                  variant="link"
                   @click="nextStep"
                 >
                   {{ t("quote_form.chat_step6_skip") }}
@@ -745,14 +745,14 @@
               <!-- Selected slot display -->
               <div
                 v-if="form.meeting_date"
-                class="rounded-2xl border-2 border-green-200 bg-green-50 px-6 py-5"
+                class="border border-green-200 bg-green-50 px-6 py-5"
               >
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-4">
                     <div
                       class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center shrink-0"
                     >
-                      <IconLucid
+                      <IconLucid :stroke-width="1.25"
                         name="CalendarCheck"
                         size="sm"
                         class="text-green-600"
@@ -778,7 +778,7 @@
                     @click="scheduleModalOpen = true"
                     class="px-4 py-2 rounded-full bg-green-700 text-white text-sm font-semibold transition-all hover:bg-green-800 flex items-center gap-2"
                   >
-                    <IconLucid name="Edit" size="xs" />
+                    <IconLucid :stroke-width="1.25" name="Edit" size="xs" />
                     {{ t("quote_form.meeting_change") }}
                   </button>
                 </div>
@@ -786,7 +786,7 @@
 
               <div v-else class="space-y-3">
                 <Button
-                  variant="primary"
+                  variant="cta"
                   icon="CalendarClock"
                   @click="scheduleModalOpen = true"
                   class="w-full"
@@ -806,7 +806,7 @@
                 class="flex justify-end"
               >
                 <Button
-                  variant="primary"
+                  variant="cta"
                   rightIcon="MoveRight"
                   @click="nextStep"
                 >
@@ -818,11 +818,11 @@
             <!-- Step 9: Recap + submit -->
             <div v-if="currentStep === 9" class="space-y-4">
               <div
-                class="rounded-2xl border-2 border-dark/10 bg-cream/30 px-6 py-5 space-y-3 text-sm"
+                class="border border-dark/20 bg-cream-light px-6 py-5 space-y-3 text-sm"
               >
                 <!-- Service type -->
                 <div class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.service_type_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -832,7 +832,7 @@
                 <div class="h-px bg-dark/5"></div>
 
                 <div class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.name_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -841,7 +841,7 @@
                 </div>
                 <div class="h-px bg-dark/5"></div>
                 <div class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.email_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -849,7 +849,7 @@
                   </span>
                 </div>
                 <div v-if="form.phone" class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.phone_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -861,7 +861,7 @@
                   v-if="form.wedding_date"
                   class="flex justify-between"
                 >
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ dateLabelText }}
                   </span>
                   <span class="font-medium text-dark">
@@ -869,7 +869,7 @@
                   </span>
                 </div>
                 <div v-if="form.venue" class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.venue_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -877,7 +877,7 @@
                   </span>
                 </div>
                 <div v-if="form.event_type" class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.event_type_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -885,7 +885,7 @@
                   </span>
                 </div>
                 <div v-if="form.guest_count" class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.guest_count_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -893,7 +893,7 @@
                   </span>
                 </div>
                 <div v-if="form.budget" class="flex justify-between">
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.budget_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -906,7 +906,7 @@
                   v-if="selectedNeeds.size > 0"
                   class="pt-1"
                 >
-                  <span class="text-fuchsia-500 block mb-2">
+                  <span class="text-orange-500 block mb-2">
                     {{ t("quote_form.section_floral") }}
                   </span>
                   <div class="flex flex-wrap gap-2">
@@ -925,7 +925,7 @@
                   v-if="form.workshop_type"
                   class="flex justify-between"
                 >
-                  <span class="text-fuchsia-500">
+                  <span class="text-orange-500">
                     {{ t("quote_form.workshop_type_label") }}
                   </span>
                   <span class="font-medium text-dark">
@@ -938,7 +938,7 @@
                   class="pt-1"
                 >
                   <div class="flex justify-between">
-                    <span class="text-fuchsia-500">
+                    <span class="text-orange-500">
                       Inspirations
                     </span>
                     <span class="font-medium text-dark">
@@ -948,7 +948,7 @@
                 </div>
                 <div class="pt-1">
                   <div class="flex justify-between">
-                    <span class="text-fuchsia-500">
+                    <span class="text-orange-500">
                       {{ t("quote_form.section_meeting") }}
                     </span>
                     <span class="font-medium text-dark">
@@ -970,7 +970,7 @@
 
               <div class="flex justify-center">
                 <Button
-                  variant="primary"
+                  variant="cta"
                   icon="Send"
                   :loading="loading"
                   @click="handleSubmit"
@@ -1151,7 +1151,7 @@ const serviceTypeOptions = computed(() => [
     value: "evenement" as ServiceType,
     label: t("quote_form.service_type_evenement"),
     desc: t("quote_form.service_type_evenement_desc"),
-    icon: "Sparkles",
+    icon: "Sparkle",
   },
   {
     value: "atelier" as ServiceType,
@@ -1189,7 +1189,7 @@ const budgetLabel = computed(() => {
 const floralNeedGroups = computed(() => [
   {
     label: t("quote_form.need_group_personal"),
-    icon: "Heart",
+    icon: "FlowerTulip",
     needs: [
       "bridal_bouquet",
       "bridesmaid_bouquet",
@@ -1199,7 +1199,7 @@ const floralNeedGroups = computed(() => [
   },
   {
     label: t("quote_form.need_group_ceremony"),
-    icon: "Sparkles",
+    icon: "Church",
     needs: [
       "ceremony_arch",
       "ceremony_aisle",
@@ -1208,7 +1208,7 @@ const floralNeedGroups = computed(() => [
   },
   {
     label: t("quote_form.need_group_reception"),
-    icon: "Star",
+    icon: "ForkKnife",
     needs: [
       "table_centerpieces",
       "table_runner",

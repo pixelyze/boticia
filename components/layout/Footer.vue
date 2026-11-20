@@ -1,91 +1,39 @@
 <template>
-  <footer class="bg-white text-dark py-12">
+  <!-- [COMP-FOOTER-MINIMAL] — Pied de page minimaliste : demande de devis,
+       espace client, tableau de bord. Marque, lignes du héros, copyright et
+       mentions légales seulement : pas de liens de sortie (réseaux, pages). -->
+  <footer class="bg-white text-dark py-12 font-body">
     <div class="px-4 sm:px-10">
-      <div class="bg-cream-light rounded-[2rem] py-12 sm:py-20 px-4 sm:px-6">
+      <div class="bg-cream-light rounded-[2rem] py-12 sm:py-16 px-4 sm:px-6">
       <div class="max-w-2xl mx-auto text-center">
-        <!-- Logo -->
-        <NuxtLink v-if="!isHomePage" :to="localePath('/')" aria-label="Back to home">
-          <img :src="logo" alt="Boticia" loading="lazy" width="96" height="96" class="h-24 mx-auto mb-6" />
-        </NuxtLink>
-        <img v-else :src="logo" alt="Boticia" loading="lazy" width="96" height="96" class="h-24 mx-auto mb-6" />
-
         <span class="font-heading text-2xl text-dark uppercase">Boticia</span>
 
         <!-- Subtitle -->
-        <p class="text-dark/70 text-base mt-2">
+        <p class="para mt-2">
           {{ $t("footer.subtitle") }}
         </p>
 
-        <!-- Services -->
-        <p class="text-dark/50 text-sm tracking-widest uppercase mt-2">
-          {{ $t("footer.services_line") }}
+        <!-- Services : mêmes textes que le héros (hero.*), pour rester
+             identiques si on les modifie -->
+        <p class="section-tagline !block mt-5 leading-relaxed">
+          {{ $t("hero.heading_trade") }}<span class="hidden md:inline">
+            · </span
+          ><br class="md:hidden" />{{ $t("hero.heading_places") }}
         </p>
-
-        <!-- Social links -->
-        <nav aria-label="R\u00e9seaux sociaux" class="flex flex-wrap justify-center gap-4 sm:gap-8 mt-8 sm:mt-12">
-          <a
-            href="https://instagram.com/boticia_"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
-          >Instagram</a>
-          <a
-            href="https://www.linkedin.com/in/la%C3%ABtitia-schaeffer-cr%C3%A9atrice-florale/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
-          >LinkedIn</a>
-          <a
-            href="https://www.facebook.com/BoticiaParis/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
-          >Facebook</a>
-          <a
-            href="https://fr.pinterest.com/Boticia_Paris/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-dark/80 hover:text-dark text-base border-b border-dark/40 hover:border-dark/60 pb-0.5 transition-all duration-300"
-          >Pinterest</a>
-        </nav>
-
-        <!-- Navigation links -->
-        <nav aria-label="Navigation" class="mt-10 sm:mt-16">
-          <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm sm:text-base">
-            <NuxtLink
-              v-if="!isAboutPage"
-              :to="localePath('/about')"
-              class="text-dark/70 hover:text-dark transition-colors duration-300"
-            >
-              {{ $t("footer.about_link") }}
-            </NuxtLink>
-            <span v-else class="text-dark/70">
-              {{ $t("footer.about_link") }}
-            </span>
-            <span class="text-dark/30">·</span>
-            <NuxtLink
-              v-if="!isFaqPage"
-              :to="localePath('/faq')"
-              class="text-dark/70 hover:text-dark transition-colors duration-300"
-            >
-              {{ $t("footer.faq_link") }}
-            </NuxtLink>
-            <span v-else class="text-dark/70">
-              {{ $t("footer.faq_link") }}
-            </span>
-          </div>
-        </nav>
+        <p class="section-tagline !block mt-1">
+          {{ $t("hero.line_1") }}
+        </p>
       </div>
       </div>
 
       <!-- Copyright + legal link -->
-      <p class="text-dark/40 text-sm text-center mt-6">
+      <p class="text-gray-500 text-sm text-center mt-6">
         {{ $t("footer.copyright") }}
         <span class="text-dark/20 mx-1">·</span>
         <NuxtLink
           v-if="!isLegalPage"
           :to="localePath('/legal')"
-          class="text-dark/40 hover:text-dark/60 underline underline-offset-2 transition-colors duration-300"
+          class="text-gray-500 hover:text-dark underline underline-offset-2 transition-colors duration-300"
         >
           {{ $t("footer.legal_link") }}
         </NuxtLink>
@@ -101,10 +49,6 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const localePath = useLocalePath();
 const route = useRoute();
-const { logo } = useSiteLogo();
 
-const isHomePage = computed(() => route.path === '/' || route.path === localePath('/'));
-const isAboutPage = computed(() => route.path.includes('about'));
-const isFaqPage = computed(() => route.path.includes('faq'));
 const isLegalPage = computed(() => route.path.includes('legal'));
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero -->
-    <WeddingIntroSection title-tag="h1" />
+    <WeddingIntroSectionV2 title-tag="h1" />
 
     <!-- Wedding gallery — bento layout -->
     <BentoGallery
@@ -14,107 +14,32 @@
     />
 
 
-    <!-- Prestations détaillées -->
-    <section class="py-16 md:py-24 bg-white">
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-14">
-          <span class="section-tagline">{{ $t("weddings.services_tagline") }}</span>
-          <h2 class="section-title-lg">{{ $t("weddings.services_title") }}</h2>
-          <p class="mt-4 text-dark/70 max-w-2xl mx-auto text-lg leading-relaxed">
-            {{ $t("weddings.services_intro") }}
-          </p>
-        </div>
-        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            v-for="svc in services"
-            :key="svc.icon"
-            class="flex items-start gap-4 bg-cream-light rounded-2xl px-6 py-6"
-          >
-            <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shrink-0">
-              <IconLucid :name="svc.icon" size="md" :stroke-width="1.5" class="text-dark" />
-            </div>
-            <div>
-              <h3 class="font-heading text-lg text-dark mb-1">{{ svc.title }}</h3>
-              <p class="text-dark/60 leading-relaxed">{{ svc.desc }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Prestations détaillées (v2 ; v1 : WeddingServicesSection) -->
+    <WeddingServicesSectionV2 />
 
-    <!-- Pourquoi nous choisir -->
-    <section class="py-16 md:py-24 bg-cream-light">
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-14">
-          <span class="section-tagline">{{ $t("weddings.why_tagline") }}</span>
-          <h2 class="section-title-lg">{{ $t("weddings.why_title") }}</h2>
-        </div>
-        <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div
-            v-for="reason in reasons"
-            :key="reason.icon"
-            class="bg-white rounded-2xl px-6 py-6"
-          >
-            <div class="w-10 h-10 rounded-full bg-cream-light flex items-center justify-center mb-4">
-              <IconLucid :name="reason.icon" size="sm" :stroke-width="1.5" class="text-dark" />
-            </div>
-            <h3 class="font-heading text-lg text-dark mb-2">{{ reason.title }}</h3>
-            <p class="text-dark/60 leading-relaxed">{{ reason.desc }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Pourquoi nous choisir (v2 ; v1 : WeddingWhySection) -->
+    <WeddingWhySectionV2 />
 
-    <!-- A la carte -->
-    <AlaCarteSection />
+    <!-- Bloc « Décoration florale » (v2, comme sur l'accueil) -->
+    <AlaCarteSectionV2 />
 
     <!-- FAQ mariage -->
-    <section class="py-16 md:py-24 bg-white">
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-14">
-          <span class="section-tagline">{{ $t("weddings.faq_tagline") }}</span>
-          <h2 class="section-title-lg">{{ $t("weddings.faq_title") }}</h2>
-        </div>
-        <div class="max-w-3xl mx-auto space-y-0">
-          <div
-            v-for="(faq, i) in faqs"
-            :key="i"
-            class="border-t border-dark/10"
-            :class="{ 'border-b': i === faqs.length - 1 }"
-          >
-            <button
-              class="w-full text-left py-5 flex justify-between items-center group"
-              @click="openFaq === i ? openFaq = null : openFaq = i"
-            >
-              <span class="font-heading text-dark/80 text-lg pr-8 group-hover:text-dark transition-colors">
-                {{ faq.q }}
-              </span>
-              <IconLucid
-                :name="openFaq === i ? 'Minus' : 'Plus'"
-                size="sm"
-                class="text-gray-300 shrink-0"
-              />
-            </button>
-            <div v-if="openFaq === i" class="pb-5">
-              <p class="text-dark/55 text-base leading-relaxed max-w-2xl">
-                {{ faq.a }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <FaqColumns
+      :tagline="$t('weddings.faq_tagline')"
+      :title="$t('weddings.faq_title')"
+      :items="faqs.map((f) => ({ question: f.q, answer: f.a }))"
+    />
 
     <!-- CTA -->
     <section class="py-16 md:py-24 bg-cream-light">
       <div class="container mx-auto px-6 text-center">
-        <h2 class="font-heading text-2xl md:text-3xl text-dark mb-4">
+        <h2 class="section-title-lg mb-4">
           {{ $t("weddings.cta_title") }}
         </h2>
-        <p class="text-dark/60 mb-8 text-lg max-w-xl mx-auto">
+        <p class="para-lead mb-8 max-w-xl mx-auto">
           {{ $t("weddings.cta_desc") }}
         </p>
-        <Button variant="primary" icon="MoveRight" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('/devis')">
           {{ $t("weddings.cta") }}
         </Button>
       </div>
@@ -244,20 +169,6 @@ useHead({
   ],
 });
 
-const services = computed(() => [
-  { icon: "Flower2", title: t("weddings.service_bouquet_title"), desc: t("weddings.service_bouquet_desc") },
-  { icon: "Church", title: t("weddings.service_ceremony_title"), desc: t("weddings.service_ceremony_desc") },
-  { icon: "UtensilsCrossed", title: t("weddings.service_reception_title"), desc: t("weddings.service_reception_desc") },
-  { icon: "Crown", title: t("weddings.service_accessories_title"), desc: t("weddings.service_accessories_desc") },
-]);
-
-const reasons = computed(() => [
-  { icon: "Leaf", title: t("weddings.why_1_title"), desc: t("weddings.why_1_desc") },
-  { icon: "Heart", title: t("weddings.why_2_title"), desc: t("weddings.why_2_desc") },
-  { icon: "Monitor", title: t("weddings.why_3_title"), desc: t("weddings.why_3_desc") },
-  { icon: "MapPin", title: t("weddings.why_4_title"), desc: t("weddings.why_4_desc") },
-]);
-
 const faqs = computed(() => [
   { q: t("weddings.faq_1_q"), a: t("weddings.faq_1_a") },
   { q: t("weddings.faq_2_q"), a: t("weddings.faq_2_a") },
@@ -265,6 +176,5 @@ const faqs = computed(() => [
   { q: t("weddings.faq_4_q"), a: t("weddings.faq_4_a") },
 ]);
 
-const openFaq = ref(null);
 
 </script>

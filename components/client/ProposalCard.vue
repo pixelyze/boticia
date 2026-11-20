@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-[1.5rem] border-2 border-dark/10 p-6">
+  <div class="border border-dark/20 p-6">
     <!-- En-tête : le titre (nom du PDF) et son statut à gauche, le bouton
          pour ouvrir le PDF à droite. Libellé court sur mobile. -->
     <div class="flex items-start justify-between gap-3 mb-4">
@@ -26,6 +26,7 @@
         </div>
       </div>
       <Button
+        variant="link"
         v-if="proposal.public_url"
         :href="proposal.public_url"
         target="_blank"
@@ -47,14 +48,14 @@
       v-if="proposal.description"
       class="rounded-xl bg-cream p-4 mb-4"
     >
-      <p class="text-xs text-dark/60 uppercase tracking-wider mb-1.5">
+      <p class="text-xs text-gray-500 uppercase tracking-wider mb-1.5">
         {{ $t("client.laetitia_note") }}
       </p>
       <p class="text-dark whitespace-pre-line">{{ proposal.description }}</p>
     </div>
 
     <!-- Pied de carte : la réponse au devis, dans le même bloc -->
-    <div v-if="$slots.default" class="border-t-2 border-dark/10 mt-6 pt-6">
+    <div v-if="$slots.default" class="border-t-2 border-dark/20 mt-6 pt-6">
       <slot />
     </div>
   </div>

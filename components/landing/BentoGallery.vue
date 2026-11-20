@@ -11,14 +11,14 @@
       <div class="max-w-6xl mx-auto flex flex-col sm:flex-row gap-4">
 
         <!-- Bento principal (2 colonnes, 3 lignes) -->
-        <div class="flex-[3] space-y-4">
+        <div class="flex-[3] space-y-3 sm:space-y-4">
           <!-- Row 1 : wide + portrait -->
-          <div class="flex flex-col sm:flex-row gap-4">
+          <div class="flex flex-row gap-3 sm:gap-4">
             <button
-              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              class="group cursor-pointer block flex-[2] min-w-0"
               @click="openLightbox(mainImages[0])"
             >
-              <div class="relative w-full h-full min-h-[250px] rounded-[1.5rem] overflow-hidden">
+              <div class="relative w-full h-full min-h-[180px] sm:min-h-[250px] overflow-hidden">
                 <img
                   v-if="mainImages[0] && !mainImages[0].isPlaceholder"
                   :src="mainImages[0].public_url"
@@ -31,10 +31,10 @@
               </div>
             </button>
             <button
-              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              class="group cursor-pointer block flex-[1] min-w-0"
               @click="openLightbox(mainImages[1])"
             >
-              <div class="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden">
+              <div class="relative h-full min-h-[180px] sm:h-auto sm:min-h-0 sm:aspect-[3/4] overflow-hidden">
                 <img
                   v-if="mainImages[1] && !mainImages[1].isPlaceholder"
                   :src="mainImages[1].public_url"
@@ -49,12 +49,12 @@
           </div>
 
           <!-- Row 2 : portrait + wide -->
-          <div class="flex flex-col sm:flex-row gap-4">
+          <div class="flex flex-row gap-3 sm:gap-4">
             <button
-              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              class="group cursor-pointer block flex-[1] min-w-0"
               @click="openLightbox(mainImages[2])"
             >
-              <div class="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden">
+              <div class="relative h-full min-h-[180px] sm:h-auto sm:min-h-0 sm:aspect-[3/4] overflow-hidden">
                 <img
                   v-if="mainImages[2] && !mainImages[2].isPlaceholder"
                   :src="mainImages[2].public_url"
@@ -67,10 +67,10 @@
               </div>
             </button>
             <button
-              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              class="group cursor-pointer block flex-[2] min-w-0"
               @click="openLightbox(mainImages[3])"
             >
-              <div class="relative w-full h-full min-h-[250px] rounded-[1.5rem] overflow-hidden">
+              <div class="relative w-full h-full min-h-[180px] sm:min-h-[250px] overflow-hidden">
                 <img
                   v-if="mainImages[3] && !mainImages[3].isPlaceholder"
                   :src="mainImages[3].public_url"
@@ -85,12 +85,12 @@
           </div>
 
           <!-- Row 3 : wide + portrait -->
-          <div class="flex flex-col sm:flex-row gap-4">
+          <div class="flex flex-row gap-3 sm:gap-4">
             <button
-              class="group cursor-pointer block sm:flex-[2] min-w-0"
+              class="group cursor-pointer block flex-[2] min-w-0"
               @click="openLightbox(mainImages[4])"
             >
-              <div class="relative w-full h-full min-h-[250px] rounded-[1.5rem] overflow-hidden">
+              <div class="relative w-full h-full min-h-[180px] sm:min-h-[250px] overflow-hidden">
                 <img
                   v-if="mainImages[4] && !mainImages[4].isPlaceholder"
                   :src="mainImages[4].public_url"
@@ -103,10 +103,10 @@
               </div>
             </button>
             <button
-              class="group cursor-pointer block sm:flex-[1] min-w-0"
+              class="group cursor-pointer block flex-[1] min-w-0"
               @click="openLightbox(mainImages[5])"
             >
-              <div class="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden">
+              <div class="relative h-full min-h-[180px] sm:h-auto sm:min-h-0 sm:aspect-[3/4] overflow-hidden">
                 <img
                   v-if="mainImages[5] && !mainImages[5].isPlaceholder"
                   :src="mainImages[5].public_url"
@@ -129,7 +129,7 @@
             class="group cursor-pointer block flex-1 min-w-0"
             @click="openLightbox(img)"
           >
-            <div class="relative w-full h-full min-h-[100px] rounded-[1.5rem] overflow-hidden">
+            <div class="relative w-full h-full min-h-[100px] overflow-hidden">
               <img
                 v-if="!img.isPlaceholder"
                 :src="img.public_url"
@@ -224,7 +224,10 @@ const allDisplayImages = computed(() => {
 
 const mainImages = computed(() => allDisplayImages.value.slice(0, 6));
 const sideImages = computed(() => allDisplayImages.value.slice(6, 9));
-const remainingCount = computed(() => Math.max(0, SIMULATE_TOTAL - TOTAL_SLOTS));
+// Vraies photos non affichées dans les 9 cases (visibles dans la visionneuse)
+const remainingCount = computed(() =>
+  Math.max(0, images.value.length - TOTAL_SLOTS)
+);
 
 const { data: galleryData } = await useFetch(`/api/galleries/${props.slug}`);
 if (galleryData.value?.data) {

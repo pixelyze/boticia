@@ -36,15 +36,19 @@
    TYPOGRAPHY - Design System
    ========================================
 
-   5 PALIERS DE TAILLE (Mobile -> Desktop)
+   ÉCHELLE HARMONISÉE (nov. 2026, inspirée du design « gravure et encre »)
    ───────────────────────────────────────
-   Display  : 36px -> 64px   (hero h1)
-   Title    : 28px -> 40px   (section h2, feature h3)
-   Subtitle : 20px -> 24px   (sous-titres, descriptions)
-   Body     : 18px -> 20px   (texte courant)
-   Label    : 16px -> 18px   (taglines, numéros)
+   Label    : 13px, capitales espacées   .section-tagline
+   Titre    : 30px -> 40px               .section-title-lg   (h2)
+   Élément  : 24px -> 26px               .feature-title, .step-title,
+                                         .plan-name, .item-heading (h3)
+   Intro    : 19px                       .para-lead
+   Texte    : 17px, interligne 1.7       .para, .feature-description,
+                                         .step-description
+   Mention  : 14px, gris                 .para-small
 
-   CONTRASTE MINIMUM : text-dark/70
+   Paragraphes en Source Serif 4 (font-body), titres en Playfair Display.
+   COULEUR : encre pleine (text-dark), pas de gris délavé (text-dark/60, /70)
    ======================================== */
 
 @layer components {
@@ -63,11 +67,11 @@
 
   /* --- Homepage: Sections --- */
   .section-tagline {
-    @apply text-base md:text-lg uppercase tracking-[0.3em] text-dark/70;
+    @apply text-[13px] font-semibold uppercase tracking-[0.3em] text-orange-500;
   }
 
   .section-title-lg {
-    @apply text-3xl md:text-[2.75rem] font-medium mt-4 text-dark leading-tight;
+    @apply text-3xl md:text-[2.5rem] font-medium mt-4 text-dark leading-tight;
   }
 
   /* --- Homepage: Features --- */
@@ -76,11 +80,11 @@
   }
 
   .feature-title {
-    @apply font-heading text-2xl md:text-4xl text-dark leading-snug;
+    @apply font-heading text-2xl md:text-[1.625rem] text-dark leading-snug;
   }
 
   .feature-description {
-    @apply text-dark/70 text-lg md:text-xl leading-relaxed;
+    @apply font-body text-dark text-[17px] leading-[1.7];
   }
 
   /* --- Homepage: Process --- */
@@ -89,20 +93,20 @@
   }
 
   .step-title {
-    @apply font-heading text-2xl md:text-3xl text-dark;
+    @apply font-heading text-2xl md:text-[1.625rem] text-dark;
   }
 
   .step-description {
-    @apply text-dark/70 text-lg md:text-xl leading-relaxed;
+    @apply font-body text-dark text-[17px] leading-[1.7];
   }
 
   /* --- Homepage: Pricing --- */
   .plan-name {
-    @apply font-heading text-3xl text-dark;
+    @apply font-heading text-2xl md:text-[1.625rem] text-dark;
   }
 
   .plan-description {
-    @apply text-dark/70 text-lg;
+    @apply font-body text-dark text-[17px] leading-[1.7];
   }
 
   .plan-price {
@@ -124,6 +128,23 @@
 
   .form-title {
     @apply text-3xl md:text-4xl font-bold mb-6;
+  }
+
+  /* --- Shared: harmonised scale --- */
+  .item-heading {
+    @apply font-heading text-2xl md:text-[1.625rem] text-dark leading-snug;
+  }
+
+  .para-lead {
+    @apply font-body text-[19px] leading-relaxed text-dark;
+  }
+
+  .para {
+    @apply font-body text-[17px] leading-[1.7] text-dark;
+  }
+
+  .para-small {
+    @apply font-body text-sm text-gray-500;
   }
 
   /* --- Shared --- */

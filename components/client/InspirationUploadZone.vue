@@ -1,9 +1,8 @@
 <template>
   <div
-    class="relative rounded-[1.5rem] border-2 border-dashed
+    class="relative  border border-dashed
       p-8 text-center transition-all cursor-pointer"
-    :class="
-      dragOver
+    :class="dragOver
         ? 'border-dark bg-cream'
         : 'border-dark/20 hover:border-dark/40'
     "
@@ -13,25 +12,25 @@
     @drop.prevent="handleDrop"
   >
     <div v-if="!uploading">
-      <IconLucid
+      <IconLucid :stroke-width="1.5"
         name="CloudUpload"
         size="lg"
         class="mx-auto text-gray-400 mb-3"
       />
-      <p class="font-heading font-medium text-dark/60">
+      <p class="font-heading font-medium text-gray-500">
         {{ $t("client.inspirations_upload_title") }}
       </p>
-      <p class="text-sm text-dark/40 mt-1">
+      <p class="text-sm text-gray-500 mt-1">
         {{ $t("client.inspirations_upload_hint") }}
       </p>
     </div>
     <div v-else class="py-4">
-      <IconLucid
+      <IconLucid :stroke-width="1.5"
         name="Loader2"
         size="lg"
         class="mx-auto text-gray-400 animate-spin mb-3"
       />
-      <p class="text-dark/40 text-sm">
+      <p class="text-gray-500 text-sm">
         {{ $t("common.loading") }}...
       </p>
     </div>

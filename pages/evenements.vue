@@ -3,7 +3,10 @@
     <!-- Hero + Services -->
     <section class="py-20 md:py-28 bg-cream-light">
       <div class="container mx-auto px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div
+          class="max-w-6xl mx-auto grid grid-cols-1 gap-12 items-start
+                 md:grid-cols-[2fr_3fr] md:gap-20"
+        >
           <!-- Text -->
           <div>
             <span class="section-tagline">
@@ -12,55 +15,49 @@
             <h1 class="section-title-lg">
               {{ $t("events.title") }}
             </h1>
-            <p class="mt-6 text-dark/70 text-lg leading-relaxed">
+            <p class="para-lead mt-6">
               {{ $t("events.intro") }}
             </p>
             <Button
-              variant="primary"
-              icon="MoveRight"
+              variant="cta"
               :to="localePath('/devis')"
               class="mt-8"
             >
               {{ $t("events.cta") }}
             </Button>
           </div>
-          <!-- Visual: services -->
-          <div class="space-y-5">
-            <div
+          <!-- Prestations : liste entre filets (comme Mariages) -->
+          <ul class="border-t border-dark/20">
+            <li
               v-for="(service, i) in services"
               :key="i"
-              class="flex items-start gap-4 bg-white rounded-2xl px-6 py-5"
+              class="flex items-start gap-5 py-7 border-b border-dark/20"
             >
-              <div
-                class="w-12 h-12 rounded-xl bg-cream-light flex items-center
-                       justify-center shrink-0"
-              >
-                <IconLucid :name="service.icon" size="md" :stroke-width="2" class="text-dark" />
-              </div>
+              <IconPhosphor :name="service.icon" size="md" class="text-dark mt-1" />
               <div>
-                <h3 class="font-heading text-lg text-dark mb-1">
+                <h3 class="item-heading mb-2">
                   {{ service.title }}
                 </h3>
-                <p class="text-dark/70 leading-relaxed text-base">
+                <p class="para">
                   {{ service.desc }}
                 </p>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- Philosophy -->
-    <section class="py-16 md:py-24 bg-white">
+    <!-- Abonnement floral (textes de Laëtitia, MODIF SITE nov. 2026).
+         Ancre #abonnement pour y renvoyer depuis d'autres pages. -->
+    <section id="abonnement" class="py-16 md:py-24 bg-white scroll-mt-32">
       <div class="container mx-auto px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <!-- Images superposées -->
           <div class="relative w-full aspect-square max-w-md mx-auto">
             <div
               class="absolute top-0 left-0 w-[65%] aspect-square
-                     rounded-[2rem] overflow-hidden shadow-lg
-                     border-2 border-dark/10 z-10"
+                     overflow-hidden shadow-lg z-10"
             >
               <img
                 :src="philosophyImage1"
@@ -71,8 +68,7 @@
             </div>
             <div
               class="absolute bottom-0 right-0 w-[65%] aspect-square
-                     rounded-[2rem] overflow-hidden shadow-lg
-                     border-2 border-dark/10"
+                     overflow-hidden shadow-lg"
             >
               <img
                 :src="philosophyImage2"
@@ -90,12 +86,12 @@
             <h2 class="section-title-lg">
               {{ $t("events.philosophy_title") }}
             </h2>
-            <p class="mt-6 text-dark/70 text-lg leading-relaxed">
+            <p class="para-lead mt-6">
               {{ $t("events.philosophy_p1") }}
             </p>
-            <p class="mt-4 text-dark/70 text-lg leading-relaxed">
-              {{ $t("events.philosophy_p2") }}
-            </p>
+            <Button variant="cta" :to="localePath('/devis')" class="mt-8">
+              {{ $t("events.cta") }}
+            </Button>
           </div>
         </div>
       </div>
@@ -118,69 +114,40 @@
           <span class="section-tagline">{{ $t("events.why_tagline") }}</span>
           <h2 class="section-title-lg">{{ $t("events.why_title") }}</h2>
         </div>
-        <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-16">
+          <article
             v-for="reason in reasons"
             :key="reason.icon"
-            class="bg-cream-light rounded-2xl px-6 py-6"
+            class="flex items-start gap-5 py-8 border-t border-dark/20"
           >
-            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-4">
-              <IconLucid :name="reason.icon" size="sm" :stroke-width="1.5" class="text-dark" />
+            <IconPhosphor :name="reason.icon" size="md" class="text-dark mt-1" />
+            <div>
+              <h3 class="item-heading mb-2">{{ reason.title }}</h3>
+              <p class="para">{{ reason.desc }}</p>
             </div>
-            <h3 class="font-heading text-lg text-dark mb-2">{{ reason.title }}</h3>
-            <p class="text-dark/60 leading-relaxed">{{ reason.desc }}</p>
-          </div>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- FAQ événements -->
-    <section class="py-16 md:py-24 bg-cream-light">
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-14">
-          <span class="section-tagline">{{ $t("events.faq_tagline") }}</span>
-          <h2 class="section-title-lg">{{ $t("events.faq_title") }}</h2>
-        </div>
-        <div class="max-w-3xl mx-auto space-y-0">
-          <div
-            v-for="(faq, i) in faqs"
-            :key="i"
-            class="border-t border-dark/10"
-            :class="{ 'border-b': i === faqs.length - 1 }"
-          >
-            <button
-              class="w-full text-left py-5 flex justify-between items-center group"
-              @click="openFaq === i ? openFaq = null : openFaq = i"
-            >
-              <span class="font-heading text-dark/80 text-lg pr-8 group-hover:text-dark transition-colors">
-                {{ faq.q }}
-              </span>
-              <IconLucid
-                :name="openFaq === i ? 'Minus' : 'Plus'"
-                size="sm"
-                class="text-gray-300 shrink-0"
-              />
-            </button>
-            <div v-if="openFaq === i" class="pb-5">
-              <p class="text-dark/55 text-base leading-relaxed max-w-2xl">
-                {{ faq.a }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <FaqColumns
+      :tagline="$t('events.faq_tagline')"
+      :title="$t('events.faq_title')"
+      :items="faqs.map((f) => ({ question: f.q, answer: f.a }))"
+      bg-class="bg-cream-light"
+    />
 
     <!-- CTA -->
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6 text-center">
-        <h2 class="font-heading text-2xl md:text-3xl text-dark mb-4">
+        <h2 class="section-title-lg mb-4">
           {{ $t("events.cta_title") }}
         </h2>
-        <p class="text-dark/70 mb-8 text-lg max-w-xl mx-auto">
+        <p class="para-lead mb-8 max-w-xl mx-auto">
           {{ $t("events.cta_desc") }}
         </p>
-        <Button variant="primary" icon="MoveRight" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('/devis')">
           {{ $t("events.cta") }}
         </Button>
       </div>
@@ -311,17 +278,17 @@ useHead({
 
 const services = computed(() => [
   {
-    icon: "Sparkles",
+    icon: "Sparkle",
     title: t("events.service_1_title"),
     desc: t("events.service_1_desc"),
   },
   {
-    icon: "Building2",
+    icon: "Buildings",
     title: t("events.service_2_title"),
     desc: t("events.service_2_desc"),
   },
   {
-    icon: "Flower2",
+    icon: "FlowerTulip",
     title: t("events.service_3_title"),
     desc: t("events.service_3_desc"),
   },
@@ -346,7 +313,6 @@ const faqs = computed(() => [
   { q: t("events.faq_4_q"), a: t("events.faq_4_a") },
 ]);
 
-const openFaq = ref(null);
 
 const defaultPhiloImage = "/images/events/scenographie-florale-boticia.jpg";
 

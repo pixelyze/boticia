@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="loading" class="py-6">
-      <IconLucid name="Loader2" size="md" class="animate-spin text-gray-400" />
+      <IconLucid :stroke-width="1.5" name="Loader2" size="md" class="animate-spin text-gray-400" />
     </div>
 
     <template v-else>
@@ -13,7 +13,7 @@
       <!-- Florist note -->
       <div
         v-if="moodboardNote"
-        class="rounded-[1.5rem] border-2 border-dark/10 p-6 mb-6"
+        class="border border-dark/20 p-6 mb-6"
       >
         <p class="text-xs text-gray-600 uppercase tracking-wider mb-2">
           {{ t("client.moodboard_florist_note") }}

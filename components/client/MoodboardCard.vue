@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-2xl border-2 border-dark/10 overflow-hidden
+    class="border border-dark/20 overflow-hidden
       transition-all hover:border-dark/20"
   >
     <!-- Image -->
@@ -28,10 +28,10 @@
         @click="openFile"
       >
         <div
-          class="w-14 h-14 rounded-full bg-cream flex items-center
+          class="w-14 h-14 rounded-full border border-dark/20 flex items-center
             justify-center"
         >
-          <IconLucid
+          <IconLucid :stroke-width="1.5"
             name="FileText"
             size="md"
             class="text-gray-400"
@@ -41,6 +41,7 @@
           {{ item.title || item.original_filename }}
         </p>
         <Button
+          variant="link"
           type="button"
           icon="ExternalLink"
           class="!px-5 !py-2 text-sm"
@@ -55,10 +56,10 @@
     <template v-else-if="item.item_type === 'link'">
       <div class="p-6 flex flex-col items-center gap-3">
         <div
-          class="w-14 h-14 rounded-full bg-cream flex items-center
+          class="w-14 h-14 rounded-full border border-dark/20 flex items-center
             justify-center"
         >
-          <IconLucid
+          <IconLucid :stroke-width="1.5"
             name="ExternalLink"
             size="md"
             class="text-gray-400"
@@ -71,7 +72,7 @@
           :href="item.external_url"
           target="_blank"
           rel="noopener"
-          class="text-sm text-dark/60 underline
+          class="text-sm text-gray-500 underline
             hover:text-dark transition-colors"
         >
           {{ $t("client.moodboard_open_link") }}

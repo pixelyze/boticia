@@ -3,28 +3,28 @@
     <div
       v-for="(item, index) in faqItems"
       :key="index"
-      class="border-b border-gray-200"
+      class="border-b border-dark/20"
       :class="index === 0 ? 'border-t' : ''"
     >
       <button
         @click="toggleItem(index)"
         class="w-full text-left py-6 flex justify-between items-center group"
       >
-        <span class="font-heading text-dark/80 text-lg md:text-xl font-normal pr-8 group-hover:text-dark transition-colors duration-300">
+        <span class="font-heading text-dark text-xl font-normal pr-8 group-hover:text-dark transition-colors duration-300">
           {{ item.question }}
         </span>
         <IconLucid
           :name="activeIndex === index ? 'Minus' : 'Plus'"
           size="sm"
-          class="text-gray-300 group-hover:text-gray-500 transition-all duration-300 flex-shrink-0"
-          :strokeWidth="1.5"
+          class="text-dark flex-shrink-0"
+          :strokeWidth="1.25"
         />
       </button>
       <div
         v-show="activeIndex === index"
         class="pb-6"
       >
-        <p class="text-dark/55 text-base md:text-lg leading-relaxed max-w-3xl">
+        <p class="para max-w-3xl">
           {{ item.answer }}
         </p>
       </div>

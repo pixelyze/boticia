@@ -7,12 +7,12 @@
         <div>
           <!-- Loading -->
           <div v-if="loading" class="py-16 text-center">
-            <IconLucid
+            <IconLucid :stroke-width="1.5"
               name="Loader2"
               size="lg"
               class="animate-spin mx-auto text-gray-300"
             />
-            <p class="text-dark/40 mt-4">
+            <p class="text-gray-500 mt-4">
               {{ t("common.loading") }}
             </p>
           </div>
@@ -32,7 +32,7 @@
                   })
                 }}
               </h1>
-              <p class="text-dark/50">
+              <p class="text-gray-500">
                 {{ t("client.project_subtitle") }}
               </p>
             </div>
@@ -41,12 +41,12 @@
                  compacte, le détail de ce que la cliente a renseigné dans
                  le formulaire s'ouvre par le bas. -->
             <div
-              class="rounded-[1.5rem] border-2 border-dark/10 p-5 mb-6
+              class="border border-dark/20 p-5 mb-6
                 flex flex-col gap-4 md:flex-row md:items-center
                 md:justify-between"
             >
               <div>
-                <p class="text-xs text-dark/40 uppercase tracking-wider mb-1">
+                <p class="text-[12px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-1">
                   {{ t("client.request_title") }}
                 </p>
                 <p class="font-medium text-dark">
@@ -54,6 +54,7 @@
                 </p>
               </div>
               <Button
+                variant="link"
                 type="button"
                 icon="FileText"
                 class="w-full md:w-auto justify-center shrink-0 whitespace-nowrap"
@@ -73,13 +74,13 @@
 
             <!-- Prochaine étape : ce qui est attendu, et de qui -->
             <div
-              class="rounded-[1.5rem] bg-cream p-6 mb-6 flex flex-col
+              class="bg-cream-light border border-dark/20 p-6 mb-6 flex flex-col
                 gap-4 md:flex-row md:items-center md:justify-between"
             >
               <div>
                 <p
-                  class="text-xs text-gray-600 uppercase tracking-wider
-                    mb-1"
+                  class="text-[12px] font-semibold uppercase tracking-[0.2em]
+                    text-orange-500 mb-1"
                 >
                   {{ t("client.next_step") }}
                 </p>
@@ -90,7 +91,7 @@
               <Button
                 v-if="nextStep.action && nextStep.step"
                 type="button"
-                variant="primary"
+                variant="cta"
                 class="shrink-0"
                 @click="goToStep(nextStep.step)"
               >
@@ -102,8 +103,7 @@
                  ses étapes contiennent déjà leurs propres cartes. -->
             <div class="mt-4 mb-10">
               <h2
-                class="font-heading text-sm text-gray-600
-                  uppercase tracking-wider mb-6"
+                class="section-tagline !block mb-6"
               >
                 {{ t("client.project_timeline") }}
               </h2>

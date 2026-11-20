@@ -2,7 +2,7 @@
   <!-- Sans cadre : s'affiche en pied de la carte du devis (ProposalCard) -->
   <div>
     <h3
-      class="font-heading text-sm text-dark/50
+      class="font-heading text-sm text-gray-500
         uppercase tracking-wider mb-4"
     >
       {{ $t("client.proposal_respond") }}
@@ -15,16 +15,18 @@
         :key="i"
         class="rounded-xl bg-cream p-4"
       >
-        <p class="text-xs text-dark/60 mb-1">
+        <p class="text-xs text-gray-500 mb-1">
           {{ $t("client.proposal_message_sent_on", { date: formatDate(m.created_at) }) }}
         </p>
         <p class="text-sm text-dark whitespace-pre-line">{{ m.text }}</p>
       </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-3">
+    <!-- items-start / sm:items-center : le lien garde la hauteur de son texte
+         (sinon il s'étire à la hauteur du bouton et son filet descend) -->
+    <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
       <Button
-        variant="primary"
+        variant="cta"
         icon="Check"
         :loading="accepting"
         @click="showConfirm = true"
@@ -32,6 +34,7 @@
         {{ $t("client.proposal_accept") }}
       </Button>
       <Button
+        variant="link"
         icon="MessageSquare"
         @click="openWrite"
       >
@@ -65,12 +68,12 @@
             sm:flex-row sm:items-center sm:justify-between"
         >
           <p class="flex items-center gap-2 text-sm text-gray-500">
-            <IconLucid name="Mail" size="xs" class="text-gray-500" />
+            <IconLucid :stroke-width="1.5" name="Mail" size="xs" class="text-gray-500" />
             {{ $t("client.proposal_write_hint") }}
           </p>
           <Button
             type="button"
-            variant="primary"
+            variant="cta"
             icon="Send"
             :loading="requesting"
             :disabled="!comment.trim()"
@@ -87,7 +90,7 @@
       v-if="justSent"
       class="flex items-start gap-2 text-sm text-green-800 mt-4"
     >
-      <IconLucid name="CheckCircle" size="sm" class="shrink-0 mt-0.5 text-green-600" />
+      <IconLucid :stroke-width="1.5" name="CheckCircle" size="sm" class="shrink-0 mt-0.5 text-green-600" />
       {{ $t("client.proposal_message_sent") }}
     </p>
 
@@ -100,15 +103,15 @@
       compact
       @close="showConfirm = false"
     >
-      <p class="text-dark/70 leading-relaxed mb-3">
+      <p class="text-dark leading-relaxed mb-3">
         {{ $t("client.proposal_confirm_message") }}
       </p>
-      <p class="text-dark/70 leading-relaxed mb-6">
+      <p class="text-dark leading-relaxed mb-6">
         {{ $t("client.proposal_confirm_question") }}
       </p>
-      <div class="space-y-3">
+      <div class="space-y-6">
         <Button
-          variant="primary"
+          variant="cta"
           icon="Check"
           :loading="accepting"
           class="w-full justify-center"
@@ -117,8 +120,8 @@
           {{ $t("client.proposal_confirm_yes") }}
         </Button>
         <Button
-          variant="ghost"
-          class="w-full justify-center"
+          variant="link"
+          class="!flex mx-auto w-fit"
           @click="showConfirm = false"
         >
           {{ $t("client.proposal_confirm_not_yet") }}

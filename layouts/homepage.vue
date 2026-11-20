@@ -1,12 +1,15 @@
 <template>
-  <div class="min-h-screen selection:bg-fuchsia-300 selection:text-fuchsia-900 flex flex-col">
+  <div
+    class="min-h-screen selection:bg-fuchsia-300 selection:text-fuchsia-900 flex flex-col font-body"
+  >
     <Header />
     <!-- Sous l'en-tête fixe : 92 px sur mobile (pas de ligne des langues),
          128 px dès md. HeroSection compense avec la même valeur négative. -->
     <main id="main-content" class="flex-1 pt-[92px] md:pt-32">
       <slot />
     </main>
-    <Footer class="flex-shrink-0" />
+    <!-- v1 gardée de côté : <Footer /> -->
+    <FooterV2 class="flex-shrink-0" />
 
     <!-- Sticky mobile CTA -->
     <Transition
@@ -22,13 +25,15 @@
         class="fixed bottom-0 left-0 right-0 z-50 md:hidden"
         style="padding-bottom: env(safe-area-inset-bottom, 0px)"
       >
-        <div class="bg-dark text-cream rounded-t-2xl px-6 py-3 border-t-2 border-dark/10">
-          <NuxtLink
+        <!-- Barre pleine largeur, angles droits, bouton éditorial -->
+        <div class="bg-dark px-6 py-2">
+          <Button
+            variant="cta"
             :to="localePath('/devis')"
-            class="block w-full text-center text-sm font-semibold uppercase tracking-[0.15em] py-2"
+            class="w-full justify-center !py-3"
           >
             {{ $t("nav.quote") }}
-          </NuxtLink>
+          </Button>
         </div>
       </div>
     </Transition>

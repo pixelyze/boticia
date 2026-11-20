@@ -10,11 +10,10 @@
       <!-- Features alternating -->
       <div class="max-w-4xl mx-auto space-y-16 md:space-y-20">
         <div
-          v-for="(feature, index) in features"
-          :key="index"
+          v-for="feature in features"
+          :key="feature.title"
           class="max-w-xl"
         >
-          <span class="feature-number block mb-3">0{{ index + 1 }}</span>
           <h3 class="feature-title">{{ feature.title }}</h3>
           <p class="feature-description mt-4">{{ feature.description }}</p>
         </div>

@@ -43,49 +43,75 @@
         <p class="text-white/60 text-center text-lg">{{ $t("stories.gallery_empty") }}</p>
       </div>
 
-      <!-- Header : overlay fixed en haut -->
+      <!-- Barre d'infos en bas, façon story : titre, compteur et
+           fermeture regroupés dans une pastille translucide. Sur ordinateur,
+           elle se place au-dessus de la bande de vignettes. -->
       <Transition v-bind="contentTransition">
-        <div v-if="showModal" class="fixed top-0 inset-x-0 h-14 z-[103] flex items-center justify-between px-4">
-          <button
-            class="flex items-center justify-center w-10 h-10 text-gray-200 hover:text-white transition-colors"
-            @click="handleClose"
+        <div
+          v-if="showModal"
+          class="fixed inset-x-0 z-[103] flex justify-center px-4
+                 bottom-[calc(1.5rem+env(safe-area-inset-bottom,0px))]
+                 sm:bottom-24 pointer-events-none"
+        >
+          <div
+            class="pointer-events-auto flex items-center gap-3 sm:gap-4 max-w-full
+                   rounded-full bg-black/45 backdrop-blur-md
+                   pl-5 sm:pl-2 pr-2 py-2 font-body text-white"
           >
-            <IconLucid name="X" size="md" color="currentColor" />
-          </button>
-          <span class="text-white font-semibold text-base truncate mx-4">{{ props.title }}</span>
-          <span class="text-white/60 text-sm tabular-nums min-w-[3rem] text-right">
-            <template v-if="images.length > 0">{{ currentIndex + 1 }}/{{ images.length }}</template>
-          </span>
+            <!-- Précédent / suivant : dans la pastille sur ordinateur (sur un
+                 écran très large, des flèches aux bords seraient trop loin) ;
+                 sur téléphone, on glisse la photo -->
+            <button
+              v-if="images.length > 1"
+              class="hidden sm:flex shrink-0 items-center justify-center w-10 h-10
+                     rounded-full bg-white/15 hover:bg-white/25 transition-colors"
+              :aria-label="$t('stories.prev_photo')"
+              @click="go(-1)"
+            >
+              <IconLucid name="ChevronLeft" size="sm" color="currentColor" :stroke-width="1.5" />
+            </button>
+            <span
+              class="truncate italic text-[15px] sm:text-base"
+            >
+              {{ props.title }}
+            </span>
+            <span
+              v-if="images.length > 0"
+              class="shrink-0 text-[13px] tabular-nums tracking-[0.1em] text-white/80"
+            >
+              {{ String(currentIndex + 1).padStart(2, "0") }}/{{
+                String(images.length).padStart(2, "0")
+              }}
+            </span>
+            <button
+              v-if="images.length > 1"
+              class="hidden sm:flex shrink-0 items-center justify-center w-10 h-10
+                     rounded-full bg-white/15 hover:bg-white/25 transition-colors"
+              :aria-label="$t('stories.next_photo')"
+              @click="go(1)"
+            >
+              <IconLucid name="ChevronRight" size="sm" color="currentColor" :stroke-width="1.5" />
+            </button>
+            <span class="hidden sm:block w-px h-6 bg-white/25" aria-hidden="true" />
+            <button
+              class="shrink-0 flex items-center justify-center w-10 h-10
+                     rounded-full bg-white/15 hover:bg-white/25 transition-colors"
+              :aria-label="$t('common.close')"
+              @click="handleClose"
+            >
+              <IconLucid name="X" size="sm" color="currentColor" :stroke-width="1.5" />
+            </button>
+          </div>
         </div>
       </Transition>
 
       <!-- Caption -->
       <p
         v-if="showModal && images[currentIndex]?.caption"
-        class="fixed bottom-24 sm:bottom-4 inset-x-0 text-white/60 text-sm text-center px-4 z-[103] pointer-events-none"
+        class="fixed bottom-28 sm:bottom-44 inset-x-0 font-body italic text-white/80 text-sm text-center px-4 z-[103] pointer-events-none"
       >
         {{ images[currentIndex].caption }}
       </p>
-
-      <!-- Chevrons (desktop uniquement) -->
-      <button
-        v-if="showModal && images.length > 1"
-        class="fixed left-2 top-1/2 -translate-y-1/2 w-10 h-10
-               hidden sm:flex items-center justify-center rounded-full
-               bg-white/10 hover:bg-white/20 text-white transition-all z-[103]"
-        @click="go(-1)"
-      >
-        <IconLucid name="ChevronLeft" size="sm" color="currentColor" />
-      </button>
-      <button
-        v-if="showModal && images.length > 1"
-        class="fixed right-2 top-1/2 -translate-y-1/2 w-10 h-10
-               hidden sm:flex items-center justify-center rounded-full
-               bg-white/10 hover:bg-white/20 text-white transition-all z-[103]"
-        @click="go(1)"
-      >
-        <IconLucid name="ChevronRight" size="sm" color="currentColor" />
-      </button>
 
       <!-- Thumbnail strip (desktop uniquement) -->
       <div
@@ -98,7 +124,7 @@
           v-for="(img, i) in images"
           :key="img.id"
           :ref="(el) => setThumbRef(el, i)"
-          class="flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden transition-all"
+          class="flex-shrink-0 w-14 h-14 overflow-hidden transition-all"
           :class="i === currentIndex ? 'ring-2 ring-white opacity-100' : 'opacity-40 hover:opacity-70'"
           @click="goTo(i)"
         >
