@@ -143,7 +143,7 @@ const CLIENT_EMAIL = {
     confirmation: {
       subject: "Votre demande de devis est bien reçue — Boticia",
       title: "Votre demande est bien reçue",
-      services: { mariage: "mariage", evenement: "événement", atelier: "atelier" } as Record<string, string>,
+      services: { mariage: "mariage", evenement: "projet d'entreprise ou d'événement", atelier: "atelier floral" } as Record<string, string>,
       thanks: (service: string) =>
         `Merci pour votre demande de devis pour votre ${service}.`,
       meeting: (when: string) =>
@@ -208,7 +208,7 @@ const CLIENT_EMAIL = {
     confirmation: {
       subject: "We've received your quote request — Boticia",
       title: "Your request has been received",
-      services: { mariage: "wedding", evenement: "event", atelier: "workshop" } as Record<string, string>,
+      services: { mariage: "wedding", evenement: "business or event project", atelier: "floral workshop" } as Record<string, string>,
       thanks: (service: string) =>
         `Thank you for your quote request for your ${service}.`,
       meeting: (when: string) =>
@@ -271,7 +271,7 @@ const CLIENT_EMAIL = {
     confirmation: {
       subject: "お見積りのご依頼を承りました — Boticia",
       title: "ご依頼を承りました",
-      services: { mariage: "ウェディング", evenement: "イベント", atelier: "ワークショップ" } as Record<string, string>,
+      services: { mariage: "ウェディング", evenement: "法人・イベント", atelier: "フラワーワークショップ" } as Record<string, string>,
       thanks: (service: string) =>
         `${service}のお見積りのご依頼をいただき、ありがとうございます。`,
       meeting: (when: string) =>
@@ -399,8 +399,8 @@ export async function sendNewQuoteNotification(data: {
 }): Promise<boolean> {
   const serviceLabels: Record<string, string> = {
     mariage: "Mariage",
-    evenement: "Événement",
-    atelier: "Atelier",
+    evenement: "Entreprises & événements",
+    atelier: "Atelier floral",
   };
   const service = serviceLabels[data.serviceType] || data.serviceType;
 

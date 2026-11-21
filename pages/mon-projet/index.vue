@@ -286,7 +286,7 @@ const requestInfos = computed(() => {
 const requestSummary = computed(() => {
   const q = project.value?.quote;
   if (!q) return "";
-  const parts = [t(`quote_form.service_type_${q.service_type}`)];
+  const parts = [t(`quote_form.service_type_${q.service_type}_card`)];
   if (q.wedding_date) parts.push(formatDate(q.wedding_date));
   return parts.join(" · ");
 });

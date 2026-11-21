@@ -1402,7 +1402,8 @@ const getStepMessage = (step: number): string => {
 const getStepSummary = (step: number): string => {
   switch (step) {
     case 1:
-      return t(`quote_form.service_type_${form.service_type}`);
+      // Même titre que le bloc choisi (« Entreprises & événements »…)
+      return t(`quote_form.service_type_${form.service_type}_card`);
     case 3:
       return form.name;
     case 4: {
