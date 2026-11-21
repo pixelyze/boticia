@@ -29,8 +29,7 @@ export default defineEventHandler((event) => {
 
   for (const { path: page, priority } of pages) {
     for (const loc of locales) {
-      const path =
-        page === "/" ? `/${loc}` : `/${loc}${page}`;
+      const path = localizedPath(loc, page);
       xml += "  <url>\n";
       xml += `    <loc>${siteUrl}${path}</loc>\n`;
       xml += `    <lastmod>${today}</lastmod>\n`;
@@ -38,14 +37,11 @@ export default defineEventHandler((event) => {
 
       // Alternate hreflang links (BCP-47 codes)
       for (const altLoc of locales) {
-        const altPath =
-          page === "/"
-            ? `/${altLoc}`
-            : `/${altLoc}${page}`;
+        const altPath = localizedPath(altLoc, page);
         xml += `    <xhtml:link rel="alternate" hreflang="${hreflangMap[altLoc]}" href="${siteUrl}${altPath}" />\n`;
       }
       // x-default points to French (default locale)
-      const xDefaultPath = page === "/" ? "/fr" : `/fr${page}`;
+      const xDefaultPath = localizedPath("fr", page);
       xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${xDefaultPath}" />\n`;
 
       xml += "  </url>\n";

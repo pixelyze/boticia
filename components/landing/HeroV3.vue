@@ -31,7 +31,7 @@
 
         <!-- CTA -->
         <a
-          :href="localePath('/devis')"
+          :href="localePath('devis')"
           class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-cream text-dark text-sm font-semibold hover:bg-white transition-all"
         >
           {{ $t('weddings.cta') }}

@@ -52,14 +52,14 @@
         <!-- Variantes éditoriales, en clair sur la photo -->
         <Button
           variant="cta"
-          :to="localePath('/devis')"
+          :to="localePath('devis')"
           class="!bg-cream !text-dark hover:!bg-white"
         >
           {{ $t('weddings.cta') }}
         </Button>
         <Button
           variant="link"
-          :to="localePath('/creations')"
+          :to="localePath('creations')"
           class="!text-cream !border-cream hover:!border-cream/40"
         >
           {{ $t('intro.cta') }}

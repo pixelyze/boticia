@@ -29,7 +29,7 @@
         <div class="bg-dark px-6 py-2">
           <Button
             variant="cta"
-            :to="localePath('/devis')"
+            :to="localePath('devis')"
             class="w-full justify-center !py-3"
           >
             {{ $t("nav.quote") }}

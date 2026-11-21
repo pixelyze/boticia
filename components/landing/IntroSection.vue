@@ -8,7 +8,7 @@
           {{ $t('intro.description') }}
         </p>
         <div class="mt-10">
-          <Button variant="link" :to="localePath('/creations')">
+          <Button variant="link" :to="localePath('creations')">
             {{ $t('intro.cta') }}
           </Button>
         </div>

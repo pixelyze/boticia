@@ -12,21 +12,21 @@
           <!-- Left nav -->
           <div class="hidden md:flex items-center gap-8">
             <NuxtLink
-              :to="localePath('/mariages')"
+              :to="localePath('mariages')"
               class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
               :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
             >
               {{ t("nav.weddings") }}
             </NuxtLink>
             <NuxtLink
-              :to="localePath('/evenements')"
+              :to="localePath('evenements')"
               class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
               :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
             >
               {{ t("nav.events") }}
             </NuxtLink>
             <NuxtLink
-              :to="localePath('/ateliers')"
+              :to="localePath('ateliers')"
               class="text-xs font-semibold uppercase tracking-[0.2em] transition-colors"
               :class="isTransparent ? 'text-cream/80 hover:text-cream' : 'text-dark hover:text-dark/60'"
             >
@@ -58,7 +58,7 @@
             <!-- Devis : discret, simple lien souligné d'un filet fin -->
             <Button
               variant="link"
-              :to="localePath('/devis')"
+              :to="localePath('devis')"
               class="!text-xs !pb-1 [&_svg]:hidden"
               :class="isTransparent ? '!text-cream !border-cream hover:!border-cream/40' : 'hover:!border-dark/40'"
             >
@@ -251,7 +251,7 @@
                 <Button
                   ref="firstMenuLink"
                   variant="cta"
-                  :to="localePath('/devis')"
+                  :to="localePath('devis')"
                   class="mt-5 w-full justify-center !bg-cream !text-dark hover:!bg-white"
                   @click="closeMobileMenu"
                 >
@@ -393,9 +393,9 @@ const closeBtn = ref(null);
 const firstMenuLink = ref(null);
 
 const navLinks = [
-  { key: "nav.weddings", to: "/mariages" },
-  { key: "nav.events", to: "/evenements" },
-  { key: "nav.workshops", to: "/ateliers" },
+  { key: "nav.weddings", to: "mariages" },
+  { key: "nav.events", to: "evenements" },
+  { key: "nav.workshops", to: "ateliers" },
 ];
 
 const infoNavLinks = [
@@ -404,9 +404,9 @@ const infoNavLinks = [
 ];
 
 const mobileNavLinks = [
-  { key: "nav.weddings", to: "/mariages" },
-  { key: "nav.events", to: "/evenements" },
-  { key: "nav.workshops", to: "/ateliers" },
+  { key: "nav.weddings", to: "mariages" },
+  { key: "nav.events", to: "evenements" },
+  { key: "nav.workshops", to: "ateliers" },
 ];
 
 

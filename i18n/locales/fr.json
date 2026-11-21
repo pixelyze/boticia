@@ -349,7 +349,7 @@
     "next_steps_description": "Vous recevrez un email de confirmation avec tous les détails de votre commande."
   },
   "footer": {
-    "description": "Studio de design floral par Laëtitia Schaeffer. Fleurs françaises, créations sur mesure et approche éco-responsable.",
+    "description": "Studio de design floral par Laëtitia Schaeffer. Fleurs de saison en circuit court, créations sur mesure et approche éco-responsable.",
     "subtitle": "Studio de design floral",
     "copyright": "© 2026 Boticia. Tous droits réservés.",
     "privacy": "Nous respectons votre vie privée et protégeons vos données personnelles.",
@@ -1004,11 +1004,15 @@
     "edit_rule": "Modifier le créneau"
   },
   "seo": {
-    "home_description": "Boticia · Art floral sur mesure par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court, en Provence et dans toute la France.",
-    "mariages_description": "Fleuriste mariage en Provence — Boticia crée des compositions florales sur mesure : bouquet de mariée, arche florale, centres de table. Budget à partir de 4 000 €.",
-    "about_description": "Découvrez Laëtitia Schaeffer, créatrice florale passionnée, fondatrice de Boticia. Compositions sur mesure, fleurs françaises en circuit court et accompagnement bienveillant.",
+    "faq_description": "Budget, délais, fleurs de saison, déplacements : les réponses de Boticia à vos questions sur la décoration florale de mariage et d'événement.",
+    "faq_title": "Questions fréquentes",
+    "evenements_title": "Fleuriste événementiel et décor floral",
+    "home_title": "Boticia · Studio de design floral, Provence et Paris",
+    "home_description": "Studio de design floral de Laëtitia Schaeffer : décoration florale de mariage, scénographie d'événements et ateliers. Fleurs de saison, Provence et Paris.",
+    "mariages_description": "Fleuriste mariage en Provence : Boticia crée vos compositions florales sur mesure, du bouquet de mariée à l'arche florale. Budget à partir de 4 000 €.",
+    "about_description": "Découvrez Laëtitia Schaeffer, fondatrice de Boticia : compositions sur mesure, fleurs de saison en circuit court et accompagnement bienveillant.",
     "devis_description": "Demandez un devis personnalisé pour votre décoration florale de mariage avec Boticia. Bouquets, arches, centres de table et scénographie complète.",
-    "legal_description": "Mentions légales de Boticia, studio de design floral par Laëtitia Schaeffer.",
+    "legal_description": "Mentions légales de Boticia, studio de design floral de Laëtitia Schaeffer à Lambesc : éditeur, hébergement, données personnelles et cookies.",
     "login_description": "Accédez à votre espace client Boticia pour suivre votre projet floral de mariage."
   },
   "errors": {

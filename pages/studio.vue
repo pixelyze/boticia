@@ -16,7 +16,7 @@
             <h1 class="section-title-lg">{{ t('about.title') }}</h1>
             <p class="para-lead mt-6">{{ t('about.intro') }}</p>
             <p class="para mt-4">{{ t('about.approach') }}</p>
-            <Button variant="cta" :to="localePath('/devis')" class="mt-8">
+            <Button variant="cta" :to="localePath('devis')" class="mt-8">
               {{ t('nav.quote') }}
             </Button>
           </div>
@@ -111,7 +111,7 @@
         <h2 class="section-title-lg mb-8 max-w-2xl mx-auto">
           {{ t('about.cta_text') }}
         </h2>
-        <Button variant="cta" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('devis')">
           {{ t('nav.quote') }}
         </Button>
       </div>
@@ -155,7 +155,7 @@ useSeoMeta({
 });
 
 useHead({
-  title: t('about.title') + ' - Boticia',
+  title: t('about.title') + ' | Boticia Provence',
   meta: [
     {
       key: 'description',

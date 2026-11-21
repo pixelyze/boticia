@@ -38,6 +38,11 @@
 </template>
 
 <script setup>
+// DEV-ONLY : page de démonstration, introuvable en production
+if (!import.meta.dev) {
+  throw createError({ statusCode: 404 });
+}
+
 definePageMeta({ layout: false, ssr: false });
 
 const active = ref(1);

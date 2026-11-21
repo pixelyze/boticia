@@ -94,6 +94,17 @@ definePageMeta({
   pageTransition: false,
 });
 
+// Adresses traduites : l'anglais et le japonais ont une adresse en anglais.
+// Les anciennes (/en/legal…) redirigent en 301, voir server/middleware/redirects.ts
+defineI18nRoute({
+  paths: {
+    fr: "/legal",
+    en: "/legal-notice",
+    ja: "/legal-notice",
+  },
+});
+
+
 useSeoMeta({
   ogTitle: t("legal.title") + " | Boticia",
   ogDescription: t("seo.legal_description"),
@@ -104,7 +115,7 @@ useSeoMeta({
 });
 
 useHead({
-  title: t("legal.title") + " - Boticia",
+  title: t("legal.title") + " | Boticia",
   meta: [
     {
       key: "description",

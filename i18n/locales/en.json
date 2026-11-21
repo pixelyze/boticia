@@ -349,7 +349,7 @@
     "next_steps_description": "You will receive a confirmation email with all the details of your order."
   },
   "footer": {
-    "description": "Floral design studio by Laëtitia Schaeffer. French flowers, bespoke creations and an eco-responsible approach.",
+    "description": "Floral design studio by Laëtitia Schaeffer. Locally grown seasonal flowers, bespoke creations and an eco-responsible approach.",
     "subtitle": "Floral Design Studio",
     "copyright": "© 2026 Boticia. All rights reserved.",
     "privacy": "We respect your privacy and protect your personal data.",
@@ -1004,11 +1004,15 @@
     "edit_rule": "Edit slot"
   },
   "seo": {
-    "home_description": "Boticia · Bespoke floral art by Laëtitia Schaeffer. Wedding floral decoration, event scenography and floral art workshops. French flowers, locally sourced, in Provence and throughout France.",
+    "faq_description": "Budget, timing, seasonal flowers, travel: Boticia answers your questions about wedding and event floral design in Provence and Paris.",
+    "faq_title": "Frequently asked questions",
+    "evenements_title": "Event florist, floral scenography",
+    "home_title": "Boticia · Floral design studio, Provence & Paris",
+    "home_description": "Laëtitia Schaeffer's floral design studio: wedding flowers, event scenography and floral workshops. Seasonal flowers, in Provence and Paris.",
     "mariages_description": "Wedding florist in Provence — Boticia creates bespoke floral arrangements: bridal bouquet, floral arch, centrepieces. Budget from €4,000.",
-    "about_description": "Meet Laëtitia Schaeffer, passionate floral designer and founder of Boticia. Bespoke compositions, locally sourced French flowers and caring guidance.",
+    "about_description": "Meet Laëtitia Schaeffer, founder of Boticia: bespoke compositions, locally grown seasonal flowers and caring guidance.",
     "devis_description": "Request a personalised quote for your wedding floral decoration with Boticia. Bouquets, arches, centrepieces and complete scenography.",
-    "legal_description": "Legal notice for Boticia, floral design studio by Laëtitia Schaeffer.",
+    "legal_description": "Legal notice for Boticia, Laëtitia Schaeffer's floral design studio in Lambesc: publisher, hosting, personal data and cookies.",
     "login_description": "Access your Boticia client space to follow your wedding floral project."
   },
   "errors": {

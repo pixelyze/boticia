@@ -39,7 +39,7 @@
         <p class="para-lead mb-8 max-w-xl mx-auto">
           {{ $t("weddings.cta_desc") }}
         </p>
-        <Button variant="cta" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('devis')">
           {{ $t("weddings.cta") }}
         </Button>
       </div>
@@ -55,6 +55,17 @@ definePageMeta({
   layout: "homepage",
   pageTransition: false,
 });
+
+// Adresses traduites : l'anglais et le japonais ont une adresse en anglais.
+// Les anciennes (/en/mariages…) redirigent en 301, voir server/middleware/redirects.ts
+defineI18nRoute({
+  paths: {
+    fr: "/mariages",
+    en: "/weddings",
+    ja: "/weddings",
+  },
+});
+
 
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
@@ -161,7 +172,7 @@ useHead({
             "@type": "ListItem",
             "position": 2,
             "name": t("weddings.title"),
-            "item": `${config.public.siteUrl}/${locale.value}/mariages`,
+            "item": `${config.public.siteUrl}${localePath("mariages")}`,
           },
         ],
       }),

@@ -45,14 +45,14 @@
       <!-- CTAs -->
       <div class="flex flex-col sm:flex-row items-center gap-4 hero-fade hero-fade-4">
         <NuxtLink
-          :to="localePath('/devis')"
+          :to="localePath('devis')"
           class="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-cream text-dark text-sm font-semibold hover:bg-white transition-all hover:shadow-lg hover:shadow-cream/20"
         >
           {{ $t('weddings.cta') }}
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </NuxtLink>
         <NuxtLink
-          :to="localePath('/creations')"
+          :to="localePath('creations')"
           class="inline-flex items-center gap-2 text-sm text-cream/50 hover:text-cream transition-colors"
         >
           <span class="border-b border-cream/20 hover:border-cream/50 pb-0.5">{{ $t('intro.cta') }}</span>

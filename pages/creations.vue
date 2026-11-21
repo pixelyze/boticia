@@ -62,7 +62,7 @@
           </p>
           <Button
             variant="cta"
-            :to="localePath('/devis')"
+            :to="localePath('devis')"
           >
             {{ $t("creations.cta") }}
           </Button>
@@ -88,6 +88,17 @@ definePageMeta({
   layout: "homepage",
   pageTransition: false,
 });
+
+// Adresses traduites : l'anglais et le japonais ont une adresse en anglais.
+// Les anciennes (/en/creations…) redirigent en 301, voir server/middleware/redirects.ts
+defineI18nRoute({
+  paths: {
+    fr: "/creations",
+    en: "/portfolio",
+    ja: "/portfolio",
+  },
+});
+
 
 const { t } = useI18n();
 const localePath = useLocalePath();

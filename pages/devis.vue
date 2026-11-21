@@ -110,6 +110,9 @@
     <template v-else>
       <!-- Chat conversational form -->
       <section class="pt-10 md:pt-16 pb-16 md:pb-20 bg-white">
+        <!-- Titre de la page pour Google et les lecteurs d'écran : le
+             formulaire en conversation n'a pas de titre visible -->
+        <h1 class="sr-only">{{ t("quote_form.page_title") }}</h1>
         <div class="container mx-auto px-6 md:pl-16 max-w-2xl">
           <!-- Chat messages container -->
           <div
@@ -1017,12 +1020,23 @@ definePageMeta({
   layout: "minimal",
 });
 
+// Adresses traduites : l'anglais et le japonais ont une adresse en anglais.
+// Les anciennes (/en/devis…) redirigent en 301, voir server/middleware/redirects.ts
+defineI18nRoute({
+  paths: {
+    fr: "/devis",
+    en: "/quote",
+    ja: "/quote",
+  },
+});
+
+
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const { compress } = useImageCompression();
 
 useHead({
-  title: t("quote_form.page_title") + " - Boticia",
+  title: t("quote_form.page_title") + " | Boticia Provence",
   meta: [
     {
       key: "description",

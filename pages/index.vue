@@ -134,17 +134,17 @@ const route = useRoute();
 const siteUrl = config.public.siteUrl;
 
 useSeoMeta({
-  ogTitle: "Boticia — Floral designer | Provence · Paris",
+  ogTitle: t("seo.home_title"),
   ogDescription: t("hero.subtitle"),
   ogUrl: `${config.public.siteUrl}${route.path}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
-  twitterTitle: "Boticia — Floral designer | Provence · Paris",
+  twitterTitle: t("seo.home_title"),
   twitterDescription: t("hero.subtitle"),
 });
 
 useHead({
-  title: "Boticia — Floral designer | Provence · Paris",
+  title: t("seo.home_title"),
   meta: [
     {
       key: 'description',

@@ -111,6 +111,11 @@
 </template>
 
 <script setup lang="ts">
+// DEV-ONLY : page de démonstration, introuvable en production
+if (!import.meta.dev) {
+  throw createError({ statusCode: 404 });
+}
+
 definePageMeta({ layout: false, ssr: false });
 
 const route = useRoute();

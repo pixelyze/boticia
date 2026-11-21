@@ -20,7 +20,7 @@
             </p>
             <Button
               variant="cta"
-              :to="localePath('/devis')"
+              :to="localePath('devis')"
               class="mt-8"
             >
               {{ $t("workshops.cta") }}
@@ -128,7 +128,7 @@
         <p class="para-lead mb-8 max-w-xl mx-auto">
           {{ $t("workshops.cta_desc") }}
         </p>
-        <Button variant="cta" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('devis')">
           {{ $t("workshops.cta") }}
         </Button>
       </div>
@@ -144,13 +144,24 @@ definePageMeta({
   pageTransition: false,
 });
 
+// Adresses traduites : l'anglais et le japonais ont une adresse en anglais.
+// Les anciennes (/en/ateliers…) redirigent en 301, voir server/middleware/redirects.ts
+defineI18nRoute({
+  paths: {
+    fr: "/ateliers",
+    en: "/workshops",
+    ja: "/workshops",
+  },
+});
+
+
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const siteUrl = config.public.siteUrl;
 
 useHead({
-  title: t("workshops.title") + " - Boticia",
+  title: t("workshops.title") + " | Boticia Provence",
   meta: [{ name: "description", content: t("workshops.intro") }],
   script: [
     {
@@ -197,7 +208,7 @@ useHead({
             "@type": "ListItem",
             "position": 2,
             "name": t("workshops.title"),
-            "item": `${siteUrl}/${locale.value}/ateliers`,
+            "item": `${siteUrl}${localePath("ateliers")}`,
           },
         ],
       }),

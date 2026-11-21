@@ -112,7 +112,7 @@
         class="pt-6 border-t border-dark/20 flex flex-col items-start gap-3"
       >
         <p class="para-small">{{ $t("login_page.not_client") }}</p>
-        <Button variant="link" :to="localePath('/devis')">
+        <Button variant="link" :to="localePath('devis')">
           {{ $t("login_page.quote_cta") }}
         </Button>
       </div>

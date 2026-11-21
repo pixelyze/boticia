@@ -31,7 +31,7 @@
           </p>
           <Button
             variant="cta"
-            :to="localePath('/devis')"
+            :to="localePath('devis')"
             class="mt-8"
           >
             {{ $t("weddings.cta") }}

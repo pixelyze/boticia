@@ -32,7 +32,7 @@
         <span class="text-dark/20 mx-1">·</span>
         <NuxtLink
           v-if="!isLegalPage"
-          :to="localePath('/legal')"
+          :to="localePath('legal')"
           class="text-gray-500 hover:text-dark underline underline-offset-2 transition-colors duration-300"
         >
           {{ $t("footer.legal_link") }}

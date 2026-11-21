@@ -20,7 +20,7 @@
             </p>
             <Button
               variant="cta"
-              :to="localePath('/devis')"
+              :to="localePath('devis')"
               class="mt-8"
             >
               {{ $t("events.cta") }}
@@ -89,7 +89,7 @@
             <p class="para-lead mt-6">
               {{ $t("events.philosophy_p1") }}
             </p>
-            <Button variant="cta" :to="localePath('/devis')" class="mt-8">
+            <Button variant="cta" :to="localePath('devis')" class="mt-8">
               {{ $t("events.cta") }}
             </Button>
           </div>
@@ -147,7 +147,7 @@
         <p class="para-lead mb-8 max-w-xl mx-auto">
           {{ $t("events.cta_desc") }}
         </p>
-        <Button variant="cta" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('devis')">
           {{ $t("events.cta") }}
         </Button>
       </div>
@@ -163,23 +163,34 @@ definePageMeta({
   pageTransition: false,
 });
 
+// Adresses traduites : l'anglais et le japonais ont une adresse en anglais.
+// Les anciennes (/en/evenements…) redirigent en 301, voir server/middleware/redirects.ts
+defineI18nRoute({
+  paths: {
+    fr: "/evenements",
+    en: "/events",
+    ja: "/events",
+  },
+});
+
+
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const config = useRuntimeConfig();
 const route = useRoute();
 
 useSeoMeta({
-  ogTitle: `${t("events.title")} | Boticia Provence`,
+  ogTitle: `${t("seo.evenements_title")} | Boticia Provence`,
   ogDescription: t("events.intro"),
   ogUrl: `${config.public.siteUrl}${route.path}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
-  twitterTitle: `${t("events.title")} | Boticia Provence`,
+  twitterTitle: `${t("seo.evenements_title")} | Boticia Provence`,
   twitterDescription: t("events.intro"),
 });
 
 useHead({
-  title: t("events.title") + " | Boticia Provence",
+  title: t("seo.evenements_title") + " | Boticia Provence",
   meta: [{ name: "description", content: t("events.intro") }],
   script: [
     {
@@ -268,7 +279,7 @@ useHead({
             "@type": "ListItem",
             "position": 2,
             "name": t("events.title"),
-            "item": `${config.public.siteUrl}/${locale.value}/evenements`,
+            "item": `${config.public.siteUrl}${localePath("evenements")}`,
           },
         ],
       }),

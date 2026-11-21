@@ -20,7 +20,7 @@
             </p>
             <Button
               variant="cta"
-              :to="localePath('/devis')"
+              :to="localePath('devis')"
               class="mt-8"
             >
               {{ $t("faq.cta_button") }}
@@ -63,7 +63,7 @@
         <p class="para-lead mb-8 max-w-xl mx-auto">
           {{ $t("faq.cta_desc") }}
         </p>
-        <Button variant="cta" :to="localePath('/devis')">
+        <Button variant="cta" :to="localePath('devis')">
           {{ $t("faq.cta_button") }}
         </Button>
       </div>
@@ -78,6 +78,17 @@ definePageMeta({
   layout: "homepage",
   pageTransition: false,
 });
+
+// Adresses traduites : l'anglais et le japonais ont une adresse en anglais.
+// Les anciennes (/en/faq…) redirigent en 301, voir server/middleware/redirects.ts
+defineI18nRoute({
+  paths: {
+    fr: "/faq",
+    en: "/faq",
+    ja: "/faq",
+  },
+});
+
 
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
@@ -99,17 +110,17 @@ const restFaqItems = computed(() => allFaqItems.value.slice(4));
 const route = useRoute();
 
 useSeoMeta({
-  ogTitle: t("faq.page_title") + " | Boticia",
-  ogDescription: t("faq.subtitle"),
+  ogTitle: t("seo.faq_title") + " | Boticia Provence",
+  ogDescription: t("seo.faq_description"),
   ogUrl: `${siteUrl}${route.path}`,
   ogType: "website",
-  twitterTitle: t("faq.page_title") + " | Boticia",
-  twitterDescription: t("faq.subtitle"),
+  twitterTitle: t("seo.faq_title") + " | Boticia Provence",
+  twitterDescription: t("seo.faq_description"),
 });
 
 useHead({
-  title: t("faq.page_title") + " - Boticia",
-  meta: [{ name: "description", content: t("faq.subtitle") }],
+  title: t("seo.faq_title") + " | Boticia Provence",
+  meta: [{ name: "description", content: t("seo.faq_description") }],
   script: [
     {
       type: "application/ld+json",
@@ -142,7 +153,7 @@ useHead({
             "@type": "ListItem",
             "position": 2,
             "name": t("faq.page_title"),
-            "item": `${siteUrl}/${locale.value}/faq`,
+            "item": `${siteUrl}${localePath("/faq")}`,
           },
         ],
       }),

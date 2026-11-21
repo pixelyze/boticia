@@ -30,7 +30,7 @@
           <Button
             variant="primary"
             icon="MoveRight"
-            :to="localePath('/devis')"
+            :to="localePath('devis')"
             class="mt-8"
           >
             {{ $t("weddings.cta") }}

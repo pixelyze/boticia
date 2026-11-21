@@ -67,7 +67,7 @@
         <p>{{ $t("footer.copyright") }}</p>
         <Button
           variant="ghost"
-          :to="localePath('/legal')"
+          :to="localePath('legal')"
           :class="[LINK_CLASS, '!text-sm !text-gray-500 hover:!text-dark']"
         >
           {{ $t("footer.legal_link") }}
@@ -85,12 +85,12 @@ const LINK_CLASS =
   "!p-0 !border-0 !rounded-none !font-normal !text-[17px] hover:!bg-transparent hover:underline underline-offset-4";
 
 const pages = [
-  { to: "/mariages", label: "nav.weddings" },
-  { to: "/evenements", label: "nav.events" },
-  { to: "/ateliers", label: "nav.workshops" },
+  { to: "mariages", label: "nav.weddings" },
+  { to: "evenements", label: "nav.events" },
+  { to: "ateliers", label: "nav.workshops" },
   { to: "/studio", label: "nav.studio" },
   { to: "/faq", label: "footer.faq_link" },
-  { to: "/devis", label: "nav.quote" },
+  { to: "devis", label: "nav.quote" },
 ];
 
 const SOCIAL = [

@@ -27,7 +27,7 @@ export default defineNuxtConfig({
         {
           key: "description",
           name: "description",
-          content: "Boticia — Studio de design floral par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
+          content: "Boticia — Studio de design floral par Laëtitia Schaeffer. Décoration florale de mariage, scénographie événementielle et ateliers d'art floral. Fleurs de saison en circuit court.",
         },
         { name: "author", content: "Boticia — Laëtitia Schaeffer" },
         { name: "robots", content: "index, follow" },
@@ -37,7 +37,7 @@ export default defineNuxtConfig({
         },
         {
           property: "og:description",
-          content: "Studio de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral. Fleurs françaises en circuit court.",
+          content: "Studio de design floral. Décoration de mariage, scénographie événementielle et ateliers d'art floral. Fleurs de saison en circuit court.",
         },
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "Boticia" },
