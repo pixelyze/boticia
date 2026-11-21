@@ -193,7 +193,7 @@
                 v-for="opt in serviceTypeOptions"
                 :key="opt.value"
                 type="button"
-                class="group w-full flex items-center gap-4 px-5 py-4 border text-left transition-all duration-200 touch-manipulation"
+                class="group w-full flex items-start gap-4 px-5 py-5 border text-left transition-all duration-200 touch-manipulation"
                 :class="
                   form.service_type === opt.value
                     ? 'bg-dark border-dark'
@@ -202,7 +202,7 @@
                 @click="chooseAndContinue(() => (form.service_type = opt.value))"
               >
                 <div
-                  class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all"
+                  class="w-10 h-10 -mt-2 rounded-full flex items-center justify-center shrink-0 transition-all"
                   :class="
                     form.service_type === opt.value
                       ? ''
@@ -231,14 +231,25 @@
                     {{ opt.label }}
                   </span>
                   <span
-                    class="text-sm transition-colors"
+                    class="text-sm block transition-colors"
                     :class="
                       form.service_type === opt.value
                         ? 'text-cream/70'
-                        : 'text-gray-500'
+                        : 'text-gray-600'
                     "
                   >
                     {{ opt.desc }}
+                  </span>
+                  <!-- Exemples : ce qu'on y trouve, liste ouverte -->
+                  <span
+                    class="text-sm italic block mt-1.5 transition-colors"
+                    :class="
+                      form.service_type === opt.value
+                        ? 'text-cream/80'
+                        : 'text-orange-600'
+                    "
+                  >
+                    {{ opt.examples }}
                   </span>
                 </div>
               </button>
@@ -1157,20 +1168,23 @@ const minDate = computed(() => {
 const serviceTypeOptions = computed(() => [
   {
     value: "mariage" as ServiceType,
-    label: t("quote_form.service_type_mariage"),
+    label: t("quote_form.service_type_mariage_card"),
     desc: t("quote_form.service_type_mariage_desc"),
+    examples: t("quote_form.service_type_mariage_examples"),
     icon: "Heart",
   },
   {
     value: "evenement" as ServiceType,
-    label: t("quote_form.service_type_evenement"),
+    label: t("quote_form.service_type_evenement_card"),
     desc: t("quote_form.service_type_evenement_desc"),
+    examples: t("quote_form.service_type_evenement_examples"),
     icon: "Sparkle",
   },
   {
     value: "atelier" as ServiceType,
-    label: t("quote_form.service_type_atelier"),
+    label: t("quote_form.service_type_atelier_card"),
     desc: t("quote_form.service_type_atelier_desc"),
+    examples: t("quote_form.service_type_atelier_examples"),
     icon: "Palette",
   },
 ]);
