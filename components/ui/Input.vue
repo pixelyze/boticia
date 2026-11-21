@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="label" :for="inputId" class="block font-medium mb-2">
+    <label v-if="label" :for="inputId" :class="labelClasses">
       {{ label }}
       <span v-if="optional" class="text-gray-500 text-xs font-normal">({{ optional }})</span>
     </label>
@@ -42,7 +42,7 @@ interface Props {
   required?: boolean;
   disabled?: boolean;
   optional?: string;
-  variant?: 'brutal' | 'soft';
+  variant?: 'brutal' | 'line';
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -62,10 +62,18 @@ const emit = defineEmits<{
 // différentes, ce qui cassait l'association <label for> à l'hydratation.
 const inputId = useId();
 
+// « line » : style éditorial du formulaire de devis (filet fin, angles
+// droits, étiquette en capitales orange)
+const labelClasses = computed(() =>
+  props.variant === 'line'
+    ? 'block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2'
+    : 'block font-medium mb-2'
+);
+
 // Classes du design system (copiées de espace/index.vue)
 const inputClasses = computed(() => {
-  if (props.variant === 'soft') {
-    const base = 'w-full h-12 px-4 py-3 rounded-xl border-2 bg-white focus:outline-none focus:border-dark transition-all';
+  if (props.variant === 'line') {
+    const base = 'w-full h-14 px-5 border bg-white focus:outline-none focus:border-dark transition-all';
 
     if (props.disabled) {
       return `${base} border-gray-200 bg-gray-50 cursor-not-allowed opacity-60`;
@@ -75,7 +83,7 @@ const inputClasses = computed(() => {
       return `${base} border-red-400`;
     }
 
-    return `${base} border-dark/10`;
+    return `${base} border-dark/30`;
   }
 
   const base = 'w-full h-12 px-4 py-3 border-2 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px] transition-all';

@@ -3,17 +3,20 @@
     <!-- Erreur : lien expiré, déjà utilisé ou sans projet -->
     <template v-if="error">
       <div
-        class="w-14 h-14 rounded-full bg-cream-light flex items-center justify-center mb-6"
+        class="w-14 h-14 rounded-full border border-dark/20 flex items-center
+          justify-center mb-8"
       >
-        <IconLucid name="AlertCircle" class="w-6 h-6 text-dark" />
+        <IconLucid
+          name="AlertCircle"
+          :stroke-width="1.25"
+          class="w-6 h-6 text-dark"
+        />
       </div>
-      <h1
-        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
-      >
+      <h1 class="section-title-lg !mt-0 text-balance mb-5">
         {{ $t("confirm_page.error_title") }}
       </h1>
-      <p class="text-dark/70 leading-relaxed mb-8">{{ error }}</p>
-      <Button variant="primary" :to="retryLink" class="w-full justify-center">
+      <p class="para mb-10">{{ error }}</p>
+      <Button variant="cta" :to="retryLink" class="w-full justify-center">
         {{ $t("confirm_page.retry") }}
       </Button>
     </template>
@@ -21,16 +24,19 @@
     <!-- Connexion en cours -->
     <template v-else>
       <div
-        class="w-14 h-14 rounded-full bg-cream-light flex items-center justify-center mb-6"
+        class="w-14 h-14 rounded-full border border-dark/20 flex items-center
+          justify-center mb-8"
       >
-        <IconLucid name="Loader2" class="w-6 h-6 text-dark animate-spin" />
+        <IconLucid
+          name="Loader2"
+          :stroke-width="1.25"
+          class="w-6 h-6 text-dark animate-spin"
+        />
       </div>
-      <h1
-        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
-      >
+      <h1 class="section-title-lg !mt-0 text-balance mb-5">
         {{ $t("confirm_page.loading_title") }}
       </h1>
-      <p class="text-dark/70 leading-relaxed">
+      <p class="para">
         {{ $t("confirm_page.loading_text") }}
       </p>
     </template>

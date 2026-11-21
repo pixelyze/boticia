@@ -2,19 +2,17 @@
   <AuthSplit>
     <!-- Étape 1 : adresse email -->
     <template v-if="!sent">
-      <p class="text-xs uppercase tracking-widest text-dark/60 mb-4">
+      <p class="section-tagline">
         {{ $t("login_page.eyebrow") }}
       </p>
-      <h1
-        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
-      >
+      <h1 class="section-title-lg text-balance mb-5">
         {{ $t("login_page.title") }}
       </h1>
-      <p class="text-dark/70 leading-relaxed mb-8">
+      <p class="para mb-10">
         {{ $t("login_page.intro") }}
       </p>
 
-      <form @submit.prevent="handleLogin" class="space-y-4">
+      <form @submit.prevent="handleLogin" class="space-y-6">
         <!-- Attributs mobiles : iOS/Android proposent l'adresse au-dessus du
              clavier (autocomplete), sans majuscule ni correction auto. -->
         <Input
@@ -23,7 +21,7 @@
           name="email"
           :label="$t('login_page.email_label')"
           :placeholder="$t('login_page.email_placeholder')"
-          variant="soft"
+          variant="line"
           autocomplete="email"
           inputmode="email"
           autocapitalize="off"
@@ -34,7 +32,7 @@
         />
         <Button
           type="submit"
-          variant="primary"
+          variant="cta"
           :loading="loading"
           class="w-full justify-center"
         >
@@ -47,25 +45,24 @@
     <div v-else>
       <Button
         type="button"
-        variant="default"
+        variant="ghost"
         icon="ArrowLeft"
         icon-only
-        class="!p-3 mb-6"
+        class="!w-10 !h-10 justify-center !border !border-dark/20 !text-dark
+          hover:!border-dark hover:!bg-transparent mb-8"
         :aria-label="$t('login_page.back_to_email')"
         :title="$t('login_page.back_to_email')"
         @click="backToEmail"
       />
-      <h1
-        class="font-heading text-3xl md:text-4xl leading-tight text-balance text-dark mb-4"
-      >
+      <h1 class="section-title-lg !mt-0 text-balance mb-5">
         {{ $t("login_page.code_title") }}
       </h1>
-      <p class="text-dark/70 leading-relaxed">
+      <p class="para">
         {{ $t("login_page.code_intro") }}
       </p>
-      <p class="font-semibold text-dark break-all mt-1 mb-8">{{ email }}</p>
+      <p class="para font-semibold break-all mt-1 mb-10">{{ email }}</p>
 
-      <form @submit.prevent="verifyCode" class="space-y-3">
+      <form @submit.prevent="verifyCode" class="space-y-6">
         <!-- Pas de maxlength : un code collé avec espaces (« 123 456 »)
              serait coupé avant nettoyage. onCodeInput garde 6 chiffres. -->
         <Input
@@ -73,7 +70,7 @@
           type="text"
           :placeholder="$t('login_page.code_placeholder')"
           :aria-label="$t('login_page.code_placeholder')"
-          variant="soft"
+          variant="line"
           inputmode="numeric"
           autocomplete="one-time-code"
           class="!h-14 text-lg tracking-[0.3em] placeholder:tracking-normal"
@@ -82,7 +79,7 @@
         />
         <Button
           type="submit"
-          variant="primary"
+          variant="cta"
           :loading="verifying"
           :disabled="code.length !== 6"
           class="w-full justify-center"
@@ -91,9 +88,9 @@
         </Button>
         <Button
           type="button"
-          variant="ghost"
+          variant="link"
           :loading="loading"
-          class="w-full justify-center"
+          class="!flex mx-auto w-fit"
           @click="resendCode"
         >
           {{ $t("login_page.code_resend") }}
@@ -111,18 +108,14 @@
 
     <!-- CTA devis -->
     <template #footer>
-      <p
-        class="pt-6 border-t border-dark/10 text-sm text-dark/60"
+      <div
+        class="pt-6 border-t border-dark/20 flex flex-col items-start gap-3"
       >
-        {{ $t("login_page.not_client") }}
-        <Button
-          variant="ghost"
-          :to="localePath('/devis')"
-          class="!p-0 !font-normal text-sm underline underline-offset-4 decoration-dark/30 hover:decoration-dark hover:!bg-transparent"
-        >
+        <p class="para-small">{{ $t("login_page.not_client") }}</p>
+        <Button variant="link" :to="localePath('/devis')">
           {{ $t("login_page.quote_cta") }}
         </Button>
-      </p>
+      </div>
     </template>
   </AuthSplit>
 </template>

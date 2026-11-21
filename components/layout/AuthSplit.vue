@@ -1,18 +1,31 @@
 <template>
   <div
-    class="min-h-dvh md:h-screen flex flex-col md:grid md:grid-cols-2 bg-white md:overflow-hidden"
+    class="min-h-dvh md:h-screen flex flex-col md:grid md:grid-cols-2 bg-white
+      font-body md:overflow-hidden"
   >
-    <!-- Logo sur fond uni : bandeau en mobile, demi-écran en desktop -->
+    <!-- Nom en texte sur fond uni (plus d'image de logo, comme l'en-tête) :
+         bandeau en mobile, demi-écran en desktop -->
     <div
       class="bg-cream-light flex items-center justify-center py-5 md:p-16"
     >
-      <!-- Le logo ramène à l'accueil (comme l'en-tête du site) -->
+      <!-- Le nom ramène à l'accueil (comme l'en-tête du site) -->
       <NuxtLink
         :to="localePath('/')"
         :aria-label="$t('login_page.back')"
-        class="block w-28 md:w-full md:max-w-xs transition-opacity hover:opacity-80"
+        class="block text-center transition-opacity hover:opacity-80"
       >
-        <img :src="logo" alt="Boticia" class="w-full" />
+        <span
+          class="block font-heading font-medium tracking-tight uppercase
+            text-dark text-2xl md:text-5xl"
+        >
+          Boticia
+        </span>
+        <span
+          class="block whitespace-nowrap text-orange-500 text-sm md:text-lg
+            mt-1 md:mt-2"
+        >
+          {{ $t("app.tagline") }}
+        </span>
       </NuxtLink>
     </div>
 
@@ -36,5 +49,4 @@
 <script setup lang="ts">
 // Mise en page commune aux pages de connexion (login, confirmation du lien).
 const localePath = useLocalePath();
-const { logo } = useSiteLogo();
 </script>
