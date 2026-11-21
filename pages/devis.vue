@@ -255,8 +255,8 @@
               </button>
             </div>
 
-            <!-- Step 2: Name -->
-            <div v-if="currentStep === 2" class="space-y-4">
+            <!-- Step 3: Name -->
+            <div v-if="currentStep === 3" class="space-y-4">
               <div>
                 <label
                   class="block text-[13px] font-semibold uppercase tracking-[0.2em] text-orange-500 mb-2"
@@ -293,8 +293,8 @@
               </div>
             </div>
 
-            <!-- Step 3: Email + phone -->
-            <div v-if="currentStep === 3" class="space-y-4">
+            <!-- Step 4: Email + phone -->
+            <div v-if="currentStep === 4" class="space-y-4">
               <div class="space-y-4">
                 <div>
                   <label
@@ -358,8 +358,8 @@
               </div>
             </div>
 
-            <!-- Step 4: Date + venue/guest_count/event_type -->
-            <div v-if="currentStep === 4" class="space-y-4">
+            <!-- Step 5: Date + venue/guest_count/event_type -->
+            <div v-if="currentStep === 5" class="space-y-4">
               <div class="space-y-4">
                 <div>
                   <label
@@ -447,22 +447,35 @@
               </div>
             </div>
 
-            <!-- Step 5: Budget -->
-            <div v-if="currentStep === 5" class="space-y-4">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- Step 6: Budget (mariage) -->
+            <div v-if="currentStep === 6" class="space-y-4">
+              <!-- Même style que les blocs de prestation : carrés, une
+                   ligne par fourchette, montants jamais coupés -->
+              <div class="space-y-3">
                 <button
                   v-for="opt in budgetOptions"
                   :key="opt.value"
                   type="button"
-                  class="h-12 px-6 rounded-full border text-[13px] uppercase tracking-[0.15em] transition-all duration-200 touch-manipulation"
+                  class="w-full flex items-center justify-between gap-4 px-5 py-4
+                    border text-left transition-all duration-200
+                    touch-manipulation"
                   :class="
                     form.budget === opt.value
                       ? 'bg-dark text-cream border-dark'
-                      : 'bg-white text-dark border-dark/30 hover:border-dark'
+                      : 'bg-white text-dark border-dark/20 hover:border-dark'
                   "
                   @click="chooseAndContinue(() => (form.budget = opt.value))"
                 >
-                  {{ opt.label }}
+                  <span class="text-base whitespace-nowrap">
+                    {{ opt.label }}
+                  </span>
+                  <IconPhosphor
+                    name="ArrowRight"
+                    size="sm"
+                    :class="
+                      form.budget === opt.value ? 'text-cream' : 'text-dark'
+                    "
+                  />
                 </button>
               </div>
               <p v-if="errors.budget" class="text-sm text-red-500">
@@ -470,8 +483,8 @@
               </p>
             </div>
 
-            <!-- Step 6: Needs (service-specific) -->
-            <div v-if="currentStep === 6" class="space-y-4">
+            <!-- Step 2: Needs (service-specific), juste après le type de prestation -->
+            <div v-if="currentStep === 2" class="space-y-4">
               <!-- Mariage: floral needs grouped -->
               <template v-if="form.service_type === 'mariage'">
                 <div class="space-y-5">
@@ -1249,6 +1262,8 @@ const floralNeedGroups = computed(() => [
 
 // ── Event needs (evenement) ─────────────────────────
 const eventNeeds: EventNeedKey[] = [
+  // Abonnement en tête : hôtels, restaurants, boutiques (page Entreprises)
+  "floral_subscription",
   "scenographie",
   "corner_floral",
   "suspended_installations",
@@ -1356,19 +1371,19 @@ const getStepMessage = (step: number): string => {
   switch (step) {
     case 1:
       return t("quote_form.chat_step_service");
-    case 2:
-      return t("quote_form.chat_step1");
     case 3:
+      return t("quote_form.chat_step1");
+    case 4:
       return t("quote_form.chat_step2", {
         name: form.name,
       });
-    case 4: {
+    case 5: {
       const key = `quote_form.chat_step3_${form.service_type}`;
       return t(key);
     }
-    case 5:
+    case 6:
       return t(`quote_form.chat_step4_${form.service_type}`);
-    case 6: {
+    case 2: {
       const key = `quote_form.chat_step5_${form.service_type}`;
       return t(key);
     }
@@ -1388,14 +1403,14 @@ const getStepSummary = (step: number): string => {
   switch (step) {
     case 1:
       return t(`quote_form.service_type_${form.service_type}`);
-    case 2:
+    case 3:
       return form.name;
-    case 3: {
+    case 4: {
       let summary = form.email;
       if (form.phone) summary += ` • ${form.phone}`;
       return summary;
     }
-    case 4: {
+    case 5: {
       const parts: string[] = [];
       if (form.wedding_date)
         parts.push(formatDisplayDate(form.wedding_date));
@@ -1405,9 +1420,9 @@ const getStepSummary = (step: number): string => {
         parts.push(`${form.guest_count} ${t("quote_form.guest_count_label").toLowerCase()}`);
       return parts.length > 0 ? parts.join(" • ") : "—";
     }
-    case 5:
+    case 6:
       return budgetLabel.value || "—";
-    case 6: {
+    case 2: {
       if (form.service_type === "atelier" && form.workshop_type) {
         return t(`quote_form.workshop_${form.workshop_type}`);
       }
@@ -1442,13 +1457,13 @@ const validateStep = (step: number): boolean => {
   switch (step) {
     case 1:
       return !!form.service_type;
-    case 2:
+    case 3:
       if (!form.name.trim()) {
         errors.name = t("quote_form.error_name");
         return false;
       }
       return true;
-    case 3: {
+    case 4: {
       let valid = true;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!form.email.trim() || !emailRegex.test(form.email)) {
@@ -1461,14 +1476,14 @@ const validateStep = (step: number): boolean => {
       }
       return valid;
     }
-    case 5:
+    case 6:
       // Budget obligatoire pour un mariage (étape non posée sinon).
       if (form.service_type === "mariage" && !form.budget) {
         errors.budget = t("quote_form.error_budget");
         return false;
       }
       return true;
-    case 6: {
+    case 2: {
       if (form.service_type === "atelier") {
         if (!form.workshop_type) {
           errors.floral_needs = t("quote_form.error_needs");
@@ -1507,8 +1522,10 @@ const nextStep = async () => {
 
   currentStep.value++;
 
+  // Ordre : 1 prestation, 2 besoins, 3 nom, 4 contact, 5 date et lieu,
+  // 6 budget (mariage seulement), 7 inspirations, 8 rendez-vous, 9 récap.
   // Skip budget step for non-mariage
-  if (currentStep.value === 5 && form.service_type !== "mariage") {
+  if (currentStep.value === 6 && form.service_type !== "mariage") {
     currentStep.value++;
   }
 

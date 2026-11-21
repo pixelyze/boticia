@@ -27,7 +27,7 @@ export type QuoteRequestStatus =
  * Les tranches ont été relevées (commit a75759b) sans renommer les clés,
  * qui sont stockées telles quelles en base. La correspondance réelle est :
  *
- *   lt_2500   ->  4 000 – 5 000 € (code historique, libellé aligné sur la FAQ)
+ *   lt_2500   ->  de 4 000 à 5 000 € (code historique, libellé aligné sur la FAQ)
  *   lt_4000   ->  5 000 – 8 000 €
  *   lt_10000  ->  8 000 € et plus
  *
@@ -59,6 +59,7 @@ export type FloralNeedKey =
   | "venue_entrance";
 
 export type EventNeedKey =
+  | "floral_subscription"
   | "scenographie"
   | "corner_floral"
   | "suspended_installations"
@@ -89,6 +90,7 @@ export const FLORAL_NEED_KEYS: FloralNeedKey[] = [
 ];
 
 export const EVENT_NEED_KEYS: EventNeedKey[] = [
+  "floral_subscription",
   "scenographie",
   "corner_floral",
   "suspended_installations",
