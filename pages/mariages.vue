@@ -76,17 +76,19 @@ const config = useRuntimeConfig();
 const route = useRoute();
 
 useSeoMeta({
-  ogTitle: `${t("weddings.title")} | Boticia Provence`,
+  // Titre SEO distinct du H1 (texte de Laëtitia, inchangé) : il porte le
+  // mot-clé principal « décoration florale mariage » (seo/keywords.md)
+  ogTitle: `${t("seo.mariages_title")} | Boticia`,
   ogDescription: t("seo.mariages_description"),
   ogUrl: `${config.public.siteUrl}${route.path}`,
   ogLocale: locale.value === "fr" ? "fr_FR" : locale.value === "ja" ? "ja_JP" : "en_US",
   ogType: "website",
-  twitterTitle: `${t("weddings.title")} | Boticia Provence`,
+  twitterTitle: `${t("seo.mariages_title")} | Boticia`,
   twitterDescription: t("weddings.intro"),
 });
 
 useHead({
-  title: t("weddings.title") + " | Boticia Provence",
+  title: `${t("seo.mariages_title")} | Boticia`,
   meta: [{ name: "description", content: t("seo.mariages_description") }],
   script: [
     {
