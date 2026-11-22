@@ -4,7 +4,7 @@
        Pleine largeur sur fond crème, sans logo couronne ni carte arrondie :
        trois colonnes (marque, pages, réseaux), puis une ligne fine avec le
        copyright et les mentions légales. Une colonne sur téléphone. -->
-  <footer class="bg-cream text-dark font-body">
+  <footer class="bg-cream-light text-dark font-body">
     <div class="container mx-auto px-6 pt-16 pb-8 md:pt-24">
       <div
         class="max-w-6xl mx-auto grid grid-cols-1 gap-12

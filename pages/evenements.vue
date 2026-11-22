@@ -60,8 +60,8 @@
                      overflow-hidden shadow-lg z-10"
             >
               <img
-                :src="philosophyImage1"
-                :alt="$t('events.philosophy_title')"
+                :src="philosophyImage1.public_url"
+                :alt="philosophyImage1.caption || $t('events.philosophy_title')"
                 loading="lazy"
                 class="w-full h-full object-cover"
               />
@@ -71,8 +71,8 @@
                      overflow-hidden shadow-lg"
             >
               <img
-                :src="philosophyImage2"
-                :alt="$t('events.philosophy_title')"
+                :src="philosophyImage2.public_url"
+                :alt="philosophyImage2.caption || $t('events.philosophy_title')"
                 loading="lazy"
                 class="w-full h-full object-cover"
               />
@@ -325,21 +325,18 @@ const faqs = computed(() => [
 ]);
 
 
-const defaultPhiloImage = "/images/events/scenographie-florale-boticia.jpg";
+// Photos de la section « Abonnement floral » : choisies dans le tableau de
+// bord (Photos du site, onglet Entreprises). Image par défaut si vide.
+const defaultPhiloImage = {
+  public_url: "/images/events/scenographie-florale-boticia.jpg",
+  caption: null,
+};
 
-const { data: philoConfig1 } = await useFetch("/api/cms/config", {
-  params: { key: "events_philosophy_image_1" },
-});
-const { data: philoConfig2 } = await useFetch("/api/cms/config", {
-  params: { key: "events_philosophy_image_2" },
-});
-
-const philosophyImage1 = computed(
-  () => philoConfig1.value?.data?.value?.url || defaultPhiloImage
-);
-const philosophyImage2 = computed(
-  () => philoConfig2.value?.data?.value?.url || defaultPhiloImage
-);
+const { data: eventsPhotos } = await useFetch("/api/photos/events");
+const subscriptionPhoto = (i) =>
+  eventsPhotos.value?.data?.subscription?.[i] || defaultPhiloImage;
+const philosophyImage1 = computed(() => subscriptionPhoto(0));
+const philosophyImage2 = computed(() => subscriptionPhoto(1));
 
 // Placeholder images until gallery "events" is created in Supabase
 const placeholders = [

@@ -6,7 +6,8 @@
        à la demande de Laëtitia. -->
   <section
     aria-labelledby="alacarte-title"
-    class="py-20 md:py-28 bg-white"
+    class="py-20 md:py-28"
+    :class="bgClass"
   >
     <div class="container mx-auto px-6">
       <!-- [EL-ALACARTE-HEADER] — Petit titre, titre, introduction -->
@@ -57,6 +58,11 @@
 </template>
 
 <script setup>
+// Fond : blanc par défaut (accueil), crème clair sur la page Mariages
+// pour alterner avec ses voisins
+defineProps({
+  bgClass: { type: String, default: "bg-white" },
+});
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();

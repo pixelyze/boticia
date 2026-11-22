@@ -1,14 +1,17 @@
 /**
  * POST /api/admin/photos
  * Admin — Dépose une photo dans la photothèque (compressée en WebP),
- * avec son type (mariage, entreprise ou atelier)
+ * avec son type (mariage, entreprise ou atelier) et sa collection
  */
 
 import { requireAdmin } from "~/server/utils/serverAuth";
 import { createGalleryImage } from "~/server/utils/galleries";
 import { getSupabase, toProxyUrl } from "~/server/utils/supabase";
 import { compressImage } from "~/server/utils/image-compress";
-import { isPhotoType } from "~/server/utils/photo-placements";
+import {
+  cleanCollection,
+  isPhotoType,
+} from "~/server/utils/photo-placements";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"];
 
@@ -19,6 +22,8 @@ export default defineEventHandler(async (event) => {
   const file = formData?.find((f) => f.name === "file");
   const typeField = formData?.find((f) => f.name === "photo_type");
   const photoType = typeField?.data?.toString() || null;
+  const collectionField = formData?.find((f) => f.name === "collection");
+  const collection = cleanCollection(collectionField?.data?.toString());
 
   if (!file || !file.data || !file.filename) {
     throw createError({ statusCode: 400, message: "Invalid file" });
@@ -52,6 +57,7 @@ export default defineEventHandler(async (event) => {
     const image = await createGalleryImage({
       gallery_id: null,
       photo_type: photoType,
+      collection,
       filename,
       original_filename: file.filename,
       mime_type: compressed.mimeType,

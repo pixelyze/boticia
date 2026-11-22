@@ -6,11 +6,11 @@
        fines et compteur pour passer au suivant. Aucun défilement
        automatique. Avis gérés par Laëtitia (tableau de bord → Avis), dans
        la langue du visiteur ; section masquée s'il n'y en a aucun.
-       Padding : py-20 md:py-28 | Background : bg-white -->
+       Padding : py-20 md:py-28 | Background : bg-cream-light (alterne avec ses voisins) -->
   <section
     v-if="testimonials.length"
     aria-labelledby="testimonials-title"
-    class="py-20 md:py-28 bg-white"
+    class="py-20 md:py-28 bg-cream-light testimonials-v2"
   >
     <div class="container mx-auto px-6 flex flex-col items-center text-center">
       <span class="section-tagline">{{ $t("testimonials.tagline") }}</span>
@@ -18,16 +18,17 @@
         {{ $t("testimonials.title") }}
       </h2>
 
-      <!-- [EL-TESTIMONIAL-QUOTE] — Hauteur minimale : la page ne saute
-           pas d'un avis à l'autre -->
+      <!-- [EL-TESTIMONIAL-QUOTE] — Taille pensée pour les avis longs
+           (jusqu'à 300 caractères environ, comme en prod). Hauteur
+           minimale : la page ne saute pas d'un avis à l'autre -->
       <figure
-        class="mt-12 flex min-h-[320px] max-w-4xl flex-col items-center
-               justify-center gap-8 md:min-h-[260px]"
+        class="mt-10 flex max-w-3xl flex-col items-center justify-center gap-6"
+        style="min-height: var(--quote-min-h)"
         aria-live="polite"
       >
         <blockquote
-          class="font-body italic text-dark text-[22px] leading-[1.45]
-                 md:text-[30px]"
+          class="font-body italic text-dark text-[19px] leading-[1.6]
+                 md:text-[22px]"
         >
           <!-- Guillemets hors de $t : passé en paramètre, l'avis serait
                échappé (escapeHtml) et ses apostrophes abîmées -->
@@ -92,3 +93,16 @@ const go = (step: number) => {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 </script>
+
+<style scoped>
+/* Hauteur réservée pour un avis de 300 caractères : 10 lignes sur
+   téléphone, 5 sur ordinateur, plus la signature */
+.testimonials-v2 {
+  --quote-min-h: 380px;
+}
+@media (min-width: 768px) {
+  .testimonials-v2 {
+    --quote-min-h: 240px;
+  }
+}
+</style>

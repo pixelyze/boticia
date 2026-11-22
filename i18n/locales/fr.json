@@ -85,6 +85,7 @@
     "weddings_link": "Découvrir notre accompagnement mariage"
   },
   "weddings": {
+    "step_label": "Étape {n}",
     "tagline": "Mariages",
     "title": "Design floral mariage",
     "intro": "Un accompagnement floral personnalisé, de la conception des bouquets de mariée à la scénographie florale, pour une décoration de mariage sur-mesure, singulière et pensée dans les moindres détails.",
@@ -573,6 +574,13 @@
     "chat_optional": "Optionnel"
   },
   "dashboard": {
+    "photos_subscription_title": "Abonnement floral",
+    "photos_subscription_text": "Les 2 photos à côté du texte « Abonnement floral ». Si une case est vide, le site affiche une photo par défaut.",
+    "photos_subscription_main": "Photo principale",
+    "photos_subscription_second": "Photo secondaire",
+    "subscription_photos_moved_title": "Photos de l'abonnement floral",
+    "subscription_photos_moved_text": "Les 2 photos de la section « Abonnement floral » (page Entreprises) se choisissent maintenant dans",
+    "subscription_photos_moved_link": "Photos du site, onglet Entreprises & événements",
     "photos_title": "Photos du site",
     "photos_tab_library": "Photothèque",
     "photos_tab_home": "Accueil",
@@ -590,7 +598,6 @@
     "photos_drop": "Déposer des photos",
     "photos_uploading": "Envoi en cours…",
     "photos_upload_title": "Ces photos concernent",
-    "photos_upload_later": "Je choisirai plus tard",
     "photos_visible_one": "Visible sur le site, page {pages}",
     "photos_visible_many": "Visible sur le site, pages {pages}",
     "photos_not_visible": "Pas encore visible sur le site",
@@ -957,7 +964,33 @@
     "moodboard_draft_title": "Préparer le moodboard",
     "moodboard_draft_files": "Les images du moodboard",
     "moodboard_draft_add": "Ajouter des images ou un PDF",
-    "moodboard_draft_note_placeholder": "Par exemple : voici une première piste, dites-moi ce que vous en pensez…"
+    "moodboard_draft_note_placeholder": "Par exemple : voici une première piste, dites-moi ce que vous en pensez…",
+    "photos_filter_type": "Type",
+    "photos_filter_collection": "Collection",
+    "photos_filter_no_collection": "Sans collection",
+    "photos_collection_label": "Collection",
+    "photos_collection_add": "+ Ajouter à une collection",
+    "photos_collection_change": "Changer",
+    "photos_collection_show": "Voir la collection {name}",
+    "photos_collection_title": "Collection de la photo",
+    "photos_collection_remove": "Retirer de la collection",
+    "photos_collection_placeholder": "Exemple : Mariage Sophie et Paul, Château de la Gaude",
+    "photos_collection_existing": "Ou choisissez une collection existante :",
+    "photos_collection_rename": "Renommer",
+    "photos_collection_delete": "Supprimer la collection",
+    "photos_collection_rename_title": "Renommer la collection",
+    "photos_collection_rename_one": "Le nouveau nom s'applique à la photo de la collection.",
+    "photos_collection_rename_many": "Le nouveau nom s'applique aux {n} photos de la collection.",
+    "photos_collection_delete_title": "Supprimer cette collection ?",
+    "photos_collection_delete_one": "La photo de « {name} » reste dans la photothèque et sur le site. Elle n'a simplement plus de collection.",
+    "photos_collection_delete_many": "Les {n} photos de « {name} » restent dans la photothèque et sur le site. Elles n'ont simplement plus de collection.",
+    "photos_optional": "(facultatif)",
+    "photos_upload_step_type": "1. Le type ",
+    "photos_upload_step_collection": "2. La collection ",
+    "photos_upload_collection_help": "Le nom de l'événement, pour retrouver ces photos ensemble.",
+    "photos_upload_confirm_one": "Ajouter 1 photo",
+    "photos_upload_confirm_many": "Ajouter {n} photos",
+    "photos_upload_change_later": "Le type et la collection se changent ensuite sur chaque photo."
   },
   "client": {
     "page_title": "Mon projet",
@@ -1143,68 +1176,39 @@
   },
   "guide": {
     "title": "Guide du tableau de bord",
-    "subtitle": "Comment se déroule une demande, du formulaire à la prestation, et ce qui se fait tout seul.",
-    "pipeline_title": "Les statuts d'une demande",
+    "subtitle": "Toutes les réponses sur le tableau de bord, rangées par thème.",
+    "search_placeholder": "Chercher dans le guide, par exemple « légende »",
+    "search_label": "Chercher dans le guide",
+    "search_results": "Résultats de la recherche",
+    "search_empty": "Aucun article ne parle de « {q} ». Essayez un autre mot.",
+    "summary": "Sommaire",
+    "previous": "Article précédent",
+    "next": "Article suivant",
+    "see_also": "Voir aussi",
+    "open_page": "Ouvrir la page",
+    "tip": "Bon à savoir",
     "auto": "Automatique",
     "manual": "À la main",
-    "action": "À faire",
-    "what_happens": "Ce qui se passe",
-    "emails_sent": "Emails envoyés",
-    "to": "À",
-    "subject": "Objet",
-    "client_sees": "Côté cliente",
-    "you": "Vous",
-    "the_client": "La cliente",
-    "emails_title": "Tous les emails automatiques",
-    "emails_note": "Les emails à la cliente partent dans sa langue (français, anglais ou japonais).",
     "when": "Quand",
     "recipient": "Destinataire",
-    "status_new": "Nouveau",
+    "subject": "Objet",
+    "you": "Vous",
+    "the_client": "La cliente",
+    "cat_start": "Bien démarrer",
+    "cat_requests": "Les demandes de devis",
+    "cat_site": "Le site",
+    "status_new": "Nouvelle demande",
     "status_new_desc": "La demande vient d'arriver par le formulaire.",
-    "status_contacted": "Contacté",
-    "status_contacted_desc": "Passe ici tout seul quand la date du rendez-vous est passée. Vous pouvez aussi le choisir vous-même.",
+    "status_contacted": "Contactée",
+    "status_contacted_desc": "Passe ici tout seul le lendemain du rendez-vous. Le site vérifie chaque matin. Vous pouvez aussi le choisir vous-même.",
     "status_quote": "Devis envoyé",
     "status_quote_desc": "Passe ici tout seul au premier envoi du devis.",
-    "status_signed": "Signé",
-    "status_signed_desc": "À choisir vous-même quand le projet est confirmé (même si la cliente a validé le devis).",
+    "status_signed": "Projet confirmé",
+    "status_signed_desc": "À choisir vous-même quand le projet est confirmé.",
     "status_completed": "Terminé",
     "status_completed_desc": "À choisir vous-même une fois la prestation réalisée.",
     "status_cancelled": "Annulé",
     "status_cancelled_desc": "À choisir vous-même si le projet ne se fait pas.",
-    "step1_title": "La cliente envoie sa demande",
-    "step1_action": "Rien : elle remplit le formulaire « Demander un devis » et choisit elle-même un créneau de rendez-vous.",
-    "step1_h1": "Une fiche est créée dans le tableau de bord, au statut « Nouveau », avec le rendez-vous choisi.",
-    "step1_h2": "Son espace client est ouvert tout de suite : elle peut y ajouter ses photos d'inspiration.",
-    "step1_h3": "Le bouton de votre email ouvre directement la fiche, sans vous reconnecter.",
-    "step1_client": "Une page de confirmation, puis un email avec un lien direct vers son espace.",
-    "step2_title": "Le rendez-vous",
-    "step2_action": "Si besoin, « Modifier le créneau » sur la fiche.",
-    "step2_h1": "Le lendemain du rendez-vous, la demande passe toute seule de « Nouveau » à « Contacté » (vérification chaque matin).",
-    "step2_h2": "Vous pouvez changer le statut vous-même à tout moment.",
-    "step3_title": "Le moodboard",
-    "step3_action": "Sur la fiche, « Ajouter » dans Moodboard : déposez les images ou un PDF, écrivez un mot pour la cliente si vous le souhaitez, enregistrez le brouillon. Quand tout est prêt : « Envoyer la version 1 ».",
-    "step3_h1": "Chaque envoi crée une version figée (V1, V2…) ; les précédentes restent dans l'historique de la fiche.",
-    "step3_h2": "Votre mot s'affiche dans son espace, sous « Le mot de Laëtitia », et dans l'email.",
-    "step3_h3": "Le statut de la demande ne change pas.",
-    "step3_client": "Elle découvre le moodboard et votre mot dans son espace.",
-    "step4_title": "Le devis",
-    "step4_action": "Sur la fiche, « Ajouter » dans Devis : choisissez le PDF, écrivez un mot si vous le souhaitez, enregistrez le brouillon, puis « Envoyer la version 1 ».",
-    "step4_h1": "Comme pour le moodboard, chaque envoi crée une version (V1, V2…).",
-    "step4_h2": "Au premier envoi, la demande passe toute seule en « Devis envoyé ».",
-    "step4_client": "Elle ouvre son devis dans son espace, peut le valider ou vous écrire.",
-    "step5_title": "La cliente répond",
-    "step5_action": "Rien : elle valide le devis, ou clique « Écrire à Laëtitia », autant de fois qu'elle le souhaite.",
-    "step5_h1": "Chaque message apparaît dans l'historique de la fiche, et le nombre de messages s'affiche dans la liste des demandes.",
-    "step5_h2": "Quand elle valide, le devis est marqué « Devis validé ». Le statut de la demande, lui, ne change pas : passez-la en « Signé » quand le projet est confirmé.",
-    "step5_client": "Elle voit que son message est envoyé, ou que son devis est validé.",
-    "step6_title": "La relance automatique",
-    "step6_action": "Rien : le rappel arrive tout seul.",
-    "step6_h1": "Si la cliente a ouvert son devis sans le valider ni vous écrire, vous recevez un rappel le matin, 2 jours après.",
-    "step6_h2": "Un seul rappel par version de devis, jamais le samedi ni le dimanche (il arrive alors le lundi).",
-    "step6_h3": "Le bouton de l'email ouvre WhatsApp avec un message déjà écrit pour la cliente.",
-    "step7_title": "Finaliser",
-    "step7_action": "Changez le statut vous-même : « Signé » quand le projet est confirmé, puis « Terminé » après la prestation (ou « Annulé »).",
-    "step7_h1": "Le statut est mis à jour. Aucun email n'est envoyé.",
     "email1_when": "Nouvelle demande",
     "email1_subject": "Nouvelle demande de [Nom] — Boticia",
     "email2_when": "Nouvelle demande",
@@ -1221,13 +1225,465 @@
     "email7_subject": "🎉 [Nom] a dit oui… au devis ! — Boticia",
     "email8_when": "Devis ouvert sans réponse, 2 jours après",
     "email8_subject": "📱 Un petit signe pour [Nom] ? — Boticia",
-    "pages_title": "Les autres pages",
-    "pages_galleries": "Galeries",
-    "pages_galleries_desc": "Tuile sur l'accueil du tableau de bord. Les photos des pages du site : accueil, créations, mariages, ateliers, événements.",
-    "pages_reviews": "Avis",
-    "pages_reviews_desc": "Tuile sur l'accueil du tableau de bord. Les témoignages de la page d'accueil, en français et en anglais : ajouter, modifier, masquer, réordonner.",
-    "pages_settings": "Paramètres",
-    "pages_settings_desc": "Bouton ⚙️ en haut à droite : vos créneaux de rendez-vous (« Créneaux récurrents » et « Exceptions »), la Personnalisation (logo, thème, photos du site), ce guide, les Mises à jour et la déconnexion."
+    "articles": {
+      "connexion": {
+        "title": "Se connecter",
+        "summary": "Pas de mot de passe : à chaque connexion, vous recevez un code par email.",
+        "blocks": [
+          {
+            "steps": [
+              "Ouvrez la page de connexion du site.",
+              "Écrivez votre adresse email, puis cliquez sur « Continuer ».",
+              "Ouvrez l'email « Votre code de connexion ».",
+              "Recopiez le code à 6 chiffres. Le tableau de bord s'ouvre."
+            ]
+          },
+          {
+            "tip": "Le code n'arrive pas ? Regardez dans vos spams. Vous pouvez aussi cliquer sur « Renvoyer le code »."
+          },
+          {
+            "p": "Vos clientes se connectent de la même façon à leur espace client, avec l'adresse email de leur demande."
+          }
+        ]
+      },
+      "tableau-de-bord": {
+        "title": "L'accueil du tableau de bord",
+        "summary": "La première page après la connexion. Elle montre vos demandes et ce qui attend une action de votre part.",
+        "blocks": [
+          {
+            "h": "Sur la page"
+          },
+          {
+            "list": [
+              "« Mes devis » : vos demandes. Cliquez sur une demande pour ouvrir sa fiche. Le titre « Mes devis » ouvre la liste complète, avec un filtre par statut.",
+              "« Alertes » : les demandes qui attendent une action. Par exemple, un devis envoyé il y a plusieurs jours, toujours sans réponse.",
+              "« Photos du site » : la photothèque et les photos de chaque page.",
+              "« Avis » : les témoignages de la page d'accueil."
+            ]
+          },
+          {
+            "h": "Le bouton ⚙️, en haut à droite"
+          },
+          {
+            "list": [
+              "Vos créneaux de rendez-vous.",
+              "Personnalisation : le logo et la couleur d'ambiance du site.",
+              "Ce guide.",
+              "Mises à jour : les nouveautés du tableau de bord.",
+              "Se déconnecter."
+            ]
+          }
+        ]
+      },
+      "parcours": {
+        "title": "Le parcours d'une demande",
+        "summary": "Une demande passe par 7 étapes, du formulaire à la prestation. Plusieurs se font toutes seules.",
+        "blocks": [
+          {
+            "steps": [
+              "La cliente remplit le formulaire de devis et choisit un rendez-vous. Vous n'avez rien à faire.",
+              "Vous faites l'appel découverte. Le lendemain, la demande passe toute seule en « Contactée ».",
+              "Vous envoyez un moodboard depuis la fiche de la demande.",
+              "Vous envoyez le devis. La demande passe toute seule en « Devis envoyé ».",
+              "La cliente valide le devis, ou vous écrit.",
+              "Elle ne répond pas ? Vous recevez un rappel 2 jours après.",
+              "Vous changez le statut vous-même : « Projet confirmé », puis « Terminé »."
+            ]
+          },
+          {
+            "tip": "Chaque étape a son article dans le sommaire, avec le détail."
+          }
+        ]
+      },
+      "statuts": {
+        "title": "Les statuts d'une demande",
+        "summary": "Le statut indique où en est une demande. 3 statuts changent tout seuls. Les 3 autres, c'est vous qui les choisissez.",
+        "blocks": [
+          {
+            "p": "Pour changer un statut : ouvrez la fiche de la demande, puis choisissez le nouveau statut."
+          },
+          {
+            "tip": "Quand la cliente valide le devis, le statut ne change pas. Passez vous-même la demande en « Projet confirmé » quand le projet est confirmé."
+          }
+        ]
+      },
+      "formulaire": {
+        "title": "Le formulaire de devis",
+        "summary": "La page « Demander un devis » du site. La cliente répond à une question à la fois.",
+        "blocks": [
+          {
+            "h": "Les questions, dans l'ordre"
+          },
+          {
+            "steps": [
+              "La catégorie : Mariage, Entreprises & événements, ou Atelier floral.",
+              "Ses besoins. Par exemple, pour un mariage : bouquet de mariée, arche de cérémonie, centres de table.",
+              "Son nom.",
+              "Son email et son téléphone.",
+              "Son projet : le type d'événement, la date, le lieu et le nombre d'invités.",
+              "Son budget.",
+              "Ses photos d'inspiration. Elle peut aussi les ajouter plus tard.",
+              "Un créneau pour l'appel découverte, choisi parmi vos disponibilités.",
+              "Un récapitulatif, puis l'envoi."
+            ]
+          },
+          {
+            "h": "L'abonnement floral"
+          },
+          {
+            "p": "Dans « Entreprises & événements », la cliente peut choisir « Abonnement floral ». Ce sont des fleurs livrées régulièrement, par exemple pour un hôtel, un restaurant ou une boutique."
+          },
+          {
+            "p": "Le budget mensuel d'un abonnement se précise pendant l'appel découverte."
+          },
+          {
+            "h": "Après l'envoi"
+          },
+          {
+            "list": [
+              "Une fiche est créée dans le tableau de bord, au statut « Nouvelle demande ».",
+              "Vous recevez un email. Son bouton ouvre la fiche, sans vous reconnecter.",
+              "La cliente reçoit un email avec un lien vers son espace client."
+            ]
+          }
+        ]
+      },
+      "rendez-vous": {
+        "title": "Le rendez-vous et vos créneaux",
+        "summary": "La cliente choisit elle-même son appel découverte, parmi les créneaux que vous ouvrez.",
+        "blocks": [
+          {
+            "h": "Régler vos créneaux"
+          },
+          {
+            "steps": [
+              "Cliquez sur ⚙️, en haut à droite.",
+              "Dans « Créneaux récurrents », ajoutez vos créneaux de chaque semaine : le jour, l'heure de début, l'heure de fin et la durée d'un rendez-vous.",
+              "Dans « Exceptions », bloquez une date, par exemple pour des vacances. Vous pouvez aussi ajouter un créneau en plus."
+            ]
+          },
+          {
+            "h": "Changer un rendez-vous"
+          },
+          {
+            "p": "Sur la fiche de la demande, cliquez sur « Modifier le créneau »."
+          },
+          {
+            "tip": "Le lendemain du rendez-vous, la demande passe toute seule en « Contactée »."
+          }
+        ]
+      },
+      "moodboard": {
+        "title": "Envoyer un moodboard",
+        "summary": "Le moodboard est une planche d'images. Il montre à la cliente l'ambiance que vous imaginez pour son projet.",
+        "blocks": [
+          {
+            "steps": [
+              "Ouvrez la fiche de la demande.",
+              "Dans « Moodboard », cliquez sur « Ajouter ».",
+              "Déposez les images ou un PDF.",
+              "Écrivez un mot pour la cliente, si vous le souhaitez.",
+              "Enregistrez le brouillon.",
+              "Quand tout est prêt, cliquez sur « Envoyer la version 1 »."
+            ]
+          },
+          {
+            "h": "Ensuite"
+          },
+          {
+            "list": [
+              "La cliente reçoit l'email « Votre moodboard floral est prêt ».",
+              "Elle découvre le moodboard dans son espace client. Votre mot s'affiche sous « Le mot de Laëtitia », dans son espace et dans l'email.",
+              "Chaque envoi crée une version figée : V1, V2… Les anciennes restent dans l'historique.",
+              "Le statut de la demande ne change pas."
+            ]
+          }
+        ]
+      },
+      "devis": {
+        "title": "Envoyer un devis",
+        "summary": "Le devis est un PDF que vous déposez sur la fiche. La cliente le lit et le valide dans son espace client.",
+        "blocks": [
+          {
+            "steps": [
+              "Ouvrez la fiche de la demande.",
+              "Dans « Devis », cliquez sur « Ajouter ».",
+              "Choisissez le PDF du devis.",
+              "Écrivez un mot pour la cliente, si vous le souhaitez.",
+              "Enregistrez le brouillon.",
+              "Cliquez sur « Envoyer la version 1 »."
+            ]
+          },
+          {
+            "tip": "Un brouillon reste chez vous. Tant que vous n'avez pas cliqué sur « Envoyer », la cliente ne reçoit rien. Une alerte vous le rappelle sur l'accueil du tableau de bord."
+          },
+          {
+            "h": "Ensuite"
+          },
+          {
+            "list": [
+              "La cliente reçoit l'email « Votre devis floral est disponible ».",
+              "Votre mot s'affiche dans l'email, dans un encadré « Le mot de Laëtitia ». Il s'affiche aussi dans son espace client. Sans mot, l'encadré n'apparaît pas.",
+              "Au premier envoi, la demande passe toute seule en « Devis envoyé ».",
+              "Chaque nouvel envoi crée une version : V1, V2… Les anciennes restent dans l'historique."
+            ]
+          }
+        ]
+      },
+      "reponses": {
+        "title": "Les réponses de la cliente et la relance",
+        "summary": "La cliente valide le devis, ou vous écrit. Si elle ne répond pas, le site vous envoie un rappel.",
+        "blocks": [
+          {
+            "h": "Quand elle répond"
+          },
+          {
+            "list": [
+              "Elle clique sur « Valider la proposition », ou sur « Écrire à Laëtitia ». Elle peut écrire autant de fois qu'elle le veut.",
+              "Vous recevez un email à chaque fois. Il contient le message de la cliente.",
+              "Chaque message s'affiche dans l'historique de la fiche.",
+              "Un devis validé est marqué « Devis validé ». Le statut de la demande ne change pas : passez-la vous-même en « Projet confirmé »."
+            ]
+          },
+          {
+            "h": "La relance automatique"
+          },
+          {
+            "list": [
+              "La cliente a ouvert son devis, sans le valider et sans vous écrire ? Vous recevez un rappel le matin, 2 jours après.",
+              "Vous recevez 1 seul rappel par version de devis.",
+              "Le rappel ne part jamais le samedi ni le dimanche. Il arrive alors le lundi.",
+              "Le bouton du rappel ouvre WhatsApp, avec un message déjà écrit pour la cliente."
+            ]
+          }
+        ]
+      },
+      "emails": {
+        "title": "Les emails automatiques",
+        "summary": "Le site envoie 8 emails tout seul : 4 pour vous, 4 pour la cliente.",
+        "blocks": [
+          {
+            "p": "Les emails à la cliente partent dans sa langue : français, anglais ou japonais."
+          },
+          {
+            "tip": "Quand vous écrivez un mot avec un moodboard ou un devis, ce mot est copié dans l'email de la cliente, dans un encadré « Le mot de Laëtitia ». Relisez-le avant d'envoyer."
+          }
+        ]
+      },
+      "espace-client": {
+        "title": "L'espace client",
+        "summary": "Chaque cliente a son espace sur le site. Elle y suit son projet.",
+        "blocks": [
+          {
+            "h": "Ce qu'elle y trouve"
+          },
+          {
+            "list": [
+              "Ses photos d'inspiration. Elle peut en ajouter à tout moment.",
+              "Le moodboard et votre mot.",
+              "Le devis, qu'elle peut valider.",
+              "Le bouton « Écrire à Laëtitia »."
+            ]
+          },
+          {
+            "h": "Comment elle se connecte"
+          },
+          {
+            "list": [
+              "L'espace est ouvert dès l'envoi de sa demande.",
+              "Le lien de son email de confirmation l'y amène directement.",
+              "Ensuite, elle se connecte avec son email. Elle reçoit un code à 6 chiffres, sans mot de passe."
+            ]
+          }
+        ]
+      },
+      "photos": {
+        "title": "La photothèque",
+        "summary": "Toutes vos photos, au même endroit. Vous déposez une photo une seule fois, puis vous la placez sur les pages de votre choix.",
+        "blocks": [
+          {
+            "h": "Ajouter des photos"
+          },
+          {
+            "steps": [
+              "Ouvrez « Photos du site », onglet « Photothèque ».",
+              "Cliquez sur « Déposer des photos », puis choisissez-les.",
+              "Choisissez leur type : Mariage, Entreprise ou Atelier. C'est facultatif.",
+              "Donnez un nom de collection, si vous le souhaitez. C'est facultatif aussi.",
+              "Cliquez sur « Ajouter »."
+            ]
+          },
+          {
+            "h": "Le type d'une photo"
+          },
+          {
+            "p": "Le type sert à retrouver vos photos. Par exemple, quand vous remplissez la page Mariages, vous voyez d'abord les photos de mariage."
+          },
+          {
+            "p": "Chaque photo a un seul type. Pour le changer, choisissez un autre type sous la photo."
+          },
+          {
+            "h": "Les collections"
+          },
+          {
+            "p": "Une collection regroupe les photos d'un même événement. Par exemple : « Mariage Sophie et Paul, Château de la Gaude »."
+          },
+          {
+            "list": [
+              "À l'envoi, écrivez un nouveau nom, ou choisissez une collection qui existe déjà.",
+              "Le filtre « Collection » affiche seulement ses photos. Il existe aussi dans la fenêtre « Choisir une photo ».",
+              "Sous chaque photo, « Changer » la déplace dans une autre collection, ou la retire de sa collection.",
+              "Quand une collection est affichée, vous pouvez la renommer ou la supprimer.",
+              "Supprimer une collection ne supprime aucune photo."
+            ]
+          },
+          {
+            "tip": "Une photo est dans une seule collection. Ses photos peuvent avoir des types différents."
+          },
+          {
+            "h": "Savoir où une photo est utilisée"
+          },
+          {
+            "p": "Sous chaque photo, une ligne indique les pages où elle est visible. Par exemple : « Visible sur le site, pages Accueil et Mariages »."
+          },
+          {
+            "h": "Supprimer une photo"
+          },
+          {
+            "list": [
+              "Cliquez sur « Supprimer » sous la photo.",
+              "Si la photo est sur le site, elle est retirée des pages. Sa case reste vide.",
+              "La suppression est définitive."
+            ]
+          }
+        ]
+      },
+      "photos-pages": {
+        "title": "Placer les photos sur les pages",
+        "summary": "Chaque onglet de « Photos du site » montre une page du site, avec ses cases. Cliquez sur une case pour choisir sa photo.",
+        "blocks": [
+          {
+            "steps": [
+              "Ouvrez « Photos du site ».",
+              "Choisissez l'onglet de la page : Accueil, Créations, Mariages, Entreprises & événements ou Atelier floral.",
+              "Cliquez sur une case.",
+              "Choisissez une photo de la photothèque. La mention « ✓ Déjà sur le site » signale une photo déjà utilisée.",
+              "La photo s'affiche tout de suite sur le site. Le bouton « Voir la page » permet de vérifier."
+            ]
+          },
+          {
+            "h": "Ce que contient chaque page"
+          },
+          {
+            "list": [
+              "Accueil : une grille de 9 photos, puis des photos en plus dans la visionneuse.",
+              "Créations : une grande photo d'ouverture, puis 4 chapitres de 2 photos au plus. Les chapitres sont : Bouquets de mariée, Décoration de cérémonie, Scénographie florale de réception, Accessoires floraux.",
+              "Mariages : une grille de 9 photos, puis la visionneuse.",
+              "Entreprises & événements : une grille de 9 photos, et les 2 photos de la section « Abonnement floral ».",
+              "Atelier floral : 3 photos côte à côte."
+            ]
+          },
+          {
+            "h": "La visionneuse"
+          },
+          {
+            "list": [
+              "Sur le site, un clic sur la grille ouvre la visionneuse. Elle montre les 9 photos, puis les photos en plus.",
+              "La dernière case de la grille l'indique. Par exemple, « +3 » s'il y a 3 photos en plus.",
+              "Remplissez d'abord les 9 cases de la grille. Vous pourrez ensuite ajouter des photos dans la visionneuse."
+            ]
+          },
+          {
+            "tip": "Pour vider une case, ouvrez-la, puis cliquez sur « Retirer la photo ». Pour l'abonnement floral, une photo par défaut s'affiche alors à la place."
+          }
+        ]
+      },
+      "legendes": {
+        "title": "Les légendes des photos",
+        "summary": "Une légende décrit la photo en une phrase. Elle aide Google à comprendre vos photos.",
+        "blocks": [
+          {
+            "p": "La légende aide aussi les personnes aveugles : leur ordinateur la lit à voix haute."
+          },
+          {
+            "h": "Ajouter une légende"
+          },
+          {
+            "steps": [
+              "Ouvrez « Photos du site ».",
+              "Sous une photo, cliquez sur « + Ajouter une légende ».",
+              "Écrivez une phrase, puis cliquez sur « Enregistrer »."
+            ]
+          },
+          {
+            "h": "Bien écrire une légende"
+          },
+          {
+            "list": [
+              "Indiquez le type de création, les fleurs, et le lieu si vous le connaissez.",
+              "Exemple : « Bouquet de mariée, pivoines et roses de jardin ».",
+              "Exemple : « Arche florale de cérémonie, Château de la Gaude ».",
+              "200 caractères au plus."
+            ]
+          },
+          {
+            "tip": "Une photo garde la même légende sur toutes les pages. En haut de chaque onglet, un compteur indique les photos sans légende."
+          }
+        ]
+      },
+      "avis": {
+        "title": "Les avis",
+        "summary": "Les témoignages de vos clients, affichés sur la page d'accueil du site.",
+        "blocks": [
+          {
+            "steps": [
+              "Ouvrez « Avis » depuis l'accueil du tableau de bord.",
+              "Cliquez sur « Ajouter un avis ».",
+              "Écrivez l'avis en français. L'anglais est facultatif.",
+              "Indiquez le nom et une précision, par exemple « Mariage en Provence ».",
+              "Activez « Afficher sur le site », puis enregistrez."
+            ]
+          },
+          {
+            "h": "Conseils"
+          },
+          {
+            "list": [
+              "Pour le nom : le prénom et l'initiale, comme « Sophie M. ». C'est plus discret.",
+              "Gardez 1 ou 2 phrases fortes. Les guillemets s'ajoutent tout seuls.",
+              "Sans texte anglais, les versions anglaise et japonaise du site affichent le français.",
+              "« Monter » et « Descendre » changent l'ordre des avis sur le site.",
+              "Un avis « Masqué » n'est plus sur le site, mais il n'est pas supprimé."
+            ]
+          }
+        ]
+      },
+      "personnalisation": {
+        "title": "Logo et couleur d'ambiance",
+        "summary": "La page Personnalisation règle le logo et la teinte des fonds clairs du site. Elle s'ouvre depuis le bouton ⚙️.",
+        "blocks": [
+          {
+            "h": "Le logo"
+          },
+          {
+            "list": [
+              "Il s'affiche en bas de chaque page du site et sur la page de connexion.",
+              "Formats acceptés : PNG, JPG, WebP ou SVG.",
+              "Conseillé : un fond transparent, et au moins 512 pixels de large."
+            ]
+          },
+          {
+            "h": "La couleur d'ambiance"
+          },
+          {
+            "p": "C'est la teinte des fonds clairs : bandeaux, cartes, pied de page. Elle change sur toutes les pages du site."
+          },
+          {
+            "tip": "Les 2 photos de l'abonnement floral ne se règlent plus ici. Elles sont dans « Photos du site », onglet « Entreprises & événements »."
+          }
+        ]
+      }
+    }
   },
   "feedback": {
     "button": "Feedback",
@@ -1252,8 +1708,8 @@
     "photo_alt": "Création florale Boticia"
   },
   "testimonials": {
-    "tagline": "Témoignages",
-    "title": "Ce qu'elles disent",
+    "tagline": "Ils nous ont fait confiance",
+    "title": "Les avis de nos clients sur Boticia",
     "prev": "Témoignage précédent",
     "next": "Témoignage suivant",
     "quote_open": "« ",

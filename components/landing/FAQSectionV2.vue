@@ -3,8 +3,8 @@
        Même contenu que FAQSection (v1, gardée de côté). Mise en page des
        autres blocs v2 : titre et lien « Voir toutes les questions » à
        gauche, questions à droite. Sur téléphone : titre, lien, questions.
-       Padding : py-20 md:py-28 | Background : bg-cream-light -->
-  <section class="py-20 md:py-28 bg-cream-light">
+       Padding : py-20 md:py-28 | Background : bg-white (alterne avec les avis, crème clair) -->
+  <section class="py-20 md:py-28 bg-white">
     <div class="container mx-auto px-6">
       <div
         class="max-w-6xl mx-auto grid grid-cols-1 gap-12 items-start

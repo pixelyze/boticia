@@ -1,177 +1,332 @@
 <template>
+  <!-- ==========================================
+       [PAGE-GUIDE] — Guide du tableau de bord, organisé comme un wiki :
+       un sommaire par thème, un article à la fois, une recherche.
+       L'article ouvert est dans l'adresse (?article=…) : on peut le
+       partager, et le bouton « retour » du navigateur fonctionne.
+       ========================================== -->
   <div class="flex-1 flex flex-col bg-white">
     <section class="py-6 md:py-8">
-      <div class="px-4 md:px-10 max-w-4xl">
-        <!-- Header -->
-        <div class="mb-10">
+      <div class="px-4 md:px-10 max-w-6xl">
+        <!-- En-tête + recherche -->
+        <div class="mb-8 md:mb-10">
           <h1 class="text-2xl md:text-3xl font-bold">
             {{ t("guide.title") }}
           </h1>
-          <p class="text-dark/40 mt-1">
-            {{ t("guide.subtitle") }}
-          </p>
+          <p class="text-dark/50 mt-1">{{ t("guide.subtitle") }}</p>
+
+          <label class="relative block mt-6 max-w-xl">
+            <span class="sr-only">{{ t("guide.search_label") }}</span>
+            <IconLucid
+              name="Search"
+              size="sm"
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+            />
+            <input
+              v-model="query"
+              type="search"
+              :placeholder="t('guide.search_placeholder')"
+              class="w-full rounded-2xl border border-dark/15 bg-white pl-11
+                     pr-4 py-3 text-base text-dark placeholder:text-gray-400
+                     focus:outline-none focus:border-dark"
+            />
+          </label>
         </div>
 
-        <!-- Statuts -->
-        <div class="mb-12">
-          <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-            <IconLucid name="Flag" size="sm" class="text-gray-500" />
-            {{ t("guide.pipeline_title") }}
-          </h2>
-          <div class="space-y-3">
-            <div
-              v-for="status in statuses"
-              :key="status.key"
-              class="flex items-start gap-4 rounded-2xl bg-cream/50 px-5 py-4"
-            >
-              <span
-                class="w-3 h-3 rounded-full shrink-0 mt-1.5"
-                :class="status.dot"
-              />
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="font-semibold text-dark">{{ status.label }}</span>
-                  <span
-                    class="text-xs px-2 py-0.5 rounded-full"
-                    :class="status.auto ? 'bg-dark text-cream' : 'bg-dark/10 text-dark'"
-                  >
-                    {{ status.auto ? t("guide.auto") : t("guide.manual") }}
-                  </span>
-                </div>
-                <p class="text-dark/50 text-sm mt-0.5">{{ status.desc }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Étapes -->
-        <div class="space-y-10">
-          <div
-            v-for="(step, i) in steps"
-            :key="i"
+        <div class="md:grid md:grid-cols-[15rem_1fr] md:gap-12">
+          <!-- [SOMMAIRE] — Colonne de gauche, ordinateur uniquement -->
+          <nav
+            class="hidden md:block self-start sticky top-6 max-h-[calc(100vh-3rem)]
+                   overflow-y-auto pr-2"
+            :aria-label="t('guide.summary')"
           >
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-8 h-8 rounded-full bg-dark flex items-center justify-center shrink-0">
-                <span class="text-cream text-sm font-bold">{{ i + 1 }}</span>
-              </div>
-              <h2 class="text-lg font-bold">{{ step.title }}</h2>
+            <div
+              v-for="cat in CATEGORIES"
+              :key="cat.key"
+              class="mb-6"
+            >
+              <p
+                class="flex items-center gap-2 text-xs font-semibold
+                       uppercase tracking-wider text-gray-500 mb-2"
+              >
+                <IconLucid :name="cat.icon" size="xs" class="text-gray-500" />
+                {{ t(`guide.cat_${cat.key}`) }}
+              </p>
+              <ul class="space-y-0.5">
+                <li v-for="slug in cat.articles" :key="slug">
+                  <NuxtLink
+                    replace
+                    :to="articleLink(slug)"
+                    class="block rounded-xl px-3 py-1.5 text-sm transition-colors"
+                    :class="
+                      current === slug && !searching
+                        ? 'bg-cream text-dark font-semibold'
+                        : 'text-dark/70 hover:bg-cream/50 hover:text-dark'
+                    "
+                    :aria-current="current === slug ? 'page' : undefined"
+                  >
+                    {{ articles[slug].title }}
+                  </NuxtLink>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          <!-- [CONTENU] -->
+          <div class="min-w-0">
+            <!-- Résultats de recherche -->
+            <div v-if="searching">
+              <h2 class="text-lg font-bold mb-4">
+                {{ t("guide.search_results") }}
+              </h2>
+              <p v-if="!results.length" class="text-dark/60">
+                {{ t("guide.search_empty", { q: query.trim() }) }}
+              </p>
+              <ul v-else class="space-y-3">
+                <li v-for="slug in results" :key="slug">
+                  <NuxtLink
+                    replace
+                    :to="articleLink(slug)"
+                    class="block rounded-2xl bg-cream/50 px-5 py-4
+                           hover:bg-cream transition-colors"
+                    @click="query = ''"
+                  >
+                    <span class="text-xs text-gray-500">
+                      {{ t(`guide.cat_${categoryOf(slug).key}`) }}
+                    </span>
+                    <span class="block font-semibold text-dark">
+                      {{ articles[slug].title }}
+                    </span>
+                    <span class="block text-sm text-dark/60 mt-0.5">
+                      {{ articles[slug].summary }}
+                    </span>
+                  </NuxtLink>
+                </li>
+              </ul>
             </div>
 
-            <div class="ml-11 space-y-3">
-              <!-- À faire -->
-              <div class="flex items-start gap-2">
-                <IconLucid name="MousePointerClick" size="xs" class="text-gray-400 mt-0.5 shrink-0" />
-                <p class="text-dark/70 text-sm">
-                  <span class="font-semibold text-dark">{{ t("guide.action") }} :</span>
-                  {{ step.action }}
-                </p>
+            <!-- Article ouvert -->
+            <article v-else-if="article" class="max-w-2xl">
+              <!-- Retour au sommaire, téléphone uniquement -->
+              <div class="md:hidden mb-4">
+                <Button
+                  variant="ghost"
+                  icon="ArrowLeft"
+                  :to="articleLink(null)"
+                  replace
+                  class="!px-0"
+                >
+                  {{ t("guide.summary") }}
+                </Button>
               </div>
 
-              <!-- Ce qui se passe -->
-              <div class="flex items-start gap-2">
-                <IconLucid name="Zap" size="xs" class="text-gray-400 mt-0.5 shrink-0" />
-                <div>
-                  <span class="font-semibold text-dark text-sm">{{ t("guide.what_happens") }} :</span>
-                  <ul class="mt-1 space-y-1">
-                    <li
-                      v-for="(item, j) in step.happens"
-                      :key="j"
-                      class="text-dark/60 text-sm flex items-start gap-2"
+              <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                {{ t(`guide.cat_${categoryOf(current).key}`) }}
+              </p>
+              <h2 class="text-2xl font-bold mt-1">{{ article.title }}</h2>
+              <p class="text-lg text-dark/70 mt-3">{{ article.summary }}</p>
+
+              <Button
+                v-if="meta?.page"
+                variant="default"
+                right-icon="ArrowUpRight"
+                :to="localePath(meta.page)"
+                class="mt-5"
+              >
+                {{ t("guide.open_page") }}
+              </Button>
+
+              <!-- Widget : les 6 statuts -->
+              <div v-if="current === 'statuts'" class="mt-8 space-y-3">
+                <div
+                  v-for="status in statuses"
+                  :key="status.key"
+                  class="flex items-start gap-4 rounded-2xl bg-cream/50 px-5 py-4"
+                >
+                  <span
+                    class="w-3 h-3 rounded-full shrink-0 mt-1.5"
+                    :class="status.dot"
+                  />
+                  <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="font-semibold text-dark">{{ status.label }}</span>
+                      <span
+                        class="text-xs px-2 py-0.5 rounded-full"
+                        :class="status.auto ? 'bg-dark text-cream' : 'bg-dark/10 text-dark'"
+                      >
+                        {{ status.auto ? t("guide.auto") : t("guide.manual") }}
+                      </span>
+                    </div>
+                    <p class="text-dark/60 text-sm mt-0.5">{{ status.desc }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Widget : les 8 emails -->
+              <div
+                v-if="current === 'emails'"
+                class="mt-8 overflow-x-auto rounded-2xl border border-dark/10"
+              >
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-cream/50">
+                      <th class="text-left px-4 py-3 font-semibold text-dark/70">{{ t("guide.when") }}</th>
+                      <th class="text-left px-4 py-3 font-semibold text-dark/70">{{ t("guide.recipient") }}</th>
+                      <th class="text-left px-4 py-3 font-semibold text-dark/70">{{ t("guide.subject") }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="(email, i) in emails"
+                      :key="i"
+                      class="border-t border-dark/5"
                     >
-                      <span class="text-dark/30 mt-0.5">·</span>
+                      <td class="px-4 py-3 text-dark/80">{{ email.when }}</td>
+                      <td class="px-4 py-3">
+                        <span
+                          class="text-xs px-2 py-0.5 rounded-full whitespace-nowrap"
+                          :class="email.toYou ? 'bg-dark text-cream' : 'bg-dark/10 text-dark'"
+                        >
+                          {{ email.toYou ? t("guide.you") : t("guide.the_client") }}
+                        </span>
+                      </td>
+                      <td class="px-4 py-3 text-dark/70 italic">{{ email.subject }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Blocs de l'article -->
+              <div class="mt-8 space-y-5">
+                <template v-for="(block, b) in article.blocks" :key="b">
+                  <h3 v-if="block.h" class="text-lg font-bold pt-3">
+                    {{ block.h }}
+                  </h3>
+
+                  <p v-else-if="block.p" class="text-dark/80 leading-relaxed">
+                    {{ block.p }}
+                  </p>
+
+                  <ol v-else-if="block.steps" class="space-y-3">
+                    <li
+                      v-for="(item, i) in block.steps"
+                      :key="i"
+                      class="flex items-start gap-3"
+                    >
+                      <span
+                        class="w-7 h-7 rounded-full bg-dark text-cream text-sm
+                               font-bold flex items-center justify-center shrink-0"
+                      >
+                        {{ i + 1 }}
+                      </span>
+                      <span class="text-dark/80 pt-0.5 leading-relaxed">{{ item }}</span>
+                    </li>
+                  </ol>
+
+                  <ul v-else-if="block.list" class="space-y-2">
+                    <li
+                      v-for="(item, i) in block.list"
+                      :key="i"
+                      class="flex items-start gap-3 text-dark/80 leading-relaxed"
+                    >
+                      <span class="w-1.5 h-1.5 rounded-full bg-dark shrink-0 mt-2.5" />
                       <span>{{ item }}</span>
                     </li>
                   </ul>
-                </div>
-              </div>
 
-              <!-- Emails envoyés à cette étape -->
-              <div
-                v-if="step.emails.length"
-                class="flex items-start gap-2 bg-cream/60 rounded-xl px-4 py-3"
-              >
-                <IconLucid name="Mail" size="xs" class="text-dark mt-0.5 shrink-0" />
-                <div class="min-w-0">
-                  <span class="font-semibold text-dark text-sm">{{ t("guide.emails_sent") }}</span>
-                  <p
-                    v-for="(email, j) in step.emails"
-                    :key="j"
-                    class="text-dark/70 text-sm mt-0.5"
+                  <div
+                    v-else-if="block.tip"
+                    class="flex items-start gap-3 rounded-2xl bg-cream/60 px-5 py-4"
                   >
-                    {{ t("guide.to") }} {{ email.to }} : <em>{{ email.subject }}</em>
-                  </p>
+                    <IconLucid name="Info" size="sm" class="text-dark mt-0.5 shrink-0" />
+                    <p class="text-dark/80 text-sm leading-relaxed">
+                      <span class="font-semibold text-dark">{{ t("guide.tip") }} :</span>
+                      {{ block.tip }}
+                    </p>
+                  </div>
+                </template>
+              </div>
+
+              <!-- Voir aussi -->
+              <div v-if="meta?.see?.length" class="mt-10">
+                <p class="text-sm font-semibold text-dark mb-3">
+                  {{ t("guide.see_also") }}
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <NuxtLink
+                    replace
+                    v-for="slug in meta.see"
+                    :key="slug"
+                    :to="articleLink(slug)"
+                    class="rounded-full border border-dark/15 px-4 py-1.5 text-sm
+                           text-dark hover:border-dark transition-colors"
+                  >
+                    {{ articles[slug].title }}
+                  </NuxtLink>
                 </div>
               </div>
 
-              <!-- Côté cliente -->
+              <!-- Article précédent / suivant -->
               <div
-                v-if="step.clientSees"
-                class="flex items-start gap-2"
+                class="mt-12 pt-6 border-t border-dark/10 grid grid-cols-2 gap-4"
               >
-                <IconLucid name="Eye" size="xs" class="text-gray-400 mt-0.5 shrink-0" />
-                <p class="text-dark/60 text-sm">
-                  <span class="font-semibold text-dark">{{ t("guide.client_sees") }} :</span>
-                  {{ step.clientSees }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Récapitulatif des emails -->
-        <div class="mt-12">
-          <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
-            <IconLucid name="Mail" size="sm" class="text-gray-500" />
-            {{ t("guide.emails_title") }}
-          </h2>
-          <p class="text-sm text-dark/50 mb-4">{{ t("guide.emails_note") }}</p>
-          <div class="overflow-x-auto rounded-2xl border border-dark/10">
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="bg-cream/50">
-                  <th class="text-left px-4 py-3 font-semibold text-dark/60">{{ t("guide.when") }}</th>
-                  <th class="text-left px-4 py-3 font-semibold text-dark/60">{{ t("guide.recipient") }}</th>
-                  <th class="text-left px-4 py-3 font-semibold text-dark/60">{{ t("guide.subject") }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(email, i) in emails"
-                  :key="i"
-                  class="border-t border-dark/5"
+                <NuxtLink
+                  replace
+                  v-if="prevSlug"
+                  :to="articleLink(prevSlug)"
+                  class="group rounded-2xl px-4 py-3 hover:bg-cream/50 transition-colors"
                 >
-                  <td class="px-4 py-3 text-dark/70">{{ email.when }}</td>
-                  <td class="px-4 py-3">
-                    <span
-                      class="text-xs px-2 py-0.5 rounded-full whitespace-nowrap"
-                      :class="email.toYou ? 'bg-dark text-cream' : 'bg-dark/10 text-dark'"
-                    >
-                      {{ email.toYou ? t("guide.you") : t("guide.the_client") }}
-                    </span>
-                  </td>
-                  <td class="px-4 py-3 text-dark/60 italic">{{ email.subject }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+                  <span class="flex items-center gap-1 text-xs text-gray-500">
+                    <IconLucid name="ChevronLeft" size="xs" class="text-gray-500" />
+                    {{ t("guide.previous") }}
+                  </span>
+                  <span class="block text-sm font-semibold text-dark mt-0.5">
+                    {{ articles[prevSlug].title }}
+                  </span>
+                </NuxtLink>
+                <span v-else />
+                <NuxtLink
+                  replace
+                  v-if="nextSlug"
+                  :to="articleLink(nextSlug)"
+                  class="group rounded-2xl px-4 py-3 text-right hover:bg-cream/50
+                         transition-colors"
+                >
+                  <span class="flex items-center justify-end gap-1 text-xs text-gray-500">
+                    {{ t("guide.next") }}
+                    <IconLucid name="ChevronRight" size="xs" class="text-gray-500" />
+                  </span>
+                  <span class="block text-sm font-semibold text-dark mt-0.5">
+                    {{ articles[nextSlug].title }}
+                  </span>
+                </NuxtLink>
+              </div>
+            </article>
 
-        <!-- Les autres pages -->
-        <div class="mt-12 mb-8">
-          <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-            <IconLucid name="LayoutGrid" size="sm" class="text-gray-500" />
-            {{ t("guide.pages_title") }}
-          </h2>
-          <div class="space-y-3">
-            <div
-              v-for="page in pages"
-              :key="page.key"
-              class="flex items-start gap-4 rounded-2xl bg-cream/50 px-5 py-4"
-            >
-              <IconLucid :name="page.icon" size="sm" class="text-dark mt-0.5 shrink-0" />
-              <div>
-                <span class="font-semibold text-dark">{{ page.title }}</span>
-                <p class="text-dark/50 text-sm mt-0.5">{{ page.desc }}</p>
+            <!-- Accueil du guide : tous les articles, par thème -->
+            <div v-else class="space-y-10">
+              <div v-for="cat in CATEGORIES" :key="cat.key">
+                <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <IconLucid :name="cat.icon" size="sm" class="text-gray-500" />
+                  {{ t(`guide.cat_${cat.key}`) }}
+                </h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                  <NuxtLink
+                    replace
+                    v-for="slug in cat.articles"
+                    :key="slug"
+                    :to="articleLink(slug)"
+                    class="block rounded-2xl bg-cream/50 px-5 py-4
+                           hover:bg-cream transition-colors"
+                  >
+                    <span class="block font-semibold text-dark">
+                      {{ articles[slug].title }}
+                    </span>
+                    <span class="block text-sm text-dark/60 mt-0.5">
+                      {{ articles[slug].summary }}
+                    </span>
+                  </NuxtLink>
+                </div>
               </div>
             </div>
           </div>
@@ -190,7 +345,9 @@ definePageMeta({
   layoutTransition: false,
 });
 
-const { t } = useI18n();
+const { t, tm, rt } = useI18n();
+const route = useRoute();
+const localePath = useLocalePath();
 
 const pageTitle = useState<string | null>("dashboard-page-title", () => null);
 pageTitle.value = t("guide.title");
@@ -199,8 +356,156 @@ useHead({
   title: t("guide.title") + " - Boticia",
 });
 
+// Le sommaire : l'ordre ici est l'ordre de lecture (précédent / suivant).
+// Les textes sont dans guide.articles.<slug> des fichiers de langue.
+const CATEGORIES = [
+  { key: "start", icon: "Home", articles: ["connexion", "tableau-de-bord"] },
+  {
+    key: "requests",
+    icon: "Inbox",
+    articles: [
+      "parcours",
+      "statuts",
+      "formulaire",
+      "rendez-vous",
+      "moodboard",
+      "devis",
+      "reponses",
+      "emails",
+      "espace-client",
+    ],
+  },
+  {
+    key: "site",
+    icon: "Globe",
+    articles: ["photos", "photos-pages", "legendes", "avis", "personnalisation"],
+  },
+];
+
+const ORDER = CATEGORIES.flatMap((c) => c.articles);
+
+// Page du tableau de bord liée à l'article, et articles « Voir aussi »
+const META: Record<string, { page?: string; see?: string[] }> = {
+  connexion: { see: ["tableau-de-bord", "espace-client"] },
+  "tableau-de-bord": { page: "/dashboard", see: ["parcours", "rendez-vous"] },
+  parcours: { page: "/dashboard/quotes", see: ["statuts", "emails"] },
+  statuts: { page: "/dashboard/quotes", see: ["parcours"] },
+  formulaire: { see: ["rendez-vous", "espace-client"] },
+  "rendez-vous": { see: ["statuts"] },
+  moodboard: { page: "/dashboard/quotes", see: ["devis", "espace-client"] },
+  devis: { page: "/dashboard/quotes", see: ["reponses", "statuts"] },
+  reponses: { page: "/dashboard/quotes", see: ["devis", "emails"] },
+  emails: { see: ["parcours"] },
+  "espace-client": { see: ["connexion", "moodboard"] },
+  photos: { page: "/dashboard/galleries", see: ["photos-pages", "legendes"] },
+  "photos-pages": {
+    page: "/dashboard/galleries",
+    see: ["photos", "legendes"],
+  },
+  legendes: { page: "/dashboard/galleries", see: ["photos"] },
+  avis: { page: "/dashboard/avis" },
+  personnalisation: {
+    page: "/dashboard/personalisation",
+    see: ["photos-pages"],
+  },
+};
+
+type Block = {
+  h?: string;
+  p?: string;
+  tip?: string;
+  steps?: string[];
+  list?: string[];
+};
+type Article = { title: string; summary: string; blocks: Block[] };
+
+// Lit un message (texte, liste ou objet) et renvoie du texte simple.
+// Un message compilé est une fonction ou un objet avec un « type » chiffré.
+const isMessage = (m: object) =>
+  typeof (m as { type?: unknown }).type === "number" ||
+  typeof (m as { t?: unknown }).t === "number";
+
+const resolve = (m: unknown): unknown => {
+  if (typeof m === "string") return m;
+  if (Array.isArray(m)) return m.map(resolve);
+  if (m && typeof m === "object" && !isMessage(m)) {
+    return Object.fromEntries(
+      Object.entries(m as Record<string, unknown>).map(([k, v]) => [
+        k,
+        resolve(v),
+      ]),
+    );
+  }
+  return rt(m as Parameters<typeof rt>[0]);
+};
+
+const articles = computed(
+  () => resolve(tm("guide.articles")) as Record<string, Article>,
+);
+
+const current = computed(() => {
+  const slug = route.query.article;
+  return typeof slug === "string" && ORDER.includes(slug) ? slug : null;
+});
+
+const article = computed(() =>
+  current.value ? articles.value[current.value] : null,
+);
+
+const articleLink = (slug: string | null) =>
+  slug ? `${route.path}?article=${slug}` : route.path;
+
+const meta = computed(() =>
+  current.value ? META[current.value] : undefined,
+);
+
+const categoryOf = (slug: string | null) =>
+  CATEGORIES.find((c) => slug && c.articles.includes(slug)) ?? CATEGORIES[0];
+
+const prevSlug = computed(() => {
+  const i = current.value ? ORDER.indexOf(current.value) : -1;
+  return i > 0 ? ORDER[i - 1] : null;
+});
+const nextSlug = computed(() => {
+  const i = current.value ? ORDER.indexOf(current.value) : -1;
+  return i >= 0 && i < ORDER.length - 1 ? ORDER[i + 1] : null;
+});
+
+// Remonter en haut à chaque changement d'article
+watch(current, () => window.scrollTo({ top: 0 }));
+
+// Recherche : sans accents ni majuscules, dans tout le texte de l'article
+const query = ref("");
+const normalize = (s: string) =>
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const searching = computed(() => query.value.trim().length >= 2);
+
+const flatText = (a: Article) =>
+  normalize(
+    [
+      a.title,
+      a.summary,
+      ...a.blocks.flatMap((b) => [
+        b.h,
+        b.p,
+        b.tip,
+        ...(b.steps ?? []),
+        ...(b.list ?? []),
+      ]),
+    ]
+      .filter(Boolean)
+      .join(" "),
+  );
+
+const results = computed(() => {
+  const words = normalize(query.value).split(/\s+/).filter(Boolean);
+  return ORDER.filter((slug) => {
+    const text = flatText(articles.value[slug]);
+    return words.every((w) => text.includes(w));
+  });
+});
+
 // Statuts proposés sur la fiche (voir statusOptions dans quotes/[id].vue)
-// et ce qui les fait changer.
 const statuses = computed(() => [
   { key: "new", dot: "bg-yellow-400", label: t("guide.status_new"), desc: t("guide.status_new_desc"), auto: true },
   { key: "contacted", dot: "bg-blue-400", label: t("guide.status_contacted"), desc: t("guide.status_contacted_desc"), auto: true },
@@ -208,67 +513,6 @@ const statuses = computed(() => [
   { key: "signed", dot: "bg-green-400", label: t("guide.status_signed"), desc: t("guide.status_signed_desc"), auto: false },
   { key: "completed", dot: "bg-green-600", label: t("guide.status_completed"), desc: t("guide.status_completed_desc"), auto: false },
   { key: "cancelled", dot: "bg-red-400", label: t("guide.status_cancelled"), desc: t("guide.status_cancelled_desc"), auto: false },
-]);
-
-const toYou = () => t("guide.you").toLowerCase();
-const toClient = () => t("guide.the_client").toLowerCase();
-
-const steps = computed(() => [
-  {
-    title: t("guide.step1_title"),
-    action: t("guide.step1_action"),
-    happens: [t("guide.step1_h1"), t("guide.step1_h2"), t("guide.step1_h3")],
-    emails: [
-      { to: toYou(), subject: t("guide.email1_subject") },
-      { to: toClient(), subject: t("guide.email2_subject") },
-    ],
-    clientSees: t("guide.step1_client"),
-  },
-  {
-    title: t("guide.step2_title"),
-    action: t("guide.step2_action"),
-    happens: [t("guide.step2_h1"), t("guide.step2_h2")],
-    emails: [],
-    clientSees: null,
-  },
-  {
-    title: t("guide.step3_title"),
-    action: t("guide.step3_action"),
-    happens: [t("guide.step3_h1"), t("guide.step3_h2"), t("guide.step3_h3")],
-    emails: [{ to: toClient(), subject: t("guide.email4_subject") }],
-    clientSees: t("guide.step3_client"),
-  },
-  {
-    title: t("guide.step4_title"),
-    action: t("guide.step4_action"),
-    happens: [t("guide.step4_h1"), t("guide.step4_h2")],
-    emails: [{ to: toClient(), subject: t("guide.email5_subject") }],
-    clientSees: t("guide.step4_client"),
-  },
-  {
-    title: t("guide.step5_title"),
-    action: t("guide.step5_action"),
-    happens: [t("guide.step5_h1"), t("guide.step5_h2")],
-    emails: [
-      { to: toYou(), subject: t("guide.email6_subject") },
-      { to: toYou(), subject: t("guide.email7_subject") },
-    ],
-    clientSees: t("guide.step5_client"),
-  },
-  {
-    title: t("guide.step6_title"),
-    action: t("guide.step6_action"),
-    happens: [t("guide.step6_h1"), t("guide.step6_h2"), t("guide.step6_h3")],
-    emails: [{ to: toYou(), subject: t("guide.email8_subject") }],
-    clientSees: null,
-  },
-  {
-    title: t("guide.step7_title"),
-    action: t("guide.step7_action"),
-    happens: [t("guide.step7_h1")],
-    emails: [],
-    clientSees: null,
-  },
 ]);
 
 // Les 8 emails automatiques (server/utils/email.ts)
@@ -286,12 +530,6 @@ const emails = computed(() =>
     when: t(`guide.email${n}_when`),
     subject: t(`guide.email${n}_subject`),
     toYou,
-  }))
+  })),
 );
-
-const pages = computed(() => [
-  { key: "galleries", icon: "Images", title: t("guide.pages_galleries"), desc: t("guide.pages_galleries_desc") },
-  { key: "reviews", icon: "MessageSquareQuote", title: t("guide.pages_reviews"), desc: t("guide.pages_reviews_desc") },
-  { key: "settings", icon: "Settings", title: t("guide.pages_settings"), desc: t("guide.pages_settings_desc") },
-]);
 </script>

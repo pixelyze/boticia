@@ -29,6 +29,8 @@ export interface GalleryImage {
   bento_slot?: number | null;
   // Type de photo (photothèque) : un seul par photo
   photo_type?: PhotoType | null;
+  // Collection (photothèque) : nom de l'événement, une seule par photo
+  collection?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -36,6 +38,7 @@ export interface GalleryImage {
 export interface CreateGalleryImageInput {
   gallery_id?: string | null;
   photo_type?: PhotoType | null;
+  collection?: string | null;
   filename: string;
   original_filename: string;
   mime_type: string;

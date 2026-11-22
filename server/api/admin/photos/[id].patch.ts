@@ -1,11 +1,14 @@
 /**
  * PATCH /api/admin/photos/:id
- * Admin — Modifie la légende ou le type d'une photo
+ * Admin — Modifie la légende, le type ou la collection d'une photo
  */
 
 import { requireAdmin } from "~/server/utils/serverAuth";
 import { updateGalleryImage } from "~/server/utils/galleries";
-import { isPhotoType } from "~/server/utils/photo-placements";
+import {
+  cleanCollection,
+  isPhotoType,
+} from "~/server/utils/photo-placements";
 
 const CAPTION_MAX = 200;
 
@@ -33,6 +36,10 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400, message: "Invalid photo type" });
     }
     update.photo_type = body.photo_type;
+  }
+
+  if ("collection" in body) {
+    update.collection = cleanCollection(body.collection);
   }
 
   const image = await updateGalleryImage(id, update);

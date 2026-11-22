@@ -54,8 +54,8 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="py-16 md:py-24 bg-cream-light">
+    <!-- CTA : blanc, avant le pied de page crème clair -->
+    <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6 text-center">
         <h2 class="section-title-lg mb-4">
           {{ $t("faq.cta_title") }}

@@ -4,7 +4,7 @@
        cartes ni carrés d'icônes : quatre prestations sur deux colonnes,
        séparées par un filet fin, comme les autres blocs v2.
        Padding : py-16 md:py-24 | Background : bg-white -->
-  <section class="py-16 md:py-24 bg-white">
+  <section class="py-16 md:py-24 bg-cream-light">
     <div class="container mx-auto px-6">
       <!-- [EL-WEDDING-SERVICES-HEADER] -->
       <div class="text-center mb-14">

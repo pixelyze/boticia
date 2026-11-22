@@ -23,13 +23,15 @@ alter table public.gallery_images
 --   viewer      : photos en plus, visibles dans la visionneuse
 --   opening     : grande photo d'ouverture de Créations
 --   bouquets, ceremonie, reception, accessoires : chapitres de Créations
+--   subscription : les 2 photos de la section « Abonnement floral »
+--                  (page Entreprises), autrefois réglées dans Personnalisation
 create table if not exists public.photo_placements (
   id uuid primary key default gen_random_uuid(),
   image_id uuid not null references public.gallery_images(id) on delete cascade,
   page text not null
     check (page in ('home', 'wedding', 'events', 'creations', 'workshops')),
   zone text not null
-    check (zone in ('grid', 'viewer', 'opening',
+    check (zone in ('grid', 'viewer', 'opening', 'subscription',
                     'bouquets', 'ceremonie', 'reception', 'accessoires')),
   position integer not null check (position >= 0),
   created_at timestamptz not null default now(),
@@ -174,6 +176,45 @@ on conflict do nothing;
 delete from public.gallery_images gi
 using _imgs i
 where i.id = gi.id and i.canon <> gi.id;
+
+-- Abonnement floral (page Entreprises) : les 2 photos réglées jusqu'ici
+-- dans Personnalisation (cms_config) entrent dans la photothèque, type
+-- « Entreprise ». Une photo déjà présente (même adresse) est réutilisée.
+-- Leurs fichiers restent où ils sont (souvent dans le bucket « logos »).
+create temporary table _sub on commit drop as
+select value ->> 'url' as url,
+       case key when 'events_philosophy_image_1' then 0 else 1 end as pos,
+       key
+from public.cms_config
+where key in ('events_philosophy_image_1', 'events_philosophy_image_2')
+  and coalesce(value ->> 'url', '') <> '';
+
+insert into public.gallery_images
+  (gallery_id, photo_type, filename, original_filename, mime_type,
+   file_size, storage_path, public_url)
+select distinct on (s.url)
+  null, 'entreprise',
+  regexp_replace(s.url, '^.*/', ''),
+  regexp_replace(s.url, '^.*/', ''),
+  case
+    when s.url ilike '%.png' then 'image/png'
+    when s.url ilike '%.jp%g' then 'image/jpeg'
+    else 'image/webp'
+  end,
+  0,
+  regexp_replace(s.url, '^.*/object/public/[^/]+/', ''),
+  s.url
+from _sub s
+where not exists (
+  select 1 from public.gallery_images gi where gi.public_url = s.url
+);
+
+insert into public.photo_placements (image_id, page, zone, position)
+select (select gi.id from public.gallery_images gi
+        where gi.public_url = s.url order by gi.created_at limit 1),
+       'events', 'subscription', s.pos
+from _sub s
+on conflict do nothing;
 
 -- 4. Nettoyage de l'essai local abandonné ------------------------------
 alter table public.gallery_images drop column if exists category;

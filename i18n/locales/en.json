@@ -85,6 +85,7 @@
     "weddings_link": "Discover our wedding service"
   },
   "weddings": {
+    "step_label": "Step {n}",
     "tagline": "Weddings",
     "title": "Wedding floral design",
     "intro": "Personalised floral guidance, from designing bridal bouquets to floral scenography, for a bespoke, distinctive wedding decoration considered down to the smallest detail.",
@@ -573,6 +574,13 @@
     "chat_optional": "Optional"
   },
   "dashboard": {
+    "photos_subscription_title": "Floral subscription",
+    "photos_subscription_text": "The 2 photos next to the “Floral subscription” text. If a slot is empty, the site shows a default photo.",
+    "photos_subscription_main": "Main photo",
+    "photos_subscription_second": "Second photo",
+    "subscription_photos_moved_title": "Floral subscription photos",
+    "subscription_photos_moved_text": "The 2 photos of the “Floral subscription” section (Business page) are now chosen in",
+    "subscription_photos_moved_link": "Site photos, Business & events tab",
     "photos_title": "Site photos",
     "photos_tab_library": "Photo library",
     "photos_tab_home": "Home",
@@ -590,7 +598,6 @@
     "photos_drop": "Upload photos",
     "photos_uploading": "Uploading…",
     "photos_upload_title": "These photos are about",
-    "photos_upload_later": "I'll choose later",
     "photos_visible_one": "Shown on the site, {pages} page",
     "photos_visible_many": "Shown on the site, {pages} pages",
     "photos_not_visible": "Not shown on the site yet",
@@ -957,7 +964,33 @@
     "moodboard_draft_title": "Prepare the moodboard",
     "moodboard_draft_files": "The moodboard images",
     "moodboard_draft_add": "Add images or a PDF",
-    "moodboard_draft_note_placeholder": "For example: here is a first direction, tell me what you think…"
+    "moodboard_draft_note_placeholder": "For example: here is a first direction, tell me what you think…",
+    "photos_filter_type": "Type",
+    "photos_filter_collection": "Collection",
+    "photos_filter_no_collection": "No collection",
+    "photos_collection_label": "Collection",
+    "photos_collection_add": "+ Add to a collection",
+    "photos_collection_change": "Change",
+    "photos_collection_show": "Show the collection {name}",
+    "photos_collection_title": "Photo collection",
+    "photos_collection_remove": "Remove from the collection",
+    "photos_collection_placeholder": "Example: Sophie and Paul's wedding, Château de la Gaude",
+    "photos_collection_existing": "Or choose an existing collection:",
+    "photos_collection_rename": "Rename",
+    "photos_collection_delete": "Delete the collection",
+    "photos_collection_rename_title": "Rename the collection",
+    "photos_collection_rename_one": "The new name applies to the photo in the collection.",
+    "photos_collection_rename_many": "The new name applies to the {n} photos in the collection.",
+    "photos_collection_delete_title": "Delete this collection?",
+    "photos_collection_delete_one": "The photo in “{name}” stays in the library and on the website. It simply has no collection anymore.",
+    "photos_collection_delete_many": "The {n} photos in “{name}” stay in the library and on the website. They simply have no collection anymore.",
+    "photos_optional": "(optional)",
+    "photos_upload_step_type": "1. The type ",
+    "photos_upload_step_collection": "2. The collection ",
+    "photos_upload_collection_help": "The name of the event, to find these photos together.",
+    "photos_upload_confirm_one": "Add 1 photo",
+    "photos_upload_confirm_many": "Add {n} photos",
+    "photos_upload_change_later": "You can change the type and the collection on each photo later."
   },
   "client": {
     "page_title": "My project",
@@ -1143,68 +1176,39 @@
   },
   "guide": {
     "title": "Dashboard guide",
-    "subtitle": "How a request unfolds, from the form to the event, and what happens automatically.",
-    "pipeline_title": "Request statuses",
+    "subtitle": "Every answer about the dashboard, sorted by topic.",
+    "search_placeholder": "Search the guide, for example “caption”",
+    "search_label": "Search the guide",
+    "search_results": "Search results",
+    "search_empty": "No article mentions “{q}”. Try another word.",
+    "summary": "Contents",
+    "previous": "Previous article",
+    "next": "Next article",
+    "see_also": "See also",
+    "open_page": "Open the page",
+    "tip": "Good to know",
     "auto": "Automatic",
     "manual": "Manual",
-    "action": "To do",
-    "what_happens": "What happens",
-    "emails_sent": "Emails sent",
-    "to": "To",
-    "subject": "Subject",
-    "client_sees": "On the client's side",
-    "you": "You",
-    "the_client": "The client",
-    "emails_title": "All automatic emails",
-    "emails_note": "Emails to the client are sent in her language (French, English or Japanese).",
     "when": "When",
     "recipient": "Recipient",
-    "status_new": "New",
-    "status_new_desc": "The request has just come in through the form.",
+    "subject": "Subject",
+    "you": "You",
+    "the_client": "The client",
+    "cat_start": "Getting started",
+    "cat_requests": "Quote requests",
+    "cat_site": "The website",
+    "status_new": "New request",
+    "status_new_desc": "The request has just arrived through the form.",
     "status_contacted": "Contacted",
-    "status_contacted_desc": "Moves here on its own once the meeting date has passed. You can also set it yourself.",
+    "status_contacted_desc": "Set on its own the day after the meeting. The site checks every morning. You can also choose it yourself.",
     "status_quote": "Quote sent",
-    "status_quote_desc": "Moves here on its own when the first quote is sent.",
-    "status_signed": "Signed",
-    "status_signed_desc": "Set it yourself once the project is confirmed (even if the client has approved the quote).",
+    "status_quote_desc": "Set on its own when the quote is sent for the first time.",
+    "status_signed": "Project confirmed",
+    "status_signed_desc": "Choose it yourself when the project is confirmed.",
     "status_completed": "Completed",
-    "status_completed_desc": "Set it yourself once the event is done.",
+    "status_completed_desc": "Choose it yourself once the service is done.",
     "status_cancelled": "Cancelled",
-    "status_cancelled_desc": "Set it yourself if the project does not go ahead.",
-    "step1_title": "The client sends her request",
-    "step1_action": "Nothing: she fills in the “Request a quote” form and picks a meeting slot herself.",
-    "step1_h1": "A request is created in the dashboard, with status “New” and the chosen meeting.",
-    "step1_h2": "Her client space opens straight away: she can add her inspiration photos there.",
-    "step1_h3": "The button in your email opens the request directly, without signing in again.",
-    "step1_client": "A confirmation page, then an email with a direct link to her space.",
-    "step2_title": "The meeting",
-    "step2_action": "If needed, “Change the slot” on the request.",
-    "step2_h1": "The day after the meeting, the request moves from “New” to “Contacted” on its own (checked every morning).",
-    "step2_h2": "You can change the status yourself at any time.",
-    "step3_title": "The moodboard",
-    "step3_action": "On the request, “Add” under Moodboard: drop the images or a PDF, write a note for the client if you wish, save the draft. When it's ready: “Send version 1”.",
-    "step3_h1": "Each send creates a fixed version (V1, V2…); earlier ones stay in the request's history.",
-    "step3_h2": "Your note appears in her space, under “A note from Laëtitia”, and in the email.",
-    "step3_h3": "The request status does not change.",
-    "step3_client": "She finds the moodboard and your note in her space.",
-    "step4_title": "The quote",
-    "step4_action": "On the request, “Add” under Quote: choose the PDF, write a note if you wish, save the draft, then “Send version 1”.",
-    "step4_h1": "As with the moodboard, each send creates a version (V1, V2…).",
-    "step4_h2": "On the first send, the request moves to “Quote sent” on its own.",
-    "step4_client": "She opens her quote in her space and can approve it or write to you.",
-    "step5_title": "The client replies",
-    "step5_action": "Nothing: she approves the quote, or clicks “Write to Laëtitia”, as many times as she likes.",
-    "step5_h1": "Each message appears in the request's history, and the message count shows in the request list.",
-    "step5_h2": "When she approves, the quote is marked “Quote approved”. The request status does not change: set it to “Signed” once the project is confirmed.",
-    "step5_client": "She sees that her message was sent, or that her quote is approved.",
-    "step6_title": "The automatic follow-up",
-    "step6_action": "Nothing: the reminder arrives on its own.",
-    "step6_h1": "If the client opened her quote without approving it or writing to you, you get a reminder in the morning, 2 days later.",
-    "step6_h2": "Only one reminder per quote version, never on Saturday or Sunday (it then arrives on Monday).",
-    "step6_h3": "The button in the email opens WhatsApp with a message already written for the client.",
-    "step7_title": "Wrapping up",
-    "step7_action": "Change the status yourself: “Signed” once the project is confirmed, then “Completed” after the event (or “Cancelled”).",
-    "step7_h1": "The status is updated. No email is sent.",
+    "status_cancelled_desc": "Choose it yourself if the project does not go ahead.",
     "email1_when": "New request",
     "email1_subject": "Nouvelle demande de [Nom] — Boticia",
     "email2_when": "New request",
@@ -1221,13 +1225,465 @@
     "email7_subject": "🎉 [Nom] a dit oui… au devis ! — Boticia",
     "email8_when": "Quote opened with no reply, 2 days later",
     "email8_subject": "📱 Un petit signe pour [Nom] ? — Boticia",
-    "pages_title": "Other pages",
-    "pages_galleries": "Galleries",
-    "pages_galleries_desc": "Tile on the dashboard home. The photos on the site's pages: home, creations, weddings, workshops, events.",
-    "pages_reviews": "Reviews",
-    "pages_reviews_desc": "Tile on the dashboard home. The homepage testimonials, in French and English: add, edit, hide, reorder.",
-    "pages_settings": "Settings",
-    "pages_settings_desc": "⚙️ button at the top right: your meeting slots (“Recurring slots” and “Exceptions”), Customization (logo, theme, site photos), this guide, Updates and sign-out."
+    "articles": {
+      "connexion": {
+        "title": "Signing in",
+        "summary": "No password: each time you sign in, you get a code by email.",
+        "blocks": [
+          {
+            "steps": [
+              "Open the sign-in page of the website.",
+              "Type your email address, then click “Continue”.",
+              "Open the email “Votre code de connexion”.",
+              "Type the 6-digit code. The dashboard opens."
+            ]
+          },
+          {
+            "tip": "No code? Check your spam folder. You can also click “Resend code”."
+          },
+          {
+            "p": "Your clients sign in to their client space the same way, with the email address of their request."
+          }
+        ]
+      },
+      "tableau-de-bord": {
+        "title": "The dashboard home",
+        "summary": "The first page after you sign in. It shows your requests and what needs your attention.",
+        "blocks": [
+          {
+            "h": "On the page"
+          },
+          {
+            "list": [
+              "“My quotes”: your requests. Click a request to open it. The “My quotes” title opens the full list, with a filter by status.",
+              "“Alerts”: requests that need an action from you. For example, a quote sent several days ago with no reply.",
+              "“Site photos”: the photo library and the photos of each page.",
+              "“Reviews”: the testimonials on the home page."
+            ]
+          },
+          {
+            "h": "The ⚙️ button, top right"
+          },
+          {
+            "list": [
+              "Your meeting slots.",
+              "Personalization: the logo and the ambiance color of the website.",
+              "This guide.",
+              "Updates: what's new in the dashboard.",
+              "Sign out."
+            ]
+          }
+        ]
+      },
+      "parcours": {
+        "title": "The life of a request",
+        "summary": "A request goes through 7 steps, from the form to the event. Several happen on their own.",
+        "blocks": [
+          {
+            "steps": [
+              "The client fills in the quote form and picks a meeting. You have nothing to do.",
+              "You have the discovery call. The next day, the request moves to “Contacted” on its own.",
+              "You send a moodboard from the request page.",
+              "You send the quote. The request moves to “Quote sent” on its own.",
+              "The client approves the quote, or writes to you.",
+              "No reply? You get a reminder 2 days later.",
+              "You change the status yourself: “Project confirmed”, then “Completed”."
+            ]
+          },
+          {
+            "tip": "Each step has its own article in the contents, with the details."
+          }
+        ]
+      },
+      "statuts": {
+        "title": "Request statuses",
+        "summary": "The status shows where a request stands. 3 statuses change on their own. You choose the other 3.",
+        "blocks": [
+          {
+            "p": "To change a status: open the request, then choose the new status."
+          },
+          {
+            "tip": "When the client approves the quote, the status does not change. Set the request to “Project confirmed” yourself once the project is confirmed."
+          }
+        ]
+      },
+      "formulaire": {
+        "title": "The quote form",
+        "summary": "The “Request a quote” page of the website. The client answers one question at a time.",
+        "blocks": [
+          {
+            "h": "The questions, in order"
+          },
+          {
+            "steps": [
+              "The category: Wedding, Business & events, or Floral workshop.",
+              "Her needs. For example, for a wedding: bridal bouquet, ceremony arch, centerpieces.",
+              "Her name.",
+              "Her email and phone number.",
+              "Her project: the type of event, the date, the venue and the number of guests.",
+              "Her budget.",
+              "Her inspiration photos. She can also add them later.",
+              "A slot for the discovery call, chosen from your availability.",
+              "A summary, then she sends it."
+            ]
+          },
+          {
+            "h": "The floral subscription"
+          },
+          {
+            "p": "In “Business & events”, the client can choose “Floral subscription”. These are flowers delivered on a regular basis, for example for a hotel, a restaurant or a boutique."
+          },
+          {
+            "p": "The monthly budget of a subscription is set during the discovery call."
+          },
+          {
+            "h": "After she sends it"
+          },
+          {
+            "list": [
+              "A request is created in the dashboard, with the status “New request”.",
+              "You get an email. Its button opens the request, without signing in again.",
+              "The client gets an email with a link to her client space."
+            ]
+          }
+        ]
+      },
+      "rendez-vous": {
+        "title": "Meetings and your slots",
+        "summary": "The client picks her own discovery call, from the slots you open.",
+        "blocks": [
+          {
+            "h": "Set your slots"
+          },
+          {
+            "steps": [
+              "Click ⚙️, top right.",
+              "In “Recurring slots”, add your weekly slots: the day, the start time, the end time and the length of a meeting.",
+              "In “Exceptions”, block a date, for example for a holiday. You can also add an extra slot."
+            ]
+          },
+          {
+            "h": "Change a meeting"
+          },
+          {
+            "p": "On the request page, click “Change the slot”."
+          },
+          {
+            "tip": "The day after the meeting, the request moves to “Contacted” on its own."
+          }
+        ]
+      },
+      "moodboard": {
+        "title": "Sending a moodboard",
+        "summary": "A moodboard is a board of images. It shows the client the mood you imagine for her project.",
+        "blocks": [
+          {
+            "steps": [
+              "Open the request.",
+              "Under “Moodboard”, click “Add”.",
+              "Drop the images or a PDF.",
+              "Write a note for the client, if you wish.",
+              "Save the draft.",
+              "When everything is ready, click “Send version 1”."
+            ]
+          },
+          {
+            "h": "Next"
+          },
+          {
+            "list": [
+              "The client gets the email “Votre moodboard floral est prêt”.",
+              "She finds the moodboard in her client space. Your note shows under “A note from Laëtitia”, in her space and in the email.",
+              "Each send creates a fixed version: V1, V2… Earlier ones stay in the history.",
+              "The request status does not change."
+            ]
+          }
+        ]
+      },
+      "devis": {
+        "title": "Sending a quote",
+        "summary": "The quote is a PDF you add to the request. The client reads it and approves it in her client space.",
+        "blocks": [
+          {
+            "steps": [
+              "Open the request.",
+              "Under “Quote”, click “Add”.",
+              "Choose the PDF of the quote.",
+              "Write a note for the client, if you wish.",
+              "Save the draft.",
+              "Click “Send version 1”."
+            ]
+          },
+          {
+            "tip": "A draft stays with you. Until you click “Send”, the client receives nothing. An alert reminds you on the dashboard home."
+          },
+          {
+            "h": "Next"
+          },
+          {
+            "list": [
+              "The client gets the email “Votre devis floral est disponible”.",
+              "Your note shows in the email, in a box “A note from Laëtitia”. It also shows in her client space. With no note, the box does not appear.",
+              "On the first send, the request moves to “Quote sent” on its own.",
+              "Each new send creates a version: V1, V2… Earlier ones stay in the history."
+            ]
+          }
+        ]
+      },
+      "reponses": {
+        "title": "Client replies and reminders",
+        "summary": "The client approves the quote, or writes to you. If she does not reply, the site sends you a reminder.",
+        "blocks": [
+          {
+            "h": "When she replies"
+          },
+          {
+            "list": [
+              "She clicks “Accept proposal”, or “Write to Laëtitia”. She can write as many times as she likes.",
+              "You get an email each time. It contains the client's message.",
+              "Each message shows in the history of the request.",
+              "An approved quote is marked “Quote approved”. The request status does not change: set it to “Project confirmed” yourself."
+            ]
+          },
+          {
+            "h": "The automatic reminder"
+          },
+          {
+            "list": [
+              "The client opened her quote, but did not approve it or write to you? You get a reminder in the morning, 2 days later.",
+              "You get only 1 reminder per quote version.",
+              "The reminder is never sent on Saturday or Sunday. It arrives on Monday instead.",
+              "The reminder's button opens WhatsApp, with a message already written for the client."
+            ]
+          }
+        ]
+      },
+      "emails": {
+        "title": "Automatic emails",
+        "summary": "The site sends 8 emails on its own: 4 to you, 4 to the client.",
+        "blocks": [
+          {
+            "p": "Emails to the client are sent in her language: French, English or Japanese."
+          },
+          {
+            "tip": "When you write a note with a moodboard or a quote, it is copied into the client's email, in a box “A note from Laëtitia”. Read it again before sending."
+          }
+        ]
+      },
+      "espace-client": {
+        "title": "The client space",
+        "summary": "Each client has her own space on the website. She follows her project there.",
+        "blocks": [
+          {
+            "h": "What she finds there"
+          },
+          {
+            "list": [
+              "Her inspiration photos. She can add more at any time.",
+              "The moodboard and your note.",
+              "The quote, which she can approve.",
+              "The “Write to Laëtitia” button."
+            ]
+          },
+          {
+            "h": "How she signs in"
+          },
+          {
+            "list": [
+              "Her space opens as soon as she sends her request.",
+              "The link in her confirmation email takes her straight there.",
+              "After that, she signs in with her email. She gets a 6-digit code, with no password."
+            ]
+          }
+        ]
+      },
+      "photos": {
+        "title": "The photo library",
+        "summary": "All your photos, in one place. You upload a photo once, then place it on the pages you choose.",
+        "blocks": [
+          {
+            "h": "Add photos"
+          },
+          {
+            "steps": [
+              "Open “Site photos”, “Photo library” tab.",
+              "Click “Upload photos”, then choose them.",
+              "Pick their type: Wedding, Business or Workshop. This is optional.",
+              "Give a collection name, if you wish. This is optional too.",
+              "Click “Add”."
+            ]
+          },
+          {
+            "h": "A photo's type"
+          },
+          {
+            "p": "The type helps you find your photos. For example, when you fill the Weddings page, you see the wedding photos first."
+          },
+          {
+            "p": "Each photo has only one type. To change it, choose another type under the photo."
+          },
+          {
+            "h": "Collections"
+          },
+          {
+            "p": "A collection groups the photos of one event. For example: “Sophie and Paul's wedding, Château de la Gaude”."
+          },
+          {
+            "list": [
+              "When uploading, type a new name, or choose a collection that already exists.",
+              "The “Collection” filter shows only its photos. It is also in the “Choose a photo” window.",
+              "Under each photo, “Change” moves it to another collection, or removes it from its collection.",
+              "When a collection is shown, you can rename it or delete it.",
+              "Deleting a collection does not delete any photo."
+            ]
+          },
+          {
+            "tip": "A photo is in only one collection. Its photos can have different types."
+          },
+          {
+            "h": "See where a photo is used"
+          },
+          {
+            "p": "Under each photo, a line shows the pages where it appears. For example: “Shown on the site, Home and Weddings pages”."
+          },
+          {
+            "h": "Delete a photo"
+          },
+          {
+            "list": [
+              "Click “Delete” under the photo.",
+              "If the photo is on the website, it is removed from the pages. Its slot stays empty.",
+              "Deleting is final."
+            ]
+          }
+        ]
+      },
+      "photos-pages": {
+        "title": "Placing photos on the pages",
+        "summary": "Each tab of “Site photos” shows a page of the website, with its slots. Click a slot to choose its photo.",
+        "blocks": [
+          {
+            "steps": [
+              "Open “Site photos”.",
+              "Choose the page's tab: Home, Portfolio, Weddings, Business & events or Floral workshop.",
+              "Click a slot.",
+              "Choose a photo from the library. The label “✓ Already on the site” marks a photo already in use.",
+              "The photo shows on the website right away. The “View the page” button lets you check."
+            ]
+          },
+          {
+            "h": "What each page holds"
+          },
+          {
+            "list": [
+              "Home: a grid of 9 photos, then extra photos in the viewer.",
+              "Portfolio: a large opening photo, then 4 chapters of up to 2 photos. The chapters are: Bridal bouquets, Ceremony decor, Reception floral scenography, Floral accessories.",
+              "Weddings: a grid of 9 photos, then the viewer.",
+              "Business & events: a grid of 9 photos, and the 2 photos of the “Floral subscription” section.",
+              "Floral workshop: 3 photos side by side."
+            ]
+          },
+          {
+            "h": "The viewer"
+          },
+          {
+            "list": [
+              "On the website, a click on the grid opens the viewer. It shows the 9 photos, then the extra photos.",
+              "The last slot of the grid shows how many there are. For example, “+3” for 3 extra photos.",
+              "Fill the 9 slots of the grid first. You can then add photos to the viewer."
+            ]
+          },
+          {
+            "tip": "To empty a slot, open it, then click “Remove the photo”. For the floral subscription, a default photo then shows instead."
+          }
+        ]
+      },
+      "legendes": {
+        "title": "Photo captions",
+        "summary": "A caption describes the photo in one sentence. It helps Google understand your photos.",
+        "blocks": [
+          {
+            "p": "The caption also helps blind people: their computer reads it out loud."
+          },
+          {
+            "h": "Add a caption"
+          },
+          {
+            "steps": [
+              "Open “Site photos”.",
+              "Under a photo, click “+ Add a caption”.",
+              "Write one sentence, then click “Save”."
+            ]
+          },
+          {
+            "h": "Writing a good caption"
+          },
+          {
+            "list": [
+              "Give the type of creation, the flowers, and the place if you know it.",
+              "Example: “Bridal bouquet, peonies and garden roses”.",
+              "Example: “Ceremony floral arch, Château de la Gaude”.",
+              "200 characters at most."
+            ]
+          },
+          {
+            "tip": "A photo keeps the same caption on every page. At the top of each tab, a counter shows the photos with no caption."
+          }
+        ]
+      },
+      "avis": {
+        "title": "Reviews",
+        "summary": "Your clients' testimonials, shown on the home page of the website.",
+        "blocks": [
+          {
+            "steps": [
+              "Open “Reviews” from the dashboard home.",
+              "Click “Add a review”.",
+              "Write the review in French. English is optional.",
+              "Add the name and a detail, for example “Wedding in Provence”.",
+              "Turn on “Show on the website”, then save."
+            ]
+          },
+          {
+            "h": "Tips"
+          },
+          {
+            "list": [
+              "For the name: the first name and an initial, like “Sophie M.”. It is more discreet.",
+              "Keep 1 or 2 strong sentences. Quotation marks are added on their own.",
+              "With no English text, the English and Japanese versions of the site show the French.",
+              "“Move up” and “Move down” change the order of the reviews on the website.",
+              "A “Hidden” review is off the website, but it is not deleted."
+            ]
+          }
+        ]
+      },
+      "personnalisation": {
+        "title": "Logo and ambiance color",
+        "summary": "The Personalization page sets the logo and the shade of the light backgrounds of the website. Open it from the ⚙️ button.",
+        "blocks": [
+          {
+            "h": "The logo"
+          },
+          {
+            "list": [
+              "It shows at the bottom of every page of the website and on the sign-in page.",
+              "Accepted formats: PNG, JPG, WebP or SVG.",
+              "Recommended: a transparent background, and at least 512 pixels wide."
+            ]
+          },
+          {
+            "h": "The ambiance color"
+          },
+          {
+            "p": "It is the shade of the light backgrounds: banners, cards, footer. It changes on every page of the website."
+          },
+          {
+            "tip": "The 2 floral subscription photos are no longer set here. They are in “Site photos”, “Business & events” tab."
+          }
+        ]
+      }
+    }
   },
   "feedback": {
     "button": "Feedback",
@@ -1252,8 +1708,8 @@
     "photo_alt": "Boticia floral creation"
   },
   "testimonials": {
-    "tagline": "Testimonials",
-    "title": "What they say",
+    "tagline": "They trusted us",
+    "title": "Our clients' reviews of Boticia",
     "prev": "Previous testimonial",
     "next": "Next testimonial",
     "quote_open": "“",

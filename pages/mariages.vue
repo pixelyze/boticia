@@ -20,18 +20,21 @@
     <!-- Pourquoi nous choisir (v2 ; v1 : WeddingWhySection) -->
     <WeddingWhySectionV2 />
 
-    <!-- Bloc « Décoration florale » (v2, comme sur l'accueil) -->
-    <AlaCarteSectionV2 />
+    <!-- Bloc « Décoration florale » retiré (nov. 2026) : il présente aussi
+         les entreprises et les ateliers, hors sujet sur cette page. Il
+         reste sur l'accueil. -->
 
     <!-- FAQ mariage -->
     <FaqColumns
+      bg-class="bg-cream-light"
       :tagline="$t('weddings.faq_tagline')"
       :title="$t('weddings.faq_title')"
       :items="faqs.map((f) => ({ question: f.q, answer: f.a }))"
     />
 
-    <!-- CTA -->
-    <section class="py-16 md:py-24 bg-cream-light">
+    <!-- CTA : blanc, dans la continuité de la FAQ, avant le pied de page
+         crème clair -->
+    <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-6 text-center">
         <h2 class="section-title-lg mb-4">
           {{ $t("weddings.cta_title") }}

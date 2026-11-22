@@ -4,7 +4,7 @@
        ni pastilles d'icônes : quatre raisons sur deux colonnes, séparées
        par un filet fin, comme les autres blocs v2.
        Padding : py-16 md:py-24 | Background : bg-cream-light -->
-  <section class="py-16 md:py-24 bg-cream-light">
+  <section class="py-16 md:py-24 bg-white">
     <div class="container mx-auto px-6">
       <div class="text-center mb-14">
         <span class="section-tagline">{{ $t("weddings.why_tagline") }}</span>

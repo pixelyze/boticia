@@ -90,7 +90,8 @@
            [EL-PROCESS-STEP-DESC] — Description | .step-description | max-w-xs centré
          Data : 3 steps computed depuis i18n
          Responsive : grid-cols-1 md:grid-cols-3 | max-w-5xl centré -->
-    <ProcessSection />
+    <!-- Retirée (nov. 2026) : faisait doublon avec les étapes du bloc
+         Mariage juste en dessous. <ProcessSection /> -->
 
     <!-- ==========================================
          [SECTION-WEDDING-INTRO] — Bloc intro mariage
@@ -98,7 +99,7 @@
          de la page Mariage.
          Composant : components/landing/WeddingIntroSectionV2.vue (v1 : WeddingIntroSection.vue)
          ========================================== -->
-    <WeddingIntroSectionV2 title-tag="h2" />
+    <WeddingIntroSectionV2 title-tag="h2" bg-class="bg-white" />
 
     <!-- ==========================================
          [SECTION-FAQ] — Questions fréquentes (accordéon)

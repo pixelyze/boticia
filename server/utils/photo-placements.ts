@@ -13,7 +13,8 @@ import type { GalleryImage, PhotoType } from "./galleries-types";
 export const PLACEMENT_PAGES = {
   home: { grid: 9, viewer: null },
   wedding: { grid: 9, viewer: null },
-  events: { grid: 9, viewer: null },
+  // subscription : les 2 photos de la section « Abonnement floral »
+  events: { grid: 9, viewer: null, subscription: 2 },
   workshops: { grid: 3 },
   creations: {
     opening: 1,
@@ -141,4 +142,22 @@ export async function setZone(
 
 export function isPhotoType(value: unknown): value is PhotoType {
   return value === "mariage" || value === "entreprise" || value === "atelier";
+}
+
+export const COLLECTION_MAX = 80;
+
+/**
+ * Nom de collection propre : espaces en trop retirés, vide = aucune
+ * collection (null). Lève une erreur 400 si le nom est trop long.
+ */
+export function cleanCollection(value: unknown): string | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value !== "string") {
+    throw createError({ statusCode: 400, message: "Invalid collection" });
+  }
+  const name = value.replace(/\s+/g, " ").trim();
+  if (name.length > COLLECTION_MAX) {
+    throw createError({ statusCode: 400, message: "Collection name too long" });
+  }
+  return name || null;
 }

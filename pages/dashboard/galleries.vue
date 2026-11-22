@@ -49,19 +49,43 @@
 
           <!-- ===== Photothèque ===== -->
           <div v-if="activeTab === 'library'">
-            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
-              <div>
-                <h2 class="font-heading text-2xl text-dark">
-                  {{ t("dashboard.photos_tab_library") }}
-                </h2>
-                <p class="text-sm text-gray-500 mt-1">
-                  {{ t("dashboard.photos_library_intro") }}
-                </p>
-              </div>
-              <TypeFilters />
+            <div class="mb-6">
+              <h2 class="font-heading text-2xl text-dark">
+                {{ t("dashboard.photos_tab_library") }}
+              </h2>
+              <p class="text-sm text-gray-500 mt-1">
+                {{ t("dashboard.photos_library_intro") }}
+              </p>
             </div>
 
-            <!-- Mosaïque : chaque photo garde son vrai format -->
+            <!-- Filtres : le type, puis la collection -->
+            <PhotoFilters class="mb-6" />
+
+            <!-- Collection choisie : son nom, renommer, supprimer -->
+            <div
+              v-if="isCollectionName(collectionFilter)"
+              class="mb-6 flex flex-wrap items-baseline gap-x-4 gap-y-1"
+            >
+              <p class="font-heading text-xl text-dark">{{ collectionFilter }}</p>
+              <button
+                type="button"
+                class="text-sm text-gray-500 underline underline-offset-2 hover:text-dark"
+                @click="openRename"
+              >
+                {{ t("dashboard.photos_collection_rename") }}
+              </button>
+              <button
+                type="button"
+                class="text-sm text-gray-500 underline underline-offset-2 hover:text-red-600"
+                @click="collectionToDelete = collectionFilter"
+              >
+                {{ t("dashboard.photos_collection_delete") }}
+              </button>
+            </div>
+
+            <!-- Mosaïque : chaque photo garde son vrai format. Cartes en
+                 inline-block : sinon la marge du bas d'une colonne passe en
+                 haut de la suivante et décale la première photo -->
             <div style="columns: 220px; column-gap: 16px">
               <!-- Dépôt -->
               <label
@@ -69,7 +93,7 @@
                        flex flex-col items-center justify-center gap-2
                        text-gray-400 text-sm text-center px-3 mb-4 cursor-pointer
                        hover:border-dark/40 transition-colors"
-                style="height: 160px; break-inside: avoid"
+                style="height: 160px; break-inside: avoid; display: inline-flex; width: 100%"
               >
                 <input
                   type="file"
@@ -91,7 +115,7 @@
                 v-for="photo in filteredPhotos"
                 :key="photo.id"
                 class="rounded-xl overflow-hidden border border-dark/10 bg-white mb-4"
-                style="break-inside: avoid"
+                style="break-inside: avoid; display: inline-block; width: 100%"
               >
                 <img
                   :src="photo.public_url"
@@ -124,6 +148,38 @@
                       </button>
                     </div>
                   </fieldset>
+
+                  <!-- Collection : son nom (clic = filtrer) et « Changer » -->
+                  <div>
+                    <p class="text-xs font-medium text-dark mb-1">
+                      {{ t("dashboard.photos_collection_label") }}
+                    </p>
+                    <div v-if="photo.collection" class="flex items-baseline gap-2 min-w-0">
+                      <button
+                        type="button"
+                        class="text-[11px] text-dark truncate text-left hover:underline"
+                        :title="t('dashboard.photos_collection_show', { name: photo.collection })"
+                        @click="collectionFilter = photo.collection"
+                      >
+                        {{ photo.collection }}
+                      </button>
+                      <button
+                        type="button"
+                        class="text-[11px] text-gray-500 underline underline-offset-2 shrink-0"
+                        @click="openMove(photo)"
+                      >
+                        {{ t("dashboard.photos_collection_change") }}
+                      </button>
+                    </div>
+                    <button
+                      v-else
+                      type="button"
+                      class="text-[11px] text-gray-500 underline underline-offset-2"
+                      @click="openMove(photo)"
+                    >
+                      {{ t("dashboard.photos_collection_add") }}
+                    </button>
+                  </div>
 
                   <!-- Légende : orange si la photo est sur le site, gris sinon -->
                   <CaptionRow :photo="photo" :muted="!usesOf(photo.id).length" />
@@ -254,6 +310,27 @@
                 }}
               </p>
             </div>
+
+            <!-- Abonnement floral (page Entreprises seulement) -->
+            <div v-if="activeTab === 'events'" class="mt-12 pt-8 border-t border-dark/10">
+              <h3 class="font-heading text-xl text-dark">
+                {{ t("dashboard.photos_subscription_title") }}
+              </h3>
+              <p class="text-sm text-gray-500 mt-1 mb-5">
+                {{ t("dashboard.photos_subscription_text") }}
+              </p>
+              <div class="grid grid-cols-2 gap-4 max-w-md">
+                <SlotTile
+                  v-for="n in [0, 1]"
+                  :key="n"
+                  style="aspect-ratio: 1 / 1"
+                  :photo="photoById(zones.events.subscription[n])"
+                  :label="t(n === 0 ? 'dashboard.photos_subscription_main' : 'dashboard.photos_subscription_second')"
+                  @pick="openPicker('events', 'subscription', n)"
+                  @clear="setSlot('events', 'subscription', n, null)"
+                />
+              </div>
+            </div>
           </div>
 
           <!-- ===== Créations : ouverture + 4 chapitres ===== -->
@@ -335,23 +412,186 @@
       compact
       @close="pendingFiles = []"
     >
-      <div class="space-y-3">
+      <div class="space-y-6">
+        <!-- Aperçu des photos choisies -->
+        <div class="flex gap-2 overflow-x-auto pb-1">
+          <img
+            v-for="(url, i) in pendingPreviews"
+            :key="i"
+            :src="url"
+            alt=""
+            class="rounded-lg object-cover shrink-0"
+            style="width: 64px; height: 64px"
+          />
+        </div>
+
+        <!-- 1. Le type : un seul, facultatif (un 2e clic le retire) -->
+        <fieldset>
+          <legend class="text-sm font-medium text-dark mb-2">
+            {{ t("dashboard.photos_upload_step_type") }}
+            <span class="font-normal text-gray-500">{{ t("dashboard.photos_optional") }}</span>
+          </legend>
+          <div class="grid grid-cols-3 gap-2">
+            <button
+              v-for="type in PHOTO_TYPES"
+              :key="type"
+              type="button"
+              :aria-pressed="uploadType === type"
+              class="h-11 rounded-full border text-sm transition-colors"
+              :class="
+                uploadType === type
+                  ? 'bg-dark text-cream border-dark'
+                  : 'bg-white text-dark border-dark/20 hover:border-dark'
+              "
+              @click="uploadType = uploadType === type ? null : type"
+            >
+              {{ t(`dashboard.photos_type_${type}`) }}
+            </button>
+          </div>
+        </fieldset>
+
+        <!-- 2. La collection : facultative -->
+        <div>
+          <label for="upload-collection" class="block text-sm font-medium text-dark mb-1">
+            {{ t("dashboard.photos_upload_step_collection") }}
+            <span class="font-normal text-gray-500">{{ t("dashboard.photos_optional") }}</span>
+          </label>
+          <p class="text-sm text-gray-500 mb-2">
+            {{ t("dashboard.photos_upload_collection_help") }}
+          </p>
+          <CollectionField id="upload-collection" v-model="uploadCollection" />
+        </div>
+
+        <div class="space-y-3">
+          <Button variant="primary" class="w-full justify-center" @click="uploadFiles">
+            {{
+              pendingFiles.length > 1
+                ? t("dashboard.photos_upload_confirm_many", { n: pendingFiles.length })
+                : t("dashboard.photos_upload_confirm_one")
+            }}
+          </Button>
+          <p class="text-xs text-gray-500 text-center">
+            {{ t("dashboard.photos_upload_change_later") }}
+          </p>
+        </div>
+      </div>
+    </BaseModal>
+
+    <!-- Collection d'une photo : changer ou retirer -->
+    <BaseModal
+      :is-open="!!movePhoto"
+      :title="t('dashboard.photos_collection_title')"
+      :show-close-button="false"
+      show-close-icon
+      compact
+      @close="movePhoto = null"
+    >
+      <div v-if="movePhoto" class="space-y-5">
+        <img
+          :src="movePhoto.public_url"
+          alt=""
+          class="w-full h-auto rounded-lg"
+          style="max-height: 30vh; object-fit: contain"
+        />
+        <div>
+          <label for="move-collection" class="block text-sm font-medium text-dark mb-2">
+            {{ t("dashboard.photos_collection_label") }}
+          </label>
+          <CollectionField id="move-collection" v-model="moveDraft" />
+        </div>
+        <div class="space-y-4">
+          <Button
+            variant="primary"
+            class="w-full justify-center"
+            :loading="savingCollection"
+            @click="saveMove(moveDraft)"
+          >
+            {{ t("dashboard.photos_save") }}
+          </Button>
+          <Button
+            v-if="movePhoto.collection"
+            variant="ghost"
+            class="!flex mx-auto w-fit"
+            @click="saveMove(null)"
+          >
+            {{ t("dashboard.photos_collection_remove") }}
+          </Button>
+        </div>
+      </div>
+    </BaseModal>
+
+    <!-- Renommer une collection -->
+    <BaseModal
+      :is-open="renameOpen"
+      :title="t('dashboard.photos_collection_rename_title')"
+      :show-close-button="false"
+      show-close-icon
+      compact
+      @close="renameOpen = false"
+    >
+      <div class="space-y-5">
+        <input
+          v-model="renameDraft"
+          type="text"
+          maxlength="80"
+          data-autofocus
+          :aria-label="t('dashboard.photos_collection_rename_title')"
+          class="w-full h-12 px-4 text-base border border-dark/30 rounded-lg
+                 focus:outline-none focus:border-dark"
+          @keydown.enter="saveRename"
+        />
+        <p class="text-sm text-gray-500">
+          {{
+            countIn(collectionFilter) > 1
+              ? t("dashboard.photos_collection_rename_many", { n: countIn(collectionFilter) })
+              : t("dashboard.photos_collection_rename_one")
+          }}
+        </p>
         <Button
-          v-for="type in PHOTO_TYPES"
-          :key="type"
-          variant="default"
+          variant="primary"
           class="w-full justify-center"
-          @click="uploadFiles(type)"
+          :loading="savingCollection"
+          :disabled="!renameDraft.trim()"
+          @click="saveRename"
         >
-          {{ t(`dashboard.photos_type_${type}`) }}
+          {{ t("dashboard.photos_save") }}
         </Button>
-        <Button
-          variant="ghost"
-          class="!flex mx-auto w-fit"
-          @click="uploadFiles(null)"
-        >
-          {{ t("dashboard.photos_upload_later") }}
-        </Button>
+      </div>
+    </BaseModal>
+
+    <!-- Supprimer une collection : les photos restent -->
+    <BaseModal
+      :is-open="!!collectionToDelete"
+      :title="t('dashboard.photos_collection_delete_title')"
+      :show-close-button="false"
+      show-close-icon
+      compact
+      @close="collectionToDelete = null"
+    >
+      <div v-if="collectionToDelete" class="space-y-5">
+        <p class="text-dark leading-relaxed">
+          {{
+            countIn(collectionToDelete) > 1
+              ? t("dashboard.photos_collection_delete_many", {
+                  n: countIn(collectionToDelete),
+                  name: collectionToDelete,
+                })
+              : t("dashboard.photos_collection_delete_one", { name: collectionToDelete })
+          }}
+        </p>
+        <div class="space-y-4">
+          <Button
+            variant="primary"
+            class="w-full justify-center"
+            :loading="savingCollection"
+            @click="deleteCollection"
+          >
+            {{ t("dashboard.photos_collection_delete") }}
+          </Button>
+          <Button variant="ghost" class="!flex mx-auto w-fit" @click="collectionToDelete = null">
+            {{ t("dashboard.photos_cancel") }}
+          </Button>
+        </div>
       </div>
     </BaseModal>
 
@@ -471,14 +711,14 @@
       show-close-icon
       @close="pickerOpen = false"
     >
-      <TypeFilters class="mb-4" />
+      <PhotoFilters class="mb-4" />
       <div style="columns: 160px; column-gap: 12px">
         <button
           v-for="photo in filteredPhotos"
           :key="photo.id"
           type="button"
-          class="relative block w-full mb-3 rounded-lg overflow-hidden bg-dark/5 group"
-          style="break-inside: avoid"
+          class="relative w-full mb-3 rounded-lg overflow-hidden bg-dark/5 group"
+          style="break-inside: avoid; display: inline-block; width: 100%"
           @click="choose(photo.id)"
         >
           <img
@@ -551,7 +791,11 @@ const TWO_COLS = {
 const emptyZones = () => ({
   home: { grid: Array(9).fill(null), viewer: [] as string[] },
   wedding: { grid: Array(9).fill(null), viewer: [] as string[] },
-  events: { grid: Array(9).fill(null), viewer: [] as string[] },
+  events: {
+    grid: Array(9).fill(null),
+    viewer: [] as string[],
+    subscription: [null, null],
+  },
   workshops: { grid: Array(3).fill(null) },
   creations: {
     opening: [null],
@@ -567,6 +811,7 @@ const loading = ref(true);
 const error = ref("");
 const activeTab = ref("library");
 const typeFilter = ref<string>("all");
+const collectionFilter = ref<string>("all");
 const photos = ref<GalleryImage[]>([]);
 const zones = reactive<any>(emptyZones());
 
@@ -595,10 +840,59 @@ onMounted(load);
 const photoById = (id: string | null) =>
   (id && photos.value.find((p) => p.id === id)) || null;
 
-const filteredPhotos = computed(() => {
-  if (typeFilter.value === "all") return photos.value;
-  if (typeFilter.value === "none") return photos.value.filter((p) => !p.photo_type);
-  return photos.value.filter((p) => p.photo_type === typeFilter.value);
+// « all » et « none » sont des filtres ; tout le reste est un nom
+const isCollectionName = (value: string | null) =>
+  !!value && value !== "all" && value !== "none";
+
+const matchesType = (p: GalleryImage) => {
+  if (typeFilter.value === "all") return true;
+  if (typeFilter.value === "none") return !p.photo_type;
+  return p.photo_type === typeFilter.value;
+};
+
+const filteredPhotos = computed(() =>
+  photos.value.filter((p) => {
+    if (!matchesType(p)) return false;
+    if (collectionFilter.value === "none") return !p.collection;
+    if (isCollectionName(collectionFilter.value)) {
+      return p.collection === collectionFilter.value;
+    }
+    return true;
+  })
+);
+
+// Collections du type choisi, par ordre alphabétique, avec leur nombre
+// de photos (on ne propose pas une collection vide pour ce type)
+const collections = computed(() => {
+  const counts: Record<string, number> = {};
+  for (const p of photos.value) {
+    if (p.collection && matchesType(p)) {
+      counts[p.collection] = (counts[p.collection] ?? 0) + 1;
+    }
+  }
+  return Object.entries(counts)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([name, count]) => ({ name, count }));
+});
+
+// Toutes les collections, quel que soit le type (pour les proposer)
+const allCollections = computed(() =>
+  [...new Set(photos.value.map((p) => p.collection).filter(Boolean))].sort(
+    (a, b) => a!.localeCompare(b!)
+  ) as string[]
+);
+
+const countIn = (name: string | null) =>
+  photos.value.filter((p) => p.collection === name).length;
+
+// Si la collection choisie n'existe pas pour le nouveau type : « Toutes »
+watch(typeFilter, () => {
+  if (
+    isCollectionName(collectionFilter.value) &&
+    !collections.value.some((c) => c.name === collectionFilter.value)
+  ) {
+    collectionFilter.value = "all";
+  }
 });
 
 // Pages où une photo apparaît
@@ -724,16 +1018,34 @@ const saveCaption = async () => {
 
 // ── Dépôt ──────────────────────────────────────────────────────
 const pendingFiles = ref<File[]>([]);
+const pendingPreviews = ref<string[]>([]);
+const uploadType = ref<PhotoType | null>(null);
+const uploadCollection = ref("");
 const uploading = ref(false);
+
+// Les aperçus sont libérés quand la fenêtre se ferme
+watch(pendingFiles, (files) => {
+  pendingPreviews.value.forEach((url) => URL.revokeObjectURL(url));
+  pendingPreviews.value = files.map((file) => URL.createObjectURL(file));
+});
 
 const pickFiles = (event: Event) => {
   const input = event.target as HTMLInputElement;
   pendingFiles.value = Array.from(input.files || []);
   input.value = "";
+  // Une collection est affichée : les nouvelles photos y vont par défaut
+  uploadType.value = PHOTO_TYPES.includes(typeFilter.value as PhotoType)
+    ? (typeFilter.value as PhotoType)
+    : null;
+  uploadCollection.value = isCollectionName(collectionFilter.value)
+    ? collectionFilter.value
+    : "";
 };
 
-const uploadFiles = async (type: PhotoType | null) => {
+const uploadFiles = async () => {
   const files = pendingFiles.value;
+  const type = uploadType.value;
+  const collection = uploadCollection.value.replace(/\s+/g, " ").trim();
   pendingFiles.value = [];
   uploading.value = true;
   error.value = "";
@@ -743,6 +1055,7 @@ const uploadFiles = async (type: PhotoType | null) => {
       const form = new FormData();
       form.append("file", file);
       if (type) form.append("photo_type", type);
+      if (collection) form.append("collection", collection);
       const res = await adminFetch<{ data: GalleryImage }>("/api/admin/photos", {
         method: "POST",
         body: form,
@@ -754,6 +1067,87 @@ const uploadFiles = async (type: PhotoType | null) => {
     }
   }
   uploading.value = false;
+  // On montre la collection qui vient d'être remplie
+  if (collection) {
+    typeFilter.value = "all";
+    collectionFilter.value = collection;
+  }
+};
+
+// ── Collections ────────────────────────────────────────────────
+const savingCollection = ref(false);
+
+// Changer ou retirer la collection d'une photo
+const movePhoto = ref<GalleryImage | null>(null);
+const moveDraft = ref("");
+
+const openMove = (photo: GalleryImage) => {
+  movePhoto.value = photo;
+  moveDraft.value = photo.collection ?? "";
+};
+
+const saveMove = async (name: string | null) => {
+  const photo = movePhoto.value;
+  if (!photo || savingCollection.value) return;
+  savingCollection.value = true;
+  try {
+    const res = await adminFetch<{ data: GalleryImage }>(
+      `/api/admin/photos/${photo.id}`,
+      { method: "PATCH", body: { collection: name } }
+    );
+    photo.collection = res.data.collection ?? null;
+    movePhoto.value = null;
+  } catch (err) {
+    fail(err);
+  } finally {
+    savingCollection.value = false;
+  }
+};
+
+// Renommer ou supprimer une collection (les photos restent)
+const updateCollection = async (from: string, to: string | null) => {
+  savingCollection.value = true;
+  try {
+    const res = await adminFetch<{ data: { collection: string | null } }>(
+      "/api/admin/photo-collections",
+      { method: "PATCH", body: { from, to } }
+    );
+    for (const p of photos.value) {
+      if (p.collection === from) p.collection = res.data.collection;
+    }
+    collectionFilter.value = res.data.collection ?? "all";
+    return true;
+  } catch (err) {
+    fail(err);
+    return false;
+  } finally {
+    savingCollection.value = false;
+  }
+};
+
+const renameOpen = ref(false);
+const renameDraft = ref("");
+
+const openRename = () => {
+  renameDraft.value = collectionFilter.value;
+  renameOpen.value = true;
+};
+
+const saveRename = async () => {
+  if (!renameDraft.value.trim() || savingCollection.value) return;
+  if (await updateCollection(collectionFilter.value, renameDraft.value)) {
+    renameOpen.value = false;
+  }
+};
+
+const collectionToDelete = ref<string | null>(null);
+
+const deleteCollection = async () => {
+  const name = collectionToDelete.value;
+  if (!name || savingCollection.value) return;
+  if (await updateCollection(name, null)) {
+    collectionToDelete.value = null;
+  }
 };
 
 // ── Suppression ────────────────────────────────────────────────
@@ -784,33 +1178,130 @@ const deletePhoto = async () => {
 };
 
 // ── Petits composants ──────────────────────────────────────────
-// Filtres par type
-const TypeFilters = (_: unknown, { attrs }: any) =>
+// Pastille de filtre (avec un nombre facultatif)
+const chip = (active: boolean, label: string, onClick: () => void, count?: number) =>
   h(
-    "div",
-    { class: ["flex flex-wrap gap-2", attrs.class] },
-    ["all", ...PHOTO_TYPES, "none"].map((key) =>
-      h(
-        "button",
-        {
-          type: "button",
-          class: [
-            "h-8 px-3 rounded-full text-xs border transition-colors",
-            typeFilter.value === key
-              ? "bg-dark text-cream border-dark"
-              : "bg-white text-dark border-dark/20 hover:border-dark",
-          ],
-          onClick: () => (typeFilter.value = key),
-        },
-        key === "all"
-          ? t("dashboard.photos_filter_all")
-          : key === "none"
-            ? t("dashboard.photos_filter_none")
-            : t(`dashboard.photos_type_${key}`)
-      )
-    )
+    "button",
+    {
+      type: "button",
+      "aria-pressed": active,
+      class: [
+        "h-8 px-3 rounded-full text-xs border transition-colors",
+        active
+          ? "bg-dark text-cream border-dark"
+          : "bg-white text-dark border-dark/20 hover:border-dark",
+      ],
+      onClick,
+    },
+    count === undefined
+      ? label
+      : [label, h("span", { class: active ? "ml-1 text-cream" : "ml-1 text-gray-500" }, count)]
   );
-TypeFilters.inheritAttrs = false;
+
+// Au-delà de 8 collections, une liste déroulante prend moins de place
+const COLLECTION_CHIPS_MAX = 8;
+
+// 2 rangées de filtres : le type, puis les collections de ce type
+const PhotoFilters = (_: unknown, { attrs }: any) => {
+  const rowLabel = (text: string) =>
+    h("span", { class: "text-xs font-medium text-dark", style: "width: 80px" }, text);
+
+  const collectionRow =
+    collections.value.length > COLLECTION_CHIPS_MAX
+      ? [
+          h(
+            "select",
+            {
+              value: collectionFilter.value,
+              "aria-label": t("dashboard.photos_filter_collection"),
+              class:
+                "h-9 max-w-full px-3 pr-8 rounded-full text-xs border border-dark/20 bg-white text-dark",
+              onChange: (e: Event) =>
+                (collectionFilter.value = (e.target as HTMLSelectElement).value),
+            },
+            [
+              h("option", { value: "all" }, t("dashboard.photos_filter_all")),
+              ...collections.value.map((c) =>
+                h("option", { value: c.name }, `${c.name} (${c.count})`)
+              ),
+              h("option", { value: "none" }, t("dashboard.photos_filter_no_collection")),
+            ]
+          ),
+        ]
+      : [
+          chip(collectionFilter.value === "all", t("dashboard.photos_filter_all"), () =>
+            (collectionFilter.value = "all")
+          ),
+          ...collections.value.map((c) =>
+            chip(
+              collectionFilter.value === c.name,
+              c.name,
+              () => (collectionFilter.value = c.name),
+              c.count
+            )
+          ),
+          chip(
+            collectionFilter.value === "none",
+            t("dashboard.photos_filter_no_collection"),
+            () => (collectionFilter.value = "none")
+          ),
+        ];
+
+  return h("div", { class: ["space-y-3", attrs.class] }, [
+    h("div", { class: "flex flex-wrap items-center gap-2" }, [
+      rowLabel(t("dashboard.photos_filter_type")),
+      ...["all", ...PHOTO_TYPES, "none"].map((key) =>
+        chip(
+          typeFilter.value === key,
+          key === "all"
+            ? t("dashboard.photos_filter_all")
+            : key === "none"
+              ? t("dashboard.photos_filter_none")
+              : t(`dashboard.photos_type_${key}`),
+          () => (typeFilter.value = key)
+        )
+      ),
+    ]),
+    // Pas encore de collection : la rangée n'apparaît pas
+    allCollections.value.length
+      ? h("div", { class: "flex flex-wrap items-center gap-2" }, [
+          rowLabel(t("dashboard.photos_filter_collection")),
+          ...collectionRow,
+        ])
+      : null,
+  ]);
+};
+PhotoFilters.inheritAttrs = false;
+
+// Champ de collection : on écrit un nom, ou on choisit une collection
+// existante dans les pastilles en dessous
+const CollectionField = (props: any, { emit }: any) =>
+  h("div", [
+    h("input", {
+      id: props.id,
+      type: "text",
+      maxlength: 80,
+      value: props.modelValue,
+      placeholder: t("dashboard.photos_collection_placeholder"),
+      class:
+        "w-full h-12 px-4 text-base border border-dark/30 rounded-lg focus:outline-none focus:border-dark",
+      onInput: (e: Event) => emit("update:modelValue", (e.target as HTMLInputElement).value),
+    }),
+    allCollections.value.length
+      ? h("div", { class: "mt-3" }, [
+          h("p", { class: "text-xs text-gray-500 mb-2" }, t("dashboard.photos_collection_existing")),
+          h(
+            "div",
+            { class: "flex flex-wrap gap-2" },
+            allCollections.value.map((name) =>
+              chip(props.modelValue === name, name, () => emit("update:modelValue", name))
+            )
+          ),
+        ])
+      : null,
+  ]);
+CollectionField.props = ["id", "modelValue"];
+CollectionField.emits = ["update:modelValue"];
 
 // Ligne de légende : « + Ajouter une légende » ou légende + « Modifier »
 const captionRow = (photo: GalleryImage, muted = false) =>
