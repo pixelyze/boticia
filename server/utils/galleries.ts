@@ -230,11 +230,13 @@ export async function getGalleryImageById(
 }
 
 /**
- * Update a gallery image (bento_slot, caption, sort_order)
+ * Update a gallery image (bento_slot, photo_type, caption, sort_order)
  */
 export async function updateGalleryImage(
   id: string,
-  input: Partial<Pick<GalleryImage, "bento_slot" | "caption" | "sort_order">>
+  input: Partial<
+    Pick<GalleryImage, "bento_slot" | "photo_type" | "caption" | "sort_order">
+  >
 ): Promise<GalleryImage | null> {
   try {
     const { data, error } = await getSupabase()

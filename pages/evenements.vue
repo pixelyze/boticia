@@ -99,7 +99,7 @@
 
     <!-- Gallery — bento layout -->
     <BentoGallery
-      slug="events"
+      page="events"
       :tagline="$t('events.gallery_tagline')"
       :title="$t('events.gallery_title')"
       :alt-text="$t('events.gallery_alt')"

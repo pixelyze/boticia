@@ -5,7 +5,7 @@
 
     <!-- Wedding gallery — bento layout -->
     <BentoGallery
-      slug="wedding"
+      page="wedding"
       :tagline="$t('weddings.gallery_tagline')"
       :title="$t('weddings.gallery_title')"
       :alt-text="$t('weddings.gallery_title')"

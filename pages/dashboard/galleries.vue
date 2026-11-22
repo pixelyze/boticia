@@ -1,286 +1,509 @@
 <template>
+  <!-- ==========================================
+       [PAGE-DASHBOARD-PHOTOS] — Photos du site
+       Une photothèque unique (chaque photo déposée une fois, avec un type
+       et une légende) et un onglet par page du site, qui reprend la mise en
+       page de la page. Une seule action partout : cliquer sur une case,
+       choisir une photo. Chaque choix est enregistré tout de suite.
+       ========================================== -->
   <div class="flex-1 flex flex-col bg-white">
     <section class="py-6 md:py-8">
       <div class="px-4 md:px-10">
-        <!-- Loading -->
         <div v-if="loading" class="py-12 text-center">
-          <IconLucid
-            name="Loader2"
-            size="lg"
-            class="animate-spin mx-auto text-gray-300"
-          />
+          <IconLucid name="Loader2" size="lg" class="animate-spin mx-auto text-gray-300" />
         </div>
 
-        <!-- Empty state -->
-        <div
-          v-else-if="galleries.length === 0"
-          class="py-12 text-center text-dark/40"
-        >
-          {{ t("dashboard.galleries_empty") }}
-        </div>
-
-        <!-- Galleries list -->
-        <div v-else class="space-y-6">
-          <div
-            v-for="gallery in galleries"
-            :key="gallery.id"
-            class="rounded-[1.5rem] border-2 border-dark/10
-                   overflow-hidden"
+        <template v-else>
+          <p
+            v-if="error"
+            role="alert"
+            class="mb-6 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"
           >
-            <!-- Header -->
-            <div
-              class="flex flex-col items-start gap-3 px-5 py-4
-                     bg-cream/50 sm:flex-row sm:items-center
-                     sm:justify-between"
+            {{ error }}
+          </p>
+
+          <!-- Onglets -->
+          <nav class="flex flex-wrap gap-2 mb-8">
+            <button
+              v-for="tab in TABS"
+              :key="tab"
+              type="button"
+              class="h-10 px-5 rounded-full border text-sm transition-colors"
+              :class="
+                activeTab === tab
+                  ? 'bg-dark text-cream border-dark'
+                  : 'bg-white text-dark border-dark/20 hover:border-dark'
+              "
+              @click="activeTab = tab"
             >
+              {{ t(`dashboard.photos_tab_${tab}`) }}
+              <span
+                v-if="tab === 'library'"
+                class="ml-1"
+                :class="activeTab === tab ? 'text-cream' : 'text-gray-500'"
+              >
+                {{ photos.length }}
+              </span>
+            </button>
+          </nav>
+
+          <!-- ===== Photothèque ===== -->
+          <div v-if="activeTab === 'library'">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
               <div>
-                <h3 class="font-heading text-base text-dark">
-                  {{ gallery.title }}
-                </h3>
-                <p
-                  v-if="gallery.description"
-                  class="text-sm text-dark/50 mt-0.5"
-                >
-                  {{ gallery.description }}
-                </p>
-                <p class="text-xs text-dark/30 mt-0.5 font-mono">
-                  {{ galleryUrl(gallery.slug) }}
+                <h2 class="font-heading text-2xl text-dark">
+                  {{ t("dashboard.photos_tab_library") }}
+                </h2>
+                <p class="text-sm text-gray-500 mt-1">
+                  {{ t("dashboard.photos_library_intro") }}
                 </p>
               </div>
-              <div class="flex items-center gap-3">
-                <span
-                  v-if="imageCounts[gallery.id]"
-                  class="text-sm text-dark/40 whitespace-nowrap"
-                >
-                  {{ imageCounts[gallery.id] }}
-                  {{ t("dashboard.galleries_images") }}
-                </span>
-                <button
-                  @click="togglePublish(gallery)"
-                  class="px-3 py-1 rounded-full text-xs
-                         font-semibold transition-all"
-                  :class="
-                    gallery.is_published
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-gray-100 text-gray-400'
-                  "
-                >
+              <TypeFilters />
+            </div>
+
+            <!-- Mosaïque : chaque photo garde son vrai format -->
+            <div style="columns: 220px; column-gap: 16px">
+              <!-- Dépôt -->
+              <label
+                class="rounded-xl border-2 border-dashed border-dark/15
+                       flex flex-col items-center justify-center gap-2
+                       text-gray-400 text-sm text-center px-3 mb-4 cursor-pointer
+                       hover:border-dark/40 transition-colors"
+                style="height: 160px; break-inside: avoid"
+              >
+                <input
+                  type="file"
+                  class="sr-only"
+                  multiple
+                  accept="image/png,image/jpeg,image/webp"
+                  :disabled="uploading"
+                  @change="pickFiles"
+                />
+                <IconLucid
+                  :name="uploading ? 'Loader2' : 'Plus'"
+                  size="sm"
+                  :class="uploading ? 'animate-spin' : ''"
+                />
+                {{ uploading ? t("dashboard.photos_uploading") : t("dashboard.photos_drop") }}
+              </label>
+
+              <div
+                v-for="photo in filteredPhotos"
+                :key="photo.id"
+                class="rounded-xl overflow-hidden border border-dark/10 bg-white mb-4"
+                style="break-inside: avoid"
+              >
+                <img
+                  :src="photo.public_url"
+                  :alt="photo.caption || ''"
+                  loading="lazy"
+                  class="block w-full h-auto bg-dark/5"
+                />
+                <div class="p-3 space-y-3">
+                  <!-- Type : un seul choix -->
+                  <fieldset role="radiogroup" :aria-label="t('dashboard.photos_type_label')">
+                    <legend class="text-xs font-medium text-dark mb-1.5">
+                      {{ t("dashboard.photos_type_label") }}
+                    </legend>
+                    <div class="flex flex-wrap gap-1.5">
+                      <button
+                        v-for="type in PHOTO_TYPES"
+                        :key="type"
+                        type="button"
+                        role="radio"
+                        :aria-checked="photo.photo_type === type"
+                        class="h-7 px-2.5 rounded-full text-[11px] border transition-colors"
+                        :class="
+                          photo.photo_type === type
+                            ? 'bg-dark text-cream border-dark'
+                            : 'bg-white text-gray-500 border-dark/20 hover:border-dark'
+                        "
+                        @click="setType(photo, type)"
+                      >
+                        {{ t(`dashboard.photos_type_${type}`) }}
+                      </button>
+                    </div>
+                  </fieldset>
+
+                  <!-- Légende : orange si la photo est sur le site, gris sinon -->
+                  <CaptionRow :photo="photo" :muted="!usesOf(photo.id).length" />
+
+                  <!-- Où elle apparaît -->
+                  <p class="text-[11px] leading-snug text-gray-500">
+                    <template v-if="usesOf(photo.id).length">
+                      {{
+                        t(
+                          usesOf(photo.id).length > 1
+                            ? "dashboard.photos_visible_many"
+                            : "dashboard.photos_visible_one",
+                          { pages: joinPages(usesOf(photo.id)) }
+                        )
+                      }}
+                    </template>
+                    <template v-else>{{ t("dashboard.photos_not_visible") }}</template>
+                  </p>
+
+                  <button
+                    type="button"
+                    class="text-[11px] text-gray-400 underline underline-offset-2 hover:text-red-600"
+                    @click="photoToDelete = photo"
+                  >
+                    {{ t("dashboard.photos_delete") }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p v-if="!photos.length" class="text-sm text-gray-500 mt-4">
+              {{ t("dashboard.photos_empty_library") }}
+            </p>
+          </div>
+
+          <!-- ===== Grilles de 9 photos : Accueil, Mariages, Entreprises ===== -->
+          <div v-else-if="GRID_PAGES.includes(activeTab)">
+            <PageHeader :page="activeTab" />
+
+            <!-- Mêmes proportions que le site : la petite case est en
+                 portrait 3:4 et fixe la hauteur de la rangée -->
+            <div class="flex gap-4">
+              <div class="flex-[3] flex flex-col gap-4">
+                <div v-for="row in GRID_ROWS" :key="row.join()" class="flex gap-4">
+                  <SlotTile
+                    v-for="n in row"
+                    :key="n"
+                    :photo="photoById(zones[activeTab].grid[n - 1])"
+                    :label="String(n)"
+                    :class="GRID_WIDE.includes(n) ? 'flex-[2]' : 'flex-[1]'"
+                    :style="GRID_WIDE.includes(n) ? null : { aspectRatio: '3 / 4' }"
+                    @pick="openPicker(activeTab, 'grid', n - 1)"
+                    @clear="setSlot(activeTab, 'grid', n - 1, null)"
+                  />
+                </div>
+              </div>
+              <div class="flex-[1] flex flex-col gap-4">
+                <SlotTile
+                  v-for="n in [7, 8, 9]"
+                  :key="n"
+                  class="flex-1"
+                  :photo="photoById(zones[activeTab].grid[n - 1])"
+                  :label="String(n)"
+                  @pick="openPicker(activeTab, 'grid', n - 1)"
+                  @clear="setSlot(activeTab, 'grid', n - 1, null)"
+                />
+              </div>
+            </div>
+
+            <!-- Aussi dans la visionneuse -->
+            <div class="mt-12 pt-8 border-t border-dark/10">
+              <h3 class="font-heading text-xl text-dark">
+                {{ t("dashboard.photos_viewer_title") }}
+                <span class="text-gray-400 text-base">
+                  ·
                   {{
-                    gallery.is_published
-                      ? t("dashboard.galleries_published")
-                      : t("dashboard.galleries_draft")
+                    t(
+                      zones[activeTab].viewer.length > 1
+                        ? "dashboard.photos_viewer_count_many"
+                        : "dashboard.photos_viewer_count_one",
+                      { n: zones[activeTab].viewer.length }
+                    )
                   }}
+                </span>
+              </h3>
+              <p class="text-sm text-gray-500 mt-1 mb-5">
+                {{
+                  zones[activeTab].viewer.length
+                    ? t("dashboard.photos_viewer_text_some", { n: zones[activeTab].viewer.length })
+                    : t("dashboard.photos_viewer_text_none")
+                }}
+              </p>
+              <div
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px"
+              >
+                <SlotTile
+                  v-for="(id, k) in (zones[activeTab].viewer as string[])"
+                  :key="id"
+                  style="aspect-ratio: 4 / 5"
+                  :photo="photoById(id)"
+                  :label="t('dashboard.photos_photo_n', { n: Number(k) + 10 })"
+                  @pick="openPicker(activeTab, 'viewer', Number(k))"
+                  @clear="removeFromViewer(activeTab, Number(k))"
+                />
+                <button
+                  v-if="emptySlots(activeTab) === 0"
+                  type="button"
+                  class="rounded-lg border-2 border-dashed border-dark/15 bg-white
+                         flex flex-col items-center justify-center gap-1
+                         text-gray-400 text-xs hover:border-dark/40 transition-colors"
+                  style="aspect-ratio: 4 / 5"
+                  @click="openPicker(activeTab, 'viewer', zones[activeTab].viewer.length)"
+                >
+                  <span class="text-lg leading-none">+</span>
+                  {{ t("dashboard.photos_viewer_add") }}
                 </button>
               </div>
-            </div>
-
-            <!-- Images grid -->
-            <div class="p-5">
-              <!-- Nos créations : la page recadre chaque photo dans une
-                   forme imposée par sa position, d'où ces conseils. -->
-              <div
-                v-if="!usesBentoSlots(gallery.slug)"
-                class="flex items-start gap-3 rounded-xl bg-cream/50
-                  px-4 py-3 mb-4 text-sm text-gray-600"
+              <p
+                v-if="emptySlots(activeTab) > 0"
+                class="mt-1 text-sm text-gray-500 rounded-xl bg-cream/50 px-4 py-3"
               >
-                <IconLucid
-                  name="Info"
-                  size="sm"
-                  class="text-gray-500 shrink-0 mt-0.5"
-                />
-                <div>
-                  <p class="font-medium text-dark mb-1">
-                    {{ t("dashboard.creations_tips_title") }}
+                {{
+                  t(
+                    emptySlots(activeTab) > 1
+                      ? "dashboard.photos_viewer_locked_many"
+                      : "dashboard.photos_viewer_locked_one",
+                    { n: emptySlots(activeTab) }
+                  )
+                }}
+              </p>
+            </div>
+          </div>
+
+          <!-- ===== Créations : ouverture + 4 chapitres ===== -->
+          <div v-else-if="activeTab === 'creations'">
+            <PageHeader page="creations" />
+            <div class="max-w-3xl space-y-8">
+              <div :style="TWO_COLS">
+                <div class="pt-2">
+                  <p class="section-tagline">{{ t("dashboard.photos_opening") }}</p>
+                  <p class="text-sm text-gray-500 mt-2">
+                    {{ t("dashboard.photos_opening_text") }}
                   </p>
-                  <p>{{ t("dashboard.creations_tips_body") }}</p>
                 </div>
+                <SlotTile
+                  style="aspect-ratio: 5 / 6"
+                  :photo="photoById(zones.creations.opening[0])"
+                  :label="t('dashboard.photos_opening')"
+                  @pick="openPicker('creations', 'opening', 0)"
+                  @clear="setSlot('creations', 'opening', 0, null)"
+                />
               </div>
-              <!-- Loading images -->
               <div
-                v-if="loadingImages === gallery.id"
-                class="py-4 text-center"
+                v-for="chapter in CHAPTERS"
+                :key="chapter"
+                class="pt-8 border-t border-dark/10"
+                :style="TWO_COLS"
               >
-                <IconLucid
-                  name="Loader2"
-                  size="sm"
-                  class="animate-spin mx-auto text-gray-300"
-                />
-              </div>
-
-              <template v-else>
-                <div
-                  v-if="galleryImages[gallery.id]?.length"
-                  class="flex flex-col sm:flex-row gap-4 items-start"
-                >
-
-                  <!-- Bento layout reference -->
-                  <div
-                    v-if="usesBentoSlots(gallery.slug)"
-                    class="shrink-0 p-3 rounded-xl bg-cream/50 border border-dark/10"
-                  >
-                    <p class="text-xs text-dark/40 mb-2 font-semibold uppercase tracking-wide">
-                      {{ t("dashboard.bento_layout") }}
-                    </p>
-                    <div class="flex gap-1 w-[180px]">
-                      <div class="flex-[3] flex flex-col gap-1">
-                        <div class="flex gap-1 h-14">
-                          <div class="flex-[2] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                            <img v-if="slotImage(gallery.id, 1)" :src="slotImage(gallery.id, 1).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                            <span v-else class="text-xs text-dark/50 font-semibold">①</span>
-                          </div>
-                          <div class="flex-[1] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                            <img v-if="slotImage(gallery.id, 2)" :src="slotImage(gallery.id, 2).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                            <span v-else class="text-xs text-dark/50 font-semibold">②</span>
-                          </div>
-                        </div>
-                        <div class="flex gap-1 h-14">
-                          <div class="flex-[1] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                            <img v-if="slotImage(gallery.id, 3)" :src="slotImage(gallery.id, 3).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                            <span v-else class="text-xs text-dark/50 font-semibold">③</span>
-                          </div>
-                          <div class="flex-[2] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                            <img v-if="slotImage(gallery.id, 4)" :src="slotImage(gallery.id, 4).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                            <span v-else class="text-xs text-dark/50 font-semibold">④</span>
-                          </div>
-                        </div>
-                        <div class="flex gap-1 h-14">
-                          <div class="flex-[2] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                            <img v-if="slotImage(gallery.id, 5)" :src="slotImage(gallery.id, 5).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                            <span v-else class="text-xs text-dark/50 font-semibold">⑤</span>
-                          </div>
-                          <div class="flex-[1] bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                            <img v-if="slotImage(gallery.id, 6)" :src="slotImage(gallery.id, 6).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                            <span v-else class="text-xs text-dark/50 font-semibold">⑥</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="flex-[1] flex flex-col gap-1">
-                        <div class="flex-1 bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                          <img v-if="slotImage(gallery.id, 7)" :src="slotImage(gallery.id, 7).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                          <span v-else class="text-xs text-dark/50 font-semibold">⑦</span>
-                        </div>
-                        <div class="flex-1 bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                          <img v-if="slotImage(gallery.id, 8)" :src="slotImage(gallery.id, 8).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                          <span v-else class="text-xs text-dark/50 font-semibold">⑧</span>
-                        </div>
-                        <div class="flex-1 bg-dark/10 rounded-md overflow-hidden relative flex items-center justify-center">
-                          <img v-if="slotImage(gallery.id, 9)" :src="slotImage(gallery.id, 9).public_url" class="absolute inset-0 w-full h-full object-cover" />
-                          <span v-else class="text-xs text-dark/50 font-semibold">⑨</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Photo grid -->
-                  <div
-                    class="w-full flex-1 grid grid-cols-3 sm:grid-cols-4
-                           md:grid-cols-5 gap-2"
-                  >
-                    <div
-                      v-for="img in galleryImages[gallery.id]"
-                      :key="img.id"
-                      class="relative group rounded-xl overflow-hidden bg-dark/5 h-24 flex items-center justify-center"
-                    >
-                      <img
-                        :src="img.public_url"
-                        :alt="img.original_filename"
-                        class="w-full h-full object-contain"
-                      />
-                      <!-- Bento slot selector -->
-                      <select
-                        v-if="usesBentoSlots(gallery.slug)"
-                        :value="img.bento_slot || ''"
-                        @change="setBentoSlot(gallery.id, img.id, $event)"
-                        class="absolute bottom-1 left-1 w-8 h-8
-                               rounded-full bg-dark/70 text-cream
-                               text-center text-sm font-bold
-                               appearance-none cursor-pointer
-                               border-2"
-                        :class="img.bento_slot
-                          ? 'border-cream'
-                          : 'border-transparent opacity-70 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-70'"
-                      >
-                        <option value="">–</option>
-                        <option v-for="n in 9" :key="n" :value="n">{{ n }}</option>
-                      </select>
-                      <!-- Delete button -->
-                      <ConfirmDeleteButton
-                        position-class="absolute top-1 right-1"
-                        class="w-6 h-6
-                               rounded-full bg-dark/60 text-cream
-                               flex items-center justify-center
-                               [@media(hover:hover)]:opacity-0
-                               [@media(hover:hover)]:group-hover:opacity-100
-                               transition-opacity"
-                        @confirm="deleteImage(gallery.id, img.id)"
-                      >
-                        <IconLucid name="Trash2" size="xs" />
-                      </ConfirmDeleteButton>
-                    </div>
-                    <!-- Bouton ajout inline -->
-                    <label
-                      :for="'gallery-upload-' + gallery.id"
-                      class="h-24 rounded-xl border-2 border-dashed border-dark/15
-                             flex flex-col items-center justify-center gap-1
-                             text-gray-300 cursor-pointer
-                             hover:border-dark/30 hover:text-gray-400
-                             transition-all"
-                    >
-                      <IconLucid
-                        v-if="uploading === gallery.id"
-                        name="Loader2"
-                        size="sm"
-                        class="animate-spin"
-                      />
-                      <IconLucid v-else name="Plus" size="sm" />
-                      <span class="text-xs text-center leading-tight px-1">{{ t("dashboard.galleries_add_image") }}</span>
-                    </label>
-                  </div>
-
+                <div>
+                  <p class="section-tagline">
+                    {{ t(`creations.chapter_${chapter}_tagline`) }}
+                  </p>
+                  <p class="font-heading text-xl text-dark mt-2">
+                    {{ t(`creations.chapter_${chapter}_title`) }}
+                  </p>
                 </div>
-
-                <!-- État vide : bouton centré -->
-                <label
-                  v-else
-                  :for="'gallery-upload-' + gallery.id"
-                  class="flex flex-col items-center justify-center gap-2 py-8
-                         rounded-xl border-2 border-dashed border-dark/15
-                         text-gray-400 cursor-pointer
-                         hover:border-dark/30 hover:text-gray-500 transition-all"
+                <div
+                  style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start"
                 >
-                  <IconLucid
-                    v-if="uploading === gallery.id"
-                    name="Loader2"
-                    size="sm"
-                    class="animate-spin"
+                  <SlotTile
+                    v-for="n in [0, 1]"
+                    :key="n"
+                    style="aspect-ratio: 3 / 4"
+                    :class="n === 1 ? 'mt-8' : ''"
+                    :photo="photoById(zones.creations[chapter][n])"
+                    :label="t('dashboard.photos_photo_n', { n: n + 1 })"
+                    @pick="openPicker('creations', chapter, n)"
+                    @clear="setSlot('creations', chapter, n, null)"
                   />
-                  <IconLucid v-else name="Plus" size="sm" />
-                  <span class="text-sm">{{ t("dashboard.galleries_add_image") }}</span>
-                </label>
-                <input
-                  :id="'gallery-upload-' + gallery.id"
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  multiple
-                  class="hidden"
-                  @change="uploadImages(gallery.id, $event)"
-                />
-              </template>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <!-- ===== Atelier floral : 3 photos ===== -->
+          <div v-else-if="activeTab === 'workshops'">
+            <PageHeader page="workshops" />
+            <div class="grid grid-cols-3 gap-3 max-w-3xl">
+              <SlotTile
+                v-for="n in [0, 1, 2]"
+                :key="n"
+                style="aspect-ratio: 3 / 4"
+                :photo="photoById(zones.workshops.grid[n])"
+                :label="t('dashboard.photos_photo_n', { n: n + 1 })"
+                @pick="openPicker('workshops', 'grid', n)"
+                @clear="setSlot('workshops', 'grid', n, null)"
+              />
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- Type des photos déposées -->
+    <BaseModal
+      :is-open="!!pendingFiles.length"
+      :title="t('dashboard.photos_upload_title')"
+      :show-close-button="false"
+      show-close-icon
+      compact
+      @close="pendingFiles = []"
+    >
+      <div class="space-y-3">
+        <Button
+          v-for="type in PHOTO_TYPES"
+          :key="type"
+          variant="default"
+          class="w-full justify-center"
+          @click="uploadFiles(type)"
+        >
+          {{ t(`dashboard.photos_type_${type}`) }}
+        </Button>
+        <Button
+          variant="ghost"
+          class="!flex mx-auto w-fit"
+          @click="uploadFiles(null)"
+        >
+          {{ t("dashboard.photos_upload_later") }}
+        </Button>
+      </div>
+    </BaseModal>
+
+    <!-- Suppression -->
+    <BaseModal
+      :is-open="!!photoToDelete"
+      :title="t('dashboard.photos_delete_title')"
+      :show-close-button="false"
+      show-close-icon
+      compact
+      @close="photoToDelete = null"
+    >
+      <div v-if="photoToDelete" class="space-y-5">
+        <img
+          :src="photoToDelete.public_url"
+          alt=""
+          class="w-full h-auto rounded-lg"
+          style="max-height: 35vh; object-fit: contain"
+        />
+        <p class="text-dark leading-relaxed">
+          <template v-if="usesOf(photoToDelete.id).length">
+            {{
+              t(
+                usesOf(photoToDelete.id).length > 1
+                  ? "dashboard.photos_delete_used_many"
+                  : "dashboard.photos_delete_used_one",
+                { pages: joinPages(usesOf(photoToDelete.id)) }
+              )
+            }}
+          </template>
+          <template v-else>{{ t("dashboard.photos_delete_unused") }}</template>
+        </p>
+        <p class="text-sm text-gray-500">{{ t("dashboard.photos_delete_final") }}</p>
+        <div class="space-y-4">
+          <button
+            type="button"
+            class="w-full h-12 rounded-full bg-red-600 text-white text-sm
+                   font-medium hover:bg-red-700 transition-colors disabled:opacity-60"
+            :disabled="deleting"
+            @click="deletePhoto"
+          >
+            {{ t("dashboard.photos_delete_confirm") }}
+          </button>
+          <Button variant="ghost" class="!flex mx-auto w-fit" @click="photoToDelete = null">
+            {{ t("dashboard.photos_cancel") }}
+          </Button>
+        </div>
+      </div>
+    </BaseModal>
+
+    <!-- Légende : photo à gauche (ordinateur), saisie à droite -->
+    <BaseModal
+      :is-open="!!captionPhoto"
+      :title="t('dashboard.photos_caption_title')"
+      :show-close-button="false"
+      show-close-icon
+      @close="captionPhoto = null"
+    >
+      <div
+        v-if="captionPhoto"
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start"
+      >
+        <div class="bg-cream/50 rounded-lg flex items-center justify-center">
+          <img
+            :src="captionPhoto.public_url"
+            alt=""
+            class="w-full h-auto rounded-lg"
+            style="max-height: 60vh; object-fit: contain"
+          />
+        </div>
+        <div class="space-y-5">
+          <div>
+            <label for="caption-modal" class="block text-sm font-medium text-dark mb-2">
+              {{ t("dashboard.photos_caption_label") }}
+            </label>
+            <input
+              id="caption-modal"
+              v-model="captionDraft"
+              type="text"
+              maxlength="200"
+              data-autofocus
+              class="w-full h-12 px-4 text-base border border-dark/30 rounded-lg
+                     focus:outline-none focus:border-dark"
+              @keydown.enter="saveCaption"
+            />
+          </div>
+          <div class="rounded-xl bg-cream/50 px-4 py-3 text-sm text-gray-600">
+            <p>{{ t("dashboard.photos_caption_help") }}</p>
+            <ul class="mt-3 space-y-1.5">
+              <li>{{ t("dashboard.photos_caption_ex1") }}</li>
+              <li>{{ t("dashboard.photos_caption_ex2") }}</li>
+              <li>{{ t("dashboard.photos_caption_ex3") }}</li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <Button
+              variant="primary"
+              class="w-full justify-center"
+              :loading="savingCaption"
+              @click="saveCaption"
+            >
+              {{ t("dashboard.photos_save") }}
+            </Button>
+            <Button variant="ghost" class="!flex mx-auto w-fit" @click="captionPhoto = null">
+              {{ t("dashboard.photos_cancel") }}
+            </Button>
           </div>
         </div>
       </div>
-    </section>
+    </BaseModal>
+
+    <!-- Choix d'une photo -->
+    <BaseModal
+      :is-open="pickerOpen"
+      :title="t('dashboard.photos_picker_title')"
+      :show-close-button="false"
+      show-close-icon
+      @close="pickerOpen = false"
+    >
+      <TypeFilters class="mb-4" />
+      <div style="columns: 160px; column-gap: 12px">
+        <button
+          v-for="photo in filteredPhotos"
+          :key="photo.id"
+          type="button"
+          class="relative block w-full mb-3 rounded-lg overflow-hidden bg-dark/5 group"
+          style="break-inside: avoid"
+          @click="choose(photo.id)"
+        >
+          <img
+            :src="photo.public_url"
+            :alt="photo.caption || ''"
+            loading="lazy"
+            class="block w-full h-auto group-hover:scale-105 transition-transform"
+          />
+          <span
+            v-if="usesOf(photo.id).length"
+            class="absolute top-1 left-1 px-2 py-0.5 rounded-full text-[11px] bg-white text-dark"
+            :title="joinPages(usesOf(photo.id))"
+          >
+            {{ t("dashboard.photos_already_used") }}
+          </span>
+        </button>
+      </div>
+    </BaseModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { h } from "vue";
 import { useI18n } from "vue-i18n";
-import type {
-  Gallery,
-  GalleryImage,
-} from "~/server/utils/galleries-types";
+import type { GalleryImage, PhotoType } from "~/server/utils/galleries-types";
 
 definePageMeta({
   ssr: false,
@@ -293,212 +516,424 @@ definePageMeta({
 const { t } = useI18n();
 const { adminFetch } = useAdminFetch();
 const { compress } = useImageCompression();
+const localePath = useLocalePath();
 
-const pageTitle = useState<string | null>(
-  "dashboard-page-title",
-  () => null
-);
-pageTitle.value = t("dashboard.galleries_title");
+const pageTitle = useState<string | null>("dashboard-page-title", () => null);
+pageTitle.value = t("dashboard.photos_title");
+useHead({ title: t("dashboard.photos_title") + " - Boticia" });
 
-useHead({
-  title: t("dashboard.galleries_title") + " - Boticia",
-});
-
-const galleries = ref<Gallery[]>([]);
-const loading = ref(true);
-const uploading = ref<string | null>(null);
-const loadingImages = ref<string | null>(null);
-const galleryImages = reactive<
-  Record<string, GalleryImage[]>
->({});
-const imageCounts = reactive<Record<string, number>>({});
-
-const slugToPage: Record<string, string> = {
-  portfolio: "/",
-  creations: "/creations",
-  wedding: "/mariages",
-  workshops: "/ateliers",
-  events: "/evenements",
+// ── Configuration (même liste que server/utils/photo-placements.ts) ──
+const PHOTO_TYPES: PhotoType[] = ["mariage", "entreprise", "atelier"];
+const TABS = ["library", "home", "creations", "wedding", "events", "workshops"];
+const GRID_PAGES = ["home", "wedding", "events"];
+const CHAPTERS = ["bouquets", "ceremonie", "reception", "accessoires"] as const;
+// Grille : 3 rangées à gauche (case large en alternance), 3 cases à droite
+const GRID_ROWS = [
+  [1, 2],
+  [3, 4],
+  [5, 6],
+];
+const GRID_WIDE = [1, 4, 5];
+const PAGE_URLS: Record<string, string> = {
+  home: "index",
+  wedding: "mariages",
+  events: "evenements",
+  creations: "creations",
+  workshops: "ateliers",
+};
+const TWO_COLS = {
+  display: "grid",
+  gridTemplateColumns: "2fr 3fr",
+  gap: "24px",
+  alignItems: "start",
 };
 
-const galleryUrl = (slug: string) => slugToPage[slug] || `/${slug}`;
+const emptyZones = () => ({
+  home: { grid: Array(9).fill(null), viewer: [] as string[] },
+  wedding: { grid: Array(9).fill(null), viewer: [] as string[] },
+  events: { grid: Array(9).fill(null), viewer: [] as string[] },
+  workshops: { grid: Array(3).fill(null) },
+  creations: {
+    opening: [null],
+    bouquets: [null, null],
+    ceremonie: [null, null],
+    reception: [null, null],
+    accessoires: [null, null],
+  },
+});
 
-// La page « Nos créations » affiche toutes les photos à la suite : elle
-// n'utilise pas les 9 emplacements. On masque donc le plan et les numéros.
-const usesBentoSlots = (slug: string) => slug !== "creations";
+// ── État ───────────────────────────────────────────────────────
+const loading = ref(true);
+const error = ref("");
+const activeTab = ref("library");
+const typeFilter = ref<string>("all");
+const photos = ref<GalleryImage[]>([]);
+const zones = reactive<any>(emptyZones());
 
-const fetchGalleries = async () => {
-  loading.value = true;
+const load = async () => {
   try {
     const res = await adminFetch<{
-      success: boolean;
-      data: Gallery[];
-    }>("/api/admin/galleries");
-    // Tri : « Nos créations » (la galerie principale) en premier
-    const order = ["creations", "portfolio", "wedding", "workshops", "events"];
-    galleries.value = res.data.sort((a, b) => {
-      const ia = order.indexOf(a.slug);
-      const ib = order.indexOf(b.slug);
-      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-    });
-
-    for (const gallery of galleries.value) {
-      await fetchImages(gallery.id);
+      data: { photos: GalleryImage[]; placements: any[] };
+    }>("/api/admin/photos");
+    photos.value = res.data.photos;
+    Object.assign(zones, emptyZones());
+    for (const p of res.data.placements) {
+      const list = zones[p.page]?.[p.zone];
+      if (!list) continue;
+      if (p.zone === "viewer") list.push(p.image_id);
+      else if (p.position < list.length) list[p.position] = p.image_id;
     }
   } catch (err) {
-    console.error("Error fetching galleries:", err);
+    console.error("Error loading photos:", err);
+    error.value = t("dashboard.photos_error");
   } finally {
     loading.value = false;
   }
 };
+onMounted(load);
 
-const fetchImages = async (galleryId: string) => {
-  loadingImages.value = galleryId;
-  try {
-    const res = await adminFetch<{
-      success: boolean;
-      data: GalleryImage[];
-    }>(`/api/admin/galleries/${galleryId}/images`);
-    galleryImages[galleryId] = res.data;
-    imageCounts[galleryId] = res.data.length;
-  } catch (err) {
-    console.error("Error fetching images:", err);
-    galleryImages[galleryId] = [];
-  } finally {
-    loadingImages.value = null;
+const photoById = (id: string | null) =>
+  (id && photos.value.find((p) => p.id === id)) || null;
+
+const filteredPhotos = computed(() => {
+  if (typeFilter.value === "all") return photos.value;
+  if (typeFilter.value === "none") return photos.value.filter((p) => !p.photo_type);
+  return photos.value.filter((p) => p.photo_type === typeFilter.value);
+});
+
+// Pages où une photo apparaît
+const usesOf = (id: string) => {
+  const uses: string[] = [];
+  for (const page of ["home", "creations", "wedding", "events", "workshops"]) {
+    const used = Object.values(zones[page]).some((list: any) => list.includes(id));
+    if (used) uses.push(t(`dashboard.photos_tab_${page}`));
   }
+  return uses;
+};
+const joinPages = (pages: string[]) =>
+  pages.length > 1
+    ? `${pages.slice(0, -1).join(", ")} ${t("dashboard.photos_and")} ${pages.at(-1)}`
+    : pages[0] ?? "";
+
+const pageIds = (page: string) =>
+  [...new Set(Object.values(zones[page]).flat().filter(Boolean))] as string[];
+const captionStats = (page: string) => {
+  const ids = pageIds(page);
+  return {
+    total: ids.length,
+    missing: ids.filter((id) => !photoById(id)?.caption?.trim()).length,
+  };
+};
+const emptySlots = (page: string) =>
+  zones[page].grid.filter((id: string | null) => !id).length;
+
+// ── Enregistrement ─────────────────────────────────────────────
+const fail = (err: unknown) => {
+  console.error(err);
+  error.value = t("dashboard.photos_error");
+  load();
 };
 
-const togglePublish = async (gallery: Gallery) => {
+const saveZone = async (page: string, zone: string) => {
+  error.value = "";
   try {
-    const res = await adminFetch<{
-      success: boolean;
-      data: Gallery;
-    }>(`/api/admin/galleries/${gallery.id}`, {
-      method: "PATCH",
-      body: { is_published: !gallery.is_published },
+    await adminFetch("/api/admin/placements", {
+      method: "PUT",
+      body: { page, zone, image_ids: zones[page][zone] },
     });
-    const idx = galleries.value.findIndex(
-      (g) => g.id === gallery.id
-    );
-    if (idx !== -1) galleries.value[idx] = res.data;
   } catch (err) {
-    console.error("Error toggling publish:", err);
+    fail(err);
   }
 };
 
-const uploadImages = async (
-  galleryId: string,
-  event: Event
-) => {
+const setSlot = (page: string, zone: string, index: number, id: string | null) => {
+  zones[page][zone][index] = id;
+  saveZone(page, zone);
+};
+
+const removeFromViewer = (page: string, index: number) => {
+  zones[page].viewer.splice(index, 1);
+  saveZone(page, "viewer");
+};
+
+const setType = async (photo: GalleryImage, type: PhotoType) => {
+  const previous = photo.photo_type;
+  photo.photo_type = type;
+  try {
+    await adminFetch(`/api/admin/photos/${photo.id}`, {
+      method: "PATCH",
+      body: { photo_type: type },
+    });
+  } catch (err) {
+    photo.photo_type = previous;
+    fail(err);
+  }
+};
+
+// ── Sélecteur de photo ────────────────────────────────────────
+const pickerOpen = ref(false);
+const target = ref<{ page: string; zone: string; index: number } | null>(null);
+
+const openPicker = (page: string, zone: string, index: number) => {
+  target.value = { page, zone, index };
+  pickerOpen.value = true;
+};
+
+const choose = (id: string) => {
+  const { page, zone, index } = target.value!;
+  const list = zones[page][zone];
+  // Une photo n'apparaît qu'une fois dans une zone : on la déplace
+  const already = list.indexOf(id);
+  if (already !== -1 && already !== index) {
+    if (zone === "viewer") list.splice(already, 1);
+    else list[already] = null;
+  }
+  if (zone === "viewer" && index >= list.length) list.push(id);
+  else list[index] = id;
+  pickerOpen.value = false;
+  saveZone(page, zone);
+};
+
+// ── Légende ────────────────────────────────────────────────────
+const captionPhoto = ref<GalleryImage | null>(null);
+const captionDraft = ref("");
+const savingCaption = ref(false);
+
+const openCaption = (photo: GalleryImage) => {
+  captionPhoto.value = photo;
+  captionDraft.value = photo.caption || "";
+};
+
+const saveCaption = async () => {
+  const photo = captionPhoto.value;
+  if (!photo || savingCaption.value) return;
+  savingCaption.value = true;
+  try {
+    const res = await adminFetch<{ data: GalleryImage }>(
+      `/api/admin/photos/${photo.id}`,
+      { method: "PATCH", body: { caption: captionDraft.value } }
+    );
+    photo.caption = res.data.caption;
+    captionPhoto.value = null;
+  } catch (err) {
+    fail(err);
+  } finally {
+    savingCaption.value = false;
+  }
+};
+
+// ── Dépôt ──────────────────────────────────────────────────────
+const pendingFiles = ref<File[]>([]);
+const uploading = ref(false);
+
+const pickFiles = (event: Event) => {
   const input = event.target as HTMLInputElement;
-  const files = input.files;
-  if (!files || files.length === 0) return;
-
-  uploading.value = galleryId;
-  if (!galleryImages[galleryId]) {
-    galleryImages[galleryId] = [];
-  }
-
-  for (const rawFile of Array.from(files)) {
-    try {
-      const file = await compress(rawFile);
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await adminFetch<{
-        success: boolean;
-        data: GalleryImage;
-      }>(`/api/admin/galleries/${galleryId}/images`, {
-        method: "POST",
-        body: formData,
-      });
-
-      galleryImages[galleryId].push(res.data);
-      imageCounts[galleryId] =
-        galleryImages[galleryId].length;
-    } catch (err) {
-      console.error("Error uploading image:", err);
-    }
-  }
-
-  uploading.value = null;
+  pendingFiles.value = Array.from(input.files || []);
   input.value = "";
 };
 
-const slotImage = (galleryId: string, slot: number) =>
-  galleryImages[galleryId]?.find((img) => img.bento_slot === slot) ?? null;
-
-const deleteImage = async (
-  galleryId: string,
-  imageId: string
-) => {
-  try {
-    await adminFetch(
-      `/api/admin/galleries/${galleryId}/images/${imageId}`,
-      { method: "DELETE" }
-    );
-    galleryImages[galleryId] = galleryImages[
-      galleryId
-    ].filter((img) => img.id !== imageId);
-    imageCounts[galleryId] =
-      galleryImages[galleryId].length;
-  } catch (err) {
-    console.error("Error deleting image:", err);
+const uploadFiles = async (type: PhotoType | null) => {
+  const files = pendingFiles.value;
+  pendingFiles.value = [];
+  uploading.value = true;
+  error.value = "";
+  for (const raw of files) {
+    try {
+      const file = await compress(raw);
+      const form = new FormData();
+      form.append("file", file);
+      if (type) form.append("photo_type", type);
+      const res = await adminFetch<{ data: GalleryImage }>("/api/admin/photos", {
+        method: "POST",
+        body: form,
+      });
+      photos.value.unshift(res.data);
+    } catch (err) {
+      console.error("Error uploading photo:", err);
+      error.value = t("dashboard.photos_error");
+    }
   }
+  uploading.value = false;
 };
 
-const setBentoSlot = async (
-  galleryId: string,
-  imageId: string,
-  event: Event
-) => {
-  const select = event.target as HTMLSelectElement;
-  const value = select.value;
-  const slot = value ? parseInt(value) : null;
+// ── Suppression ────────────────────────────────────────────────
+const photoToDelete = ref<GalleryImage | null>(null);
+const deleting = ref(false);
 
-  // If assigning a slot that's already taken, clear the other image
-  if (slot !== null && galleryImages[galleryId]) {
-    const existing = galleryImages[galleryId].find(
-      (img) => img.bento_slot === slot && img.id !== imageId
-    );
-    if (existing) {
-      try {
-        await adminFetch(
-          `/api/admin/galleries/${galleryId}/images/${existing.id}`,
-          { method: "PATCH", body: { bento_slot: null } }
-        );
-        existing.bento_slot = null;
-      } catch (err) {
-        console.error("Error clearing slot:", err);
+const deletePhoto = async () => {
+  const photo = photoToDelete.value;
+  if (!photo) return;
+  deleting.value = true;
+  try {
+    await adminFetch(`/api/admin/photos/${photo.id}`, { method: "DELETE" });
+    // Les emplacements sont supprimés en base (cascade) : on suit en local
+    for (const page of Object.keys(zones)) {
+      for (const zone of Object.keys(zones[page])) {
+        const list = zones[page][zone];
+        if (zone === "viewer") zones[page][zone] = list.filter((x: string) => x !== photo.id);
+        else zones[page][zone] = list.map((x: string | null) => (x === photo.id ? null : x));
       }
     }
-  }
-
-  try {
-    const res = await adminFetch<{
-      success: boolean;
-      data: GalleryImage;
-    }>(
-      `/api/admin/galleries/${galleryId}/images/${imageId}`,
-      { method: "PATCH", body: { bento_slot: slot } }
-    );
-    const idx = galleryImages[galleryId].findIndex(
-      (img) => img.id === imageId
-    );
-    if (idx !== -1) {
-      galleryImages[galleryId][idx] = res.data;
-    }
+    photos.value = photos.value.filter((p) => p.id !== photo.id);
+    photoToDelete.value = null;
   } catch (err) {
-    console.error("Error setting bento slot:", err);
-    // Le choix n'a pas été enregistré : le sélecteur reprend la vraie
-    // valeur au lieu de faire croire que c'est fait.
-    const img = galleryImages[galleryId]?.find((i) => i.id === imageId);
-    select.value = img?.bento_slot ? String(img.bento_slot) : "";
+    fail(err);
+  } finally {
+    deleting.value = false;
   }
 };
 
-onMounted(() => {
-  fetchGalleries();
-});
+// ── Petits composants ──────────────────────────────────────────
+// Filtres par type
+const TypeFilters = (_: unknown, { attrs }: any) =>
+  h(
+    "div",
+    { class: ["flex flex-wrap gap-2", attrs.class] },
+    ["all", ...PHOTO_TYPES, "none"].map((key) =>
+      h(
+        "button",
+        {
+          type: "button",
+          class: [
+            "h-8 px-3 rounded-full text-xs border transition-colors",
+            typeFilter.value === key
+              ? "bg-dark text-cream border-dark"
+              : "bg-white text-dark border-dark/20 hover:border-dark",
+          ],
+          onClick: () => (typeFilter.value = key),
+        },
+        key === "all"
+          ? t("dashboard.photos_filter_all")
+          : key === "none"
+            ? t("dashboard.photos_filter_none")
+            : t(`dashboard.photos_type_${key}`)
+      )
+    )
+  );
+TypeFilters.inheritAttrs = false;
+
+// Ligne de légende : « + Ajouter une légende » ou légende + « Modifier »
+const captionRow = (photo: GalleryImage, muted = false) =>
+  photo.caption
+    ? h("div", { class: "flex items-baseline gap-2 min-w-0" }, [
+        h("p", { class: "text-[11px] text-dark truncate", title: photo.caption }, photo.caption),
+        h(
+          "button",
+          {
+            type: "button",
+            class: "text-[11px] text-gray-500 underline underline-offset-2 shrink-0",
+            onClick: () => openCaption(photo),
+          },
+          t("dashboard.photos_caption_edit")
+        ),
+      ])
+    : h(
+        "button",
+        {
+          type: "button",
+          class: [
+            "text-[11px] underline underline-offset-2 text-left",
+            muted ? "text-gray-400" : "text-orange-600",
+          ],
+          onClick: () => openCaption(photo),
+        },
+        t("dashboard.photos_caption_add")
+      );
+
+const CaptionRow = (props: any) => captionRow(props.photo, props.muted);
+CaptionRow.props = ["photo", "muted"];
+
+// Case d'une page : vide (+) ou photo (croix pour retirer), légende dessous
+const SlotTile = (props: any, { emit, attrs }: any) =>
+  h("div", { class: ["flex flex-col gap-1.5 min-w-0", attrs.class] }, [
+    h(
+      "div",
+      {
+        class: [
+          "relative rounded-lg overflow-hidden group flex-1 min-h-0",
+          props.photo ? "bg-dark/5" : "border-2 border-dashed border-dark/15 bg-white",
+        ],
+        style: attrs.style,
+      },
+      [
+        h(
+          "button",
+          {
+            type: "button",
+            class:
+              "absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-1 text-gray-400 text-xs",
+            onClick: () => emit("pick"),
+            "aria-label": t("dashboard.photos_choose_slot", { label: props.label }),
+          },
+          props.photo
+            ? [
+                h("img", {
+                  src: props.photo.public_url,
+                  alt: props.photo.caption || "",
+                  class: "absolute inset-0 w-full h-full object-cover",
+                }),
+              ]
+            : [h("span", { class: "text-lg leading-none" }, "+"), h("span", props.label)]
+        ),
+        props.photo
+          ? h(
+              "button",
+              {
+                type: "button",
+                class:
+                  "absolute top-1 right-1 w-7 h-7 rounded-full bg-white text-dark text-sm flex items-center justify-center shadow",
+                onClick: () => emit("clear"),
+                "aria-label": t("dashboard.photos_remove"),
+              },
+              "×"
+            )
+          : null,
+      ]
+    ),
+    // Case vide : ligne invisible de même hauteur, pour l'alignement
+    props.photo
+      ? captionRow(props.photo)
+      : h(
+          "span",
+          { class: "text-[11px] invisible", "aria-hidden": "true" },
+          t("dashboard.photos_caption_add")
+        ),
+  ]);
+SlotTile.props = ["photo", "label"];
+SlotTile.emits = ["pick", "clear"];
+SlotTile.inheritAttrs = false;
+
+// En-tête d'une page : titre, explication, lien, légendes manquantes
+const PageHeader = (props: any) => {
+  const stats = captionStats(props.page);
+  return h("div", { class: "mb-6" }, [
+    h("h2", { class: "font-heading text-2xl text-dark" }, t(`dashboard.photos_tab_${props.page}`)),
+    h("p", { class: "text-sm text-gray-500 mt-1" }, [
+      t(`dashboard.photos_page_${props.page}_text`),
+      " ",
+      h(
+        "a",
+        {
+          href: localePath(PAGE_URLS[props.page]),
+          target: "_blank",
+          class: "underline underline-offset-4",
+        },
+        t("dashboard.photos_view_page")
+      ),
+    ]),
+    stats.missing > 0
+      ? h(
+          "p",
+          { class: "text-sm text-orange-600 mt-2" },
+          t(
+            stats.missing > 1 ? "dashboard.photos_missing_many" : "dashboard.photos_missing_one",
+            { n: stats.missing }
+          )
+        )
+      : stats.total > 0
+        ? h("p", { class: "text-sm text-green-700 mt-2" }, t("dashboard.photos_all_captioned"))
+        : null,
+  ]);
+};
+PageHeader.props = ["page"];
 </script>

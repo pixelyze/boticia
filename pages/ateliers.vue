@@ -237,17 +237,12 @@ const workshopTypes = computed(() => [
   },
 ]);
 
-// 3 photos de la galerie « workshops » (gérée depuis le tableau de bord) :
-// d'abord celles placées dans les cases 1 à 3, puis les suivantes.
-const { data: workshopGallery } = await useFetch("/api/galleries/workshops");
-const workshopPhotos = computed(() => {
-  const images = workshopGallery.value?.data ?? [];
-  const slotted = images
-    .filter((img) => img.bento_slot >= 1 && img.bento_slot <= 3)
-    .sort((a, b) => a.bento_slot - b.bento_slot);
-  const others = images.filter((img) => !slotted.includes(img));
-  return [...slotted, ...others].slice(0, 3);
-});
+// Les 3 photos choisies dans le tableau de bord (page « Photos », Atelier
+// floral). Une case vide n'est pas affichée.
+const { data: workshopData } = await useFetch("/api/photos/workshops");
+const workshopPhotos = computed(() =>
+  (workshopData.value?.data?.grid ?? []).filter(Boolean),
+);
 
 const audiences = computed(() => [
   { icon: "Handshake", label: t("workshops.audience_teambuilding"), desc: t("workshops.audience_teambuilding_desc") },

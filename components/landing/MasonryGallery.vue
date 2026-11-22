@@ -1,6 +1,6 @@
 <template>
   <BentoGallery
-    slug="portfolio"
+    page="home"
     :tagline="$t('portfolio.tagline')"
     :title="$t('portfolio.title')"
     :alt-text="$t('portfolio.photo_alt')"

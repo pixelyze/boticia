@@ -26,7 +26,7 @@
                   loading="lazy"
                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
-                <div v-else class="absolute inset-0 bg-stone-200 animate-pulse" />
+                <div v-else class="absolute inset-0 bg-cream-light" />
                 <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/8 transition-colors duration-500" />
               </div>
             </button>
@@ -42,7 +42,7 @@
                   loading="lazy"
                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
-                <div v-else class="absolute inset-0 bg-stone-200 animate-pulse" />
+                <div v-else class="absolute inset-0 bg-cream-light" />
                 <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/8 transition-colors duration-500" />
               </div>
             </button>
@@ -62,7 +62,7 @@
                   loading="lazy"
                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
-                <div v-else class="absolute inset-0 bg-stone-200 animate-pulse" />
+                <div v-else class="absolute inset-0 bg-cream-light" />
                 <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/8 transition-colors duration-500" />
               </div>
             </button>
@@ -78,7 +78,7 @@
                   loading="lazy"
                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
-                <div v-else class="absolute inset-0 bg-stone-200 animate-pulse" />
+                <div v-else class="absolute inset-0 bg-cream-light" />
                 <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/8 transition-colors duration-500" />
               </div>
             </button>
@@ -98,7 +98,7 @@
                   loading="lazy"
                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
-                <div v-else class="absolute inset-0 bg-stone-200 animate-pulse" />
+                <div v-else class="absolute inset-0 bg-cream-light" />
                 <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/8 transition-colors duration-500" />
               </div>
             </button>
@@ -114,7 +114,7 @@
                   loading="lazy"
                   class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
-                <div v-else class="absolute inset-0 bg-stone-200 animate-pulse" />
+                <div v-else class="absolute inset-0 bg-cream-light" />
                 <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/8 transition-colors duration-500" />
               </div>
             </button>
@@ -137,7 +137,7 @@
                 loading="lazy"
                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
               />
-              <div v-else class="absolute inset-0 bg-stone-200 animate-pulse" />
+              <div v-else class="absolute inset-0 bg-cream-light" />
               <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/8 transition-colors duration-500" />
               <div
                 v-if="i === sideImages.length - 1 && remainingCount > 0"
@@ -165,8 +165,12 @@
 </template>
 
 <script setup>
+// Grille de 9 photos + visionneuse. Les photos viennent des emplacements
+// choisis dans le tableau de bord (page « Photos ») : grid = les 9 cases,
+// viewer = les photos en plus, visibles seulement dans la visionneuse.
 const props = defineProps({
-  slug: { type: String, required: true },
+  // Page du site : home, wedding ou events
+  page: { type: String, required: true },
   tagline: { type: String, required: true },
   title: { type: String, required: true },
   altText: { type: String, required: true },
@@ -175,11 +179,24 @@ const props = defineProps({
 });
 
 const TOTAL_SLOTS = 9;
-const SIMULATE_TOTAL = 20;
 
-const images = ref([]);
+const grid = ref(Array(TOTAL_SLOTS).fill(null));
+const viewer = ref([]);
 const lightboxOpen = ref(false);
 const lightboxIndex = ref(0);
+
+// Case vide : bloc neutre, non cliquable
+const allDisplayImages = computed(() =>
+  grid.value.map(
+    (img, i) => img ?? { id: `empty-${i}`, public_url: null, caption: null, isPlaceholder: true }
+  )
+);
+
+// La visionneuse montre les 9 cases (dans l'ordre), puis les photos en plus
+const images = computed(() => [
+  ...grid.value.filter(Boolean),
+  ...viewer.value,
+]);
 
 const openLightbox = (img) => {
   if (!img || img.isPlaceholder) return;
@@ -189,48 +206,14 @@ const openLightbox = (img) => {
   lightboxOpen.value = true;
 };
 
-const displaySource = computed(() => {
-  const placeholderCount = Math.max(0, SIMULATE_TOTAL - images.value.length);
-  const placeholders = Array.from({ length: placeholderCount }, (_, i) => ({
-    id: `placeholder-${i}`,
-    public_url: null,
-    caption: null,
-    bento_slot: null,
-    isPlaceholder: true,
-  }));
-  return [...images.value, ...placeholders];
-});
-
-const allDisplayImages = computed(() => {
-  const result = new Array(TOTAL_SLOTS).fill(null);
-  const used = new Set();
-  for (const img of displaySource.value) {
-    if (img.bento_slot >= 1 && img.bento_slot <= TOTAL_SLOTS) {
-      result[img.bento_slot - 1] = img;
-      used.add(img.id);
-    }
-  }
-  const rest = displaySource.value.filter((img) => !used.has(img.id));
-  let restIdx = 0;
-  for (let i = 0; i < TOTAL_SLOTS; i++) {
-    if (!result[i] && restIdx < rest.length) {
-      result[i] = rest[restIdx++];
-    }
-  }
-  return result.map((item, i) =>
-    item ?? { id: `pad-${i}`, public_url: null, caption: null, bento_slot: null, isPlaceholder: true }
-  );
-});
-
 const mainImages = computed(() => allDisplayImages.value.slice(0, 6));
 const sideImages = computed(() => allDisplayImages.value.slice(6, 9));
-// Vraies photos non affichées dans les 9 cases (visibles dans la visionneuse)
-const remainingCount = computed(() =>
-  Math.max(0, images.value.length - TOTAL_SLOTS)
-);
+// Photos en plus, visibles dans la visionneuse (« +N » sur la dernière case)
+const remainingCount = computed(() => viewer.value.length);
 
-const { data: galleryData } = await useFetch(`/api/galleries/${props.slug}`);
-if (galleryData.value?.data) {
-  images.value = galleryData.value.data;
+const { data } = await useFetch(`/api/photos/${props.page}`);
+if (data.value?.data) {
+  grid.value = data.value.data.grid ?? grid.value;
+  viewer.value = data.value.data.viewer ?? [];
 }
 </script>
