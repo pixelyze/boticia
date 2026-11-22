@@ -991,7 +991,10 @@
     "photos_upload_confirm_one": "Add 1 photo",
     "photos_upload_confirm_many": "Add {n} photos",
     "photos_upload_change_later": "You can change the type and the collection on each photo later.",
-    "photos_examples_link": "See examples"
+    "photos_examples_link": "See examples",
+    "photos_ai_prompt": "You are an image SEO expert for Boticia, a floral design studio in Provence and Paris (weddings, corporate events, floral workshops).\n\nLook at the attached photo and write its caption for the website. It will be used as alt text.\n\nRules:\n- 1 sentence only, written in FRENCH, about 125 characters (200 at most).\n- Order: the creation, then the flowers or colors, then the place.\n- Only describe what you see. Do not write \"Photo de\" or \"Image de\".\n- Name a flower only if you are sure. Otherwise, describe the colors.\n- Do not make up a place. Place to use, if given: [place]\n- Do not write anyone's name.\n- No quotation marks, no emoji.\n\nExamples of good captions:\nBouquet de mariée, pivoines et roses de jardin, Provence\nArche florale de cérémonie laïque, roses blanches et feuillages\n\nReply with the caption only.",
+    "photos_ai_copy": "Copy the AI prompt",
+    "photos_ai_copied": "Prompt copied ✓"
   },
   "client": {
     "page_title": "My project",
@@ -1678,6 +1681,21 @@
           },
           {
             "tip": "A collection's name never shows on the website. Only the caption matters for Google."
+          },
+          {
+            "h": "Ask an AI for the caption"
+          },
+          {
+            "steps": [
+              "Open your AI chat, for example ChatGPT or Claude.",
+              "Add the photo to the conversation.",
+              "Copy the text below with the “Copy” button, then paste it into the conversation.",
+              "If you know the place, write it instead of [place]. Otherwise, leave [place].",
+              "Read the suggested caption, then paste it into the dashboard."
+            ]
+          },
+          {
+            "tip": "The AI can get flower names wrong. Always read the caption before saving it. The same text can also be copied from the “Photo caption” window."
           }
         ]
       },
@@ -1733,7 +1751,10 @@
           }
         ]
       }
-    }
+    },
+    "copy": "Copy",
+    "copied": "Copied ✓",
+    "prompt_label": "The text to copy"
   },
   "feedback": {
     "button": "Feedback",

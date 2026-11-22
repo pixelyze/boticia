@@ -247,6 +247,28 @@
                 </template>
               </div>
 
+              <!-- Widget : le prompt à coller dans un chat IA -->
+              <div
+                v-if="current === 'collections-legendes'"
+                class="mt-6 rounded-2xl border border-dark/15"
+              >
+                <div
+                  class="flex items-center justify-between gap-4 px-5 py-3
+                         border-b border-dark/10"
+                >
+                  <p class="text-sm font-semibold text-dark">
+                    {{ t("guide.prompt_label") }}
+                  </p>
+                  <Button variant="default" class="!px-4 !py-1.5 text-sm" @click="copyPrompt">
+                    {{ promptCopied ? t("guide.copied") : t("guide.copy") }}
+                  </Button>
+                </div>
+                <p
+                  class="px-5 py-4 text-sm text-dark/80 leading-relaxed
+                         whitespace-pre-wrap"
+                >{{ t("dashboard.photos_ai_prompt") }}</p>
+              </div>
+
               <!-- Voir aussi -->
               <div v-if="meta?.see?.length" class="mt-10">
                 <p class="text-sm font-semibold text-dark mb-3">
@@ -495,7 +517,16 @@ const nextSlug = computed(() => {
 });
 
 // Remonter en haut à chaque changement d'article
-watch(current, () => window.scrollTo({ top: 0 }));
+watch(current, () => {
+  window.scrollTo({ top: 0 });
+  promptCopied.value = false;
+});
+
+// Copie du prompt IA (article « collections-legendes »)
+const promptCopied = ref(false);
+const copyPrompt = async () => {
+  promptCopied.value = await copyText(t("dashboard.photos_ai_prompt"));
+};
 
 // Recherche : sans accents ni majuscules, dans tout le texte de l'article
 const query = ref("");

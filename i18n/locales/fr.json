@@ -991,7 +991,10 @@
     "photos_upload_confirm_one": "Ajouter 1 photo",
     "photos_upload_confirm_many": "Ajouter {n} photos",
     "photos_upload_change_later": "Le type et la collection se changent ensuite sur chaque photo.",
-    "photos_examples_link": "Voir des exemples"
+    "photos_examples_link": "Voir des exemples",
+    "photos_ai_prompt": "Tu es expert en référencement d'images pour Boticia, un studio de design floral en Provence et à Paris (mariages, événements d'entreprise, ateliers floraux).\n\nRegarde la photo jointe et écris sa légende pour le site. Elle servira de texte alternatif.\n\nRègles :\n- 1 seule phrase, en français, d'environ 125 caractères (200 au maximum).\n- Ordre : la création, puis les fleurs ou les couleurs, puis le lieu.\n- Décris seulement ce que l'on voit. N'écris pas « Photo de » ni « Image de ».\n- Cite une fleur seulement si tu la reconnais avec certitude. Sinon, décris les couleurs.\n- N'invente aucun lieu. Lieu à utiliser, s'il est indiqué : [lieu]\n- N'écris aucun nom de personne.\n- Pas de guillemets, pas d'emoji.\n\nExemples de bonnes légendes :\nBouquet de mariée, pivoines et roses de jardin, Provence\nArche florale de cérémonie laïque, roses blanches et feuillages\n\nRéponds uniquement avec la légende.",
+    "photos_ai_copy": "Copier le prompt pour une IA",
+    "photos_ai_copied": "Prompt copié ✓"
   },
   "client": {
     "page_title": "Mon projet",
@@ -1678,6 +1681,21 @@
           },
           {
             "tip": "Le nom d'une collection n'apparaît pas sur le site. Seule la légende compte pour Google."
+          },
+          {
+            "h": "Demander la légende à une IA"
+          },
+          {
+            "steps": [
+              "Ouvrez votre chat IA, par exemple ChatGPT ou Claude.",
+              "Ajoutez la photo dans la conversation.",
+              "Copiez le texte ci-dessous avec le bouton « Copier », puis collez-le dans la conversation.",
+              "Si vous connaissez le lieu, écrivez-le à la place de [lieu]. Sinon, laissez [lieu].",
+              "Relisez la légende proposée, puis collez-la dans le tableau de bord."
+            ]
+          },
+          {
+            "tip": "L'IA peut se tromper sur le nom des fleurs. Relisez toujours la légende avant de l'enregistrer. Le même texte se copie aussi depuis la fenêtre « Légende de la photo »."
           }
         ]
       },
@@ -1733,7 +1751,10 @@
           }
         ]
       }
-    }
+    },
+    "copy": "Copier",
+    "copied": "Copié ✓",
+    "prompt_label": "Le texte à copier"
   },
   "feedback": {
     "button": "Feedback",

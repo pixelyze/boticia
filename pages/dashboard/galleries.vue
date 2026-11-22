@@ -686,7 +686,17 @@
               <li>{{ t("dashboard.photos_caption_ex2") }}</li>
               <li>{{ t("dashboard.photos_caption_ex3") }}</li>
             </ul>
-            <ExamplesLink class="mt-3" />
+            <div class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+              <ExamplesLink />
+              <!-- Prompt à coller dans un chat IA, avec la photo -->
+              <Button
+                variant="ghost"
+                class="!inline-block !p-0 !text-sm underline underline-offset-2"
+                @click="copyPrompt"
+              >
+                {{ promptCopied ? t("dashboard.photos_ai_copied") : t("dashboard.photos_ai_copy") }}
+              </Button>
+            </div>
           </div>
           <div class="space-y-4">
             <Button
@@ -999,6 +1009,13 @@ const savingCaption = ref(false);
 const openCaption = (photo: GalleryImage) => {
   captionPhoto.value = photo;
   captionDraft.value = photo.caption || "";
+  promptCopied.value = false;
+};
+
+// Prompt pour un chat IA : on y joint la photo, l'IA propose la légende
+const promptCopied = ref(false);
+const copyPrompt = async () => {
+  promptCopied.value = await copyText(t("dashboard.photos_ai_prompt"));
 };
 
 const saveCaption = async () => {
