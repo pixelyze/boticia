@@ -263,11 +263,71 @@
                     {{ promptCopied ? t("guide.copied") : t("guide.copy") }}
                   </Button>
                 </div>
-                <p
-                  class="px-5 py-4 text-sm text-dark/80 leading-relaxed
-                         whitespace-pre-wrap"
-                >{{ t("dashboard.photos_ai_prompt") }}</p>
+                <!-- Le texte brut (fait pour l'IA) n'est pas affiché :
+                     une phrase l'explique, le bouton le copie -->
+                <p class="px-5 py-4 text-sm text-dark/80 leading-relaxed">
+                  {{ t("guide.prompt_desc", { n: promptExamples.rows.length }) }}
+                </p>
               </div>
+
+              <!-- Les exemples du prompt, en vrai tableau, à déplier -->
+              <details
+                v-if="current === 'collections-legendes' && promptExamples.rows.length"
+                class="mt-4 rounded-2xl border border-dark/15 group"
+              >
+                <summary
+                  class="cursor-pointer list-none flex items-center justify-between
+                         gap-4 px-5 py-3 text-sm font-semibold text-dark"
+                >
+                  {{ t("guide.examples_show", { n: promptExamples.rows.length }) }}
+                  <IconLucid
+                    name="ChevronDown"
+                    size="sm"
+                    class="text-gray-500 transition-transform group-open:rotate-180"
+                  />
+                </summary>
+                <!-- Téléphone : une fiche par exemple, les unes sous les autres -->
+                <ul class="md:hidden border-t border-dark/10 divide-y divide-dark/5">
+                  <li
+                    v-for="(row, r) in promptExamples.rows"
+                    :key="r"
+                    class="px-5 py-4 text-sm space-y-1"
+                  >
+                    <p class="text-xs text-gray-500">{{ row[0] }}</p>
+                    <p class="text-dark">{{ row[1] }}</p>
+                    <p class="text-dark/70">{{ row[2] }}</p>
+                  </li>
+                </ul>
+
+                <!-- Ordinateur : vrai tableau -->
+                <div class="hidden md:block overflow-x-auto border-t border-dark/10">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-cream/50">
+                        <th
+                          v-for="(col, c) in promptExamples.head"
+                          :key="c"
+                          class="text-left px-4 py-3 font-semibold text-dark/70
+                                 whitespace-nowrap"
+                        >
+                          {{ col }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(row, r) in promptExamples.rows"
+                        :key="r"
+                        class="border-t border-dark/5 align-top"
+                      >
+                        <td class="px-4 py-3 text-gray-500 whitespace-nowrap">{{ row[0] }}</td>
+                        <td class="px-4 py-3 text-dark min-w-[14rem]">{{ row[1] }}</td>
+                        <td class="px-4 py-3 text-dark/70 min-w-[14rem]">{{ row[2] }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </details>
 
               <!-- Voir aussi -->
               <div v-if="meta?.see?.length" class="mt-10">
@@ -520,6 +580,21 @@ const nextSlug = computed(() => {
 watch(current, () => {
   window.scrollTo({ top: 0 });
   promptCopied.value = false;
+});
+
+// Les exemples du prompt IA : les lignes « | … | » du texte, lues pour
+// être affichées en vrai tableau (la 1re ligne donne les titres)
+const promptExamples = computed(() => {
+  const lines = t("dashboard.photos_ai_prompt")
+    .split("\n")
+    .filter((l) => l.startsWith("|") && !l.startsWith("|---"))
+    .map((l) =>
+      l
+        .slice(1, -1)
+        .split("|")
+        .map((cell) => cell.trim())
+    );
+  return { head: lines[0] ?? [], rows: lines.slice(1) };
 });
 
 // Copie du prompt IA (article « collections-legendes »)
