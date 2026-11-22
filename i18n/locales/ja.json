@@ -990,7 +990,8 @@
     "photos_upload_collection_help": "イベントの名前です。写真をまとめて探せるようになります。",
     "photos_upload_confirm_one": "写真を1枚追加",
     "photos_upload_confirm_many": "写真を{n}枚追加",
-    "photos_upload_change_later": "種類とコレクションは、あとから写真ごとに変更できます。"
+    "photos_upload_change_later": "種類とコレクションは、あとから写真ごとに変更できます。",
+    "photos_examples_link": "例を見る"
   },
   "client": {
     "page_title": "マイプロジェクト",
@@ -1628,6 +1629,55 @@
           },
           {
             "tip": "1枚の写真のキャプションは、どのページでも同じです。各タブの上に、キャプションのない写真の数が表示されます。"
+          }
+        ]
+      },
+      "collections-legendes": {
+        "title": "コレクション名とキャプションの書き方",
+        "summary": "よいキャプションは、Googleが写真を見つける助けになります。よいコレクション名は、イベントを探しやすくします。",
+        "blocks": [
+          {
+            "h": "キャプションは1文で"
+          },
+          {
+            "p": "おすすめの順番：作品、花や色、場所。キャプションはフランス語で書きます。サイトでは3つの言語で同じキャプションが表示されます。"
+          },
+          {
+            "list": [
+              "Bouquet de mariée, pivoines et roses de jardin, Provence",
+              "Arche florale de cérémonie laïque, roses blanches et feuillages",
+              "Chemin de table floral, dîner de mariage dans un mas provençal",
+              "Scénographie florale pour un gala d'entreprise, Marseille",
+              "Atelier floral au studio Boticia, à Lambesc"
+            ]
+          },
+          {
+            "h": "ポイント"
+          },
+          {
+            "list": [
+              "写っているものを書きます。「〜の写真」とは書きません。",
+              "短く：約125文字まで。",
+              "写真ごとに言葉を変えます。",
+              "本当の場所だけを書きます。わからなければ書きません。",
+              "お客様の名前は書きません。キャプションは公開されます。"
+            ]
+          },
+          {
+            "h": "コレクション名"
+          },
+          {
+            "p": "1つのコレクション＝1つのイベント。おすすめの順番：イベントの種類、場所、年月。"
+          },
+          {
+            "list": [
+              "Mariage Château de la Gaude, juin 2026",
+              "Gala d'entreprise, Marseille, mars 2026",
+              "Atelier bouquet de saison, Lambesc, avril 2026"
+            ]
+          },
+          {
+            "tip": "コレクション名はサイトに表示されません。Googleに関係するのはキャプションだけです。"
           }
         ]
       },

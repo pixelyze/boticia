@@ -990,7 +990,8 @@
     "photos_upload_collection_help": "The name of the event, to find these photos together.",
     "photos_upload_confirm_one": "Add 1 photo",
     "photos_upload_confirm_many": "Add {n} photos",
-    "photos_upload_change_later": "You can change the type and the collection on each photo later."
+    "photos_upload_change_later": "You can change the type and the collection on each photo later.",
+    "photos_examples_link": "See examples"
   },
   "client": {
     "page_title": "My project",
@@ -1628,6 +1629,55 @@
           },
           {
             "tip": "A photo keeps the same caption on every page. At the top of each tab, a counter shows the photos with no caption."
+          }
+        ]
+      },
+      "collections-legendes": {
+        "title": "Naming collections and writing captions",
+        "summary": "A good caption helps Google find your photos. A good collection name helps you find an event again.",
+        "blocks": [
+          {
+            "h": "The caption: 1 sentence"
+          },
+          {
+            "p": "Recommended order: the creation, then the flowers or colors, then the place. Captions are written in French: the site shows the same caption in all 3 languages."
+          },
+          {
+            "list": [
+              "Bouquet de mariée, pivoines et roses de jardin, Provence",
+              "Arche florale de cérémonie laïque, roses blanches et feuillages",
+              "Chemin de table floral, dîner de mariage dans un mas provençal",
+              "Scénographie florale pour un gala d'entreprise, Marseille",
+              "Atelier floral au studio Boticia, à Lambesc"
+            ]
+          },
+          {
+            "h": "Good habits"
+          },
+          {
+            "list": [
+              "Describe what you see. Do not write “Photo of…”.",
+              "Keep it short: about 125 characters.",
+              "Vary the words from one photo to the next.",
+              "Only write the real place, or no place.",
+              "Never write your clients' names: the caption is public."
+            ]
+          },
+          {
+            "h": "A collection's name"
+          },
+          {
+            "p": "1 collection = 1 event. Recommended order: the type of event, the place, then the month and year."
+          },
+          {
+            "list": [
+              "Mariage Château de la Gaude, juin 2026",
+              "Gala d'entreprise, Marseille, mars 2026",
+              "Atelier bouquet de saison, Lambesc, avril 2026"
+            ]
+          },
+          {
+            "tip": "A collection's name never shows on the website. Only the caption matters for Google."
           }
         ]
       },

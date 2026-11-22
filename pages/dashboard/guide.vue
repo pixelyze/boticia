@@ -41,7 +41,7 @@
             :aria-label="t('guide.summary')"
           >
             <div
-              v-for="cat in CATEGORIES"
+              v-for="cat in categories"
               :key="cat.key"
               class="mb-6"
             >
@@ -255,7 +255,7 @@
                 <div class="flex flex-wrap gap-2">
                   <NuxtLink
                     replace
-                    v-for="slug in meta.see"
+                    v-for="slug in meta.see.filter((x) => articles[x])"
                     :key="slug"
                     :to="articleLink(slug)"
                     class="rounded-full border border-dark/15 px-4 py-1.5 text-sm
@@ -305,7 +305,7 @@
 
             <!-- Accueil du guide : tous les articles, par thème -->
             <div v-else class="space-y-10">
-              <div v-for="cat in CATEGORIES" :key="cat.key">
+              <div v-for="cat in categories" :key="cat.key">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
                   <IconLucid :name="cat.icon" size="sm" class="text-gray-500" />
                   {{ t(`guide.cat_${cat.key}`) }}
@@ -378,11 +378,17 @@ const CATEGORIES = [
   {
     key: "site",
     icon: "Globe",
-    articles: ["photos", "photos-pages", "legendes", "avis", "personnalisation"],
+    articles: [
+      "photos",
+      "photos-pages",
+      "legendes",
+      "collections-legendes",
+      "avis",
+      "personnalisation",
+    ],
   },
 ];
 
-const ORDER = CATEGORIES.flatMap((c) => c.articles);
 
 // Page du tableau de bord liée à l'article, et articles « Voir aussi »
 const META: Record<string, { page?: string; see?: string[] }> = {
@@ -402,7 +408,14 @@ const META: Record<string, { page?: string; see?: string[] }> = {
     page: "/dashboard/galleries",
     see: ["photos", "legendes"],
   },
-  legendes: { page: "/dashboard/galleries", see: ["photos"] },
+  legendes: {
+    page: "/dashboard/galleries",
+    see: ["collections-legendes", "photos"],
+  },
+  "collections-legendes": {
+    page: "/dashboard/galleries",
+    see: ["legendes", "photos"],
+  },
   avis: { page: "/dashboard/avis" },
   personnalisation: {
     page: "/dashboard/personalisation",
@@ -443,9 +456,19 @@ const articles = computed(
   () => resolve(tm("guide.articles")) as Record<string, Article>,
 );
 
+// Seuls les articles présents dans les textes s'affichent : un article
+// absent (fichier de langue pas encore rechargé) ne fait pas planter la page
+const categories = computed(() =>
+  CATEGORIES.map((c) => ({
+    ...c,
+    articles: c.articles.filter((slug) => articles.value[slug]),
+  })),
+);
+const order = computed(() => categories.value.flatMap((c) => c.articles));
+
 const current = computed(() => {
   const slug = route.query.article;
-  return typeof slug === "string" && ORDER.includes(slug) ? slug : null;
+  return typeof slug === "string" && order.value.includes(slug) ? slug : null;
 });
 
 const article = computed(() =>
@@ -463,12 +486,12 @@ const categoryOf = (slug: string | null) =>
   CATEGORIES.find((c) => slug && c.articles.includes(slug)) ?? CATEGORIES[0];
 
 const prevSlug = computed(() => {
-  const i = current.value ? ORDER.indexOf(current.value) : -1;
-  return i > 0 ? ORDER[i - 1] : null;
+  const i = current.value ? order.value.indexOf(current.value) : -1;
+  return i > 0 ? order.value[i - 1] : null;
 });
 const nextSlug = computed(() => {
-  const i = current.value ? ORDER.indexOf(current.value) : -1;
-  return i >= 0 && i < ORDER.length - 1 ? ORDER[i + 1] : null;
+  const i = current.value ? order.value.indexOf(current.value) : -1;
+  return i >= 0 && i < order.value.length - 1 ? order.value[i + 1] : null;
 });
 
 // Remonter en haut à chaque changement d'article
@@ -499,7 +522,7 @@ const flatText = (a: Article) =>
 
 const results = computed(() => {
   const words = normalize(query.value).split(/\s+/).filter(Boolean);
-  return ORDER.filter((slug) => {
+  return order.value.filter((slug) => {
     const text = flatText(articles.value[slug]);
     return words.every((w) => text.includes(w));
   });

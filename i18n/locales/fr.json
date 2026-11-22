@@ -990,7 +990,8 @@
     "photos_upload_collection_help": "Le nom de l'événement, pour retrouver ces photos ensemble.",
     "photos_upload_confirm_one": "Ajouter 1 photo",
     "photos_upload_confirm_many": "Ajouter {n} photos",
-    "photos_upload_change_later": "Le type et la collection se changent ensuite sur chaque photo."
+    "photos_upload_change_later": "Le type et la collection se changent ensuite sur chaque photo.",
+    "photos_examples_link": "Voir des exemples"
   },
   "client": {
     "page_title": "Mon projet",
@@ -1628,6 +1629,55 @@
           },
           {
             "tip": "Une photo garde la même légende sur toutes les pages. En haut de chaque onglet, un compteur indique les photos sans légende."
+          }
+        ]
+      },
+      "collections-legendes": {
+        "title": "Nommer les collections et écrire les légendes",
+        "summary": "Une bonne légende aide Google à trouver vos photos. Un bon nom de collection vous aide à retrouver un événement.",
+        "blocks": [
+          {
+            "h": "La légende : 1 phrase"
+          },
+          {
+            "p": "Ordre conseillé : la création, puis les fleurs ou les couleurs, puis le lieu."
+          },
+          {
+            "list": [
+              "Bouquet de mariée, pivoines et roses de jardin, Provence",
+              "Arche florale de cérémonie laïque, roses blanches et feuillages",
+              "Chemin de table floral, dîner de mariage dans un mas provençal",
+              "Scénographie florale pour un gala d'entreprise, Marseille",
+              "Atelier floral au studio Boticia, à Lambesc"
+            ]
+          },
+          {
+            "h": "Les bons réflexes"
+          },
+          {
+            "list": [
+              "Décrivez ce que l'on voit. N'écrivez pas « Photo de… ».",
+              "Restez court : environ 125 caractères.",
+              "Variez les mots d'une photo à l'autre.",
+              "N'écrivez que le vrai lieu, ou aucun lieu.",
+              "N'écrivez jamais le nom de vos clients : la légende est publique."
+            ]
+          },
+          {
+            "h": "Le nom d'une collection"
+          },
+          {
+            "p": "1 collection = 1 événement. Ordre conseillé : le type d'événement, le lieu, puis le mois et l'année."
+          },
+          {
+            "list": [
+              "Mariage Château de la Gaude, juin 2026",
+              "Gala d'entreprise, Marseille, mars 2026",
+              "Atelier bouquet de saison, Lambesc, avril 2026"
+            ]
+          },
+          {
+            "tip": "Le nom d'une collection n'apparaît pas sur le site. Seule la légende compte pour Google."
           }
         ]
       },

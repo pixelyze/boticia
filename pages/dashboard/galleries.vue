@@ -458,6 +458,7 @@
           </label>
           <p class="text-sm text-gray-500 mb-2">
             {{ t("dashboard.photos_upload_collection_help") }}
+            <ExamplesLink />
           </p>
           <CollectionField id="upload-collection" v-model="uploadCollection" />
         </div>
@@ -685,6 +686,7 @@
               <li>{{ t("dashboard.photos_caption_ex2") }}</li>
               <li>{{ t("dashboard.photos_caption_ex3") }}</li>
             </ul>
+            <ExamplesLink class="mt-3" />
           </div>
           <div class="space-y-4">
             <Button
@@ -743,6 +745,7 @@
 <script setup lang="ts">
 import { h } from "vue";
 import { useI18n } from "vue-i18n";
+import Button from "~/components/ui/Button.vue";
 import type { GalleryImage, PhotoType } from "~/server/utils/galleries-types";
 
 definePageMeta({
@@ -1178,6 +1181,25 @@ const deletePhoto = async () => {
 };
 
 // ── Petits composants ──────────────────────────────────────────
+// « Voir des exemples » : l'article du guide sur les collections et les
+// légendes, dans un nouvel onglet (la saisie en cours n'est pas perdue)
+const ExamplesLink = (_: unknown, { attrs }: any) =>
+  h(
+    Button,
+    {
+      variant: "ghost",
+      href: `${localePath("/dashboard/guide")}?article=collections-legendes`,
+      target: "_blank",
+      rel: "noopener",
+      class: [
+        "!inline-block !p-0 !text-sm underline underline-offset-2",
+        attrs.class,
+      ],
+    },
+    () => t("dashboard.photos_examples_link")
+  );
+ExamplesLink.inheritAttrs = false;
+
 // Pastille de filtre (avec un nombre facultatif)
 const chip = (active: boolean, label: string, onClick: () => void, count?: number) =>
   h(
