@@ -31,6 +31,15 @@ export default defineEventHandler(async (event) => {
     update.caption = caption || null;
   }
 
+  if ("caption_en" in body) {
+    const captionEn =
+      typeof body.caption_en === "string" ? body.caption_en.trim() : "";
+    if (captionEn.length > CAPTION_MAX) {
+      throw createError({ statusCode: 400, message: "Caption too long" });
+    }
+    update.caption_en = captionEn || null;
+  }
+
   if ("photo_type" in body) {
     if (body.photo_type !== null && !isPhotoType(body.photo_type)) {
       throw createError({ statusCode: 400, message: "Invalid photo type" });

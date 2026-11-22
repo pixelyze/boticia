@@ -1,6 +1,6 @@
 # Collections et légendes des photos
 
-Dernière mise à jour : 22/11/2026
+Dernière mise à jour : 22/11/2026 (légende anglaise ajoutée)
 
 Cette fiche aide à nommer les collections de la photothèque et à écrire les légendes des photos. Les exemples de lieux sont des exemples : on n'écrit que des lieux réels.
 
@@ -56,7 +56,7 @@ Exemple : « Bouquet de mariée, pivoines et roses de jardin, Provence ».
 - **Varier les mots.** Ne pas répéter « fleuriste mariage Provence » sur chaque photo : Google le voit comme du bourrage de mots-clés.
 - **Écrire le vrai lieu.** « Provence » seulement si la photo a été prise en Provence. « Paris » seulement si elle a été prise à Paris.
 - **Ne jamais écrire le nom des clients.** La légende est publique.
-- **Écrire en français.** Le site affiche la même légende dans les 3 langues.
+- **Écrire en français, puis en anglais.** La légende anglaise est facultative. Elle s'affiche sur les versions anglaise et japonaise du site. Si elle est vide, le français s'affiche à la place. Le prompt IA du tableau de bord donne les 2 légendes d'un coup.
 
 ## 3. Exemples de légendes, page par page
 

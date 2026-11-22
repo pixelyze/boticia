@@ -230,12 +230,21 @@ export async function getGalleryImageById(
 }
 
 /**
- * Update a gallery image (bento_slot, photo_type, caption, sort_order)
+ * Update a gallery image (bento_slot, photo_type, caption, caption_en,
+ * collection, sort_order)
  */
 export async function updateGalleryImage(
   id: string,
   input: Partial<
-    Pick<GalleryImage, "bento_slot" | "photo_type" | "caption" | "sort_order">
+    Pick<
+      GalleryImage,
+      | "bento_slot"
+      | "photo_type"
+      | "caption"
+      | "caption_en"
+      | "collection"
+      | "sort_order"
+    >
   >
 ): Promise<GalleryImage | null> {
   try {

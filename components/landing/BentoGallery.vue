@@ -211,7 +211,11 @@ const sideImages = computed(() => allDisplayImages.value.slice(6, 9));
 // Photos en plus, visibles dans la visionneuse (« +N » sur la dernière case)
 const remainingCount = computed(() => viewer.value.length);
 
-const { data } = await useFetch(`/api/photos/${props.page}`);
+const { locale } = useI18n();
+// La langue choisit la légende (anglaise pour "en" et "ja")
+const { data } = await useFetch(`/api/photos/${props.page}`, {
+  query: { locale },
+});
 if (data.value?.data) {
   grid.value = data.value.data.grid ?? grid.value;
   viewer.value = data.value.data.viewer ?? [];

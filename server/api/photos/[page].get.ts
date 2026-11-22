@@ -17,8 +17,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: "Unknown page" });
   }
 
+  // Langue de la page : la légende anglaise sert à "en" et "ja"
+  const { locale } = getQuery(event);
+  const lang = locale === "en" || locale === "ja" ? locale : "fr";
+
   try {
-    return { success: true, data: await getPagePhotos(page) };
+    return { success: true, data: await getPagePhotos(page, lang) };
   } catch {
     throw createError({ statusCode: 500, message: "Failed to load photos" });
   }

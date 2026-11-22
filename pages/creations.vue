@@ -222,7 +222,7 @@ defineI18nRoute({
   },
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
 
 useHead({
@@ -286,7 +286,10 @@ const openLightbox = (index) => {
   lightboxOpen.value = true;
 };
 
-const { data: photosData } = await useFetch("/api/photos/creations");
+// La langue choisit la légende (anglaise pour "en" et "ja")
+const { data: photosData } = await useFetch("/api/photos/creations", {
+  query: { locale },
+});
 if (photosData.value?.data) {
   pagePhotos.value = photosData.value.data;
 }

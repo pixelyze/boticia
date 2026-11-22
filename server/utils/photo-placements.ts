@@ -38,6 +38,8 @@ export interface Placement {
 export interface PublicPhoto {
   id: string;
   public_url: string;
+  // Légende dans la langue demandée (l'anglais sert aussi au japonais,
+  // le français sert si l'anglais est vide)
   caption: string | null;
 }
 
@@ -54,11 +56,14 @@ export function zoneSize(page: PlacementPage, zone: string): number | null | und
  * leurs cases vides (null) pour que la mise en page reste stable.
  */
 export async function getPagePhotos(
-  page: PlacementPage
+  page: PlacementPage,
+  locale = "fr"
 ): Promise<Record<string, (PublicPhoto | null)[]>> {
   const { data, error } = await getSupabase()
     .from("photo_placements")
-    .select("zone, position, image:gallery_images(id, public_url, caption)")
+    .select(
+      "zone, position, image:gallery_images(id, public_url, caption, caption_en)"
+    )
     .eq("page", page)
     .order("position", { ascending: true });
 
@@ -73,6 +78,9 @@ export async function getPagePhotos(
   }
   for (const row of (data || []) as any[]) {
     if (!row.image || !(row.zone in result)) continue;
+    const { caption_en: captionEn, ...photo } = row.image;
+    if (locale !== "fr" && captionEn) photo.caption = captionEn;
+    row.image = photo;
     const list = result[row.zone];
     const size = zoneSize(page, row.zone);
     if (size) {

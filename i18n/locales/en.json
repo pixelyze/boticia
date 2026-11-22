@@ -621,8 +621,8 @@
     "photos_caption_add": "+ Add a caption",
     "photos_caption_edit": "Edit",
     "photos_caption_title": "Photo caption",
-    "photos_caption_label": "Caption",
-    "photos_caption_help": "Describe what the photo shows, in one sentence: the type of creation, the flowers, and the venue if you know it. Google reads it, and so do visually impaired people.",
+    "photos_caption_label": "Caption in French",
+    "photos_caption_help": "Describe what the photo shows, in one sentence: the type of creation, the flowers, and the venue if you know it. It is good for SEO: Google reads the caption to understand the photo and show it in Google Images.",
     "photos_caption_ex1": "Example: “Bridal bouquet, peonies and garden roses”",
     "photos_caption_ex2": "Example: “Ceremony floral arch, Château de la Gaude”",
     "photos_caption_ex3": "Example: “White and green centrepieces, wedding dinner”",
@@ -999,9 +999,11 @@
     "photos_upload_confirm_many": "Add {n} photos",
     "photos_upload_change_later": "You can change the type and the collection on each photo later.",
     "photos_examples_link": "See examples",
-    "photos_ai_prompt": "You are an image SEO expert for Boticia, a floral design studio in Provence and Paris (weddings, corporate events, floral workshops).\n\nLook at the attached photo and write its caption for the website. It will be used as alt text.\n\nRules:\n- 1 sentence only, written in FRENCH, about 125 characters (200 at most).\n- Order: the creation, then the flowers or colors, then the place.\n- Only describe what you see. Do not write \"Photo de\" or \"Image de\".\n- Name a flower only if you are sure. Otherwise, describe the colors.\n- Do not make up a place. Place to use, if given: [place]\n- Do not write anyone's name.\n- No quotation marks, no emoji.\n\nExamples of good captions:\nBouquet de mariée, pivoines et roses de jardin, Provence\nArche florale de cérémonie laïque, roses blanches et feuillages\n\nReply with the caption only.",
+    "photos_ai_prompt": "You are an image SEO expert for Boticia, a floral design studio in Provence and Paris (weddings, corporate events, floral workshops).\n\nLook at the attached photo and write its caption for the website, in French and in English. It will be used as alt text.\n\nRules:\n- 1 sentence per language, about 125 characters (200 at most).\n- Order: the creation, then the flowers or colors, then the place.\n- Only describe what you see. Do not write \"Photo de\" or \"Image de\".\n- Name a flower only if you are sure. Otherwise, describe the colors.\n- Do not make up a place. Place to use, if given: [place]\n- Do not write anyone's name.\n- No quotation marks, no emoji.\n\nExamples of good captions:\nBouquet de mariée, pivoines et roses de jardin, Provence\nArche florale de cérémonie laïque, roses blanches et feuillages\n\nReply with the 2 captions only, in this form:\nFR: the caption in French\nEN: the same caption in English",
     "photos_ai_copy": "Copy the AI prompt",
-    "photos_ai_copied": "Prompt copied ✓"
+    "photos_ai_copied": "Prompt copied ✓",
+    "photos_caption_label_en": "Caption in English",
+    "photos_caption_en_help": "For the English and Japanese versions of the site. If this field is empty, the French caption is shown."
   },
   "client": {
     "page_title": "My project",
@@ -1615,7 +1617,7 @@
         "summary": "A caption describes the photo in one sentence. It helps Google understand your photos.",
         "blocks": [
           {
-            "p": "The caption also helps blind people: their computer reads it out loud."
+            "p": "It is good for SEO: your photos can appear in Google Images, and Google better understands what the page is about."
           },
           {
             "h": "Add a caption"
@@ -1624,7 +1626,9 @@
             "steps": [
               "Open “Site photos”.",
               "Under a photo, click “+ Add a caption”.",
-              "Write one sentence, then click “Save”."
+              "Write one sentence in French.",
+              "If you wish, write the same sentence in English. It shows on the English and Japanese versions of the site. Otherwise, the French is shown instead.",
+              "Click “Save”."
             ]
           },
           {
@@ -1639,7 +1643,7 @@
             ]
           },
           {
-            "tip": "A photo keeps the same caption on every page. At the top of each tab, a counter shows the photos with no caption."
+            "tip": "A photo keeps the same captions on every page. At the top of each tab, a counter shows the photos with no French caption."
           }
         ]
       },
@@ -1651,7 +1655,7 @@
             "h": "The caption: 1 sentence"
           },
           {
-            "p": "Recommended order: the creation, then the flowers or colors, then the place. Captions are written in French: the site shows the same caption in all 3 languages."
+            "p": "Recommended order: the creation, then the flowers or colors, then the place. Write the caption in French, and in English if you wish: the English and Japanese versions of the site show the English caption."
           },
           {
             "list": [
@@ -1699,7 +1703,7 @@
               "Add the photo to the conversation.",
               "Copy the text below with the “Copy” button, then paste it into the conversation.",
               "If you know the place, write it instead of [place]. Otherwise, leave [place].",
-              "Read the suggested caption, then paste it into the dashboard."
+              "The AI replies with 2 lines: “FR” and “EN”. Read them, then paste each one into its field: “Caption in French” and “Caption in English”."
             ]
           },
           {

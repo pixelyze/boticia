@@ -332,7 +332,10 @@ const defaultPhiloImage = {
   caption: null,
 };
 
-const { data: eventsPhotos } = await useFetch("/api/photos/events");
+// La langue choisit la légende (anglaise pour "en" et "ja")
+const { data: eventsPhotos } = await useFetch("/api/photos/events", {
+  query: { locale },
+});
 const subscriptionPhoto = (i) =>
   eventsPhotos.value?.data?.subscription?.[i] || defaultPhiloImage;
 const philosophyImage1 = computed(() => subscriptionPhoto(0));

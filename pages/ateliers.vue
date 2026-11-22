@@ -239,7 +239,10 @@ const workshopTypes = computed(() => [
 
 // Les 3 photos choisies dans le tableau de bord (page « Photos », Atelier
 // floral). Une case vide n'est pas affichée.
-const { data: workshopData } = await useFetch("/api/photos/workshops");
+// La langue choisit la légende (anglaise pour "en" et "ja")
+const { data: workshopData } = await useFetch("/api/photos/workshops", {
+  query: { locale },
+});
 const workshopPhotos = computed(() =>
   (workshopData.value?.data?.grid ?? []).filter(Boolean),
 );

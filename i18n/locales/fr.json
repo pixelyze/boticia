@@ -621,8 +621,8 @@
     "photos_caption_add": "+ Ajouter une légende",
     "photos_caption_edit": "Modifier",
     "photos_caption_title": "Légende de la photo",
-    "photos_caption_label": "Légende",
-    "photos_caption_help": "Décrivez ce que montre la photo, en une phrase : le type de création, les fleurs, et le lieu si vous le connaissez. Google la lit, ainsi que les personnes malvoyantes.",
+    "photos_caption_label": "Légende en français",
+    "photos_caption_help": "Décrivez ce que montre la photo, en une phrase : le type de création, les fleurs, et le lieu si vous le connaissez. C'est bon pour le SEO : Google lit la légende pour comprendre la photo et la montrer dans Google Images.",
     "photos_caption_ex1": "Exemple : « Bouquet de mariée, pivoines et roses de jardin »",
     "photos_caption_ex2": "Exemple : « Arche florale de cérémonie, Château de la Gaude »",
     "photos_caption_ex3": "Exemple : « Centres de table blancs et verts, dîner de mariage »",
@@ -999,9 +999,11 @@
     "photos_upload_confirm_many": "Ajouter {n} photos",
     "photos_upload_change_later": "Le type et la collection se changent ensuite sur chaque photo.",
     "photos_examples_link": "Voir des exemples",
-    "photos_ai_prompt": "Tu es expert en référencement d'images pour Boticia, un studio de design floral en Provence et à Paris (mariages, événements d'entreprise, ateliers floraux).\n\nRegarde la photo jointe et écris sa légende pour le site. Elle servira de texte alternatif.\n\nRègles :\n- 1 seule phrase, en français, d'environ 125 caractères (200 au maximum).\n- Ordre : la création, puis les fleurs ou les couleurs, puis le lieu.\n- Décris seulement ce que l'on voit. N'écris pas « Photo de » ni « Image de ».\n- Cite une fleur seulement si tu la reconnais avec certitude. Sinon, décris les couleurs.\n- N'invente aucun lieu. Lieu à utiliser, s'il est indiqué : [lieu]\n- N'écris aucun nom de personne.\n- Pas de guillemets, pas d'emoji.\n\nExemples de bonnes légendes :\nBouquet de mariée, pivoines et roses de jardin, Provence\nArche florale de cérémonie laïque, roses blanches et feuillages\n\nRéponds uniquement avec la légende.",
+    "photos_ai_prompt": "Tu es expert en référencement d'images pour Boticia, un studio de design floral en Provence et à Paris (mariages, événements d'entreprise, ateliers floraux).\n\nRegarde la photo jointe et écris sa légende pour le site, en français et en anglais. Elle servira de texte alternatif.\n\nRègles :\n- 1 seule phrase par langue, d'environ 125 caractères (200 au maximum).\n- Ordre : la création, puis les fleurs ou les couleurs, puis le lieu.\n- Décris seulement ce que l'on voit. N'écris pas « Photo de » ni « Image de ».\n- Cite une fleur seulement si tu la reconnais avec certitude. Sinon, décris les couleurs.\n- N'invente aucun lieu. Lieu à utiliser, s'il est indiqué : [lieu]\n- N'écris aucun nom de personne.\n- Pas de guillemets, pas d'emoji.\n\nExemples de bonnes légendes :\nBouquet de mariée, pivoines et roses de jardin, Provence\nArche florale de cérémonie laïque, roses blanches et feuillages\n\nRéponds uniquement avec les 2 légendes, sous cette forme :\nFR : la légende en français\nEN : la même légende en anglais",
     "photos_ai_copy": "Copier le prompt pour une IA",
-    "photos_ai_copied": "Prompt copié ✓"
+    "photos_ai_copied": "Prompt copié ✓",
+    "photos_caption_label_en": "Légende en anglais",
+    "photos_caption_en_help": "Pour les versions anglaise et japonaise du site. Si ce champ est vide, la légende française s'affiche."
   },
   "client": {
     "page_title": "Mon projet",
@@ -1615,7 +1617,7 @@
         "summary": "Une légende décrit la photo en une phrase. Elle aide Google à comprendre vos photos.",
         "blocks": [
           {
-            "p": "La légende aide aussi les personnes aveugles : leur ordinateur la lit à voix haute."
+            "p": "C'est bon pour le SEO : vos photos peuvent apparaître dans Google Images, et Google comprend mieux de quoi parle la page."
           },
           {
             "h": "Ajouter une légende"
@@ -1624,7 +1626,9 @@
             "steps": [
               "Ouvrez « Photos du site ».",
               "Sous une photo, cliquez sur « + Ajouter une légende ».",
-              "Écrivez une phrase, puis cliquez sur « Enregistrer »."
+              "Écrivez une phrase en français.",
+              "Si vous le souhaitez, écrivez la même phrase en anglais. Elle s'affiche sur les versions anglaise et japonaise du site. Sinon, le français s'affiche à la place.",
+              "Cliquez sur « Enregistrer »."
             ]
           },
           {
@@ -1639,7 +1643,7 @@
             ]
           },
           {
-            "tip": "Une photo garde la même légende sur toutes les pages. En haut de chaque onglet, un compteur indique les photos sans légende."
+            "tip": "Une photo garde les mêmes légendes sur toutes les pages. En haut de chaque onglet, un compteur indique les photos sans légende française."
           }
         ]
       },
@@ -1699,7 +1703,7 @@
               "Ajoutez la photo dans la conversation.",
               "Copiez le texte ci-dessous avec le bouton « Copier », puis collez-le dans la conversation.",
               "Si vous connaissez le lieu, écrivez-le à la place de [lieu]. Sinon, laissez [lieu].",
-              "Relisez la légende proposée, puis collez-la dans le tableau de bord."
+              "L'IA répond avec 2 lignes : « FR » et « EN ». Relisez-les, puis collez chacune dans son champ : « Légende en français » et « Légende en anglais »."
             ]
           },
           {

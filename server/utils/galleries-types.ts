@@ -25,6 +25,8 @@ export interface GalleryImage {
   storage_path: string;
   public_url: string;
   caption?: string;
+  // Légende anglaise, facultative (versions anglaise et japonaise du site)
+  caption_en?: string | null;
   sort_order: number;
   bento_slot?: number | null;
   // Type de photo (photothèque) : un seul par photo

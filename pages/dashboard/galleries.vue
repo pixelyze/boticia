@@ -679,6 +679,27 @@
               @keydown.enter="saveCaption"
             />
           </div>
+          <!-- Légende anglaise : facultative, pour les versions anglaise et
+               japonaise du site (vide = le français s'affiche) -->
+          <div>
+            <label for="caption-modal-en" class="block text-sm font-medium text-dark mb-1">
+              {{ t("dashboard.photos_caption_label_en") }}
+              <span class="font-normal text-gray-500">{{ t("dashboard.photos_optional") }}</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">
+              {{ t("dashboard.photos_caption_en_help") }}
+            </p>
+            <input
+              id="caption-modal-en"
+              v-model="captionDraftEn"
+              type="text"
+              maxlength="200"
+              lang="en"
+              class="w-full h-12 px-4 text-base border border-dark/30 rounded-lg
+                     focus:outline-none focus:border-dark"
+              @keydown.enter="saveCaption"
+            />
+          </div>
           <div class="rounded-xl bg-cream/50 px-4 py-3 text-sm text-gray-600">
             <p>{{ t("dashboard.photos_caption_help") }}</p>
             <ul class="mt-3 space-y-1.5">
@@ -1004,11 +1025,13 @@ const choose = (id: string) => {
 // ── Légende ────────────────────────────────────────────────────
 const captionPhoto = ref<GalleryImage | null>(null);
 const captionDraft = ref("");
+const captionDraftEn = ref("");
 const savingCaption = ref(false);
 
 const openCaption = (photo: GalleryImage) => {
   captionPhoto.value = photo;
   captionDraft.value = photo.caption || "";
+  captionDraftEn.value = photo.caption_en || "";
   promptCopied.value = false;
 };
 
@@ -1025,9 +1048,13 @@ const saveCaption = async () => {
   try {
     const res = await adminFetch<{ data: GalleryImage }>(
       `/api/admin/photos/${photo.id}`,
-      { method: "PATCH", body: { caption: captionDraft.value } }
+      {
+        method: "PATCH",
+        body: { caption: captionDraft.value, caption_en: captionDraftEn.value },
+      }
     );
     photo.caption = res.data.caption;
+    photo.caption_en = res.data.caption_en ?? null;
     captionPhoto.value = null;
   } catch (err) {
     fail(err);
