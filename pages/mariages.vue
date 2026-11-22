@@ -32,10 +32,32 @@
       :items="faqs.map((f) => ({ question: f.q, answer: f.a }))"
     />
 
-    <!-- CTA : blanc, dans la continuité de la FAQ, avant le pied de page
-         crème clair -->
+    <!-- Où nous intervenons + CTA : une seule section blanche, entre la FAQ
+         (crème clair) et le pied de page (crème clair). Les villes viennent
+         des volumes SE Ranking (seo/keywords.md) : Aix-en-Provence,
+         Marseille, Avignon, puis Lambesc (adresse du studio). -->
     <section class="py-16 md:py-24 bg-white">
-      <div class="container mx-auto px-6 text-center">
+      <div class="container mx-auto px-6 text-center max-w-3xl">
+        <p class="section-tagline">{{ $t("weddings.zones_tagline") }}</p>
+        <!-- « Aix-en-Provence » ne se coupe pas sur ses tirets -->
+        <i18n-t
+          keypath="weddings.zones_title"
+          tag="h2"
+          class="section-title-lg mb-6 text-balance"
+          scope="global"
+        >
+          <template #aix>
+            <span class="whitespace-nowrap">{{ $t("weddings.zones_aix") }}</span>
+          </template>
+        </i18n-t>
+        <p class="para-lead">{{ $t("weddings.zones_text") }}</p>
+        <p class="para mt-6 text-dark">{{ $t("weddings.zones_cities") }}</p>
+      </div>
+
+      <div
+        class="container mx-auto px-6 text-center mt-16 md:mt-20 pt-16
+               md:pt-20 border-t border-dark/20 max-w-3xl"
+      >
         <h2 class="section-title-lg mb-4">
           {{ $t("weddings.cta_title") }}
         </h2>
@@ -104,10 +126,14 @@ useHead({
           "url": "https://boticia.fr",
         },
         "serviceType": "Wedding Floral Decoration",
-        "areaServed": {
-          "@type": "State",
-          "name": "Provence-Alpes-Côte d'Azur",
-        },
+        "areaServed": [
+          { "@type": "State", "name": "Provence-Alpes-Côte d'Azur" },
+          { "@type": "City", "name": "Aix-en-Provence" },
+          { "@type": "City", "name": "Marseille" },
+          { "@type": "City", "name": "Avignon" },
+          { "@type": "City", "name": "Lambesc" },
+          { "@type": "City", "name": "Paris" },
+        ],
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
           "name": "Prestations mariage",
@@ -158,6 +184,14 @@ useHead({
               "text": t("weddings.faq_4_a"),
             },
           },
+          {
+            "@type": "Question",
+            "name": t("weddings.faq_5_q"),
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": t("weddings.faq_5_a"),
+            },
+          },
         ],
       }),
     },
@@ -190,6 +224,7 @@ const faqs = computed(() => [
   { q: t("weddings.faq_2_q"), a: t("weddings.faq_2_a") },
   { q: t("weddings.faq_3_q"), a: t("weddings.faq_3_a") },
   { q: t("weddings.faq_4_q"), a: t("weddings.faq_4_a") },
+  { q: t("weddings.faq_5_q"), a: t("weddings.faq_5_a") },
 ]);
 
 

@@ -132,6 +132,32 @@ Non mesurés : les mots-clés anglais (à tester avec le Royaume-Uni ou les Éta
 - **Les recherches avec "Provence" seul sont presque vides.** Les gens tapent une ville (Aix-en-Provence) plutôt que la région.
 - **"fleuriste mariage Paris" : 140 recherches.** À viser seulement si Boticia veut développer Paris.
 
+### Villes et départements (2e relevé du 22/11/2026)
+
+Mêmes réglages : SE Ranking, France, Google, novembre 2026.
+
+| Mot-clé | Volume mensuel | Difficulté |
+|---|---|---|
+| fleuriste mariage Marseille | 50 | 14 |
+| fleuriste mariage Var | 20 | 8 |
+| fleuriste Aix-en-Provence | 10 | 9 |
+| fleuriste mariage Avignon | 10 | 6 |
+| fleuriste mariage Bouches-du-Rhône | non trouvé | non trouvé |
+| fleuriste mariage Vaucluse | non trouvé | non trouvé |
+| fleuriste mariage Alpilles | non trouvé | non trouvé |
+| fleuriste mariage Luberon | non trouvé | non trouvé |
+| fleuriste mariage Gordes | non trouvé | non trouvé |
+| fleuriste mariage Saint-Rémy-de-Provence | non trouvé | non trouvé |
+| fleuriste mariage Salon-de-Provence | non trouvé | non trouvé |
+| décoration florale mariage Provence | non trouvé | non trouvé |
+| décoration florale mariage Aix-en-Provence | non trouvé | non trouvé |
+| décoration florale mariage Marseille | non trouvé | non trouvé |
+
+À retenir :
+- Les grandes villes portent les recherches : Aix-en-Provence (50 avec "fleuriste mariage"), Marseille (50), Avignon (10).
+- Les départements, le Luberon et les Alpilles n'ont pas de volume mesurable. On les cite quand même dans les textes : ils situent le studio, sans coût.
+- Le site cite en priorité Aix-en-Provence, Marseille et Avignon, avec Lambesc (adresse du studio, "fleuriste Lambesc" : 320).
+
 ## Mots écartés
 | Mot-clé | Raison |
 |---|---|

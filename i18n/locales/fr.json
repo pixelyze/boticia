@@ -130,7 +130,14 @@
     "faq_3_q": "Peut-on choisir des fleurs spécifiques ?",
     "faq_3_a": "Absolument. Nous travaillons avec vous pour identifier les variétés qui correspondent à votre univers. Certaines fleurs sont saisonnières · nous vous conseillerons les meilleures alternatives si votre fleur préférée n'est pas disponible à la date de votre mariage.",
     "faq_4_q": "Intervenez-vous en dehors de la Provence ?",
-    "faq_4_a": "Oui, nous nous déplaçons dans toute la France. Des frais de déplacement s'appliquent au-delà de la région PACA. Contactez-nous pour un devis personnalisé incluant le transport et l'installation."
+    "faq_4_a": "Oui, nous nous déplaçons dans toute la France. Des frais de déplacement s'appliquent au-delà de la région PACA. Contactez-nous pour un devis personnalisé incluant le transport et l'installation.",
+    "zones_tagline": "Où nous intervenons",
+    "zones_title": "Fleuriste de mariage à {aix}, Marseille et Avignon",
+    "zones_text": "Notre studio est à Lambesc, dans les Bouches-du-Rhône, entre Aix-en-Provence et le Luberon. Nous fleurissons les mariages dans toute la Provence, du Luberon aux Alpilles, jusqu'à la côte. Nous intervenons aussi à Paris et partout en France.",
+    "zones_cities": "Aix-en-Provence · Marseille · Avignon · Lambesc · Luberon · Alpilles · Var · Paris",
+    "faq_5_q": "Dans quelles villes de Provence intervenez-vous ?",
+    "faq_5_a": "Notre studio est à Lambesc, près d'Aix-en-Provence. Nous fleurissons les mariages à Aix-en-Provence, Marseille et Avignon, dans le Luberon, les Alpilles et le Var.",
+    "zones_aix": "Aix-en-Provence"
   },
   "events": {
     "tagline": "Entreprises",
