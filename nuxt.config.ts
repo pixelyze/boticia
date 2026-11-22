@@ -210,6 +210,10 @@ export default defineNuxtConfig({
     "/confirm": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
     "/*/login": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
     "/*/confirm": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
+    // Connexion admin par mot de passe : ni indexée, ni dans robots.txt
+    // (robots.txt est public, il donnerait l'adresse de la page)
+    "/connexion-admin": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
+    "/*/connexion-admin": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
     "/*/dashboard/**": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
     "/*/admin/**": { headers: { "X-Robots-Tag": "noindex, nofollow" } },
     // Redirects des anciennes URLs Shopify → homepage (301 pour Google)
